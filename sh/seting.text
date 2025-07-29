@@ -1,0 +1,224 @@
+{
+    "files.autoSave": "onFocusChange",
+    "cmake.configureOnOpen": true,
+    "editor.fontFamily": " Source Code Pro, Consolas, 'Courier New', monospace",
+    "editor.codeActionsOnSave": {
+
+
+    
+    },
+    "vim.normalModeKeyBindingsNonRecursive": [
+    // Go to start or end of line---------------------------
+    {
+      "before": ["H"],
+      "after": ["^"]
+    },
+    {
+      "before": ["L"],
+      "after": ["$"]
+    },
+    // ----------------------------------------------------
+    // Jump to change
+    {
+      "before": ["[", "c"],
+      "commands": ["workbench.action.editor.previousChange"]
+    },
+    {
+      "before": ["]", "c"],
+      "commands": ["workbench.action.editor.nextChange"]
+    },
+    // Code actions
+    {
+      "before": ["<leader>", "s", "a"],
+      "commands": ["editor.action.sourceAction"]
+    },
+    {
+      "before": ["<space>", "r", "r"],
+      "commands": [
+        // "extension.runScript"
+        // "autojspro.run"
+        "code-runner.run"
+      ]
+    },
+    // Quick fix
+    {
+      "before": ["<leader>", "q", "f"],
+      "commands": ["editor.action.quickFix"]
+    },
+    // 重用名变量
+    {
+      "before": ["<leader>", "r", "n"],
+      "commands": ["editor.action.rename"]
+    },
+    // Format 格式化当前文件
+    {
+      "before": ["<leader>", "f", "m"],
+      "commands": ["editor.action.formatDocument"]
+    },
+    // go===================================================
+    // go to  References
+    {
+      "before": ["g", "r"],
+      "commands": ["editor.action.goToReferences"]
+    },
+    // ===================================================
+    // new===================================================
+    // 新建文件夹,在编辑器的区域
+    {
+      "before": ["<Leader>", "n", "d"],
+      "commands": ["explorer.newFolder"]
+    },
+    // 新建文件,新建文件的位置取决于,文件资源管理器所在的位置
+    {
+      "before": ["<Leader>", "n", "f"],
+      "commands": ["explorer.newFile"]
+    },
+    // =====================================================
+    // open========================================================
+    // 打开文件资源管理器,光标会聚焦到文件资源管理器的窗口
+    {
+      "before": ["<leader>", "o", "e"],
+      "commands": ["workbench.view.explorer"]
+    },
+    // open search bar
+    {
+      "before": ["<leader>", "o", "s"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    // 进入到terminal
+    {
+      "before": ["<leader>", "o", "t"],
+      "commands": ["workbench.action.terminal.toggleTerminal"]
+    },
+    // 新建一个terminal终端
+    {
+      "before": ["<leader>", "o", "T"],
+      "commands": ["workbench.action.terminal.new"]
+    },
+    // 隐藏和打开terminal
+    {
+      "before": ["<leader>", "o", "t"],
+      "commands": ["workbench.action.togglePanel"]
+    },
+    // ================================================
+    // find char in all files(fing in all files)
+    {
+      "before": ["<leader>", "f", "a"],
+      "commands": ["workbench.action.findInFiles"]
+    },
+    // ===============================================
+    // 移动==============================================================================
+    // 左右移动标签页------------------------------------------------
+    {
+      "before": ["<leader>", "h"],
+      "commands": ["workbench.action.navigateLeft"]
+    },
+    {
+      "before": ["<leader>", "l"],
+      "commands": ["workbench.action.navigateRight"]
+    },
+    // 移动下一个编辑器标签
+    {
+      "before": ["J"],
+      "commands": ["workbench.action.nextEditor"]
+    },
+    // 移动到上一个编辑器标签
+    {
+      "before": ["K"],
+      "commands": ["workbench.action.previousEditor"]
+    },
+    // 左右移动标签页---------------------------------------------------------------
+    {
+      "before": ["<leader>", "'"],
+      "commands": ["workbench.action.maximizeEditor"]
+    },
+    // 显示定义
+    {
+      "before": ["<leader>", "r", "d"],
+      "commands": ["editor.action.revealDefinition"]
+    },
+    // 保存当前文件---------------------------------------------------------------
+    {
+      "before": ["<leader>", "s"],
+      "commands": ["workbench.action.files.save"]
+    },
+    {
+      "before": ["g", "b"],
+      "commands": ["workbench.action.navigateBack"],
+      "when": "canNavigateBack"
+    },
+    // workbench.action.closeActiveEditor
+    {
+      "before": ["<leader>", "w", "c"],
+      "commands": ["workbench.action.closeActiveEditor"]
+    },
+    //workbench.action.closeAllEditors
+    {
+      "before": ["<space>", "w", "a"],
+      "commands": ["workbench.action.closeAllEditors"]
+    },
+    {
+      "before": ["N"],
+      "commands": ["editor.action.moveLinesDownAction"]
+    },
+    {
+      "before": ["<space>", "q", "f"],
+      "commands": ["editor.action.quickFix"]
+    }
+  ],
+  "vim.insertModeKeyBindings": [
+    // 退出插入模式
+    {
+      "before": ["c", "d"],
+      "after": ["<Esc>"]
+    }
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    // 移动到非空字符的行首
+    {
+      "before": ["H"],
+      "after": ["^"]
+    },
+    // 移动到非空字符的行尾
+    {
+      "before": ["L"],
+      "after": ["$"]
+    }
+  ],
+  "vim.digraphs": {},
+  "vim.commandLineModeKeyBindings": [],
+  "vim.commandLineModeKeyBindingsNonRecursive": [],
+    "vim.leader": "<space>",
+    "editor.indentSize": "tabSize",
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+    "vim.useCtrlKeys": false,
+    "workbench.tree.indent": 32,
+    "workbench.settings.applyToAllProfiles": [
+
+
+
+
+      
+    ],
+    "vim.handleKeys": {
+
+        "<C-d>": true,
+        "<C-s>": false,
+        "<C-z>": false,
+        "<C-o>": true,
+    },
+    "workbench.colorCustomizations": {
+       "editor.background" : "#0e0d0d"
+    },
+    "json.schemas": [
+
+    ],
+    "fileheader.Author": "Ruan Huipeng",
+    "fileheader.LastModifiedBy": "Ruan Huipeng",
+    "explorer.compactFolders": false,
+    "workbench.activityBar.location": "top",
+    "editor.fontSize": 17,
+}
