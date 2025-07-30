@@ -8,6 +8,7 @@
 #include <thread>
 
 #include "BaseConfig.h"
+#include "test/mmkv_test.h"
 #include <im/base/coroutine.h>
 #include <test/boostCoroTest.h>
 #include <test/channelTest.h>
@@ -70,6 +71,8 @@ void test_gcd() {
 }
 
 int main() {
+
+    test_mmkv();
 
     // 运行 WCDB 测试
     run_wcdb_tests();

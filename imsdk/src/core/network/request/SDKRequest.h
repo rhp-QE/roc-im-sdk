@@ -1,5 +1,4 @@
-#ifndef ROC_IM_SDK_REQUEST_SDKREQUEST_H
-#define ROC_IM_SDK_REQUEST_SDKREQUEST_H
+#pragma once
 
 #include "base/network/include/LongConnectionClient.h"
 #include "base/Uncopyable.h"
@@ -109,5 +108,3 @@ fetch_conv_message_list(SDKRoot *root, network::FetchConvMessageListReq *request
 
 
 } // namespace roc::imsdk::network
-
-#endif // ROC_IM_SDK_REQUEST_SDKREQUEST_H

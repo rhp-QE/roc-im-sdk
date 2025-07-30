@@ -7,8 +7,7 @@
 ///
 
 
-#ifndef __IMSDK_MESSAGE_SERVICE_CORE_CONV_MESSAGE_FETCHER_H__
-#define __IMSDK_MESSAGE_SERVICE_CORE_CONV_MESSAGE_FETCHER_H__
+#pragma once
 
 #include "base/Uncopyable.h"
 #include <boost/asio/awaitable.hpp>
@@ -30,5 +29,3 @@ private:
 };
 
 } // namespace roc::imsdk::service
-
-#endif

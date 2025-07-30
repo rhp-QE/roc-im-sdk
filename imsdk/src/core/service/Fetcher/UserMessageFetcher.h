@@ -7,8 +7,7 @@
 ///
 
 
-#ifndef __IMSDK_SERVICE_FETCHER_USER_MESSAGE_FETCHER_H__
-#define __IMSDK_SERVICE_FETCHER_USER_MESSAGE_FETCHER_H__
+#pragma once
 
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 
@@ -28,5 +27,3 @@ private:
 };
 
 } // namespace roc::imsdk::service
-
-#endif

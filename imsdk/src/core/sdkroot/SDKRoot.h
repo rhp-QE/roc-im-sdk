@@ -5,6 +5,7 @@
 #ifndef ROC_IM_SDK_CORE_SDKROOT_SDKROOT_H
 #define ROC_IM_SDK_CORE_SDKROOT_SDKROOT_H
 
+#include "MMKV/MMKV.h"
 #include "WCDB/Database.hpp"
 #include "base/Uncopyable.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
@@ -58,6 +59,9 @@ public:
     // 获取数据库
     WCDB::Database* database();
 
+    // 获取MMKV
+    MMKV* mmkv();
+
 private:
     std::unique_ptr<network::SDKConnectionManager> connection_manager_;
     std::unique_ptr<service::IMessageService> msg_service_;
@@ -68,6 +72,7 @@ private:
     std::unique_ptr<service::UserMessageFetcher> user_message_fetcher_;
     Config config_;
     WCDB::Database *database_;
+    MMKV *mmkv_;
 
     asio::io_context net_io_context_;
 };

@@ -29,6 +29,10 @@ SDKRoot::~SDKRoot() {
         delete database_;
         database_ = nullptr;
     }
+    if (mmkv_) {
+        mmkv_->clearAll();
+        mmkv_ = nullptr;
+    }
 }
 
 asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
@@ -46,7 +50,12 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     user_message_fetcher_ = std::make_unique<service::UserMessageFetcher>(weak_from_this());
 
     // 初始化数据库
-    database_ = new WCDB::Database("/root/project/ROCIM/dbData/" + config_.user_id + "_test.db");
+    database_ = new WCDB::Database("/root/project/roc_im_sdk/db-data/" + config_.user_id + "_test.db");
+
+    // 初始化MMKV
+    std::string rootDir = "/root/project/roc_im_sdk/db-data";
+    MMKV::initializeMMKV(rootDir);
+    mmkv_ = MMKV::defaultMMKV();
 
     // 初始化长连接管理器
     co_await connection_manager_->init_and_connect(weak_from_this());
@@ -76,6 +85,10 @@ asio::io_context& SDKRoot::net_io_context() {
 
 WCDB::Database* SDKRoot::database() {
     return database_;
+}
+
+MMKV* SDKRoot::mmkv() {
+    return mmkv_;
 }
 
 

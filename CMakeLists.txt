@@ -68,6 +68,10 @@ target_link_libraries(main PRIVATE
 )
 # --------------------------------------------
 
+# MMKV 库
+add_subdirectory("/root/ccdep/src/MMKV/POSIX/src" mmkv)
+target_link_libraries(main PRIVATE mmkv)
+
 # OPENSSL 库
 # --------------------------------------------
 find_package(OpenSSL REQUIRED)
