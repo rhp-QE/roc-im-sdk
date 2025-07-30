@@ -21,7 +21,7 @@
 #include <test/wsclientTest.h>
 #include <test/imsdk_test.h>
 #include <test/wcdb_test.h>
-#include <test/wcdb_simple_test.cpp>
+#include <test/wcdb_simple_test.h>
 
 boost::asio::io_context net_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
 boost::asio::io_context main_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};

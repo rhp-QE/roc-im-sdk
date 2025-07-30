@@ -5,6 +5,7 @@
 /// @date   2025-07-23
 /// @version 1.0
 ///
+#pragma once
 
 #include <WCDB/WCDBCpp.h>
 #include <iostream>

@@ -15,7 +15,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS_OUTPUT_PATH "../")
 # vcpkg 配置
 set(CMAKE_TOOLCHAIN_FILE "/opt/vcpkg/scripts/buildsystems/vcpkg.cmake")
 # 强制使用项目根目录的 vcpkg_installed（可选）
-set(VCPKG_INSTALLED_DIR "${CMAKE_SOURCE_DIR}/vcpkg_installed")
+set(VCPKG_INSTALLED_DIR "${CMAKE_SOURCE_DIR}/../vcpkg_installed")
 
 # -------------------------------------
 project(ROCIM_CLIENT VERSION 0.1.0 LANGUAGES C CXX)
