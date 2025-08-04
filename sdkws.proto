@@ -323,6 +323,9 @@ message ConversationInfo {
   int64 convUnreadCount = 8;  // 会话未读消息数量
   bool isMuted = 9;           // 会话是否静音
   bool isTop = 10;             // 会话是否置顶
+  bool isDelete = 11;
+  bool isBlocked = 12;
+  bytes ext = 13;
 }
 
 message FetchUserMessageListResp {

@@ -3,6 +3,7 @@
 
 #include <WCDB/WCDBCpp.h>
 #include <cstdint>
+#include <string>
 
 namespace roc::imsdk::db {
 
@@ -15,9 +16,13 @@ public:
 
     std::string name;
 
+    std::string avatar;
+
     long long conv_type;
 
-    std::string last_message_id;
+    std::string last_message_clent_id;
+
+    std::string last_message_server_id;
 
     long long last_message_time;
 

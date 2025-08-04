@@ -44,6 +44,7 @@ asio::awaitable<void> ConvMessageFetcher::fetch_conv_message_list() {
 
 std::unique_ptr<network::FetchConvMessageListReq> p_make_fetch_conv_message_list_req(SDKRoot *root) {
     auto req = std::make_unique<network::FetchConvMessageListReq>();
+
     return req;
 }
 // ----------------------------------------------------------------------------------

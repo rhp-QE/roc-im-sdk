@@ -17,7 +17,7 @@ static const std::string ConversationTableName = "conversation_table";
 // interface ------------------------------------------------------------------------------------------------------------------------
 
 // 插入一条消息
-inline bool insert_messgae(WCDB::Database *database, std::vector<db::MessageORM *>messages);
+inline bool insert_message(WCDB::Database *database, std::vector<db::MessageORM *>messages);
 
 // 插入一条会话
 inline bool insert_conversation(WCDB::Database *database, std::vector<db::ConversationORM *>conversations);
@@ -51,7 +51,7 @@ inline std::vector<std::unique_ptr<db::ConversationORM>> query_conversation(WCDB
 //--------------------------------------------------------------------------------------------------------------------------------------
 
 // implementation -------------------------------------------------------------------------------------------------------------------
-inline bool insert_messgae(WCDB::Database *database, std::vector<db::MessageORM *> messages) {
+inline bool insert_message(WCDB::Database *database, std::vector<db::MessageORM *> messages) {
     CHECK_POINTER_OR_RETURN_VALUE(database, false)
 
     return database->runTransaction([&](WCDB::Handle &handle) {

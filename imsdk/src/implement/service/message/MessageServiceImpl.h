@@ -2,7 +2,6 @@
 #include "imsdk/src/include/service/message/IMessageService.h"
 
 #include "imsdk/src/core/service/message/MessageSendLogic.h"
-#include "imsdk/src/core/service/message/MessageCacheLogic.h"
 
 #include <memory.h>
 
@@ -34,7 +33,6 @@ private:
     std::weak_ptr<imsdk::SDKRoot> sdk_root_;
     std::unique_ptr<MessageServiceDelegate> delegate_;
 
-    std::unique_ptr<MessageCacheLogic> message_cache_logic_;
     std::unique_ptr<MessageSendLogic> message_send_logic_;
 };
 

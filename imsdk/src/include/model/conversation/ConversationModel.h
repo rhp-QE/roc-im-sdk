@@ -13,12 +13,13 @@ enum class ConversationType {
 class ConversationModel {
 public:
     // Getter methods
-    std::string get_conversation_id() const;
-    ConversationType get_type() const;
-    std::string get_name() const;
-    std::string get_avatar() const;
-    std::string get_last_message_id() const;
-    int get_unread_count() const;
+    std::string conversation_id() const;
+    ConversationType type() const;
+    std::string name() const;
+    std::string avatar() const;
+    std::string last_message_id() const;
+    int unread_count() const;
+    int64_t last_update_time();
 
 private:
     std::string conversation_id_;
@@ -26,6 +27,7 @@ private:
     std::string name_;
     std::string avatar_;
     std::string last_message_id_;
+    int64_t last_update_time_;
     int unread_count_ = 0;
 };
 

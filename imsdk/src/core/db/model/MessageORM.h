@@ -10,7 +10,13 @@ public:
     MessageORM();
     ~MessageORM();
     
-    std::string msg_id;
+    std::string server_msg_id;
+
+    std::string client_msg_id;
+
+    std::string server_index;
+
+    std::string client_index;
 
     std::string conv_id;
 
@@ -25,6 +31,10 @@ public:
     std::string core_info;
 
     std::string ext;
+
+    bool is_deleted;
+
+    bool is_recalled;
 
     WCDB_CPP_ORM_DECLARATION(MessageORM)
 };

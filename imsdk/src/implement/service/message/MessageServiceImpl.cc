@@ -5,7 +5,6 @@ namespace roc::imsdk::service {
 
 MessageServiceImpl::MessageServiceImpl(std::weak_ptr<imsdk::SDKRoot> sdk_root) : sdk_root_(sdk_root) {
     std::cout << "MessageServiceImpl" << std::endl;
-    message_cache_logic_ = std::make_unique<MessageCacheLogic>();
     message_send_logic_ = std::make_unique<MessageSendLogic>(sdk_root_);
 }
 

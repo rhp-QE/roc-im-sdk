@@ -8,6 +8,9 @@
 #include "MMKV/MMKV.h"
 #include "WCDB/Database.hpp"
 #include "base/Uncopyable.h"
+#include "imsdk/src/core/cache/ConversationCache.h"
+#include "imsdk/src/core/cache/MessageCache.h"
+#include "imsdk/src/core/injection/Injection.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/include/config.h"
 
@@ -62,14 +65,31 @@ public:
     // 获取MMKV
     MMKV* mmkv();
 
+    // 获取消息缓存
+    cache::MessageCache* message_cache();
+
+    // 获取会话缓存
+    cache::ConversationCache* conversation_cache();
+
+    // 获取用户消息拉取器
+    service::UserMessageFetcher* user_message_fetcher();
+
+    // 获取会话消息拉取器
+    service::ConvMessageFetcher* conv_message_fetcher();
+
+    // 获取注入的方法
+    injection::Injection* injection();
+
 private:
     std::unique_ptr<network::SDKConnectionManager> connection_manager_;
     std::unique_ptr<service::IMessageService> msg_service_;
     std::unique_ptr<service::IConversationService> conv_service_;
     std::unique_ptr<service::ConvMessageFetcher> conv_message_fetcher_;
     std::unique_ptr<service::MessageSendLogic> send_message_logic_;
-    std::unique_ptr<service::MessageCacheLogic> message_cache_logic_;
+    std::unique_ptr<cache::MessageCache> message_cache_;
+    std::unique_ptr<cache::ConversationCache> conversation_cache_;
     std::unique_ptr<service::UserMessageFetcher> user_message_fetcher_;
+    std::unique_ptr<injection::Injection> injection_;
     Config config_;
     WCDB::Database *database_;
     MMKV *mmkv_;

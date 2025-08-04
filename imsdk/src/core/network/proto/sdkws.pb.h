@@ -5230,6 +5230,20 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_convavatar();
   void set_allocated_convavatar(::std::string* convavatar);
 
+  // bytes ext = 13;
+  void clear_ext();
+  static const int kExtFieldNumber = 13;
+  const ::std::string& ext() const;
+  void set_ext(const ::std::string& value);
+  #if LANG_CXX11
+  void set_ext(::std::string&& value);
+  #endif
+  void set_ext(const char* value);
+  void set_ext(const void* value, size_t size);
+  ::std::string* mutable_ext();
+  ::std::string* release_ext();
+  void set_allocated_ext(::std::string* ext);
+
   // .roc.imsdk.network.MsgData lastMsg = 7;
   bool has_lastmsg() const;
   void clear_lastmsg();
@@ -5238,6 +5252,12 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   ::roc::imsdk::network::MsgData* release_lastmsg();
   ::roc::imsdk::network::MsgData* mutable_lastmsg();
   void set_allocated_lastmsg(::roc::imsdk::network::MsgData* lastmsg);
+
+  // int64 convUnreadCount = 8;
+  void clear_convunreadcount();
+  static const int kConvUnreadCountFieldNumber = 8;
+  ::google::protobuf::int64 convunreadcount() const;
+  void set_convunreadcount(::google::protobuf::int64 value);
 
   // int32 convType = 3;
   void clear_convtype();
@@ -5257,11 +5277,17 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   bool istop() const;
   void set_istop(bool value);
 
-  // int64 convUnreadCount = 8;
-  void clear_convunreadcount();
-  static const int kConvUnreadCountFieldNumber = 8;
-  ::google::protobuf::int64 convunreadcount() const;
-  void set_convunreadcount(::google::protobuf::int64 value);
+  // bool isDelete = 11;
+  void clear_isdelete();
+  static const int kIsDeleteFieldNumber = 11;
+  bool isdelete() const;
+  void set_isdelete(bool value);
+
+  // bool isBlocked = 12;
+  void clear_isblocked();
+  static const int kIsBlockedFieldNumber = 12;
+  bool isblocked() const;
+  void set_isblocked(bool value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.ConversationInfo)
  private:
@@ -5272,11 +5298,14 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::internal::ArenaStringPtr owneruserid_;
   ::google::protobuf::internal::ArenaStringPtr convname_;
   ::google::protobuf::internal::ArenaStringPtr convavatar_;
+  ::google::protobuf::internal::ArenaStringPtr ext_;
   ::roc::imsdk::network::MsgData* lastmsg_;
+  ::google::protobuf::int64 convunreadcount_;
   ::google::protobuf::int32 convtype_;
   bool ismuted_;
   bool istop_;
-  ::google::protobuf::int64 convunreadcount_;
+  bool isdelete_;
+  bool isblocked_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsConversationInfoImpl();
@@ -19674,6 +19703,87 @@ inline void ConversationInfo::set_istop(bool value) {
   
   istop_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.isTop)
+}
+
+// bool isDelete = 11;
+inline void ConversationInfo::clear_isdelete() {
+  isdelete_ = false;
+}
+inline bool ConversationInfo::isdelete() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfo.isDelete)
+  return isdelete_;
+}
+inline void ConversationInfo::set_isdelete(bool value) {
+  
+  isdelete_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.isDelete)
+}
+
+// bool isBlocked = 12;
+inline void ConversationInfo::clear_isblocked() {
+  isblocked_ = false;
+}
+inline bool ConversationInfo::isblocked() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfo.isBlocked)
+  return isblocked_;
+}
+inline void ConversationInfo::set_isblocked(bool value) {
+  
+  isblocked_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.isBlocked)
+}
+
+// bytes ext = 13;
+inline void ConversationInfo::clear_ext() {
+  ext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ConversationInfo::ext() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfo.ext)
+  return ext_.GetNoArena();
+}
+inline void ConversationInfo::set_ext(const ::std::string& value) {
+  
+  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.ext)
+}
+#if LANG_CXX11
+inline void ConversationInfo::set_ext(::std::string&& value) {
+  
+  ext_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.ConversationInfo.ext)
+}
+#endif
+inline void ConversationInfo::set_ext(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.ConversationInfo.ext)
+}
+inline void ConversationInfo::set_ext(const void* value, size_t size) {
+  
+  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.ConversationInfo.ext)
+}
+inline ::std::string* ConversationInfo::mutable_ext() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ConversationInfo.ext)
+  return ext_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ConversationInfo::release_ext() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ConversationInfo.ext)
+  
+  return ext_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ConversationInfo::set_allocated_ext(::std::string* ext) {
+  if (ext != NULL) {
+    
+  } else {
+    
+  }
+  ext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ext);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ConversationInfo.ext)
 }
 
 // -------------------------------------------------------------------
