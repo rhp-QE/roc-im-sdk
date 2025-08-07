@@ -20,6 +20,8 @@
 #include "imsdk/src/core/service/Fetcher/ConvMessageFetcher.h"
 #include "imsdk/src/core/service/message/MessageSendLogic.h"
 #include "imsdk/src/core/service/Fetcher/UserMessageFetcher.h"
+#include "imsdk/src/core/service/Range/MessageRange.h"
+#include "imsdk/src/core/service/Range/ConversationRange.h"
 
 namespace roc::imsdk {
 
@@ -51,6 +53,8 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     message_cache_ = std::make_unique<cache::MessageCache>();
     conversation_cache_ = std::make_unique<cache::ConversationCache>();
     user_message_fetcher_ = std::make_unique<service::UserMessageFetcher>(weak_from_this());
+    message_range_ = std::make_unique<service::MessageRange>(weak_from_this());
+    conversation_range_ = std::make_unique<service::ConversationRange>(weak_from_this());
 
     // 初始化数据库
     database_ = new WCDB::Database("/root/project/roc_im_sdk/db-data/" + config_.user_id + "_test.db");
@@ -112,6 +116,10 @@ cache::MessageCache* SDKRoot::message_cache() {
 
 cache::ConversationCache* SDKRoot::conversation_cache() {
     return conversation_cache_.get();
+}
+
+service::MessageRange* SDKRoot::message_range() {
+    return message_range_.get();
 }
 
 //--------------- no member private method ----------------------

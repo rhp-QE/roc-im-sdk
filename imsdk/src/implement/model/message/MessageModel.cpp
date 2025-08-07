@@ -26,4 +26,12 @@ std::string MessageModel::conversation_id() {
     return conversation_id_;
 }
 
+int64_t MessageModel::client_order_index() {
+    return client_order_index_;
+}
+
+int64_t MessageModel::server_order_index() {
+    return server_order_index_;
+}
+
 } // namespace roc::imsdk::model 

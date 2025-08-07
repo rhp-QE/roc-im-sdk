@@ -22,7 +22,8 @@ public:
     ConvMessageFetcher(std::weak_ptr<SDKRoot> sdk_root);
     ~ConvMessageFetcher();
 
-    boost::asio::awaitable<void> fetch_conv_message_list();
+    boost::asio::awaitable<void> fetch_conv_message_list(std::string conv_id);
+    boost::asio::awaitable<void> fetch_conv_message_list_for_range(std::string conv_id, std::pair<int64_t, int64_t> range);
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root_;

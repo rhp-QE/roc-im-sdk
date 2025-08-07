@@ -13,4 +13,8 @@ std::pair<std::shared_ptr<model::ConversationModel>, cache::ConvUpdateReason> Co
     return std::make_pair(nullptr, cache::ConvUpdateReason::CONVUPDATE_NEW);
 }
 
+std::shared_ptr<model::ConversationModel> ConversationCache::get_sdk_conv(const std::string& conversation_id) {
+    return nullptr;
+}
+
 } // namespace roc::imsdk::cache

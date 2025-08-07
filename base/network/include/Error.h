@@ -2,13 +2,12 @@
 #define ROCIM_ERROR_H
 
 #include <string>
-#include <expected>
-#include <source_location>
+#include <memory>
 
 namespace roc::error {
 
 // 简化的错误类
-class Error {
+class Error : public std::enable_shared_from_this<Error> {
 private:
     int code_;
     std::string message_;

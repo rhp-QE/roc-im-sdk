@@ -9,6 +9,7 @@
 #include "imsdk/src/core/service/Fetcher/UserMessageFetcher.h"
 
 #include "imsdk/src/core/db/model/ConversationORM.h"
+#include "imsdk/src/core/service/Range/ConversationRange.h"
 #include "imsdk/src/core/db/model/MessageORM.h"
 #include "imsdk/src/core/macro.h"
 #include "imsdk/src/core/network/request/SDKRequest.h"
@@ -37,7 +38,7 @@ asio::awaitable<FetchUserMessageResult> UserMessageFetcher::fetch_user_messages(
     CHECK_ROOT_OR_CO_RETURN_VALUE(sdk_root_, false);
 
     // 获取最新游标
-    int64_t cursor = 0;
+    int64_t cursor = sdk_root->conversation_range()->conv_cursor();
 
     // 构造请求
     std::unique_ptr<network::FetchUserMessageListReq> req = p_make_fetch_user_message_list_req(sdk_root.get(), cursor);
@@ -74,10 +75,11 @@ boost::asio::awaitable<FetchUserMessageResult> handle_fetched_user_message(std::
     std::vector<db::ConversationORM *> db_convs;
 
     FetchUserMessageResult result;
+    result.has_more = resp->hasmore();
 
     for (auto &conv : resp->convsinfo()) {
         // 转为orm 然后存储
-        std::unique_ptr<db::ConversationORM> db_conv = convert_net_conv_to_db_conv(&conv);
+        std::unique_ptr<db::ConversationORM> db_conv = util::convert_net_conv_to_db_conv(&conv);
         db_convs.push_back(db_conv.get());
 
         // 获取并更新 sdk_conv
@@ -90,7 +92,7 @@ boost::asio::awaitable<FetchUserMessageResult> handle_fetched_user_message(std::
                 continue;
             }
 
-            std::unique_ptr<db::MessageORM> db_msg = convert_net_msg_to_db_msg(&(msg.msg()));
+            std::unique_ptr<db::MessageORM> db_msg = util::convert_net_msg_to_db_msg(&(msg.msg()));
             db_msgs.push_back(db_msg.get());
 
             std::shared_ptr<model::MessageModel> sdk_msg = sdk_root->message_cache()->update_and_get_sdk_message(db_msg.get()).first;
@@ -99,10 +101,12 @@ boost::asio::awaitable<FetchUserMessageResult> handle_fetched_user_message(std::
         
     }
 
-
     // 插入到db
     db::operate::insert_conversation(sdk_root->database(), db_convs);
     db::operate::insert_message(sdk_root->database(), db_msgs);
+
+    // 更新会话区间
+    sdk_root->conversation_range()->update_conv_cursor(resp->cursor());
 
     // 上抛
     co_return result;

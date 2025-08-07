@@ -1,5 +1,4 @@
-#ifndef __IMSDK_CORE_MACRO_H__
-#define __IMSDK_CORE_MACRO_H__
+#pragma once
 
 // 检查 root 是否为空并直接返回的宏（无返回值）
 #define CHECK_ROOT_OR_CO_RETURN_VOID(weak_ptr_var) \
@@ -39,5 +38,3 @@
     if (!pointer) { \
         return return_value; \
     }
-
-#endif // __IMSDK_CORE_MACRO_H__

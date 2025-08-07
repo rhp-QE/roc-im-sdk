@@ -9,6 +9,7 @@
 
 #include "BaseConfig.h"
 #include "test/mmkv_test.h"
+#include "test/test_func_.h"
 #include <im/base/coroutine.h>
 #include <test/boostCoroTest.h>
 #include <test/channelTest.h>
@@ -71,6 +72,8 @@ void test_gcd() {
 }
 
 int main() {
+
+    test_func_();
 
     test_mmkv();
 

@@ -28,6 +28,8 @@ namespace roc::imsdk::service {
     class MessageSendLogic;
     class MessageCacheLogic;
     class UserMessageFetcher;
+    class MessageRange;
+    class ConversationRange;
 }
 
 namespace roc::imsdk {
@@ -80,6 +82,12 @@ public:
     // 获取注入的方法
     injection::Injection* injection();
 
+    // 获取消息区间
+    service::MessageRange* message_range();
+
+    // 获取会话区间
+    service::ConversationRange* conversation_range();
+
 private:
     std::unique_ptr<network::SDKConnectionManager> connection_manager_;
     std::unique_ptr<service::IMessageService> msg_service_;
@@ -89,6 +97,8 @@ private:
     std::unique_ptr<cache::MessageCache> message_cache_;
     std::unique_ptr<cache::ConversationCache> conversation_cache_;
     std::unique_ptr<service::UserMessageFetcher> user_message_fetcher_;
+    std::unique_ptr<service::MessageRange> message_range_;
+    std::unique_ptr<service::ConversationRange> conversation_range_;
     std::unique_ptr<injection::Injection> injection_;
     Config config_;
     WCDB::Database *database_;
