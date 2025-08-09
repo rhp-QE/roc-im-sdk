@@ -8,8 +8,6 @@
 #include "MMKV/MMKV.h"
 #include "WCDB/Database.hpp"
 #include "base/Uncopyable.h"
-#include "imsdk/src/core/cache/ConversationCache.h"
-#include "imsdk/src/core/cache/MessageCache.h"
 #include "imsdk/src/core/injection/Injection.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/include/config.h"
@@ -30,6 +28,12 @@ namespace roc::imsdk::service {
     class UserMessageFetcher;
     class MessageRange;
     class ConversationRange;
+}
+
+namespace roc::imsdk::core {
+    class GroupManager;
+    class MessageManager;
+    class ConversationManager;
 }
 
 namespace roc::imsdk {
@@ -67,12 +71,6 @@ public:
     // 获取MMKV
     MMKV* mmkv();
 
-    // 获取消息缓存
-    cache::MessageCache* message_cache();
-
-    // 获取会话缓存
-    cache::ConversationCache* conversation_cache();
-
     // 获取用户消息拉取器
     service::UserMessageFetcher* user_message_fetcher();
 
@@ -88,14 +86,19 @@ public:
     // 获取会话区间
     service::ConversationRange* conversation_range();
 
+
+    // -------------------------------------------------
+    core::GroupManager* group_manager();
+    core::MessageManager* message_manager();
+    core::ConversationManager* conversation_manager();
+    // -------------------------------------------------
+
 private:
     std::unique_ptr<network::SDKConnectionManager> connection_manager_;
     std::unique_ptr<service::IMessageService> msg_service_;
     std::unique_ptr<service::IConversationService> conv_service_;
     std::unique_ptr<service::ConvMessageFetcher> conv_message_fetcher_;
     std::unique_ptr<service::MessageSendLogic> send_message_logic_;
-    std::unique_ptr<cache::MessageCache> message_cache_;
-    std::unique_ptr<cache::ConversationCache> conversation_cache_;
     std::unique_ptr<service::UserMessageFetcher> user_message_fetcher_;
     std::unique_ptr<service::MessageRange> message_range_;
     std::unique_ptr<service::ConversationRange> conversation_range_;
@@ -103,6 +106,12 @@ private:
     Config config_;
     WCDB::Database *database_;
     MMKV *mmkv_;
+
+    // -------------------------------------------------
+    std::unique_ptr<core::GroupManager> group_manager_;
+    std::unique_ptr<core::MessageManager> message_manager_;
+    std::unique_ptr<core::ConversationManager> conversation_manager_;
+    // -------------------------------------------------
 
     asio::io_context net_io_context_;
 };

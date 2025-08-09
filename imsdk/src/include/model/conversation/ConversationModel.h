@@ -7,6 +7,10 @@
 #include <memory>
 
 
+namespace roc::imsdk::core {
+    class ConversationManager;
+}
+
 namespace roc::imsdk::model {
 
 class MessageModel;
@@ -27,6 +31,8 @@ public:
     std::string last_message_id();
     std::string conversation_id();
     std::shared_ptr<MessageModel> last_message();
+
+    friend class roc::imsdk::core::ConversationManager;
 
 private:
     ConvType type_;

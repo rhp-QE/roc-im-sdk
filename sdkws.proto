@@ -247,7 +247,7 @@ message MsgData {
   OfflinePushInfo offlinePushInfo = 20; // 离线推送信息
   repeated string atUserIDList = 21;    // @用户ID列表
   string attachedInfo = 22;             // 附加信息
-  string ex = 23;                       // 扩展字段
+  string ext = 23;                       // 扩展字段
   int64 serverOrdIndex = 24;            // 服务端消息消息再会话内的索引
   bool isDeleted = 25;                  // 是否已删除
   bool isRecalled = 26;                 // 是否已撤回
@@ -255,12 +255,9 @@ message MsgData {
 
 // 发送消息 --------------------------------
 message SendMessageRespInfo {
-  string serverMsgID = 1;               // 服务器生成的消息ID
-  string clientMsgID = 2;               // 客户端生成的消息ID
-  int64 sendTime = 3;                   // 消息发送时间戳
-  bool isSuccess = 4;                   // 是否发送成功
-  string errorCode = 5;                 // 错误码
-  string errorMsg = 6;                  // 错误信息
+  string errorCode = 1;                 // 错误码
+  string errorMsg = 2;                  // 错误信息
+  MsgData msg = 3;                      // 消息
 }
 
 message SendMessageReq {

@@ -5,6 +5,10 @@
 #include <vector>
 #include <memory>
 
+namespace roc::imsdk::core {
+    class MessageManager;
+}
+
 namespace roc::imsdk::model {
 
 class ConversationModel;
@@ -19,18 +23,27 @@ public:
     std::string content();
     std::string to_user_id();
     std::string from_user_id();
+    std::string client_msg_id();
+    std::string server_msg_id();
     std::string conversation_id();
-    bool isGroupMessage();
     int64_t client_order_index();
     int64_t server_order_index();
 
+    bool isGroupMessage();
+
+
+    friend class roc::imsdk::core::MessageManager;
+
 private:
     std::string content_;
+    std::string to_user_id_; 
     std::string from_user_id_;
-    std::string to_user_id_;
+    std::string client_msg_id_;
+    std::string server_msg_id_;
     std::string conversation_id_;
     int64_t client_order_index_;
     int64_t server_order_index_;
+
 };
 
 

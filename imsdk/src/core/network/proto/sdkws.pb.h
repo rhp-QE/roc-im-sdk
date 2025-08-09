@@ -4088,37 +4088,9 @@ class SendMessageRespInfo : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // string serverMsgID = 1;
-  void clear_servermsgid();
-  static const int kServerMsgIDFieldNumber = 1;
-  const ::std::string& servermsgid() const;
-  void set_servermsgid(const ::std::string& value);
-  #if LANG_CXX11
-  void set_servermsgid(::std::string&& value);
-  #endif
-  void set_servermsgid(const char* value);
-  void set_servermsgid(const char* value, size_t size);
-  ::std::string* mutable_servermsgid();
-  ::std::string* release_servermsgid();
-  void set_allocated_servermsgid(::std::string* servermsgid);
-
-  // string clientMsgID = 2;
-  void clear_clientmsgid();
-  static const int kClientMsgIDFieldNumber = 2;
-  const ::std::string& clientmsgid() const;
-  void set_clientmsgid(const ::std::string& value);
-  #if LANG_CXX11
-  void set_clientmsgid(::std::string&& value);
-  #endif
-  void set_clientmsgid(const char* value);
-  void set_clientmsgid(const char* value, size_t size);
-  ::std::string* mutable_clientmsgid();
-  ::std::string* release_clientmsgid();
-  void set_allocated_clientmsgid(::std::string* clientmsgid);
-
-  // string errorCode = 5;
+  // string errorCode = 1;
   void clear_errorcode();
-  static const int kErrorCodeFieldNumber = 5;
+  static const int kErrorCodeFieldNumber = 1;
   const ::std::string& errorcode() const;
   void set_errorcode(const ::std::string& value);
   #if LANG_CXX11
@@ -4130,9 +4102,9 @@ class SendMessageRespInfo : public ::google::protobuf::Message /* @@protoc_inser
   ::std::string* release_errorcode();
   void set_allocated_errorcode(::std::string* errorcode);
 
-  // string errorMsg = 6;
+  // string errorMsg = 2;
   void clear_errormsg();
-  static const int kErrorMsgFieldNumber = 6;
+  static const int kErrorMsgFieldNumber = 2;
   const ::std::string& errormsg() const;
   void set_errormsg(const ::std::string& value);
   #if LANG_CXX11
@@ -4144,28 +4116,22 @@ class SendMessageRespInfo : public ::google::protobuf::Message /* @@protoc_inser
   ::std::string* release_errormsg();
   void set_allocated_errormsg(::std::string* errormsg);
 
-  // int64 sendTime = 3;
-  void clear_sendtime();
-  static const int kSendTimeFieldNumber = 3;
-  ::google::protobuf::int64 sendtime() const;
-  void set_sendtime(::google::protobuf::int64 value);
-
-  // bool isSuccess = 4;
-  void clear_issuccess();
-  static const int kIsSuccessFieldNumber = 4;
-  bool issuccess() const;
-  void set_issuccess(bool value);
+  // .roc.imsdk.network.MsgData msg = 3;
+  bool has_msg() const;
+  void clear_msg();
+  static const int kMsgFieldNumber = 3;
+  const ::roc::imsdk::network::MsgData& msg() const;
+  ::roc::imsdk::network::MsgData* release_msg();
+  ::roc::imsdk::network::MsgData* mutable_msg();
+  void set_allocated_msg(::roc::imsdk::network::MsgData* msg);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.SendMessageRespInfo)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr servermsgid_;
-  ::google::protobuf::internal::ArenaStringPtr clientmsgid_;
   ::google::protobuf::internal::ArenaStringPtr errorcode_;
   ::google::protobuf::internal::ArenaStringPtr errormsg_;
-  ::google::protobuf::int64 sendtime_;
-  bool issuccess_;
+  ::roc::imsdk::network::MsgData* msg_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsSendMessageRespInfoImpl();
@@ -18615,141 +18581,7 @@ inline void MsgData::set_isrecalled(bool value) {
 
 // SendMessageRespInfo
 
-// string serverMsgID = 1;
-inline void SendMessageRespInfo::clear_servermsgid() {
-  servermsgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SendMessageRespInfo::servermsgid() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-  return servermsgid_.GetNoArena();
-}
-inline void SendMessageRespInfo::set_servermsgid(const ::std::string& value) {
-  
-  servermsgid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-}
-#if LANG_CXX11
-inline void SendMessageRespInfo::set_servermsgid(::std::string&& value) {
-  
-  servermsgid_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-}
-#endif
-inline void SendMessageRespInfo::set_servermsgid(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  servermsgid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-}
-inline void SendMessageRespInfo::set_servermsgid(const char* value, size_t size) {
-  
-  servermsgid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-}
-inline ::std::string* SendMessageRespInfo::mutable_servermsgid() {
-  
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-  return servermsgid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SendMessageRespInfo::release_servermsgid() {
-  // @@protoc_insertion_point(field_release:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-  
-  return servermsgid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SendMessageRespInfo::set_allocated_servermsgid(::std::string* servermsgid) {
-  if (servermsgid != NULL) {
-    
-  } else {
-    
-  }
-  servermsgid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), servermsgid);
-  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SendMessageRespInfo.serverMsgID)
-}
-
-// string clientMsgID = 2;
-inline void SendMessageRespInfo::clear_clientmsgid() {
-  clientmsgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SendMessageRespInfo::clientmsgid() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-  return clientmsgid_.GetNoArena();
-}
-inline void SendMessageRespInfo::set_clientmsgid(const ::std::string& value) {
-  
-  clientmsgid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-}
-#if LANG_CXX11
-inline void SendMessageRespInfo::set_clientmsgid(::std::string&& value) {
-  
-  clientmsgid_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-}
-#endif
-inline void SendMessageRespInfo::set_clientmsgid(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  clientmsgid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-}
-inline void SendMessageRespInfo::set_clientmsgid(const char* value, size_t size) {
-  
-  clientmsgid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-}
-inline ::std::string* SendMessageRespInfo::mutable_clientmsgid() {
-  
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-  return clientmsgid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SendMessageRespInfo::release_clientmsgid() {
-  // @@protoc_insertion_point(field_release:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-  
-  return clientmsgid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SendMessageRespInfo::set_allocated_clientmsgid(::std::string* clientmsgid) {
-  if (clientmsgid != NULL) {
-    
-  } else {
-    
-  }
-  clientmsgid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clientmsgid);
-  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SendMessageRespInfo.clientMsgID)
-}
-
-// int64 sendTime = 3;
-inline void SendMessageRespInfo::clear_sendtime() {
-  sendtime_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 SendMessageRespInfo::sendtime() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.SendMessageRespInfo.sendTime)
-  return sendtime_;
-}
-inline void SendMessageRespInfo::set_sendtime(::google::protobuf::int64 value) {
-  
-  sendtime_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.SendMessageRespInfo.sendTime)
-}
-
-// bool isSuccess = 4;
-inline void SendMessageRespInfo::clear_issuccess() {
-  issuccess_ = false;
-}
-inline bool SendMessageRespInfo::issuccess() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.SendMessageRespInfo.isSuccess)
-  return issuccess_;
-}
-inline void SendMessageRespInfo::set_issuccess(bool value) {
-  
-  issuccess_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.SendMessageRespInfo.isSuccess)
-}
-
-// string errorCode = 5;
+// string errorCode = 1;
 inline void SendMessageRespInfo::clear_errorcode() {
   errorcode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18802,7 +18634,7 @@ inline void SendMessageRespInfo::set_allocated_errorcode(::std::string* errorcod
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SendMessageRespInfo.errorCode)
 }
 
-// string errorMsg = 6;
+// string errorMsg = 2;
 inline void SendMessageRespInfo::clear_errormsg() {
   errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18853,6 +18685,56 @@ inline void SendMessageRespInfo::set_allocated_errormsg(::std::string* errormsg)
   }
   errormsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), errormsg);
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SendMessageRespInfo.errorMsg)
+}
+
+// .roc.imsdk.network.MsgData msg = 3;
+inline bool SendMessageRespInfo::has_msg() const {
+  return this != internal_default_instance() && msg_ != NULL;
+}
+inline void SendMessageRespInfo::clear_msg() {
+  if (GetArenaNoVirtual() == NULL && msg_ != NULL) {
+    delete msg_;
+  }
+  msg_ = NULL;
+}
+inline const ::roc::imsdk::network::MsgData& SendMessageRespInfo::msg() const {
+  const ::roc::imsdk::network::MsgData* p = msg_;
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SendMessageRespInfo.msg)
+  return p != NULL ? *p : *reinterpret_cast<const ::roc::imsdk::network::MsgData*>(
+      &::roc::imsdk::network::_MsgData_default_instance_);
+}
+inline ::roc::imsdk::network::MsgData* SendMessageRespInfo::release_msg() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.SendMessageRespInfo.msg)
+  
+  ::roc::imsdk::network::MsgData* temp = msg_;
+  msg_ = NULL;
+  return temp;
+}
+inline ::roc::imsdk::network::MsgData* SendMessageRespInfo::mutable_msg() {
+  
+  if (msg_ == NULL) {
+    msg_ = new ::roc::imsdk::network::MsgData;
+  }
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.SendMessageRespInfo.msg)
+  return msg_;
+}
+inline void SendMessageRespInfo::set_allocated_msg(::roc::imsdk::network::MsgData* msg) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete msg_;
+  }
+  if (msg) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      msg = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, msg, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  msg_ = msg;
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SendMessageRespInfo.msg)
 }
 
 // -------------------------------------------------------------------
