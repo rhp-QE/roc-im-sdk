@@ -1,35 +1,61 @@
 #ifndef ROC_IMSDK_MODEL_CONVERSATIONMODEL_H
 #define ROC_IMSDK_MODEL_CONVERSATIONMODEL_H
 
+#include <functional>
 #include <string>
+#include <vector>
+#include <memory>
+
 
 namespace roc::imsdk::model {
 
-enum class ConversationType {
+class MessageModel;
+
+enum class ConvType {
     Single,
     Group
 };
 
+
 class ConversationModel {
 public:
-    // Getter methods
-    std::string conversation_id() const;
-    ConversationType type() const;
-    std::string name() const;
-    std::string avatar() const;
-    std::string last_message_id() const;
-    int unread_count() const;
+    std::string name();
+    int unread_count();
+    std::string avatar();
+    ConvType type();
     int64_t last_update_time();
+    std::string last_message_id();
+    std::string conversation_id();
+    std::shared_ptr<MessageModel> last_message();
 
 private:
-    std::string conversation_id_;
-    ConversationType type_;
+    ConvType type_;
     std::string name_;
     std::string avatar_;
-    std::string last_message_id_;
-    int64_t last_update_time_;
     int unread_count_ = 0;
+    int64_t last_update_time_;
+    std::string last_message_id_;
+    std::string conversation_id_;
+    std::shared_ptr<MessageModel> last_message_;
 };
+
+
+enum class ConvUpdateReason {
+    UPDATE,
+    DELETE,
+};
+
+
+struct QueryUserConvsResult {
+    std::vector<std::shared_ptr<const ConversationModel>> convs;
+    int64_t cursor;
+    bool has_more;
+};
+
+
+// callback -------------
+using OnConvUpdateCallbackType = std::function<void(std::shared_ptr<const ConversationModel> conv, ConvUpdateReason reason)>;
+// ------------------------
 
 } // namespace roc::imsdk::model
 

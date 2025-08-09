@@ -1,4 +1,4 @@
-#include "imsdk/src/include/imsdk.h"    
+#include "imsdk/src/include/IMSDK.h"    
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/include/config.h"
 #include "imsdk/src/include/service/message/IMessageService.h"

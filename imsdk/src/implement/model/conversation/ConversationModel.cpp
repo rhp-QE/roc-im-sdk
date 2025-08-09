@@ -6,7 +6,7 @@ std::string ConversationModel::conversation_id() const {
     return conversation_id_;
 }
 
-ConversationType ConversationModel::type() const {
+ConvType ConversationModel::type() const {
     return type_;
 }
 

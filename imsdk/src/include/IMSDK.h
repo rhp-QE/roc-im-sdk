@@ -1,21 +1,21 @@
 #ifndef ROC_IMSDK_INCLUDE_IMSDK_H
 #define ROC_IMSDK_INCLUDE_IMSDK_H
 
-#include <boost/asio/awaitable.hpp>
-#include "base/Uncopyable.h"
+#include <cstdint>
 #include <memory>
+#include <boost/asio/awaitable.hpp>
+
+#include "base/Uncopyable.h"
+#include "imsdk/src/include/config.h"
+#include "imsdk/src/include/model/message/MessageModel.h"
+#include "imsdk/src/include/model/conversation/ConversationModel.h"
+
 namespace roc::imsdk {
 
-    class SDKRoot;
-    class Config;
-
-namespace service {
-    class IMessageService;
-    class IConversationService;
-}
+class SDKRoot;
 
 class IMSDK : public std::enable_shared_from_this<IMSDK>,
-              public  roc::base::uncopyable
+              public roc::base::uncopyable
 {
 
 public:
@@ -25,11 +25,69 @@ public:
     // 初始化SDK
     boost::asio::awaitable<bool> init_sdk(const Config config);
 
-    // 获取消息服务
-    service::IMessageService* msg_service();
+    /// =============================  message api  ======================================
 
-    // 获取会话服务
-    service::IConversationService* conv_service();
+    /// 发送消息
+    boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message(const std::vector<model::SendMsgContext> &context);
+    
+    /// 消息更新回调
+    void on_message_update(model::OnMessageUpdateCallbackType callback);
+
+    /// 接收消息回调
+    void on_receive_messages(model::OnReceiveMessagesCallbackType callback);
+
+    /// 删除消息
+    boost::asio::awaitable<bool> delete_message(const std::vector<std::string> &msg_ids);
+
+    /// 撤回消息
+    boost::asio::awaitable<bool> recall_message(std::string msg_id);
+
+    /// 修改消息 sync_ext
+    boost::asio::awaitable<bool> update_message_sync_ext(std::string msg_id, std::string key, std::string value);
+
+    /// 查询消息
+    boost::asio::awaitable<std::shared_ptr<model::MessageModel>> 
+        message_for_id(std::string msg_id);
+
+    /// 查询会话消息
+    boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> 
+        messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit);
+
+    /// 当进入会话时，获取首屏消息。 后续加载更多消息时使用 messages_for_conv
+    boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> 
+        messages_when_enter_chat(std::string conv_id);
+
+    /// ==================================================================================
+
+
+
+    /// =============================  conversation api  ======================================
+
+    /// 会话更新回调
+    void on_conv_update(model::OnConvUpdateCallbackType callback);
+
+    /// 查询会话
+    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> 
+        conv_for_id(std::string conv_id);
+
+    /// 查询会话列表
+    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> 
+        convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit);
+
+    /// 用户登录时获取首屏会话，后续加载更多会话 调用 convs_for_user_id
+    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> 
+        convs_when_login(std::string user_id);
+
+    /// 设置会话置顶
+    boost::asio::awaitable<bool> set_conv_top(std::string conv_id, bool is_top);
+
+    /// 设置会话免打扰
+    boost::asio::awaitable<bool> set_conv_mute(std::string conv_id, bool is_mute);
+
+    /// 删除会话
+    boost::asio::awaitable<bool> delete_conv(std::string conv_id);
+
+    /// =======================================================================================
 
 private:
     std::shared_ptr<SDKRoot> sdk_root_;

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <functional>
+#include <memory>
 #include <mutex>
 #include <unordered_map>
 

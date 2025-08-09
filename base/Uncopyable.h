@@ -8,8 +8,7 @@
 // date: 2025-01-xx
 //
 
-#ifndef ROC_BASE_UNCOPYABLE_H
-#define ROC_BASE_UNCOPYABLE_H
+#pragma once
 
 namespace roc::base {
 
@@ -30,5 +29,3 @@ private:
 };
 
 } // namespace roc::base
-
-#endif // ROC_BASE_UNCOPYABLE_H 
