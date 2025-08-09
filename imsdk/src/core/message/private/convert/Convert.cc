@@ -1,5 +1,6 @@
 #include "Convert.h"
 
+
 namespace roc::imsdk::core::message {
 
 /// 消息转换 网络消息 -> db 消息

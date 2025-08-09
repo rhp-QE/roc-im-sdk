@@ -1,6 +1,7 @@
 #include "imsdk/src/core/message/MessageManager.h"
-#include "imsdk/src/core/message/private/send/SendMessage.h"
+
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
+#include "imsdk/src/core/message/private/send/SendMessage.h"
 
 namespace roc::imsdk::core {
 

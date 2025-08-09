@@ -1,8 +1,9 @@
-#include "imsdk/src/core/message/private/db_opt/DBOpt.h"
+#include "DBOpt.h"
 
 #include "imsdk/src/core/common/util.h"
-#include "WCDB/WCDBCpp.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
+
+#include "WCDB/WCDBCpp.h"
 
 namespace roc::imsdk::core::message {
 

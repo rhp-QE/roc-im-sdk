@@ -1,7 +1,6 @@
 #pragma once
 
 #include "imsdk/src/include/IMSDK.h"
-
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
 

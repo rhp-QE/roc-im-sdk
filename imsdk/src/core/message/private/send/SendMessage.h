@@ -1,7 +1,7 @@
 #pragma once
 
-#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/include/IMSDK.h"
+#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 
 namespace roc::imsdk::core::message {
