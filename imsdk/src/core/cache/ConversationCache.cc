@@ -9,8 +9,8 @@ ConversationCache::~ConversationCache() {
 }
 
 
-std::pair<std::shared_ptr<model::ConversationModel>, cache::ConvUpdateReason> ConversationCache::update_and_get_sdk_conv(const db::ConversationORM *db_conv) {
-    return std::make_pair(nullptr, cache::ConvUpdateReason::CONVUPDATE_NEW);
+std::vector<std::shared_ptr<model::ConversationModel>> ConversationCache::update_and_get_sdk_conv(const std::vector<std::shared_ptr<db::ConversationORM>> &db_conv) {
+    return std::vector<std::shared_ptr<model::ConversationModel>>();
 }
 
 std::shared_ptr<model::ConversationModel> ConversationCache::get_sdk_conv(const std::string& conversation_id) {

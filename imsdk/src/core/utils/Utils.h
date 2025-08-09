@@ -17,8 +17,8 @@ inline std::string key_for_user(const std::string& user_id, const std::string& k
     return user_id + "_" + key;
 }
 
-inline std::unique_ptr<db::ConversationORM> convert_net_conv_to_db_conv(const network::ConversationInfo *conv) {
-    auto db_conv = std::make_unique<db::ConversationORM>();
+inline std::shared_ptr<db::ConversationORM> convert_net_conv_to_db_conv(const network::ConversationInfo *conv) {
+    auto db_conv = std::make_shared<db::ConversationORM>();
     
     db_conv->conv_id = conv->convid();
     db_conv->conv_type = conv->convtype();
@@ -34,8 +34,8 @@ inline std::unique_ptr<db::ConversationORM> convert_net_conv_to_db_conv(const ne
     return db_conv;
 }
 
-inline std::unique_ptr<db::MessageORM> convert_net_msg_to_db_msg(const network::MsgData *msg) {
-    auto db_msg = std::make_unique<db::MessageORM>();
+inline std::shared_ptr<db::MessageORM> convert_net_msg_to_db_msg(const network::MsgData *msg) {
+    auto db_msg = std::make_shared<db::MessageORM>();
     db_msg->server_msg_id = msg->servermsgid();
     db_msg->client_msg_id = msg->clientmsgid();
     db_msg->server_index = msg->seq();
@@ -50,7 +50,7 @@ inline std::unique_ptr<db::MessageORM> convert_net_msg_to_db_msg(const network::
     return db_msg;
 }
 
-inline std::vector<injection::ConvMessagesUnion> convert_sdk_msg_to_conv_msg_union(std::weak_ptr<SDKRoot> w_sdk_root, const std::vector<std::shared_ptr<model::MessageModel>> &sdk_msgs) {
+inline std::vector<injection::ConvMessagesUnion> convert_sdk_msg_to_conv_msgs_union(std::weak_ptr<SDKRoot> w_sdk_root, const std::vector<std::shared_ptr<model::MessageModel>> &sdk_msgs) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, std::vector<injection::ConvMessagesUnion>())
 
     std::unordered_map<std::string, std::vector<std::shared_ptr<model::MessageModel>>> message_map
@@ -60,7 +60,7 @@ inline std::vector<injection::ConvMessagesUnion> convert_sdk_msg_to_conv_msg_uni
 
     std::vector<injection::ConvMessagesUnion> conv_msg_union;
 
-    for (auto &value : message_map) {
+    for (auto value : message_map) {
         conv_msg_union.emplace_back(injection::ConvMessagesUnion{
             sdk_root->conversation_cache()->get_sdk_conv(value.first),
             value.second
@@ -70,10 +70,10 @@ inline std::vector<injection::ConvMessagesUnion> convert_sdk_msg_to_conv_msg_uni
     return conv_msg_union;
 }
 
-inline std::unique_ptr<db::MessageORM> convert_send_model_to_db_msg(std::weak_ptr<SDKRoot> w_sdk_root, const std::shared_ptr<service::SendMessageModel> &send_model) {
-    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, std::unique_ptr<db::MessageORM>());
+inline std::shared_ptr<db::MessageORM> convert_send_model_to_db_msg(std::weak_ptr<SDKRoot> w_sdk_root, const std::shared_ptr<service::SendMessageModel> &send_model) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, std::shared_ptr<db::MessageORM>());
 
-    auto db_msg = std::make_unique<db::MessageORM>();
+    auto db_msg = std::make_shared<db::MessageORM>();
     db_msg->conv_id = send_model->conv_id;
     db_msg->content = send_model->content;
     db_msg->ext = send_model->sync_etx;

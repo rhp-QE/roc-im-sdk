@@ -60,14 +60,12 @@ boost::asio::awaitable<message::SendMessageResult> message::send_message_v2(std:
     // 消息合法性校验
 
     // 将 send_model 转为 db_message 并保存
-    auto db_msg_vec = base::util::transform(send_models, [w_sdk_root](const std::shared_ptr<service::SendMessageModel> &send_model) -> std::unique_ptr<db::MessageORM> {
+    std::vector<db::MessageORM *> db_msg_vec = base::util::transform(send_models, [w_sdk_root](const std::shared_ptr<service::SendMessageModel> &send_model) -> std::unique_ptr<db::MessageORM> {
         return util::convert_send_model_to_db_msg(w_sdk_root, send_model);
     });
 
     // 保存 db_message 并 获取对应 sdk_msg
-    auto sdk_msg_vec = base::util::transform(db_msg_vec, [sdk_root](const std::unique_ptr<db::MessageORM> &db_msg) -> std::shared_ptr<model::MessageModel> {
-        return sdk_root->message_cache()->update_and_get_sdk_message(db_msg.get()).first;
-    });
+    auto sdk_msg_vec = sdk_root->message_cache()->update_and_get_sdk_message(db_msg_vec);
 
     // 将 sdk_msg 转为 sdkws.message
     std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();

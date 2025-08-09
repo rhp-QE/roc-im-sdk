@@ -21,7 +21,7 @@ public:
 
     std::shared_ptr<model::ConversationModel> get_sdk_conv(const std::string& conversation_id);
 
-    std::pair<std::shared_ptr<model::ConversationModel>, ConvUpdateReason> update_and_get_sdk_conv(const db::ConversationORM *db_conv);
+    std::vector<std::shared_ptr<model::ConversationModel>> update_and_get_sdk_conv(const std::vector<std::shared_ptr<db::ConversationORM>> &db_conv);
 
 };
 

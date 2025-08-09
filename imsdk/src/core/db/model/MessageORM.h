@@ -5,7 +5,7 @@
 
 namespace roc::imsdk::db {
 
-class MessageORM {
+class MessageORM : public std::enable_shared_from_this<MessageORM> {
 public:
     MessageORM();
     ~MessageORM();

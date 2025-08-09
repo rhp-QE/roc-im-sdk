@@ -20,7 +20,7 @@ namespace roc::imsdk::service {
 
 struct FetchUserMessageResult {
     bool has_more = false;
-    std::vector<injection::ConvMessagesUnion> conv_messages_union_vec;
+    std::vector<injection::ConvMessagesUnion> conv_msgs_union_vec;
 };
 
 

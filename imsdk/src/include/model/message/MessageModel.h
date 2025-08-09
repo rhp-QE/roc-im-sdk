@@ -27,10 +27,10 @@ private:
     int64_t server_order_index_;
 };
 
-struct MessageUpdateUnion {
-    std::vector<std::shared_ptr<MessageModel>> added_messages;
-    std::vector<std::shared_ptr<MessageModel>> updated_messages;
-    std::vector<std::shared_ptr<MessageModel>> deleted_messages;
+enum class MessageUpdateReson {
+    MSG_NEW,
+    MSG_DELETE,
+    MSG_UPDATE,
 };
 
 

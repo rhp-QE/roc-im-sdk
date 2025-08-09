@@ -71,20 +71,15 @@ std::unique_ptr<network::FetchUserMessageListReq> p_make_fetch_user_message_list
 boost::asio::awaitable<FetchUserMessageResult> handle_fetched_user_message(std::weak_ptr<SDKRoot> w_root, std::unique_ptr<network::FetchUserMessageListResp> resp) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_root, FetchUserMessageResult());
 
-    std::vector<db::MessageORM *> db_msgs;
-    std::vector<db::ConversationORM *> db_convs;
+    std::vector<std::shared_ptr<db::MessageORM>> db_msgs;
+    std::vector<std::shared_ptr<db::ConversationORM>> db_convs;
 
-    FetchUserMessageResult result;
-    result.has_more = resp->hasmore();
+
 
     for (auto &conv : resp->convsinfo()) {
         // 转为orm 然后存储
-        std::unique_ptr<db::ConversationORM> db_conv = util::convert_net_conv_to_db_conv(&conv);
-        db_convs.push_back(db_conv.get());
-
-        // 获取并更新 sdk_conv
-        std::shared_ptr<model::ConversationModel> sdk_conv = sdk_root->conversation_cache()->update_and_get_sdk_conv(db_conv.get()).first;
-        result.conv_messages_union_vec.push_back(injection::ConvMessagesUnion{sdk_conv, {}});
+        std::shared_ptr<db::ConversationORM> db_conv = util::convert_net_conv_to_db_conv(&conv);
+        db_convs.push_back(db_conv);
 
         // 获取并更新 sdk_msg
         for (auto &msg : conv.msgs()) {
@@ -92,21 +87,23 @@ boost::asio::awaitable<FetchUserMessageResult> handle_fetched_user_message(std::
                 continue;
             }
 
-            std::unique_ptr<db::MessageORM> db_msg = util::convert_net_msg_to_db_msg(&(msg.msg()));
-            db_msgs.push_back(db_msg.get());
-
-            std::shared_ptr<model::MessageModel> sdk_msg = sdk_root->message_cache()->update_and_get_sdk_message(db_msg.get()).first;
-            result.conv_messages_union_vec.back().sdk_msgs.push_back(sdk_msg);
+            std::shared_ptr<db::MessageORM> db_msg = util::convert_net_msg_to_db_msg(&(msg.msg()));
+            db_msgs.push_back(db_msg);
         }
-        
     }
 
-    // 插入到db
-    db::operate::insert_conversation(sdk_root->database(), db_convs);
-    db::operate::insert_message(sdk_root->database(), db_msgs);
+    auto sdk_msgs = sdk_root->message_cache()->update_and_get_sdk_message(db_msgs);
+    auto sdk_convs = sdk_root->conversation_cache()->update_and_get_sdk_conv(db_convs);
+
+    std::vector<injection::ConvMessagesUnion> conv_msgs_union_vec = util::convert_sdk_msg_to_conv_msgs_union(w_root, sdk_msgs);
 
     // 更新会话区间
     sdk_root->conversation_range()->update_conv_cursor(resp->cursor());
+
+    FetchUserMessageResult result {
+        .has_more = resp->hasmore(),
+        .conv_msgs_union_vec = conv_msgs_union_vec
+    };
 
     // 上抛
     co_return result;

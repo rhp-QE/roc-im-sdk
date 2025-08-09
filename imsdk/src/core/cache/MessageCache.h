@@ -8,20 +8,16 @@
 
 namespace roc::imsdk::cache {
 
-enum MessageUpdateReson {
-    MSGUPDATE_NEW,
-    MSGUPDATE_DELETE,
-    MSGUPDATE_UPDATE,
-};
-
 class MessageCache {
 public:
     MessageCache();
     ~MessageCache();
 
-    std::shared_ptr<model::MessageModel> get_sdk_message(const std::string& message_id);
+    std::shared_ptr<model::MessageModel> sdk_message(const std::string& message_id);
+    void set_sdk_message(const std::string& message_id, const std::shared_ptr<model::MessageModel> &sdk_msg);
 
-    std::pair<std::shared_ptr<model::MessageModel>, MessageUpdateReson> update_and_get_sdk_message(const db::MessageORM *db_msg);
+private:
+    std::unordered_map<std::string, std::shared_ptr<model::MessageModel>> sdk_message_map_;
 
 };
 

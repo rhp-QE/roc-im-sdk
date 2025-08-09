@@ -12,8 +12,8 @@ std::shared_ptr<model::MessageModel> MessageCache::get_sdk_message(const std::st
     return nullptr;
 }
 
-std::pair<std::shared_ptr<model::MessageModel>, MessageUpdateReson> MessageCache::update_and_get_sdk_message(const db::MessageORM *db_msg) {
-    return std::make_pair(nullptr, MessageUpdateReson::MSGUPDATE_NEW);
+std::vector<std::shared_ptr<model::MessageModel>> MessageCache::update_and_get_sdk_message(const std::vector<std::shared_ptr<db::MessageORM>> &db_msg) {
+    return std::vector<std::shared_ptr<model::MessageModel>>();
 }
 
 } // namespace roc::imsdk::cache    

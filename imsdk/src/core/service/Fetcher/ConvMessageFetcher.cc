@@ -46,7 +46,7 @@ void p_handle_fetch_conv_messgae_list_resp(std::weak_ptr<SDKRoot> w_sdk_root, st
     auto sdk_msgs = SaveMessage::save_net_message(w_sdk_root, msgs);
 
     // 转换为conv_msg_union
-    auto conv_msg_union = util::convert_sdk_msg_to_conv_msg_union(w_sdk_root, sdk_msgs);
+    auto conv_msg_union = util::convert_sdk_msg_to_conv_msgs_union(w_sdk_root, sdk_msgs);
 
     // 向上抛 conv_msg_union
     base::util::safe_invoke_block(sdk_root->injection()->on_new_message_callback, conv_msg_union);
