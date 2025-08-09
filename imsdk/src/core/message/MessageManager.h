@@ -68,6 +68,9 @@ private:
     /// 消息缓存
     std::unordered_map<std::string, std::shared_ptr<model::MessageModel>> msg_cache_;
 
+    /// 消息区间
+    std::unordered_map<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> msg_range_cache_;
+
     // 友元类，允许SaveMessage访问私有成员
     friend class roc::imsdk::core::message::SaveMessage;
 

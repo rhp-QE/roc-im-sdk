@@ -98,23 +98,15 @@ void SaveMessage::update_message_range_for_message(W_SDK_ROOT, const std::vector
             continue;
         }
 
-        // 找到最小和最大的服务器序号
-        int64_t min_seq = std::numeric_limits<int64_t>::max();
-        int64_t max_seq = std::numeric_limits<int64_t>::min();
-        
-        for (const auto& msg : messages) {
-            int64_t server_seq = msg->server_order_index();
-            if (server_seq > 0) {
-                min_seq = std::min(min_seq, server_seq);
-                max_seq = std::max(max_seq, server_seq);
-            }
-        }
+        auto seqs = base::util::transform(messages, [](const std::shared_ptr<roc::imsdk::model::MessageModel> &msg) {
+            return msg->server_order_index();
+        });
 
-        // 如果找到了有效的序号，更新消息区间
-        if (min_seq != std::numeric_limits<int64_t>::max() && max_seq != std::numeric_limits<int64_t>::min()) {
-            // 这里可以通过MessageManager更新会话的消息区间
-            // TODO: 实现具体的区间更新逻辑
-        }
+        auto input_ranges = generate_range(seqs);
+
+        auto current_ranges = msg_manager->msg_range_cache_[conv_id];
+
+        msg_manager->msg_range_cache_[conv_id] = merge_ranges(input_ranges, current_ranges);
     }
 }
 
@@ -149,23 +141,79 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::empty_message_range_for_co
 
 /// 生成客户端消息 ID
 std::string SaveMessage::generate_client_msg_id() {
-    // 使用时间戳和随机数生成唯一的客户端消息ID
-    auto now = std::chrono::system_clock::now();
-    auto time_t = std::chrono::system_clock::to_time_t(now);
-    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-        now.time_since_epoch()) % 1000;
+    return base::util::uuid();
+}
+
+/// 给定一个数字序列，生成若干区间。一个区间内的所有数字都在给定的数组序列内。区间内数字是连续的，左右都闭合。
+std::vector<std::pair<int64_t, int64_t>> SaveMessage::generate_range(std::vector<int64_t> seqs) {
+    if (seqs.empty()) {
+        return {};
+    }
     
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1000, 9999);
+    // 排序序列
+    std::sort(seqs.begin(), seqs.end());
     
-    std::stringstream ss;
-    ss << "client_" 
-       << std::put_time(std::localtime(&time_t), "%Y%m%d_%H%M%S")
-       << "_" << std::setfill('0') << std::setw(3) << ms.count()
-       << "_" << dis(gen);
+    std::vector<std::pair<int64_t, int64_t>> ranges;
+    int64_t start = seqs[0];
+    int64_t end = seqs[0];
     
-    return ss.str();
+    for (const auto seq : seqs) {
+        if (seq == end + 1) {
+            // 连续数字，扩展区间
+            end = seq;
+        } else if (seq > end + 1) {
+            // 不连续，保存当前区间并开始新区间
+            ranges.emplace_back(start, end);
+            start = seq;
+            end = seq;
+        }
+    }
+    
+    // 添加最后一个区间
+    ranges.emplace_back(start, end);
+    
+    return ranges;
+}
+
+/// 给定两个区间数组，合并两个数组，返回一个新的区间数组。合并后的区间数组内的区间是连续的，左右都闭合。
+std::vector<std::pair<int64_t, int64_t>> SaveMessage::merge_ranges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second) {
+    if (first.empty()) {
+        return second;
+    }
+    if (second.empty()) {
+        return first;
+    }
+    
+    // 合并两个数组
+    std::vector<std::pair<int64_t, int64_t>> merged;
+    merged.reserve(first.size() + second.size());
+    merged.insert(merged.end(), first.begin(), first.end());
+    merged.insert(merged.end(), second.begin(), second.end());
+    
+    // 按区间起始位置排序
+    std::sort(merged.begin(), merged.end());
+    
+    // 合并重叠或相邻的区间
+    std::vector<std::pair<int64_t, int64_t>> result;
+    if (!merged.empty()) {
+        result.push_back(merged[0]);
+        
+        for (size_t i = 1; i < merged.size(); ++i) {
+            auto& current = merged[i];
+            auto& last = result.back();
+            
+            // 检查是否可以合并：当前区间与上一个区间重叠或相邻
+            if (current.first <= last.second + 1) {
+                // 可以合并，更新上一个区间的结束位置
+                last.second = std::max(last.second, current.second);
+            } else {
+                // 不能合并，添加新区间
+                result.push_back(current);
+            }
+        }
+    }
+    
+    return result;
 }
 
 /// 获取会话的消息区间
@@ -175,8 +223,13 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::message_range_for_conv_id(
     auto msg_manager = sdk_root->message_manager();
     CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
 
+    // 从消息管理器的缓存中获取会话的消息区间
+    auto it = msg_manager->msg_range_cache_.find(conv_id);
+    if (it != msg_manager->msg_range_cache_.end()) {
+        return it->second;
+    }
+    
     return {};
 }
-
 
 } // namespace roc::imsdk::core::message

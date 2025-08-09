@@ -7,6 +7,12 @@
 #include <algorithm>
 #include <iterator>
 #include <type_traits>
+#include <random>
+#include <sstream>
+#include <iomanip>
+#include <chrono>
+#include <thread> // Added for std::this_thread::get_id()
+#include <functional> // Added for std::hash
 
 namespace roc::base::util {
 
@@ -57,18 +63,43 @@ auto transform(
     return output;
 }
 
-
-// #include <type_traits>
-
-// // 修改后的 invoke 函数模板
-// template <typename... FuncArgs, typename... Args>
-// auto invoke_1(std::function<void(FuncArgs...)>& callback, Args&&... args) 
-//     -> std::enable_if_t<std::is_convertible_v<std::tuple<Args...>, std::tuple<FuncArgs...>>, void>
-// {
-//     if (callback) {
-//         callback(std::forward<Args>(args)...);
-//     }
-//     // 对于 void 返回类型，无需返回默认值
-// }
+/// 生成唯一客户端消息ID
+/// 返回24位字符串：时间戳(10位) + 纳秒(6位) + 随机字母(8位)
+inline std::string uuid() {
+    // 使用时间戳、纳秒和随机数生成唯一客户端消息ID
+    auto now = std::chrono::system_clock::now();
+    auto time_t = std::chrono::system_clock::to_time_t(now);
+    
+    // 获取纳秒级精度
+    auto duration = now.time_since_epoch();
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+    auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration - seconds);
+    int64_t ns = nanoseconds.count() % 1000000; // 取模确保6位数字
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    
+    // 生成8位大小写英文字母的随机字符串
+    std::string random_str;
+    random_str.reserve(8);
+    std::uniform_int_distribution<> letter_dis(0, 51); // 0-25为小写字母a-z，26-51为大写字母A-Z
+    
+    for (int i = 0; i < 8; ++i) {
+        int letter_index = letter_dis(gen);
+        if (letter_index < 26) {
+            random_str += 'a' + letter_index; // 小写字母
+        } else {
+            random_str += 'A' + (letter_index - 26); // 大写字母
+        }
+    }
+    
+    // 生成ID：时间戳(10位) + 纳秒(6位) + 随机字母(8位) = 24位
+    std::stringstream ss;
+    ss << std::setfill('0') << std::setw(10) << time_t  // 10位时间戳
+       << std::setfill('0') << std::setw(6) << ns        // 6位纳秒
+       << random_str;  // 8位随机字母
+    
+    return ss.str();
+}
 
 } // namespace roc::base::utils

@@ -27,7 +27,6 @@ std::unique_ptr<network::FetchConvMessageListReq> p_make_fetch_conv_message_list
 // 处理返回数据
 void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::FetchConvMessageListResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
-    auto msg_manager = sdk_root->message_manager();
 
     std::vector<const network::MsgData *> msgs;
 
@@ -36,8 +35,7 @@ void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::
     }
 
     // 保存消息
-    msg_manager->save_net_msgs(msgs);
-
+    message::SaveMessage::save_net_msgs(w_sdk_root, msgs);
 }
 
 asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(W_SDK_ROOT, std::string conv_id, std::pair<int64_t, int64_t> range) {
