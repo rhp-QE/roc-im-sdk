@@ -11,6 +11,10 @@ namespace roc::imsdk::core {
     class ConversationManager;
 }
 
+namespace roc::imsdk::core::conversation {
+    class Convert;
+}
+
 namespace roc::imsdk::model {
 
 class MessageModel;
@@ -33,6 +37,7 @@ public:
     std::shared_ptr<MessageModel> last_message();
 
     friend class roc::imsdk::core::ConversationManager;
+    friend class roc::imsdk::core::conversation::Convert;
 
 private:
     ConvType type_;

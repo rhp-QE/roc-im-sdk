@@ -49,6 +49,6 @@ public:
     WCDB_CPP_ORM_DECLARATION(ConversationORM)
 };
 
-} // namespace roc::imsdk::db
+} // namespace roc::imsdk::core::conversation
 
 #endif

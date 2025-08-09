@@ -6,7 +6,7 @@ namespace roc::imsdk::core {
 
 class GroupManager : public roc::base::uncopyable {
 public:
-    GroupManager();
+    GroupManager(std::weak_ptr<SDKRoot> w_sdk_root);
     ~GroupManager();
 
 private:

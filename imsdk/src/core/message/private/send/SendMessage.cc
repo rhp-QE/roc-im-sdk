@@ -6,42 +6,31 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/network/request/SDKRequest.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
+#include "imsdk/src/core/message/private/save/SaveMessage.h"
 
 #include <memory>
 
 namespace roc::imsdk::core::message {
 
-// private function declare ---------------------------------------------------------
-
-/// 检查 上下文
-bool p_check_send_context(const model::SendMsgContext &contexts);
-
-/// 将 上下文 转为 net_msg
-void p_convert_send_context_to_sdkws_message(W_SDK_ROOT, const model::SendMsgContext &contexts, std::string client_msg_id, network::MsgData *req);
-
-// -------------------------------------------------------------------------------------
-
-boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message(W_SDK_ROOT, std::vector<model::SendMsgContext> contexts) {
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage::send_message(W_SDK_ROOT, std::vector<model::SendMsgContext> contexts) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
-
-    auto msg_manager = sdk_root->message_manager();
 
     std::unordered_map<std::string, std::shared_ptr<model::SendMessageResponse>> send_response_map;
     std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
 
     for (auto &context : contexts) {
 
-        std::string client_msg_id = msg_manager->generate_client_msg_id();
+        std::string client_msg_id = message::SaveMessage::generate_client_msg_id();
         send_response_map[client_msg_id] = std::make_shared<model::SendMessageResponse>(false, "", nullptr);
 
         /// 检查 context 是否合法
-        if (!p_check_send_context(context)) {
+        if (!check_send_context(context)) {
             send_response_map[client_msg_id]->error_msg = "invalid context";
             continue;
         }
 
         /// 将 context 转为 net_msg
-        p_convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, req->add_msgs());
+        convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, req->add_msgs());
     }
 
     /// 发送消息
@@ -64,7 +53,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message
     }
 
     /// 保存消息
-    auto sdk_msgs = msg_manager->save_net_msgs(net_msgs);
+    auto sdk_msgs = message::SaveMessage::save_net_msgs(w_sdk_root, net_msgs);
 
     /// 更新发送结果
     for (auto &sdk_msg : sdk_msgs) {
@@ -80,11 +69,9 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message
     co_return send_response_map;
 }
 
+// ----------------------------- private static methods -----------------------------
 
-
-// ----------------------------- no member private method -----------------------------
-
-bool p_check_send_context(const model::SendMsgContext &context) {
+bool SendMessage::check_send_context(const model::SendMsgContext &context) {
     if (context.content.empty()) {
         return false;
     }
@@ -97,7 +84,7 @@ bool p_check_send_context(const model::SendMsgContext &context) {
     return true;
 }
 
-void p_convert_send_context_to_sdkws_message(W_SDK_ROOT, const model::SendMsgContext &context, std::string client_msg_id, network::MsgData *net_msg) {
+void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, const model::SendMsgContext &context, std::string client_msg_id, network::MsgData *net_msg) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     if (!net_msg) {

@@ -4,9 +4,14 @@
 #include <functional>
 #include <vector>
 #include <memory>
+#include "base/Uncopyable.h"
 
 namespace roc::imsdk::core {
     class MessageManager;
+}
+
+namespace roc::imsdk::core::message {
+    class Convert;
 }
 
 namespace roc::imsdk::model {
@@ -14,12 +19,8 @@ namespace roc::imsdk::model {
 class ConversationModel;
 
 
-class MessageModel {
+class MessageModel : public roc::base::uncopyable {
 public:
-    MessageModel(const MessageModel &) = delete;
-    MessageModel &operator=(const MessageModel &) = delete;
-    MessageModel(const std::string &content, const std::string &from_user_id, const std::string &to_user_id, const std::string &conversation_id);
-
     std::string content();
     std::string to_user_id();
     std::string from_user_id();
@@ -31,8 +32,7 @@ public:
 
     bool isGroupMessage();
 
-
-    friend class roc::imsdk::core::MessageManager;
+    friend class roc::imsdk::core::message::Convert;
 
 private:
     std::string content_;

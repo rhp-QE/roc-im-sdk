@@ -12,13 +12,7 @@ struct FetchUserMessageResult {
 
 };
 
-// private function declare ----------------------------------------------------------
-std::unique_ptr<network::FetchUserMessageListReq> p_make_fetch_user_message_list_req(W_SDK_ROOT, int64_t cursor);
-boost::asio::awaitable<void> handle_fetched_user_message(W_SDK_ROOT, std::unique_ptr<network::FetchUserMessageListResp> resp);
-// ----------------------------------------------------------------------------------
-
-
-asio::awaitable<void> fetch_user_messages(W_SDK_ROOT, std::string user_id) {
+asio::awaitable<void> UserMessageFetcher::fetch_user_messages(W_SDK_ROOT, std::string user_id) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     auto conv_manager = sdk_root->conversation_manager();
@@ -27,7 +21,7 @@ asio::awaitable<void> fetch_user_messages(W_SDK_ROOT, std::string user_id) {
     int64_t cursor = conv_manager->cursor();
 
     // 构造请求
-    std::unique_ptr<network::FetchUserMessageListReq> req = p_make_fetch_user_message_list_req(w_sdk_root, cursor);
+    std::unique_ptr<network::FetchUserMessageListReq> req = make_fetch_user_message_list_req(w_sdk_root, cursor);
 
     // 发送请求
     std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await network::request::fetch_user_message_list(sdk_root.get(), req.get());
@@ -40,9 +34,9 @@ asio::awaitable<void> fetch_user_messages(W_SDK_ROOT, std::string user_id) {
     co_return;
 }
 
-// private function impl ------------------------------------------------------------
+// private static methods ------------------------------------------------------------
 
-std::unique_ptr<network::FetchUserMessageListReq> p_make_fetch_user_message_list_req(W_SDK_ROOT, int64_t cursor) {
+std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::make_fetch_user_message_list_req(W_SDK_ROOT, int64_t cursor) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto req = std::make_unique<network::FetchUserMessageListReq>();
@@ -56,7 +50,7 @@ std::unique_ptr<network::FetchUserMessageListReq> p_make_fetch_user_message_list
     return req;
 }
 
-boost::asio::awaitable<void> handle_fetched_user_message(W_SDK_ROOT, std::unique_ptr<network::FetchUserMessageListResp> resp) {
+boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(W_SDK_ROOT, std::unique_ptr<network::FetchUserMessageListResp> resp) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     auto msg_manager = sdk_root->message_manager();

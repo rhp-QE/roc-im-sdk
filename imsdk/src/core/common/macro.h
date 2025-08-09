@@ -39,5 +39,11 @@
         return return_value; \
     }
 
+// 检查指针是否为空（协程版本）
+#define CHECK_POINTER_OR_CO_RETURN_VOID(pointer) \
+    if (!pointer) { \
+        co_return; \
+    }
+
 #define W_SDK_ROOT \
     std::weak_ptr<roc::imsdk::SDKRoot> w_sdk_root 

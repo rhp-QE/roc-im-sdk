@@ -2,6 +2,8 @@
 
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
+#include "imsdk/src/core/message/MessageManager.h"
+#include "imsdk/src/core/conversation/ConversationManager.h"
 
 namespace roc::imsdk {
 
@@ -15,5 +17,76 @@ boost::asio::awaitable<bool> IMSDK::init_sdk(const Config config) {
     return sdk_root_->init_sdk(config);
 }
 
+// =============================  message api  ======================================
+
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> IMSDK::send_message(const std::vector<model::SendMsgContext> &context) {
+    return sdk_root_->message_manager()->send_message(context);
+}
+
+void IMSDK::on_message_update(model::OnMessageUpdateCallbackType callback) {
+    sdk_root_->message_manager()->on_message_update(callback);
+}
+
+void IMSDK::on_receive_messages(model::OnReceiveMessagesCallbackType callback) {
+    sdk_root_->message_manager()->on_receive_messages(callback);
+}
+
+boost::asio::awaitable<bool> IMSDK::delete_message(const std::vector<std::string> &msg_ids) {
+    return sdk_root_->message_manager()->delete_message(msg_ids);
+}
+
+boost::asio::awaitable<bool> IMSDK::recall_message(std::string msg_id) {
+    return sdk_root_->message_manager()->recall_message(msg_id);
+}
+
+boost::asio::awaitable<bool> IMSDK::update_message_sync_ext(std::string msg_id, std::string key, std::string value) {
+    return sdk_root_->message_manager()->update_message_sync_ext(msg_id, key, value);
+}
+
+boost::asio::awaitable<std::shared_ptr<model::MessageModel>> IMSDK::message_for_id(std::string msg_id) {
+    return sdk_root_->message_manager()->message_for_id(msg_id);
+}
+
+boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> IMSDK::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
+    return sdk_root_->message_manager()->messages_for_conv_id(conv_id, cursor, limit);
+}
+
+boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> IMSDK::messages_when_enter_chat(std::string conv_id) {
+    return sdk_root_->message_manager()->messages_when_enter_chat(conv_id);
+}
+
+/// ==================================================================================
+
+// =============================  conversation api  ======================================
+
+void IMSDK::on_conv_update(model::OnConvUpdateCallbackType callback) {
+    sdk_root_->conversation_manager()->on_conv_update(callback);
+}
+
+boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::conv_for_id(std::string conv_id) {
+    return sdk_root_->conversation_manager()->conv_for_id(conv_id);
+}
+
+boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> IMSDK::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
+    return sdk_root_->conversation_manager()->convs_for_user_id(user_id, cursor, limit);
+}
+
+boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> IMSDK::convs_when_login(std::string user_id) {
+    return sdk_root_->conversation_manager()->convs_when_login(user_id);
+}
+
+boost::asio::awaitable<bool> IMSDK::set_conv_top(std::string conv_id, bool is_top) {
+    return sdk_root_->conversation_manager()->set_conv_top(conv_id, is_top);
+}
+
+boost::asio::awaitable<bool> IMSDK::set_conv_mute(std::string conv_id, bool is_mute) {
+    return sdk_root_->conversation_manager()->set_conv_mute(conv_id, is_mute);
+}
+
+boost::asio::awaitable<bool> IMSDK::delete_conv(std::string conv_id) {
+    return sdk_root_->conversation_manager()->delete_conv(conv_id);
+}
+
+/// =======================================================================================
 
 } // namespace roc::imsdk

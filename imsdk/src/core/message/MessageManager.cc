@@ -1,88 +1,78 @@
 #include "imsdk/src/core/message/MessageManager.h"
+#include "imsdk/src/core/message/private/convert/convert.h"
+#include "imsdk/src/core/message/private/send/SendMessage.h"
+#include "imsdk/src/core/message/private/save/SaveMessage.h"
 
 #include "base/utils/utils.h"
 #include "imsdk/src/core/message/opt/db_opt/db_opt.h"
 
 namespace roc::imsdk::core {
 
-MessageManager::MessageManager() = default;
+MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_sdk_root_(w_sdk_root) {}
 
 MessageManager::~MessageManager() = default;
 
 /// 保存网络消息
 std::vector<std::shared_ptr<model::MessageModel>> MessageManager::save_net_msgs(std::vector<const network::MsgData *> msgs) {
-
-    // 转换为 db 消息
-    auto db_msgs = base::util::transform(msgs, [this](const network::MsgData *msg) {
-        return convert_net_msg_to_db_msg(msg);
-    });
-
-    // 保存到数据库
-    bool ret = message::dbopt::insert_message(w_sdk_root_, db_msgs);
-    if (!ret) {
-        return {};
-    }
-
-    // 转换为 sdk 消息
-    auto sdk_msgs = base::util::transform(db_msgs, [this](const std::shared_ptr<core::message::MessageORM> &msg) {
-        return convert_db_msg_to_sdk_msg(msg.get());
-    });
-
-    // 保存到缓存
-    for (const auto &sdk_msg : sdk_msgs) {
-        msg_cache_[sdk_msg->client_msg_id()] = sdk_msg;
-    }
-
-    return sdk_msgs;
+    return message::SaveMessage::save_net_msgs(w_sdk_root_, msgs);
 }
 
 /// 设置 sdk 消息
 void MessageManager::set_sdk_msg(const core::message::MessageORM *db_msg) {
-    if (!db_msg) {
-        return;
-    }
-
-    msg_cache_[db_msg->client_msg_id] = convert_db_msg_to_sdk_msg(db_msg);
+    message::SaveMessage::set_sdk_msg(w_sdk_root_, db_msg);
 }
 
-/// 消息转换 网络消息 -> db 消息
-std::shared_ptr<core::message::MessageORM> MessageManager::convert_net_msg_to_db_msg(const network::MsgData *msg) {
-    if (!msg) {
-        return nullptr;
-    }
-    std::shared_ptr<core::message::MessageORM> db_msg = std::make_shared<core::message::MessageORM>();
-    db_msg->content = msg->content();
-    db_msg->client_msg_id = msg->clientmsgid();
-    db_msg->server_msg_id = msg->servermsgid();
-    db_msg->conv_id = msg->convid();
-    db_msg->sender_id = msg->sendid();
-    db_msg->send_time = msg->sendtime();
-    db_msg->is_deleted = msg->isdeleted(); 
-    db_msg->is_recalled = msg->isrecalled();
 
-    //ext
-    db_msg->ext = msg->ex();
-    db_msg->server_index = msg->serverordindex();
-    db_msg->client_index = msg->seq();
 
-    return db_msg;
+// =============================  message api implementations  ======================================
+
+void MessageManager::on_message_update(model::OnMessageUpdateCallbackType callback) {
+    on_message_update_callback_ = callback;
 }
 
-/// 消息转换 db 消息 -> sdk 消息
-std::shared_ptr<model::MessageModel> MessageManager::convert_db_msg_to_sdk_msg(const core::message::MessageORM *db_msg) {
-    if (!db_msg) {
-        return nullptr;
-    }
-    std::shared_ptr<model::MessageModel> sdk_msg = std::make_shared<model::MessageModel>();
-    sdk_msg->content_ = db_msg->content;
-    sdk_msg->client_msg_id_ = db_msg->client_msg_id;
-    sdk_msg->server_msg_id_ = db_msg->server_msg_id;
-    sdk_msg->conversation_id_ = db_msg->conv_id;
-    sdk_msg->from_user_id_ = db_msg->sender_id;
-    sdk_msg->client_order_index_ = db_msg->client_index;
-    sdk_msg->server_order_index_ = db_msg->server_index;
-    return sdk_msg;
+void MessageManager::on_receive_messages(model::OnReceiveMessagesCallbackType callback) {
+    on_receive_message_callback_ = callback;
 }
 
+boost::asio::awaitable<bool> MessageManager::delete_message(const std::vector<std::string> &msg_ids) {
+    // TODO: Implement delete message
+    co_return false;
+}
+
+boost::asio::awaitable<bool> MessageManager::recall_message(std::string msg_id) {
+    // TODO: Implement recall message
+    co_return false;
+}
+
+boost::asio::awaitable<bool> MessageManager::update_message_sync_ext(std::string msg_id, std::string key, std::string value) {
+    // TODO: Implement update message sync ext
+    co_return false;
+}
+
+boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageManager::message_for_id(std::string msg_id) {
+    // TODO: Implement get message by id
+    co_return nullptr;
+}
+
+boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> MessageManager::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
+    // TODO: Implement get messages for conversation
+    co_return nullptr;
+}
+
+boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
+    // TODO: Implement get first screen messages when entering chat
+    co_return nullptr;
+}
+
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::send_message(std::vector<model::SendMsgContext> contexts) {
+    return message::SendMessage::send_message(w_sdk_root_, contexts);
+}
+
+/// 根据 ID 获取 SDK 消息
+std::shared_ptr<model::MessageModel> MessageManager::sdk_msg_for_id(std::string msg_id) {
+    return message::SaveMessage::sdk_msg_for_id(w_sdk_root_, msg_id);
+}
+
+/// ==================================================================================
 
 } // namespace roc::imsdk::core

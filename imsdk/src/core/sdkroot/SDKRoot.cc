@@ -8,20 +8,16 @@
 
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "base/network/include/LongConnectionClient.h"
-#include "imsdk/src/core/cache/MessageCache.h"
-#include "imsdk/src/core/cache/ConversationCache.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
-#include "imsdk/src/include/service/message/IMessageService.h"
-#include "imsdk/src/include/service/conversation/IConversationService.h"
 #include "imsdk/src/include/config.h"
 #include <boost/asio/io_context.hpp>
 #include <boost/beast/http/field.hpp>
 #include <memory>
-#include "imsdk/src/core/service/Fetcher/ConvMessageFetcher.h"
-#include "imsdk/src/core/service/message/MessageSendLogic.h"
-#include "imsdk/src/core/service/Fetcher/UserMessageFetcher.h"
-#include "imsdk/src/core/service/Range/MessageRange.h"
-#include "imsdk/src/core/service/Range/ConversationRange.h"
+
+#include "imsdk/src/core/group/GroupManager.h"
+#include "imsdk/src/core/message/MessageManager.h"
+#include "imsdk/src/core/conversation/ConversationManager.h"
+
 
 namespace roc::imsdk {
 
@@ -45,16 +41,11 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     // 开启网络IO Context
     // auto wark_work = boost::asio::make_work_guard(net_io_context_);
     // std::thread net_thread([this] { net_io_context_.run(); });
-    msg_service_ = std::make_unique<service::IMessageService>(weak_from_this());
-    conv_service_ = std::make_unique<service::IConversationService>(weak_from_this());
     connection_manager_ = std::make_unique<network::SDKConnectionManager>(sdk_io_context);
-    conv_message_fetcher_ = std::make_unique<service::ConvMessageFetcher>(weak_from_this());
-    send_message_logic_ = std::make_unique<service::MessageSendLogic>(weak_from_this());
-    message_cache_ = std::make_unique<cache::MessageCache>();
-    conversation_cache_ = std::make_unique<cache::ConversationCache>();
-    user_message_fetcher_ = std::make_unique<service::UserMessageFetcher>(weak_from_this());
-    message_range_ = std::make_unique<service::MessageRange>(weak_from_this());
-    conversation_range_ = std::make_unique<service::ConversationRange>(weak_from_this());
+
+    group_manager_ = std::make_unique<core::GroupManager>(weak_from_this());
+    message_manager_ = std::make_unique<core::MessageManager>(weak_from_this());
+    conversation_manager_ = std::make_unique<core::ConversationManager>(weak_from_this());
 
     // 初始化数据库
     database_ = new WCDB::Database("/root/project/roc_im_sdk/db-data/" + config_.user_id + "_test.db");
@@ -74,14 +65,6 @@ network::SDKConnectionManager* SDKRoot::connection_manager() {
     return connection_manager_.get();
 }
 
-service::IMessageService* SDKRoot::msg_service() {
-    return msg_service_.get();
-}
-
-service::IConversationService* SDKRoot::conv_service() {
-    return conv_service_.get();
-}   
-
 const Config& SDKRoot::config() {
     return config_;
 }
@@ -98,29 +81,6 @@ MMKV* SDKRoot::mmkv() {
     return mmkv_;
 }
 
-service::UserMessageFetcher* SDKRoot::user_message_fetcher() {
-    return user_message_fetcher_.get();
-}
-
-service::ConvMessageFetcher* SDKRoot::conv_message_fetcher() {
-    return conv_message_fetcher_.get();
-}
-
-injection::Injection* SDKRoot::injection() {
-    return injection_.get();
-}
-
-cache::MessageCache* SDKRoot::message_cache() {
-    return message_cache_.get();
-}
-
-cache::ConversationCache* SDKRoot::conversation_cache() {
-    return conversation_cache_.get();
-}
-
-service::MessageRange* SDKRoot::message_range() {
-    return message_range_.get();
-}
 
 //--------------- no member private method ----------------------
 base::net::LongConnectionConfig generateNetConfig() {

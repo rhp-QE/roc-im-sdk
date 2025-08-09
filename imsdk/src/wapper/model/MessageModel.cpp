@@ -2,14 +2,6 @@
 
 namespace roc::imsdk::model {
 
-MessageModel::MessageModel(const std::string &content, const std::string &from_user_id, const std::string &to_user_id, const std::string &conversation_id)
-    : content_(content), 
-      from_user_id_(from_user_id),
-      to_user_id_(to_user_id),
-      conversation_id_(conversation_id)
-{
-}
-
 std::string MessageModel::content() {
     return content_;
 }
