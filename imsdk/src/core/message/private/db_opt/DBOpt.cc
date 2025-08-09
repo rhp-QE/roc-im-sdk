@@ -1,12 +1,14 @@
-#include "imsdk/src/core/message/opt/db_opt/db_opt.h"
+#include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 
 #include "imsdk/src/core/common/util.h"
+#include "WCDB/WCDBCpp.h"
+#include "imsdk/src/core/sdkroot/SDKRoot.h"
 
-namespace roc::imsdk::core::message::dbopt {
+namespace roc::imsdk::core::message {
 
 static const std::string MessageTableName = "messgae_table";
 
-bool insert_message(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> messages) {
+bool DBOpt::insert_message(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> messages) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
 
     auto database = sdk_root->database();
@@ -23,4 +25,4 @@ bool insert_message(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::Messa
     });
 }
 
-} // namespace roc::imsdk::core::message::dbopt
+} // namespace roc::imsdk::core::message

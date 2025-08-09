@@ -1,16 +1,11 @@
 #include "SaveMessage.h"
 
 #include "base/utils/utils.h"
-#include "imsdk/src/core/message/private/convert/convert.h"
-#include "imsdk/src/core/message/opt/db_opt/db_opt.h"
+#include "imsdk/src/core/message/private/convert/Convert.h"
+#include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/common/macro.h"
-#include <random>
-#include <sstream>
-#include <iomanip>
-#include <chrono>
-#include <limits>
 
 namespace roc::imsdk::core::message {
 
@@ -24,7 +19,7 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
     });
 
     // 保存到数据库
-    bool ret = message::dbopt::insert_message(w_sdk_root, db_msgs);
+    bool ret = message::DBOpt::insert_message(w_sdk_root, db_msgs);
     if (!ret) {
         return {};
     }
