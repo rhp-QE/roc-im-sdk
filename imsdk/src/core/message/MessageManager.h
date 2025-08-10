@@ -46,6 +46,9 @@ public:
     /// 修改消息 sync_ext
     boost::asio::awaitable<bool> update_message_sync_ext(std::string msg_id, std::string key, std::string value);
 
+    /// 设置消息为已读
+    boost::asio::awaitable<bool> mark_messages_as_read(const std::vector<std::string> &msg_ids);
+
     /// 查询消息
     boost::asio::awaitable<std::shared_ptr<model::MessageModel>> message_for_id(std::string msg_id);
 

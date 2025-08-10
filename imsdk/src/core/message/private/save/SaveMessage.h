@@ -33,6 +33,9 @@ public:
     
     /// 生成客户端消息 ID
     static std::string generate_client_msg_id();
+    
+    /// 设置消息为已读
+    static bool mark_messages_as_read(W_SDK_ROOT, const std::vector<std::string> &msg_ids);
 
 private:
     /// 更新消息区间

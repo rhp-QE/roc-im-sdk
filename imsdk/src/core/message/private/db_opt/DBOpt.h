@@ -8,8 +8,13 @@ namespace roc::imsdk::core::message {
 
 class DBOpt {
 public:
+    static bool create_message_table_if_need(W_SDK_ROOT);
+
     /// 插入消息到数据库
     static bool insert_message(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> messages);
+
+private:
+    static std::string tabel_name(W_SDK_ROOT);
 };
 
 } // namespace roc::imsdk::core::message

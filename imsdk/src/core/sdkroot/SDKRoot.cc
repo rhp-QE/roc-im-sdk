@@ -48,7 +48,8 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     conversation_manager_ = std::make_unique<core::ConversationManager>(weak_from_this());
 
     // 初始化数据库
-    database_ = new WCDB::Database("/root/project/roc_im_sdk/db-data/" + config_.user_id + "_test.db");
+    std::string db_path = "/root/project/roc_im_sdk/db_data/" + config_.user_id + "_test.db";
+    database_ = new WCDB::Database(db_path);
 
     // 初始化MMKV
     std::string rootDir = "/root/project/roc_im_sdk/db-data";
@@ -81,6 +82,17 @@ MMKV* SDKRoot::mmkv() {
     return mmkv_;
 }
 
+core::GroupManager* SDKRoot::group_manager() {
+    return group_manager_.get();
+}
+
+core::MessageManager* SDKRoot::message_manager() {
+    return message_manager_.get();
+}
+
+core::ConversationManager* SDKRoot::conversation_manager() {
+    return conversation_manager_.get();
+}
 
 //--------------- no member private method ----------------------
 base::net::LongConnectionConfig generateNetConfig() {

@@ -29,6 +29,13 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
         return core::message::Convert::convert_db_msg_to_sdk_msg(msg.get());
     });
 
+    // 更新缓存
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {})
+    for (const auto &sdk_msg : sdk_msgs) {
+        msg_manager->msg_cache_[sdk_msg->client_msg_id()] = sdk_msg;
+    }
+
     // 自动更新消息区间
     update_message_range_for_message(w_sdk_root, sdk_msgs);
 
@@ -102,6 +109,8 @@ void SaveMessage::update_message_range_for_message(W_SDK_ROOT, const std::vector
         auto current_ranges = msg_manager->msg_range_cache_[conv_id];
 
         msg_manager->msg_range_cache_[conv_id] = merge_ranges(input_ranges, current_ranges);
+
+        auto res = msg_manager->msg_range_cache_[conv_id];
     }
 }
 
@@ -137,6 +146,12 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::empty_message_range_for_co
 /// 生成客户端消息 ID
 std::string SaveMessage::generate_client_msg_id() {
     return base::util::uuid();
+}
+
+/// 设置消息为已读
+bool SaveMessage::mark_messages_as_read(W_SDK_ROOT, const std::vector<std::string> &msg_ids) {
+    // TODO: 实现具体的消息已读逻辑
+    return false;
 }
 
 /// 给定一个数字序列，生成若干区间。一个区间内的所有数字都在给定的数组序列内。区间内数字是连续的，左右都闭合。

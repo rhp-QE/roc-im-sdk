@@ -1,5 +1,11 @@
 #include "Convert.h"
 
+#include "imsdk/src/core/common/macro.h"
+#include "imsdk/src/core/sdkroot/SDKRoot.h"
+#include "imsdk/src/core/network/proto/sdkws.pb.h"
+#include "imsdk/src/core/message/MessageManager.h"
+
+
 
 namespace roc::imsdk::core::message {
 

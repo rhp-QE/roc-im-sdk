@@ -43,6 +43,10 @@ boost::asio::awaitable<bool> IMSDK::update_message_sync_ext(std::string msg_id, 
     return sdk_root_->message_manager()->update_message_sync_ext(msg_id, key, value);
 }
 
+boost::asio::awaitable<bool> IMSDK::mark_messages_as_read(const std::vector<std::string> &msg_ids) {
+    return sdk_root_->message_manager()->mark_messages_as_read(msg_ids);
+}
+
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>> IMSDK::message_for_id(std::string msg_id) {
     return sdk_root_->message_manager()->message_for_id(msg_id);
 }

@@ -46,6 +46,12 @@ boost::asio::awaitable<bool> MessageManager::update_message_sync_ext(std::string
     co_return false;
 }
 
+boost::asio::awaitable<bool> MessageManager::mark_messages_as_read(const std::vector<std::string> &msg_ids) {
+    // 调用 SaveMessage 的静态方法设置消息为已读
+    bool result = message::SaveMessage::mark_messages_as_read(w_sdk_root_, msg_ids);
+    co_return result;
+}
+
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageManager::message_for_id(std::string msg_id) {
     // TODO: Implement get message by id
     co_return nullptr;

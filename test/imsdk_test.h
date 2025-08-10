@@ -4,24 +4,28 @@
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
 #include <boost/asio/io_context.hpp>
-#include "imsdk/src/include/imsdk.h"
+#include <iostream>
+#include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/include/config.h"
 #include "BaseConfig.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
-#include "imsdk/src/include/service/message/IMessageService.h"
-#include "imsdk/src/include/service/conversation/IConversationService.h"
 
 
 inline roc::imsdk::Config generateConfig();
-inline std::shared_ptr<roc::imsdk::model::MessageModel> generateMessage();
+inline roc::imsdk::model::SendMsgContext generateSendMessageContext();
+
 
 inline boost::asio::awaitable<void> p_test_imsdk() {
     auto imsdk = std::make_shared<roc::imsdk::IMSDK>();
 
     co_await imsdk->init_sdk(generateConfig());
 
-    std::shared_ptr<roc::imsdk::model::MessageModel> message = generateMessage();
-    co_await imsdk->msg_service()->send_message(message);
+    auto response = co_await imsdk->send_message({generateSendMessageContext()});
+    if (response->is_success) {
+        std::cout << "send message success" << std::endl;
+    } else {
+        std::cout << "send message failed" << std::endl;
+    }
 
     while(true) {
 
@@ -42,8 +46,14 @@ inline roc::imsdk::Config generateConfig() {
     return config;
 }
 
-inline std::shared_ptr<roc::imsdk::model::MessageModel> generateMessage() {
-    return std::make_shared<roc::imsdk::model::MessageModel>("Hello, world!", "12345", "67890", "0:12345:67890");
+inline roc::imsdk::model::SendMsgContext generateSendMessageContext() {
+    roc::imsdk::model::SendMsgContext context;
+    context.content = "Hello, world!";
+    context.to_user_id = "67890";
+    context.is_group_msg = false;
+    return context;
 }
+
+
 
 #endif

@@ -6,7 +6,7 @@
 
 namespace roc::imsdk::core::message {
 
-class MessageORM : public std::enable_shared_from_this<MessageORM> {
+class MessageORM {
 public:
     MessageORM();
     ~MessageORM();
