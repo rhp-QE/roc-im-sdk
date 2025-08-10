@@ -251,6 +251,11 @@ message MsgData {
   int64 serverOrdIndex = 24;            // 服务端消息消息再会话内的索引
   bool isDeleted = 25;                  // 是否已删除
   bool isRecalled = 26;                 // 是否已撤回
+  bool isPinned = 27;                   // 是否已置顶
+  bool isGroupMsg = 28;                 // 是否是群消息
+  int64 clientSendTime = 29;            // 客户端消息发送时间戳
+  int64 serverSendTime = 30;            // 服务端消息发送时间戳
+  map<string, string> syncExt = 31;     // 同步扩展字段
 }
 
 // 发送消息 --------------------------------
