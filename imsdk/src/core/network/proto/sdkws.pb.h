@@ -3871,19 +3871,33 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_attachedinfo();
   void set_allocated_attachedinfo(::std::string* attachedinfo);
 
-  // string ex = 23;
-  void clear_ex();
-  static const int kExFieldNumber = 23;
-  const ::std::string& ex() const;
-  void set_ex(const ::std::string& value);
+  // string ext = 23;
+  void clear_ext();
+  static const int kExtFieldNumber = 23;
+  const ::std::string& ext() const;
+  void set_ext(const ::std::string& value);
   #if LANG_CXX11
-  void set_ex(::std::string&& value);
+  void set_ext(::std::string&& value);
   #endif
-  void set_ex(const char* value);
-  void set_ex(const char* value, size_t size);
-  ::std::string* mutable_ex();
-  ::std::string* release_ex();
-  void set_allocated_ex(::std::string* ex);
+  void set_ext(const char* value);
+  void set_ext(const char* value, size_t size);
+  ::std::string* mutable_ext();
+  ::std::string* release_ext();
+  void set_allocated_ext(::std::string* ext);
+
+  // string syncExt = 31;
+  void clear_syncext();
+  static const int kSyncExtFieldNumber = 31;
+  const ::std::string& syncext() const;
+  void set_syncext(const ::std::string& value);
+  #if LANG_CXX11
+  void set_syncext(::std::string&& value);
+  #endif
+  void set_syncext(const char* value);
+  void set_syncext(const char* value, size_t size);
+  ::std::string* mutable_syncext();
+  ::std::string* release_syncext();
+  void set_allocated_syncext(::std::string* syncext);
 
   // .roc.imsdk.network.OfflinePushInfo offlinePushInfo = 20;
   bool has_offlinepushinfo() const;
@@ -3948,23 +3962,41 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   bool isread() const;
   void set_isread(bool value);
 
-  // bool isDeleted = 25;
+  // bool isDeleted = 24;
   void clear_isdeleted();
-  static const int kIsDeletedFieldNumber = 25;
+  static const int kIsDeletedFieldNumber = 24;
   bool isdeleted() const;
   void set_isdeleted(bool value);
 
-  // bool isRecalled = 26;
+  // bool isRecalled = 25;
   void clear_isrecalled();
-  static const int kIsRecalledFieldNumber = 26;
+  static const int kIsRecalledFieldNumber = 25;
   bool isrecalled() const;
   void set_isrecalled(bool value);
 
-  // int64 serverOrdIndex = 24;
-  void clear_serverordindex();
-  static const int kServerOrdIndexFieldNumber = 24;
-  ::google::protobuf::int64 serverordindex() const;
-  void set_serverordindex(::google::protobuf::int64 value);
+  // bool isPinned = 26;
+  void clear_ispinned();
+  static const int kIsPinnedFieldNumber = 26;
+  bool ispinned() const;
+  void set_ispinned(bool value);
+
+  // int64 clientSendTime = 29;
+  void clear_clientsendtime();
+  static const int kClientSendTimeFieldNumber = 29;
+  ::google::protobuf::int64 clientsendtime() const;
+  void set_clientsendtime(::google::protobuf::int64 value);
+
+  // int64 serverSendTime = 30;
+  void clear_serversendtime();
+  static const int kServerSendTimeFieldNumber = 30;
+  ::google::protobuf::int64 serversendtime() const;
+  void set_serversendtime(::google::protobuf::int64 value);
+
+  // bool isGroupMsg = 27;
+  void clear_isgroupmsg();
+  static const int kIsGroupMsgFieldNumber = 27;
+  bool isgroupmsg() const;
+  void set_isgroupmsg(bool value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.MsgData)
  private:
@@ -3986,7 +4018,8 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::internal::ArenaStringPtr senderfaceurl_;
   ::google::protobuf::internal::ArenaStringPtr content_;
   ::google::protobuf::internal::ArenaStringPtr attachedinfo_;
-  ::google::protobuf::internal::ArenaStringPtr ex_;
+  ::google::protobuf::internal::ArenaStringPtr ext_;
+  ::google::protobuf::internal::ArenaStringPtr syncext_;
   ::roc::imsdk::network::OfflinePushInfo* offlinepushinfo_;
   ::google::protobuf::int32 senderplatformid_;
   ::google::protobuf::int32 sessiontype_;
@@ -3999,7 +4032,10 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   bool isread_;
   bool isdeleted_;
   bool isrecalled_;
-  ::google::protobuf::int64 serverordindex_;
+  bool ispinned_;
+  ::google::protobuf::int64 clientsendtime_;
+  ::google::protobuf::int64 serversendtime_;
+  bool isgroupmsg_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsMsgDataImpl();
@@ -5196,19 +5232,19 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_convavatar();
   void set_allocated_convavatar(::std::string* convavatar);
 
-  // bytes ext = 13;
-  void clear_ext();
-  static const int kExtFieldNumber = 13;
-  const ::std::string& ext() const;
-  void set_ext(const ::std::string& value);
+  // string syncExt = 13;
+  void clear_syncext();
+  static const int kSyncExtFieldNumber = 13;
+  const ::std::string& syncext() const;
+  void set_syncext(const ::std::string& value);
   #if LANG_CXX11
-  void set_ext(::std::string&& value);
+  void set_syncext(::std::string&& value);
   #endif
-  void set_ext(const char* value);
-  void set_ext(const void* value, size_t size);
-  ::std::string* mutable_ext();
-  ::std::string* release_ext();
-  void set_allocated_ext(::std::string* ext);
+  void set_syncext(const char* value);
+  void set_syncext(const char* value, size_t size);
+  ::std::string* mutable_syncext();
+  ::std::string* release_syncext();
+  void set_allocated_syncext(::std::string* syncext);
 
   // .roc.imsdk.network.MsgData lastMsg = 7;
   bool has_lastmsg() const;
@@ -5264,7 +5300,7 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::internal::ArenaStringPtr owneruserid_;
   ::google::protobuf::internal::ArenaStringPtr convname_;
   ::google::protobuf::internal::ArenaStringPtr convavatar_;
-  ::google::protobuf::internal::ArenaStringPtr ext_;
+  ::google::protobuf::internal::ArenaStringPtr syncext_;
   ::roc::imsdk::network::MsgData* lastmsg_;
   ::google::protobuf::int64 convunreadcount_;
   ::google::protobuf::int32 convtype_;
@@ -18482,74 +18518,60 @@ inline void MsgData::set_allocated_attachedinfo(::std::string* attachedinfo) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.attachedInfo)
 }
 
-// string ex = 23;
-inline void MsgData::clear_ex() {
-  ex_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// string ext = 23;
+inline void MsgData::clear_ext() {
+  ext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& MsgData::ex() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.ex)
-  return ex_.GetNoArena();
+inline const ::std::string& MsgData::ext() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.ext)
+  return ext_.GetNoArena();
 }
-inline void MsgData::set_ex(const ::std::string& value) {
+inline void MsgData::set_ext(const ::std::string& value) {
   
-  ex_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.ex)
+  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.ext)
 }
 #if LANG_CXX11
-inline void MsgData::set_ex(::std::string&& value) {
+inline void MsgData::set_ext(::std::string&& value) {
   
-  ex_.SetNoArena(
+  ext_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.MsgData.ex)
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.MsgData.ext)
 }
 #endif
-inline void MsgData::set_ex(const char* value) {
+inline void MsgData::set_ext(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  ex_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.MsgData.ex)
+  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.MsgData.ext)
 }
-inline void MsgData::set_ex(const char* value, size_t size) {
+inline void MsgData::set_ext(const char* value, size_t size) {
   
-  ex_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.MsgData.ex)
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.MsgData.ext)
 }
-inline ::std::string* MsgData::mutable_ex() {
+inline ::std::string* MsgData::mutable_ext() {
   
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.MsgData.ex)
-  return ex_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.MsgData.ext)
+  return ext_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* MsgData::release_ex() {
-  // @@protoc_insertion_point(field_release:roc.imsdk.network.MsgData.ex)
+inline ::std::string* MsgData::release_ext() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.MsgData.ext)
   
-  return ex_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return ext_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void MsgData::set_allocated_ex(::std::string* ex) {
-  if (ex != NULL) {
+inline void MsgData::set_allocated_ext(::std::string* ext) {
+  if (ext != NULL) {
     
   } else {
     
   }
-  ex_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ex);
-  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.ex)
+  ext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ext);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.ext)
 }
 
-// int64 serverOrdIndex = 24;
-inline void MsgData::clear_serverordindex() {
-  serverordindex_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 MsgData::serverordindex() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.serverOrdIndex)
-  return serverordindex_;
-}
-inline void MsgData::set_serverordindex(::google::protobuf::int64 value) {
-  
-  serverordindex_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.serverOrdIndex)
-}
-
-// bool isDeleted = 25;
+// bool isDeleted = 24;
 inline void MsgData::clear_isdeleted() {
   isdeleted_ = false;
 }
@@ -18563,7 +18585,7 @@ inline void MsgData::set_isdeleted(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isDeleted)
 }
 
-// bool isRecalled = 26;
+// bool isRecalled = 25;
 inline void MsgData::clear_isrecalled() {
   isrecalled_ = false;
 }
@@ -18575,6 +18597,115 @@ inline void MsgData::set_isrecalled(bool value) {
   
   isrecalled_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isRecalled)
+}
+
+// bool isPinned = 26;
+inline void MsgData::clear_ispinned() {
+  ispinned_ = false;
+}
+inline bool MsgData::ispinned() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.isPinned)
+  return ispinned_;
+}
+inline void MsgData::set_ispinned(bool value) {
+  
+  ispinned_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isPinned)
+}
+
+// bool isGroupMsg = 27;
+inline void MsgData::clear_isgroupmsg() {
+  isgroupmsg_ = false;
+}
+inline bool MsgData::isgroupmsg() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.isGroupMsg)
+  return isgroupmsg_;
+}
+inline void MsgData::set_isgroupmsg(bool value) {
+  
+  isgroupmsg_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isGroupMsg)
+}
+
+// int64 clientSendTime = 29;
+inline void MsgData::clear_clientsendtime() {
+  clientsendtime_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MsgData::clientsendtime() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.clientSendTime)
+  return clientsendtime_;
+}
+inline void MsgData::set_clientsendtime(::google::protobuf::int64 value) {
+  
+  clientsendtime_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.clientSendTime)
+}
+
+// int64 serverSendTime = 30;
+inline void MsgData::clear_serversendtime() {
+  serversendtime_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MsgData::serversendtime() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.serverSendTime)
+  return serversendtime_;
+}
+inline void MsgData::set_serversendtime(::google::protobuf::int64 value) {
+  
+  serversendtime_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.serverSendTime)
+}
+
+// string syncExt = 31;
+inline void MsgData::clear_syncext() {
+  syncext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MsgData::syncext() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.syncExt)
+  return syncext_.GetNoArena();
+}
+inline void MsgData::set_syncext(const ::std::string& value) {
+  
+  syncext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.syncExt)
+}
+#if LANG_CXX11
+inline void MsgData::set_syncext(::std::string&& value) {
+  
+  syncext_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.MsgData.syncExt)
+}
+#endif
+inline void MsgData::set_syncext(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  syncext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.MsgData.syncExt)
+}
+inline void MsgData::set_syncext(const char* value, size_t size) {
+  
+  syncext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.MsgData.syncExt)
+}
+inline ::std::string* MsgData::mutable_syncext() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.MsgData.syncExt)
+  return syncext_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MsgData::release_syncext() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.MsgData.syncExt)
+  
+  return syncext_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MsgData::set_allocated_syncext(::std::string* syncext) {
+  if (syncext != NULL) {
+    
+  } else {
+    
+  }
+  syncext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), syncext);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.syncExt)
 }
 
 // -------------------------------------------------------------------
@@ -19615,57 +19746,57 @@ inline void ConversationInfo::set_isblocked(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.isBlocked)
 }
 
-// bytes ext = 13;
-inline void ConversationInfo::clear_ext() {
-  ext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// string syncExt = 13;
+inline void ConversationInfo::clear_syncext() {
+  syncext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& ConversationInfo::ext() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfo.ext)
-  return ext_.GetNoArena();
+inline const ::std::string& ConversationInfo::syncext() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfo.syncExt)
+  return syncext_.GetNoArena();
 }
-inline void ConversationInfo::set_ext(const ::std::string& value) {
+inline void ConversationInfo::set_syncext(const ::std::string& value) {
   
-  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.ext)
+  syncext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.syncExt)
 }
 #if LANG_CXX11
-inline void ConversationInfo::set_ext(::std::string&& value) {
+inline void ConversationInfo::set_syncext(::std::string&& value) {
   
-  ext_.SetNoArena(
+  syncext_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.ConversationInfo.ext)
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.ConversationInfo.syncExt)
 }
 #endif
-inline void ConversationInfo::set_ext(const char* value) {
+inline void ConversationInfo::set_syncext(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.ConversationInfo.ext)
+  syncext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.ConversationInfo.syncExt)
 }
-inline void ConversationInfo::set_ext(const void* value, size_t size) {
+inline void ConversationInfo::set_syncext(const char* value, size_t size) {
   
-  ext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  syncext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.ConversationInfo.ext)
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.ConversationInfo.syncExt)
 }
-inline ::std::string* ConversationInfo::mutable_ext() {
+inline ::std::string* ConversationInfo::mutable_syncext() {
   
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ConversationInfo.ext)
-  return ext_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ConversationInfo.syncExt)
+  return syncext_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* ConversationInfo::release_ext() {
-  // @@protoc_insertion_point(field_release:roc.imsdk.network.ConversationInfo.ext)
+inline ::std::string* ConversationInfo::release_syncext() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ConversationInfo.syncExt)
   
-  return ext_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return syncext_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void ConversationInfo::set_allocated_ext(::std::string* ext) {
-  if (ext != NULL) {
+inline void ConversationInfo::set_allocated_syncext(::std::string* syncext) {
+  if (syncext != NULL) {
     
   } else {
     
   }
-  ext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ext);
-  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ConversationInfo.ext)
+  syncext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), syncext);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ConversationInfo.syncExt)
 }
 
 // -------------------------------------------------------------------

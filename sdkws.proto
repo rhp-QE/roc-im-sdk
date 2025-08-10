@@ -248,14 +248,13 @@ message MsgData {
   repeated string atUserIDList = 21;    // @用户ID列表
   string attachedInfo = 22;             // 附加信息
   string ext = 23;                       // 扩展字段
-  int64 serverOrdIndex = 24;            // 服务端消息消息再会话内的索引
-  bool isDeleted = 25;                  // 是否已删除
-  bool isRecalled = 26;                 // 是否已撤回
-  bool isPinned = 27;                   // 是否已置顶
-  bool isGroupMsg = 28;                 // 是否是群消息
+  bool isDeleted = 24;                  // 是否已删除
+  bool isRecalled = 25;                 // 是否已撤回
+  bool isPinned = 26;                   // 是否已置顶
+  bool isGroupMsg = 27;                 // 是否是群消息
   int64 clientSendTime = 29;            // 客户端消息发送时间戳
   int64 serverSendTime = 30;            // 服务端消息发送时间戳
-  map<string, string> syncExt = 31;     // 同步扩展字段
+  string syncExt = 31;     // 同步扩展字段
 }
 
 // 发送消息 --------------------------------
@@ -327,7 +326,7 @@ message ConversationInfo {
   bool isTop = 10;             // 会话是否置顶
   bool isDelete = 11;
   bool isBlocked = 12;
-  bytes ext = 13;
+  string syncExt = 13;
 }
 
 message FetchUserMessageListResp {

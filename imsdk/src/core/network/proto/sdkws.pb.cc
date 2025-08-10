@@ -2808,10 +2808,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, offlinepushinfo_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, atuseridlist_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, attachedinfo_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, ex_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, serverordindex_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, ext_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, isdeleted_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, isrecalled_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, ispinned_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, isgroupmsg_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, clientsendtime_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, serversendtime_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MsgData, syncext_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SendMessageRespInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2895,7 +2899,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ConversationInfo, istop_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ConversationInfo, isdelete_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ConversationInfo, isblocked_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ConversationInfo, ext_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ConversationInfo, syncext_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserMessageListResp, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -3457,77 +3461,77 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 223, -1, sizeof(::roc::imsdk::network::UserSendMsgResp)},
   { 231, 238, sizeof(::roc::imsdk::network::MsgData_OptionsEntry_DoNotUse)},
   { 240, -1, sizeof(::roc::imsdk::network::MsgData)},
-  { 270, -1, sizeof(::roc::imsdk::network::SendMessageRespInfo)},
-  { 278, -1, sizeof(::roc::imsdk::network::SendMessageReq)},
-  { 284, -1, sizeof(::roc::imsdk::network::SendMessageResp)},
-  { 290, -1, sizeof(::roc::imsdk::network::PushMessages)},
-  { 296, -1, sizeof(::roc::imsdk::network::CmdMessage)},
-  { 302, -1, sizeof(::roc::imsdk::network::MessageUnion)},
-  { 310, -1, sizeof(::roc::imsdk::network::FetchConvMessageListReq)},
-  { 319, -1, sizeof(::roc::imsdk::network::FetchConvMessageListResp)},
-  { 326, -1, sizeof(::roc::imsdk::network::FetchUserMessageListReq)},
-  { 336, -1, sizeof(::roc::imsdk::network::ConversationInfo)},
-  { 354, -1, sizeof(::roc::imsdk::network::FetchUserMessageListResp)},
-  { 362, -1, sizeof(::roc::imsdk::network::SdkWSReq)},
-  { 373, -1, sizeof(::roc::imsdk::network::SdkWSResp)},
-  { 385, -1, sizeof(::roc::imsdk::network::OfflinePushInfo)},
-  { 396, -1, sizeof(::roc::imsdk::network::TipsComm)},
-  { 404, -1, sizeof(::roc::imsdk::network::PullMixListReq)},
-  { 413, -1, sizeof(::roc::imsdk::network::PullMixListResp)},
-  { 419, -1, sizeof(::roc::imsdk::network::PullSingleListReq)},
-  { 428, -1, sizeof(::roc::imsdk::network::PullSingleListResp)},
-  { 434, -1, sizeof(::roc::imsdk::network::GroupCreatedTips)},
-  { 446, -1, sizeof(::roc::imsdk::network::GroupInfoSetTips)},
-  { 456, -1, sizeof(::roc::imsdk::network::GroupInfoSetNameTips)},
-  { 465, -1, sizeof(::roc::imsdk::network::GroupInfoSetAnnouncementTips)},
-  { 474, -1, sizeof(::roc::imsdk::network::JoinGroupApplicationTips)},
-  { 482, -1, sizeof(::roc::imsdk::network::MemberQuitTips)},
-  { 492, -1, sizeof(::roc::imsdk::network::GroupApplicationAcceptedTips)},
-  { 501, -1, sizeof(::roc::imsdk::network::GroupApplicationRejectedTips)},
-  { 510, -1, sizeof(::roc::imsdk::network::GroupOwnerTransferredTips)},
-  { 523, -1, sizeof(::roc::imsdk::network::MemberKickedTips)},
-  { 534, -1, sizeof(::roc::imsdk::network::MemberInvitedTips)},
-  { 546, -1, sizeof(::roc::imsdk::network::MemberEnterTips)},
-  { 556, -1, sizeof(::roc::imsdk::network::GroupDismissedTips)},
-  { 564, -1, sizeof(::roc::imsdk::network::GroupMemberMutedTips)},
-  { 576, -1, sizeof(::roc::imsdk::network::GroupMemberCancelMutedTips)},
-  { 587, -1, sizeof(::roc::imsdk::network::GroupMutedTips)},
-  { 597, -1, sizeof(::roc::imsdk::network::GroupCancelMutedTips)},
-  { 607, -1, sizeof(::roc::imsdk::network::GroupMemberInfoSetTips)},
-  { 619, -1, sizeof(::roc::imsdk::network::FriendApplication)},
-  { 627, -1, sizeof(::roc::imsdk::network::FromToUserID)},
-  { 634, -1, sizeof(::roc::imsdk::network::FriendApplicationTips)},
-  { 640, -1, sizeof(::roc::imsdk::network::FriendApplicationApprovedTips)},
-  { 649, -1, sizeof(::roc::imsdk::network::FriendApplicationRejectedTips)},
-  { 656, -1, sizeof(::roc::imsdk::network::FriendAddedTips)},
-  { 666, -1, sizeof(::roc::imsdk::network::FriendDeletedTips)},
-  { 674, -1, sizeof(::roc::imsdk::network::BlackAddedTips)},
-  { 680, -1, sizeof(::roc::imsdk::network::BlackDeletedTips)},
-  { 686, -1, sizeof(::roc::imsdk::network::FriendInfoChangedTips)},
-  { 695, -1, sizeof(::roc::imsdk::network::UserInfoUpdatedTips)},
-  { 701, -1, sizeof(::roc::imsdk::network::UserStatusChangeTips)},
-  { 710, -1, sizeof(::roc::imsdk::network::UserCommandAddTips)},
-  { 717, -1, sizeof(::roc::imsdk::network::UserCommandUpdateTips)},
-  { 724, -1, sizeof(::roc::imsdk::network::UserCommandDeleteTips)},
-  { 731, -1, sizeof(::roc::imsdk::network::ConversationUpdateTips)},
-  { 738, -1, sizeof(::roc::imsdk::network::ConversationSetPrivateTips)},
-  { 747, -1, sizeof(::roc::imsdk::network::ConversationHasReadTips)},
-  { 756, -1, sizeof(::roc::imsdk::network::NotificationElem)},
-  { 762, -1, sizeof(::roc::imsdk::network::DeleteMessageTips)},
-  { 770, -1, sizeof(::roc::imsdk::network::RevokeMsgTips)},
-  { 782, -1, sizeof(::roc::imsdk::network::MessageRevokedContent)},
-  { 798, -1, sizeof(::roc::imsdk::network::ClearConversationTips)},
-  { 805, -1, sizeof(::roc::imsdk::network::DeleteMsgsTips)},
-  { 813, -1, sizeof(::roc::imsdk::network::MarkAsReadTips)},
-  { 822, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusReq)},
-  { 829, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusResp)},
-  { 834, -1, sizeof(::roc::imsdk::network::ProcessUserCommand)},
-  { 844, -1, sizeof(::roc::imsdk::network::RequestPagination)},
-  { 851, -1, sizeof(::roc::imsdk::network::FriendsInfoUpdateTips)},
-  { 860, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusElem)},
-  { 867, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusTips)},
-  { 873, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatus)},
-  { 880, -1, sizeof(::roc::imsdk::network::StreamMsgTips)},
+  { 274, -1, sizeof(::roc::imsdk::network::SendMessageRespInfo)},
+  { 282, -1, sizeof(::roc::imsdk::network::SendMessageReq)},
+  { 288, -1, sizeof(::roc::imsdk::network::SendMessageResp)},
+  { 294, -1, sizeof(::roc::imsdk::network::PushMessages)},
+  { 300, -1, sizeof(::roc::imsdk::network::CmdMessage)},
+  { 306, -1, sizeof(::roc::imsdk::network::MessageUnion)},
+  { 314, -1, sizeof(::roc::imsdk::network::FetchConvMessageListReq)},
+  { 323, -1, sizeof(::roc::imsdk::network::FetchConvMessageListResp)},
+  { 330, -1, sizeof(::roc::imsdk::network::FetchUserMessageListReq)},
+  { 340, -1, sizeof(::roc::imsdk::network::ConversationInfo)},
+  { 358, -1, sizeof(::roc::imsdk::network::FetchUserMessageListResp)},
+  { 366, -1, sizeof(::roc::imsdk::network::SdkWSReq)},
+  { 377, -1, sizeof(::roc::imsdk::network::SdkWSResp)},
+  { 389, -1, sizeof(::roc::imsdk::network::OfflinePushInfo)},
+  { 400, -1, sizeof(::roc::imsdk::network::TipsComm)},
+  { 408, -1, sizeof(::roc::imsdk::network::PullMixListReq)},
+  { 417, -1, sizeof(::roc::imsdk::network::PullMixListResp)},
+  { 423, -1, sizeof(::roc::imsdk::network::PullSingleListReq)},
+  { 432, -1, sizeof(::roc::imsdk::network::PullSingleListResp)},
+  { 438, -1, sizeof(::roc::imsdk::network::GroupCreatedTips)},
+  { 450, -1, sizeof(::roc::imsdk::network::GroupInfoSetTips)},
+  { 460, -1, sizeof(::roc::imsdk::network::GroupInfoSetNameTips)},
+  { 469, -1, sizeof(::roc::imsdk::network::GroupInfoSetAnnouncementTips)},
+  { 478, -1, sizeof(::roc::imsdk::network::JoinGroupApplicationTips)},
+  { 486, -1, sizeof(::roc::imsdk::network::MemberQuitTips)},
+  { 496, -1, sizeof(::roc::imsdk::network::GroupApplicationAcceptedTips)},
+  { 505, -1, sizeof(::roc::imsdk::network::GroupApplicationRejectedTips)},
+  { 514, -1, sizeof(::roc::imsdk::network::GroupOwnerTransferredTips)},
+  { 527, -1, sizeof(::roc::imsdk::network::MemberKickedTips)},
+  { 538, -1, sizeof(::roc::imsdk::network::MemberInvitedTips)},
+  { 550, -1, sizeof(::roc::imsdk::network::MemberEnterTips)},
+  { 560, -1, sizeof(::roc::imsdk::network::GroupDismissedTips)},
+  { 568, -1, sizeof(::roc::imsdk::network::GroupMemberMutedTips)},
+  { 580, -1, sizeof(::roc::imsdk::network::GroupMemberCancelMutedTips)},
+  { 591, -1, sizeof(::roc::imsdk::network::GroupMutedTips)},
+  { 601, -1, sizeof(::roc::imsdk::network::GroupCancelMutedTips)},
+  { 611, -1, sizeof(::roc::imsdk::network::GroupMemberInfoSetTips)},
+  { 623, -1, sizeof(::roc::imsdk::network::FriendApplication)},
+  { 631, -1, sizeof(::roc::imsdk::network::FromToUserID)},
+  { 638, -1, sizeof(::roc::imsdk::network::FriendApplicationTips)},
+  { 644, -1, sizeof(::roc::imsdk::network::FriendApplicationApprovedTips)},
+  { 653, -1, sizeof(::roc::imsdk::network::FriendApplicationRejectedTips)},
+  { 660, -1, sizeof(::roc::imsdk::network::FriendAddedTips)},
+  { 670, -1, sizeof(::roc::imsdk::network::FriendDeletedTips)},
+  { 678, -1, sizeof(::roc::imsdk::network::BlackAddedTips)},
+  { 684, -1, sizeof(::roc::imsdk::network::BlackDeletedTips)},
+  { 690, -1, sizeof(::roc::imsdk::network::FriendInfoChangedTips)},
+  { 699, -1, sizeof(::roc::imsdk::network::UserInfoUpdatedTips)},
+  { 705, -1, sizeof(::roc::imsdk::network::UserStatusChangeTips)},
+  { 714, -1, sizeof(::roc::imsdk::network::UserCommandAddTips)},
+  { 721, -1, sizeof(::roc::imsdk::network::UserCommandUpdateTips)},
+  { 728, -1, sizeof(::roc::imsdk::network::UserCommandDeleteTips)},
+  { 735, -1, sizeof(::roc::imsdk::network::ConversationUpdateTips)},
+  { 742, -1, sizeof(::roc::imsdk::network::ConversationSetPrivateTips)},
+  { 751, -1, sizeof(::roc::imsdk::network::ConversationHasReadTips)},
+  { 760, -1, sizeof(::roc::imsdk::network::NotificationElem)},
+  { 766, -1, sizeof(::roc::imsdk::network::DeleteMessageTips)},
+  { 774, -1, sizeof(::roc::imsdk::network::RevokeMsgTips)},
+  { 786, -1, sizeof(::roc::imsdk::network::MessageRevokedContent)},
+  { 802, -1, sizeof(::roc::imsdk::network::ClearConversationTips)},
+  { 809, -1, sizeof(::roc::imsdk::network::DeleteMsgsTips)},
+  { 817, -1, sizeof(::roc::imsdk::network::MarkAsReadTips)},
+  { 826, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusReq)},
+  { 833, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusResp)},
+  { 838, -1, sizeof(::roc::imsdk::network::ProcessUserCommand)},
+  { 848, -1, sizeof(::roc::imsdk::network::RequestPagination)},
+  { 855, -1, sizeof(::roc::imsdk::network::FriendsInfoUpdateTips)},
+  { 864, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusElem)},
+  { 871, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusTips)},
+  { 877, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatus)},
+  { 884, -1, sizeof(::roc::imsdk::network::StreamMsgTips)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -3727,7 +3731,7 @@ void AddDescriptorsImpl() {
       "MinSeqsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\003"
       ":\0028\001\"M\n\017UserSendMsgResp\022\023\n\013serverMsgID\030\001"
       " \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\020\n\010sendTime\030\003 "
-      "\001(\003\"\351\004\n\007MsgData\022\016\n\006sendID\030\001 \001(\t\022\016\n\006recvI"
+      "\001(\003\"\271\005\n\007MsgData\022\016\n\006sendID\030\001 \001(\t\022\016\n\006recvI"
       "D\030\002 \001(\t\022\016\n\006convID\030\003 \001(\t\022\023\n\013clientMsgID\030\004"
       " \001(\t\022\023\n\013serverMsgID\030\005 \001(\t\022\030\n\020senderPlatf"
       "ormID\030\006 \001(\005\022\026\n\016senderNickname\030\007 \001(\t\022\025\n\rs"
@@ -3739,9 +3743,11 @@ void AddDescriptorsImpl() {
       ".imsdk.network.MsgData.OptionsEntry\022;\n\017o"
       "fflinePushInfo\030\024 \001(\0132\".roc.imsdk.network"
       ".OfflinePushInfo\022\024\n\014atUserIDList\030\025 \003(\t\022\024"
-      "\n\014attachedInfo\030\026 \001(\t\022\n\n\002ex\030\027 \001(\t\022\026\n\016serv"
-      "erOrdIndex\030\030 \001(\003\022\021\n\tisDeleted\030\031 \001(\010\022\022\n\ni"
-      "sRecalled\030\032 \001(\010\032.\n\014OptionsEntry\022\013\n\003key\030\001"
+      "\n\014attachedInfo\030\026 \001(\t\022\013\n\003ext\030\027 \001(\t\022\021\n\tisD"
+      "eleted\030\030 \001(\010\022\022\n\nisRecalled\030\031 \001(\010\022\020\n\010isPi"
+      "nned\030\032 \001(\010\022\022\n\nisGroupMsg\030\033 \001(\010\022\026\n\016client"
+      "SendTime\030\035 \001(\003\022\026\n\016serverSendTime\030\036 \001(\003\022\017"
+      "\n\007syncExt\030\037 \001(\t\032.\n\014OptionsEntry\022\013\n\003key\030\001"
       " \001(\t\022\r\n\005value\030\002 \001(\010:\0028\001\"c\n\023SendMessageRe"
       "spInfo\022\021\n\terrorCode\030\001 \001(\t\022\020\n\010errorMsg\030\002 "
       "\001(\t\022\'\n\003msg\030\003 \001(\0132\032.roc.imsdk.network.Msg"
@@ -3760,7 +3766,7 @@ void AddDescriptorsImpl() {
       " \003(\0132\032.roc.imsdk.network.MsgData\022\020\n\010have"
       "More\030\002 \001(\010\"g\n\027FetchUserMessageListReq\022\016\n"
       "\006userID\030\001 \001(\t\022\016\n\006cursor\030\002 \001(\003\022\r\n\005limit\030\003"
-      " \001(\003\022\017\n\007forward\030\004 \001(\010\022\014\n\004news\030\005 \001(\010\"\266\002\n\020"
+      " \001(\003\022\017\n\007forward\030\004 \001(\010\022\014\n\004news\030\005 \001(\010\"\272\002\n\020"
       "ConversationInfo\022\016\n\006convID\030\001 \001(\t\022\023\n\013owne"
       "rUserID\030\002 \001(\t\022\020\n\010convType\030\003 \001(\005\022\020\n\010convN"
       "ame\030\004 \001(\t\022\022\n\nconvAvatar\030\005 \001(\t\022-\n\004msgs\030\006 "
@@ -3768,220 +3774,221 @@ void AddDescriptorsImpl() {
       "lastMsg\030\007 \001(\0132\032.roc.imsdk.network.MsgDat"
       "a\022\027\n\017convUnreadCount\030\010 \001(\003\022\017\n\007isMuted\030\t "
       "\001(\010\022\r\n\005isTop\030\n \001(\010\022\020\n\010isDelete\030\013 \001(\010\022\021\n\t"
-      "isBlocked\030\014 \001(\010\022\013\n\003ext\030\r \001(\014\"s\n\030FetchUse"
-      "rMessageListResp\0226\n\tconvsInfo\030\001 \003(\0132#.ro"
-      "c.imsdk.network.ConversationInfo\022\016\n\006curs"
-      "or\030\002 \001(\003\022\017\n\007hasMore\030\003 \001(\010\"j\n\010SdkWSReq\022\021\n"
-      "\trequestId\030\001 \001(\t\022\r\n\005token\030\002 \001(\t\022\016\n\006userI"
-      "D\030\003 \001(\t\022\020\n\010deviceID\030\004 \001(\t\022\014\n\004data\030\005 \001(\014\022"
-      "\014\n\004type\030\006 \001(\005\"\202\001\n\tSdkWSResp\022\021\n\trequestId"
-      "\030\001 \001(\t\022\r\n\005token\030\002 \001(\t\022\016\n\006userID\030\003 \001(\t\022\020\n"
-      "\010deviceID\030\004 \001(\t\022\021\n\terrorCode\030\005 \001(\t\022\020\n\010er"
-      "rorMsg\030\006 \001(\t\022\014\n\004data\030\007 \001(\014\"{\n\017OfflinePus"
-      "hInfo\022\r\n\005title\030\001 \001(\t\022\014\n\004desc\030\002 \001(\t\022\n\n\002ex"
-      "\030\003 \001(\t\022\024\n\014iOSPushSound\030\004 \001(\t\022\025\n\riOSBadge"
-      "Count\030\005 \001(\010\022\022\n\nsignalInfo\030\006 \001(\t\"C\n\010TipsC"
-      "omm\022\016\n\006detail\030\001 \001(\014\022\023\n\013defaultTips\030\002 \001(\t"
-      "\022\022\n\njsonDetail\030\003 \001(\t\"V\n\016PullMixListReq\022\016"
-      "\n\006cursor\030\001 \001(\003\022\021\n\tconvLimit\030\002 \001(\005\022\020\n\010msg"
-      "Limit\030\003 \001(\005\022\017\n\007forward\030\004 \001(\010\"M\n\017PullMixL"
-      "istResp\022:\n\rconversations\030\001 \003(\0132#.roc.ims"
-      "dk.network.ConversationInfo\"^\n\021PullSingl"
-      "eListReq\022\026\n\016conversationID\030\001 \001(\t\022\020\n\010msgL"
-      "imit\030\002 \001(\005\022\017\n\007forward\030\003 \001(\010\022\016\n\006cursor\030\004 "
-      "\001(\003\">\n\022PullSingleListResp\022(\n\004msgs\030\001 \003(\0132"
-      "\032.roc.imsdk.network.MsgData\"\304\002\n\020GroupCre"
-      "atedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netw"
-      "ork.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsd"
-      "k.network.GroupMemberFullInfo\022:\n\nmemberL"
-      "ist\030\003 \003(\0132&.roc.imsdk.network.GroupMembe"
-      "rFullInfo\022\025\n\roperationTime\030\004 \001(\003\022>\n\016grou"
-      "pOwnerUser\030\005 \001(\0132&.roc.imsdk.network.Gro"
-      "upMemberFullInfo\022\032\n\022groupMemberVersion\030\006"
-      " \001(\004\022\034\n\024groupMemberVersionID\030\007 \001(\t\"\303\001\n\020G"
-      "roupInfoSetTips\0226\n\006opUser\030\001 \001(\0132&.roc.im"
-      "sdk.network.GroupMemberFullInfo\022\020\n\010muteT"
-      "ime\030\002 \001(\003\022+\n\005group\030\003 \001(\0132\034.roc.imsdk.net"
-      "work.GroupInfo\022\032\n\022groupMemberVersion\030\004 \001"
-      "(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\265\001\n\024Gro"
-      "upInfoSetNameTips\0226\n\006opUser\030\001 \001(\0132&.roc."
-      "imsdk.network.GroupMemberFullInfo\022+\n\005gro"
-      "up\030\002 \001(\0132\034.roc.imsdk.network.GroupInfo\022\032"
-      "\n\022groupMemberVersion\030\003 \001(\004\022\034\n\024groupMembe"
-      "rVersionID\030\004 \001(\t\"\275\001\n\034GroupInfoSetAnnounc"
-      "ementTips\0226\n\006opUser\030\001 \001(\0132&.roc.imsdk.ne"
-      "twork.GroupMemberFullInfo\022+\n\005group\030\002 \001(\013"
-      "2\034.roc.imsdk.network.GroupInfo\022\032\n\022groupM"
-      "emberVersion\030\003 \001(\004\022\034\n\024groupMemberVersion"
-      "ID\030\004 \001(\t\"\215\001\n\030JoinGroupApplicationTips\022+\n"
-      "\005group\030\001 \001(\0132\034.roc.imsdk.network.GroupIn"
-      "fo\0224\n\tapplicant\030\002 \001(\0132!.roc.imsdk.networ"
-      "k.PublicUserInfo\022\016\n\006reqMsg\030\003 \001(\t\"\310\001\n\016Mem"
-      "berQuitTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.n"
-      "etwork.GroupInfo\0228\n\010quitUser\030\002 \001(\0132&.roc"
-      ".imsdk.network.GroupMemberFullInfo\022\025\n\rop"
-      "erationTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030"
-      "\004 \001(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\252\001\n\034"
-      "GroupApplicationAcceptedTips\022+\n\005group\030\001 "
-      "\001(\0132\034.roc.imsdk.network.GroupInfo\0226\n\006opU"
-      "ser\030\002 \001(\0132&.roc.imsdk.network.GroupMembe"
-      "rFullInfo\022\021\n\thandleMsg\030\004 \001(\t\022\022\n\nreceiver"
-      "As\030\005 \001(\005\"\252\001\n\034GroupApplicationRejectedTip"
+      "isBlocked\030\014 \001(\010\022\017\n\007syncExt\030\r \001(\t\"s\n\030Fetc"
+      "hUserMessageListResp\0226\n\tconvsInfo\030\001 \003(\0132"
+      "#.roc.imsdk.network.ConversationInfo\022\016\n\006"
+      "cursor\030\002 \001(\003\022\017\n\007hasMore\030\003 \001(\010\"j\n\010SdkWSRe"
+      "q\022\021\n\trequestId\030\001 \001(\t\022\r\n\005token\030\002 \001(\t\022\016\n\006u"
+      "serID\030\003 \001(\t\022\020\n\010deviceID\030\004 \001(\t\022\014\n\004data\030\005 "
+      "\001(\014\022\014\n\004type\030\006 \001(\005\"\202\001\n\tSdkWSResp\022\021\n\treque"
+      "stId\030\001 \001(\t\022\r\n\005token\030\002 \001(\t\022\016\n\006userID\030\003 \001("
+      "\t\022\020\n\010deviceID\030\004 \001(\t\022\021\n\terrorCode\030\005 \001(\t\022\020"
+      "\n\010errorMsg\030\006 \001(\t\022\014\n\004data\030\007 \001(\014\"{\n\017Offlin"
+      "ePushInfo\022\r\n\005title\030\001 \001(\t\022\014\n\004desc\030\002 \001(\t\022\n"
+      "\n\002ex\030\003 \001(\t\022\024\n\014iOSPushSound\030\004 \001(\t\022\025\n\riOSB"
+      "adgeCount\030\005 \001(\010\022\022\n\nsignalInfo\030\006 \001(\t\"C\n\010T"
+      "ipsComm\022\016\n\006detail\030\001 \001(\014\022\023\n\013defaultTips\030\002"
+      " \001(\t\022\022\n\njsonDetail\030\003 \001(\t\"V\n\016PullMixListR"
+      "eq\022\016\n\006cursor\030\001 \001(\003\022\021\n\tconvLimit\030\002 \001(\005\022\020\n"
+      "\010msgLimit\030\003 \001(\005\022\017\n\007forward\030\004 \001(\010\"M\n\017Pull"
+      "MixListResp\022:\n\rconversations\030\001 \003(\0132#.roc"
+      ".imsdk.network.ConversationInfo\"^\n\021PullS"
+      "ingleListReq\022\026\n\016conversationID\030\001 \001(\t\022\020\n\010"
+      "msgLimit\030\002 \001(\005\022\017\n\007forward\030\003 \001(\010\022\016\n\006curso"
+      "r\030\004 \001(\003\">\n\022PullSingleListResp\022(\n\004msgs\030\001 "
+      "\003(\0132\032.roc.imsdk.network.MsgData\"\304\002\n\020Grou"
+      "pCreatedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk."
+      "network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc."
+      "imsdk.network.GroupMemberFullInfo\022:\n\nmem"
+      "berList\030\003 \003(\0132&.roc.imsdk.network.GroupM"
+      "emberFullInfo\022\025\n\roperationTime\030\004 \001(\003\022>\n\016"
+      "groupOwnerUser\030\005 \001(\0132&.roc.imsdk.network"
+      ".GroupMemberFullInfo\022\032\n\022groupMemberVersi"
+      "on\030\006 \001(\004\022\034\n\024groupMemberVersionID\030\007 \001(\t\"\303"
+      "\001\n\020GroupInfoSetTips\0226\n\006opUser\030\001 \001(\0132&.ro"
+      "c.imsdk.network.GroupMemberFullInfo\022\020\n\010m"
+      "uteTime\030\002 \001(\003\022+\n\005group\030\003 \001(\0132\034.roc.imsdk"
+      ".network.GroupInfo\022\032\n\022groupMemberVersion"
+      "\030\004 \001(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\265\001\n"
+      "\024GroupInfoSetNameTips\0226\n\006opUser\030\001 \001(\0132&."
+      "roc.imsdk.network.GroupMemberFullInfo\022+\n"
+      "\005group\030\002 \001(\0132\034.roc.imsdk.network.GroupIn"
+      "fo\022\032\n\022groupMemberVersion\030\003 \001(\004\022\034\n\024groupM"
+      "emberVersionID\030\004 \001(\t\"\275\001\n\034GroupInfoSetAnn"
+      "ouncementTips\0226\n\006opUser\030\001 \001(\0132&.roc.imsd"
+      "k.network.GroupMemberFullInfo\022+\n\005group\030\002"
+      " \001(\0132\034.roc.imsdk.network.GroupInfo\022\032\n\022gr"
+      "oupMemberVersion\030\003 \001(\004\022\034\n\024groupMemberVer"
+      "sionID\030\004 \001(\t\"\215\001\n\030JoinGroupApplicationTip"
       "s\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Gro"
-      "upInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.netwo"
-      "rk.GroupMemberFullInfo\022\021\n\thandleMsg\030\004 \001("
-      "\t\022\022\n\nreceiverAs\030\005 \001(\005\"\352\002\n\031GroupOwnerTran"
-      "sferredTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.n"
+      "upInfo\0224\n\tapplicant\030\002 \001(\0132!.roc.imsdk.ne"
+      "twork.PublicUserInfo\022\016\n\006reqMsg\030\003 \001(\t\"\310\001\n"
+      "\016MemberQuitTips\022+\n\005group\030\001 \001(\0132\034.roc.ims"
+      "dk.network.GroupInfo\0228\n\010quitUser\030\002 \001(\0132&"
+      ".roc.imsdk.network.GroupMemberFullInfo\022\025"
+      "\n\roperationTime\030\003 \001(\003\022\032\n\022groupMemberVers"
+      "ion\030\004 \001(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\""
+      "\252\001\n\034GroupApplicationAcceptedTips\022+\n\005grou"
+      "p\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo\0226\n"
+      "\006opUser\030\002 \001(\0132&.roc.imsdk.network.GroupM"
+      "emberFullInfo\022\021\n\thandleMsg\030\004 \001(\t\022\022\n\nrece"
+      "iverAs\030\005 \001(\005\"\252\001\n\034GroupApplicationRejecte"
+      "dTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network"
+      ".GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.n"
+      "etwork.GroupMemberFullInfo\022\021\n\thandleMsg\030"
+      "\004 \001(\t\022\022\n\nreceiverAs\030\005 \001(\005\"\352\002\n\031GroupOwner"
+      "TransferredTips\022+\n\005group\030\001 \001(\0132\034.roc.ims"
+      "dk.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.r"
+      "oc.imsdk.network.GroupMemberFullInfo\022=\n\r"
+      "newGroupOwner\030\003 \001(\0132&.roc.imsdk.network."
+      "GroupMemberFullInfo\022\025\n\roldGroupOwner\030\004 \001"
+      "(\t\022\025\n\roperationTime\030\005 \001(\003\022A\n\021oldGroupOwn"
+      "erInfo\030\006 \001(\0132&.roc.imsdk.network.GroupMe"
+      "mberFullInfo\022\032\n\022groupMemberVersion\030\007 \001(\004"
+      "\022\034\n\024groupMemberVersionID\030\010 \001(\t\"\210\002\n\020Membe"
+      "rKickedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.n"
       "etwork.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.i"
-      "msdk.network.GroupMemberFullInfo\022=\n\rnewG"
-      "roupOwner\030\003 \001(\0132&.roc.imsdk.network.Grou"
-      "pMemberFullInfo\022\025\n\roldGroupOwner\030\004 \001(\t\022\025"
-      "\n\roperationTime\030\005 \001(\003\022A\n\021oldGroupOwnerIn"
-      "fo\030\006 \001(\0132&.roc.imsdk.network.GroupMember"
-      "FullInfo\022\032\n\022groupMemberVersion\030\007 \001(\004\022\034\n\024"
-      "groupMemberVersionID\030\010 \001(\t\"\210\002\n\020MemberKic"
-      "kedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netwo"
-      "rk.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk"
-      ".network.GroupMemberFullInfo\022>\n\016kickedUs"
-      "erList\030\003 \003(\0132&.roc.imsdk.network.GroupMe"
-      "mberFullInfo\022\025\n\roperationTime\030\004 \001(\003\022\032\n\022g"
-      "roupMemberVersion\030\005 \001(\004\022\034\n\024groupMemberVe"
-      "rsionID\030\006 \001(\t\"\307\002\n\021MemberInvitedTips\022+\n\005g"
-      "roup\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo"
-      "\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.network.Gro"
-      "upMemberFullInfo\022\?\n\017invitedUserList\030\003 \003("
+      "msdk.network.GroupMemberFullInfo\022>\n\016kick"
+      "edUserList\030\003 \003(\0132&.roc.imsdk.network.Gro"
+      "upMemberFullInfo\022\025\n\roperationTime\030\004 \001(\003\022"
+      "\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024groupMemb"
+      "erVersionID\030\006 \001(\t\"\307\002\n\021MemberInvitedTips\022"
+      "+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Group"
+      "Info\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.network"
+      ".GroupMemberFullInfo\022\?\n\017invitedUserList\030"
+      "\003 \003(\0132&.roc.imsdk.network.GroupMemberFul"
+      "lInfo\022\025\n\roperationTime\030\004 \001(\003\022\032\n\022groupMem"
+      "berVersion\030\005 \001(\004\022\034\n\024groupMemberVersionID"
+      "\030\006 \001(\t\022;\n\013inviterUser\030\007 \001(\0132&.roc.imsdk."
+      "network.GroupMemberFullInfo\"\314\001\n\017MemberEn"
+      "terTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netwo"
+      "rk.GroupInfo\022;\n\013entrantUser\030\002 \001(\0132&.roc."
+      "imsdk.network.GroupMemberFullInfo\022\025\n\rope"
+      "rationTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\005"
+      " \001(\004\022\034\n\024groupMemberVersionID\030\006 \001(\t\"\220\001\n\022G"
+      "roupDismissedTips\022+\n\005group\030\001 \001(\0132\034.roc.i"
+      "msdk.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&"
+      ".roc.imsdk.network.GroupMemberFullInfo\022\025"
+      "\n\roperationTime\030\003 \001(\003\"\235\002\n\024GroupMemberMut"
+      "edTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.networ"
+      "k.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk."
+      "network.GroupMemberFullInfo\022\025\n\roperation"
+      "Time\030\003 \001(\003\0229\n\tmutedUser\030\004 \001(\0132&.roc.imsd"
+      "k.network.GroupMemberFullInfo\022\024\n\014mutedSe"
+      "conds\030\005 \001(\r\022\032\n\022groupMemberVersion\030\006 \001(\004\022"
+      "\034\n\024groupMemberVersionID\030\007 \001(\t\"\215\002\n\032GroupM"
+      "emberCancelMutedTips\022+\n\005group\030\001 \001(\0132\034.ro"
+      "c.imsdk.network.GroupInfo\0226\n\006opUser\030\002 \001("
       "\0132&.roc.imsdk.network.GroupMemberFullInf"
-      "o\022\025\n\roperationTime\030\004 \001(\003\022\032\n\022groupMemberV"
-      "ersion\030\005 \001(\004\022\034\n\024groupMemberVersionID\030\006 \001"
-      "(\t\022;\n\013inviterUser\030\007 \001(\0132&.roc.imsdk.netw"
-      "ork.GroupMemberFullInfo\"\314\001\n\017MemberEnterT"
-      "ips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.G"
-      "roupInfo\022;\n\013entrantUser\030\002 \001(\0132&.roc.imsd"
-      "k.network.GroupMemberFullInfo\022\025\n\roperati"
-      "onTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\005 \001(\004"
-      "\022\034\n\024groupMemberVersionID\030\006 \001(\t\"\220\001\n\022Group"
-      "DismissedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk"
-      ".network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc"
-      ".imsdk.network.GroupMemberFullInfo\022\025\n\rop"
-      "erationTime\030\003 \001(\003\"\235\002\n\024GroupMemberMutedTi"
-      "ps\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Gr"
-      "oupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.netw"
-      "ork.GroupMemberFullInfo\022\025\n\roperationTime"
-      "\030\003 \001(\003\0229\n\tmutedUser\030\004 \001(\0132&.roc.imsdk.ne"
-      "twork.GroupMemberFullInfo\022\024\n\014mutedSecond"
-      "s\030\005 \001(\r\022\032\n\022groupMemberVersion\030\006 \001(\004\022\034\n\024g"
-      "roupMemberVersionID\030\007 \001(\t\"\215\002\n\032GroupMembe"
-      "rCancelMutedTips\022+\n\005group\030\001 \001(\0132\034.roc.im"
+      "o\022\025\n\roperationTime\030\003 \001(\003\0229\n\tmutedUser\030\004 "
+      "\001(\0132&.roc.imsdk.network.GroupMemberFullI"
+      "nfo\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024group"
+      "MemberVersionID\030\006 \001(\t\"\306\001\n\016GroupMutedTips"
+      "\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Grou"
+      "pInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.networ"
+      "k.GroupMemberFullInfo\022\025\n\roperationTime\030\003"
+      " \001(\003\022\032\n\022groupMemberVersion\030\004 \001(\004\022\034\n\024grou"
+      "pMemberVersionID\030\005 \001(\t\"\314\001\n\024GroupCancelMu"
+      "tedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netwo"
+      "rk.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk"
+      ".network.GroupMemberFullInfo\022\025\n\roperatio"
+      "nTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\004 \001(\004\022"
+      "\034\n\024groupMemberVersionID\030\005 \001(\t\"\245\002\n\026GroupM"
+      "emberInfoSetTips\022+\n\005group\030\001 \001(\0132\034.roc.im"
       "sdk.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&."
       "roc.imsdk.network.GroupMemberFullInfo\022\025\n"
-      "\roperationTime\030\003 \001(\003\0229\n\tmutedUser\030\004 \001(\0132"
-      "&.roc.imsdk.network.GroupMemberFullInfo\022"
-      "\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024groupMemb"
-      "erVersionID\030\006 \001(\t\"\306\001\n\016GroupMutedTips\022+\n\005"
-      "group\030\001 \001(\0132\034.roc.imsdk.network.GroupInf"
-      "o\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.network.Gr"
-      "oupMemberFullInfo\022\025\n\roperationTime\030\003 \001(\003"
-      "\022\032\n\022groupMemberVersion\030\004 \001(\004\022\034\n\024groupMem"
-      "berVersionID\030\005 \001(\t\"\314\001\n\024GroupCancelMutedT"
-      "ips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.G"
-      "roupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.net"
-      "work.GroupMemberFullInfo\022\025\n\roperationTim"
-      "e\030\003 \001(\003\022\032\n\022groupMemberVersion\030\004 \001(\004\022\034\n\024g"
-      "roupMemberVersionID\030\005 \001(\t\"\245\002\n\026GroupMembe"
-      "rInfoSetTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk."
-      "network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc."
-      "imsdk.network.GroupMemberFullInfo\022\025\n\rope"
-      "rationTime\030\003 \001(\003\022;\n\013changedUser\030\004 \001(\0132&."
-      "roc.imsdk.network.GroupMemberFullInfo\022\032\n"
-      "\022groupMemberVersion\030\005 \001(\004\022\034\n\024groupMember"
-      "VersionID\030\006 \001(\t\022\030\n\020groupSortVersion\030\007 \001("
-      "\004\"K\n\021FriendApplication\022\017\n\007addTime\030\001 \001(\003\022"
-      "\021\n\taddSource\030\002 \001(\t\022\022\n\naddWording\030\003 \001(\t\"4"
-      "\n\014FromToUserID\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010to"
-      "UserID\030\002 \001(\t\"N\n\025FriendApplicationTips\0225\n"
-      "\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.network."
-      "FromToUserID\"\231\001\n\035FriendApplicationApprov"
-      "edTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk"
-      ".network.FromToUserID\022\021\n\thandleMsg\030\002 \001(\t"
-      "\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017friendVersion"
-      "ID\030\004 \001(\t\"i\n\035FriendApplicationRejectedTip"
+      "\roperationTime\030\003 \001(\003\022;\n\013changedUser\030\004 \001("
+      "\0132&.roc.imsdk.network.GroupMemberFullInf"
+      "o\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024groupMe"
+      "mberVersionID\030\006 \001(\t\022\030\n\020groupSortVersion\030"
+      "\007 \001(\004\"K\n\021FriendApplication\022\017\n\007addTime\030\001 "
+      "\001(\003\022\021\n\taddSource\030\002 \001(\t\022\022\n\naddWording\030\003 \001"
+      "(\t\"4\n\014FromToUserID\022\022\n\nfromUserID\030\001 \001(\t\022\020"
+      "\n\010toUserID\030\002 \001(\t\"N\n\025FriendApplicationTip"
       "s\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.netw"
-      "ork.FromToUserID\022\021\n\thandleMsg\030\002 \001(\t\"\272\001\n\017"
-      "FriendAddedTips\022-\n\006friend\030\001 \001(\0132\035.roc.im"
-      "sdk.network.FriendInfo\022\025\n\roperationTime\030"
-      "\002 \001(\003\0221\n\006opUser\030\003 \001(\0132!.roc.imsdk.networ"
-      "k.PublicUserInfo\022\025\n\rfriendVersion\030\004 \001(\004\022"
-      "\027\n\017friendVersionID\030\005 \001(\t\"z\n\021FriendDelete"
+      "ork.FromToUserID\"\231\001\n\035FriendApplicationAp"
+      "provedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.i"
+      "msdk.network.FromToUserID\022\021\n\thandleMsg\030\002"
+      " \001(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017friendVer"
+      "sionID\030\004 \001(\t\"i\n\035FriendApplicationRejecte"
       "dTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk."
-      "network.FromToUserID\022\025\n\rfriendVersion\030\002 "
-      "\001(\004\022\027\n\017friendVersionID\030\003 \001(\t\"G\n\016BlackAdd"
+      "network.FromToUserID\022\021\n\thandleMsg\030\002 \001(\t\""
+      "\272\001\n\017FriendAddedTips\022-\n\006friend\030\001 \001(\0132\035.ro"
+      "c.imsdk.network.FriendInfo\022\025\n\roperationT"
+      "ime\030\002 \001(\003\0221\n\006opUser\030\003 \001(\0132!.roc.imsdk.ne"
+      "twork.PublicUserInfo\022\025\n\rfriendVersion\030\004 "
+      "\001(\004\022\027\n\017friendVersionID\030\005 \001(\t\"z\n\021FriendDe"
+      "letedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.im"
+      "sdk.network.FromToUserID\022\025\n\rfriendVersio"
+      "n\030\002 \001(\004\022\027\n\017friendVersionID\030\003 \001(\t\"G\n\016Blac"
+      "kAddedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.i"
+      "msdk.network.FromToUserID\"I\n\020BlackDelete"
+      "dTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk."
+      "network.FromToUserID\"\231\001\n\025FriendInfoChang"
       "edTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk"
-      ".network.FromToUserID\"I\n\020BlackDeletedTip"
-      "s\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.netw"
-      "ork.FromToUserID\"\231\001\n\025FriendInfoChangedTi"
-      "ps\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.net"
-      "work.FromToUserID\022\025\n\rfriendVersion\030\002 \001(\004"
-      "\022\027\n\017friendVersionID\030\003 \001(\t\022\031\n\021friendSortV"
-      "ersion\030\004 \001(\004\"%\n\023UserInfoUpdatedTips\022\016\n\006u"
-      "serID\030\001 \001(\t\"`\n\024UserStatusChangeTips\022\022\n\nf"
-      "romUserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\022\016\n\006sta"
-      "tus\030\003 \001(\005\022\022\n\nplatformID\030\004 \001(\005\":\n\022UserCom"
-      "mandAddTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUse"
-      "rID\030\002 \001(\t\"=\n\025UserCommandUpdateTips\022\022\n\nfr"
-      "omUserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\"=\n\025User"
-      "CommandDeleteTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n"
-      "\010toUserID\030\002 \001(\t\"D\n\026ConversationUpdateTip"
-      "s\022\016\n\006userID\030\001 \001(\t\022\032\n\022conversationIDList\030"
-      "\002 \003(\t\"g\n\032ConversationSetPrivateTips\022\016\n\006r"
-      "ecvID\030\001 \001(\t\022\016\n\006sendID\030\002 \001(\t\022\021\n\tisPrivate"
-      "\030\003 \001(\010\022\026\n\016conversationID\030\004 \001(\t\"n\n\027Conver"
-      "sationHasReadTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016con"
-      "versationID\030\002 \001(\t\022\022\n\nhasReadSeq\030\003 \001(\003\022\027\n"
-      "\017unreadCountTime\030\004 \001(\003\"\"\n\020NotificationEl"
-      "em\022\016\n\006detail\030\001 \001(\t\"C\n\021DeleteMessageTips\022"
-      "\020\n\010opUserID\030\001 \001(\t\022\016\n\006userID\030\002 \001(\t\022\014\n\004seq"
-      "s\030\003 \003(\003\"\241\001\n\rRevokeMsgTips\022\025\n\rrevokerUser"
-      "ID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nrevokeT"
-      "ime\030\003 \001(\003\022\024\n\014sesstionType\030\005 \001(\005\022\013\n\003seq\030\006"
-      " \001(\003\022\026\n\016conversationID\030\007 \001(\t\022\025\n\risAdminR"
-      "evoke\030\010 \001(\010\"\220\002\n\025MessageRevokedContent\022\021\n"
-      "\trevokerID\030\001 \001(\t\022\023\n\013revokerRole\030\002 \001(\005\022\023\n"
-      "\013clientMsgID\030\003 \001(\t\022\027\n\017revokerNickname\030\004 "
-      "\001(\t\022\022\n\nrevokeTime\030\005 \001(\003\022\035\n\025sourceMessage"
-      "SendTime\030\006 \001(\003\022\033\n\023sourceMessageSendID\030\007 "
-      "\001(\t\022#\n\033sourceMessageSenderNickname\030\010 \001(\t"
-      "\022\023\n\013sessionType\030\n \001(\005\022\013\n\003seq\030\013 \001(\003\022\n\n\002ex"
-      "\030\014 \001(\t\"@\n\025ClearConversationTips\022\016\n\006userI"
-      "D\030\001 \001(\t\022\027\n\017conversationIDs\030\002 \003(\t\"F\n\016Dele"
-      "teMsgsTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016conversati"
-      "onID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\"d\n\016MarkAsReadTi"
-      "ps\022\030\n\020markAsReadUserID\030\001 \001(\t\022\026\n\016conversa"
-      "tionID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\022\022\n\nhasReadSeq"
-      "\030\004 \001(\003\"A\n\031SetAppBackgroundStatusReq\022\016\n\006u"
-      "serID\030\001 \001(\t\022\024\n\014isBackground\030\002 \001(\010\"\034\n\032Set"
-      "AppBackgroundStatusResp\"c\n\022ProcessUserCo"
-      "mmand\022\016\n\006userID\030\001 \001(\t\022\014\n\004type\030\002 \001(\005\022\022\n\nc"
-      "reateTime\030\003 \001(\003\022\014\n\004uuid\030\004 \001(\t\022\r\n\005value\030\005"
-      " \001(\t\";\n\021RequestPagination\022\022\n\npageNumber\030"
-      "\001 \001(\005\022\022\n\nshowNumber\030\002 \001(\005\"\221\001\n\025FriendsInf"
-      "oUpdateTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc."
-      "imsdk.network.FromToUserID\022\021\n\tfriendIDs\030"
-      "\002 \003(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017friendVe"
-      "rsionID\030\004 \001(\t\"D\n\027SubUserOnlineStatusElem"
-      "\022\016\n\006userID\030\001 \001(\t\022\031\n\021onlinePlatformIDs\030\002 "
-      "\003(\005\"Z\n\027SubUserOnlineStatusTips\022\?\n\013subscr"
-      "ibers\030\001 \003(\0132*.roc.imsdk.network.SubUserO"
-      "nlineStatusElem\"I\n\023SubUserOnlineStatus\022\027"
-      "\n\017subscribeUserID\030\001 \003(\t\022\031\n\021unsubscribeUs"
-      "erID\030\002 \003(\t\"n\n\rStreamMsgTips\022\026\n\016conversat"
-      "ionID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nstar"
-      "tIndex\030\003 \001(\003\022\017\n\007packets\030\004 \003(\t\022\013\n\003end\030\005 \001"
-      "(\010*0\n\tPullOrder\022\020\n\014PullOrderAsc\020\000\022\021\n\rPul"
-      "lOrderDesc\020\001B7Z5github.com/roc/roc-im-se"
-      "rver/internal/kitex_gen/sdkwsb\006proto3"
+      ".network.FromToUserID\022\025\n\rfriendVersion\030\002"
+      " \001(\004\022\027\n\017friendVersionID\030\003 \001(\t\022\031\n\021friendS"
+      "ortVersion\030\004 \001(\004\"%\n\023UserInfoUpdatedTips\022"
+      "\016\n\006userID\030\001 \001(\t\"`\n\024UserStatusChangeTips\022"
+      "\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\022\016\n"
+      "\006status\030\003 \001(\005\022\022\n\nplatformID\030\004 \001(\005\":\n\022Use"
+      "rCommandAddTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010t"
+      "oUserID\030\002 \001(\t\"=\n\025UserCommandUpdateTips\022\022"
+      "\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\"=\n\025"
+      "UserCommandDeleteTips\022\022\n\nfromUserID\030\001 \001("
+      "\t\022\020\n\010toUserID\030\002 \001(\t\"D\n\026ConversationUpdat"
+      "eTips\022\016\n\006userID\030\001 \001(\t\022\032\n\022conversationIDL"
+      "ist\030\002 \003(\t\"g\n\032ConversationSetPrivateTips\022"
+      "\016\n\006recvID\030\001 \001(\t\022\016\n\006sendID\030\002 \001(\t\022\021\n\tisPri"
+      "vate\030\003 \001(\010\022\026\n\016conversationID\030\004 \001(\t\"n\n\027Co"
+      "nversationHasReadTips\022\016\n\006userID\030\001 \001(\t\022\026\n"
+      "\016conversationID\030\002 \001(\t\022\022\n\nhasReadSeq\030\003 \001("
+      "\003\022\027\n\017unreadCountTime\030\004 \001(\003\"\"\n\020Notificati"
+      "onElem\022\016\n\006detail\030\001 \001(\t\"C\n\021DeleteMessageT"
+      "ips\022\020\n\010opUserID\030\001 \001(\t\022\016\n\006userID\030\002 \001(\t\022\014\n"
+      "\004seqs\030\003 \003(\003\"\241\001\n\rRevokeMsgTips\022\025\n\rrevoker"
+      "UserID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nrev"
+      "okeTime\030\003 \001(\003\022\024\n\014sesstionType\030\005 \001(\005\022\013\n\003s"
+      "eq\030\006 \001(\003\022\026\n\016conversationID\030\007 \001(\t\022\025\n\risAd"
+      "minRevoke\030\010 \001(\010\"\220\002\n\025MessageRevokedConten"
+      "t\022\021\n\trevokerID\030\001 \001(\t\022\023\n\013revokerRole\030\002 \001("
+      "\005\022\023\n\013clientMsgID\030\003 \001(\t\022\027\n\017revokerNicknam"
+      "e\030\004 \001(\t\022\022\n\nrevokeTime\030\005 \001(\003\022\035\n\025sourceMes"
+      "sageSendTime\030\006 \001(\003\022\033\n\023sourceMessageSendI"
+      "D\030\007 \001(\t\022#\n\033sourceMessageSenderNickname\030\010"
+      " \001(\t\022\023\n\013sessionType\030\n \001(\005\022\013\n\003seq\030\013 \001(\003\022\n"
+      "\n\002ex\030\014 \001(\t\"@\n\025ClearConversationTips\022\016\n\006u"
+      "serID\030\001 \001(\t\022\027\n\017conversationIDs\030\002 \003(\t\"F\n\016"
+      "DeleteMsgsTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016conver"
+      "sationID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\"d\n\016MarkAsRe"
+      "adTips\022\030\n\020markAsReadUserID\030\001 \001(\t\022\026\n\016conv"
+      "ersationID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\022\022\n\nhasRea"
+      "dSeq\030\004 \001(\003\"A\n\031SetAppBackgroundStatusReq\022"
+      "\016\n\006userID\030\001 \001(\t\022\024\n\014isBackground\030\002 \001(\010\"\034\n"
+      "\032SetAppBackgroundStatusResp\"c\n\022ProcessUs"
+      "erCommand\022\016\n\006userID\030\001 \001(\t\022\014\n\004type\030\002 \001(\005\022"
+      "\022\n\ncreateTime\030\003 \001(\003\022\014\n\004uuid\030\004 \001(\t\022\r\n\005val"
+      "ue\030\005 \001(\t\";\n\021RequestPagination\022\022\n\npageNum"
+      "ber\030\001 \001(\005\022\022\n\nshowNumber\030\002 \001(\005\"\221\001\n\025Friend"
+      "sInfoUpdateTips\0225\n\014fromToUserID\030\001 \001(\0132\037."
+      "roc.imsdk.network.FromToUserID\022\021\n\tfriend"
+      "IDs\030\002 \003(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017frie"
+      "ndVersionID\030\004 \001(\t\"D\n\027SubUserOnlineStatus"
+      "Elem\022\016\n\006userID\030\001 \001(\t\022\031\n\021onlinePlatformID"
+      "s\030\002 \003(\005\"Z\n\027SubUserOnlineStatusTips\022\?\n\013su"
+      "bscribers\030\001 \003(\0132*.roc.imsdk.network.SubU"
+      "serOnlineStatusElem\"I\n\023SubUserOnlineStat"
+      "us\022\027\n\017subscribeUserID\030\001 \003(\t\022\031\n\021unsubscri"
+      "beUserID\030\002 \003(\t\"n\n\rStreamMsgTips\022\026\n\016conve"
+      "rsationID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\n"
+      "startIndex\030\003 \001(\003\022\017\n\007packets\030\004 \003(\t\022\013\n\003end"
+      "\030\005 \001(\010*0\n\tPullOrder\022\020\n\014PullOrderAsc\020\000\022\021\n"
+      "\rPullOrderDesc\020\001B7Z5github.com/roc/roc-i"
+      "m-server/internal/kitex_gen/sdkwsb\006proto"
+      "3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 13197);
+      descriptor, 13281);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "sdkws.proto", &protobuf_RegisterTypes);
 }
@@ -13345,10 +13352,14 @@ const int MsgData::kOptionsFieldNumber;
 const int MsgData::kOfflinePushInfoFieldNumber;
 const int MsgData::kAtUserIDListFieldNumber;
 const int MsgData::kAttachedInfoFieldNumber;
-const int MsgData::kExFieldNumber;
-const int MsgData::kServerOrdIndexFieldNumber;
+const int MsgData::kExtFieldNumber;
 const int MsgData::kIsDeletedFieldNumber;
 const int MsgData::kIsRecalledFieldNumber;
+const int MsgData::kIsPinnedFieldNumber;
+const int MsgData::kIsGroupMsgFieldNumber;
+const int MsgData::kClientSendTimeFieldNumber;
+const int MsgData::kServerSendTimeFieldNumber;
+const int MsgData::kSyncExtFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 MsgData::MsgData()
@@ -13402,9 +13413,13 @@ MsgData::MsgData(const MsgData& from)
   if (from.attachedinfo().size() > 0) {
     attachedinfo_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.attachedinfo_);
   }
-  ex_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.ex().size() > 0) {
-    ex_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ex_);
+  ext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.ext().size() > 0) {
+    ext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ext_);
+  }
+  syncext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.syncext().size() > 0) {
+    syncext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.syncext_);
   }
   if (from.has_offlinepushinfo()) {
     offlinepushinfo_ = new ::roc::imsdk::network::OfflinePushInfo(*from.offlinepushinfo_);
@@ -13412,8 +13427,8 @@ MsgData::MsgData(const MsgData& from)
     offlinepushinfo_ = NULL;
   }
   ::memcpy(&senderplatformid_, &from.senderplatformid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&serverordindex_) -
-    reinterpret_cast<char*>(&senderplatformid_)) + sizeof(serverordindex_));
+    static_cast<size_t>(reinterpret_cast<char*>(&isgroupmsg_) -
+    reinterpret_cast<char*>(&senderplatformid_)) + sizeof(isgroupmsg_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.MsgData)
 }
 
@@ -13427,10 +13442,11 @@ void MsgData::SharedCtor() {
   senderfaceurl_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   attachedinfo_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ex_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  syncext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&offlinepushinfo_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&serverordindex_) -
-      reinterpret_cast<char*>(&offlinepushinfo_)) + sizeof(serverordindex_));
+      reinterpret_cast<char*>(&isgroupmsg_) -
+      reinterpret_cast<char*>(&offlinepushinfo_)) + sizeof(isgroupmsg_));
   _cached_size_ = 0;
 }
 
@@ -13449,7 +13465,8 @@ void MsgData::SharedDtor() {
   senderfaceurl_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   attachedinfo_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ex_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ext_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  syncext_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete offlinepushinfo_;
 }
 
@@ -13493,14 +13510,15 @@ void MsgData::Clear() {
   senderfaceurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   attachedinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ex_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  syncext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && offlinepushinfo_ != NULL) {
     delete offlinepushinfo_;
   }
   offlinepushinfo_ = NULL;
   ::memset(&senderplatformid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&serverordindex_) -
-      reinterpret_cast<char*>(&senderplatformid_)) + sizeof(serverordindex_));
+      reinterpret_cast<char*>(&isgroupmsg_) -
+      reinterpret_cast<char*>(&senderplatformid_)) + sizeof(isgroupmsg_));
   _internal_metadata_.Clear();
 }
 
@@ -13832,40 +13850,26 @@ bool MsgData::MergePartialFromCodedStream(
         break;
       }
 
-      // string ex = 23;
+      // string ext = 23;
       case 23: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(186u /* 186 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_ex()));
+                input, this->mutable_ext()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->ex().data(), static_cast<int>(this->ex().length()),
+            this->ext().data(), static_cast<int>(this->ext().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "roc.imsdk.network.MsgData.ex"));
+            "roc.imsdk.network.MsgData.ext"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int64 serverOrdIndex = 24;
+      // bool isDeleted = 24;
       case 24: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(192u /* 192 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &serverordindex_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bool isDeleted = 25;
-      case 25: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(200u /* 200 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -13876,14 +13880,86 @@ bool MsgData::MergePartialFromCodedStream(
         break;
       }
 
-      // bool isRecalled = 26;
+      // bool isRecalled = 25;
+      case 25: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(200u /* 200 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isrecalled_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool isPinned = 26;
       case 26: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(208u /* 208 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &isrecalled_)));
+                 input, &ispinned_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool isGroupMsg = 27;
+      case 27: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(216u /* 216 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isgroupmsg_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 clientSendTime = 29;
+      case 29: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(232u /* 232 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &clientsendtime_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 serverSendTime = 30;
+      case 30: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(240u /* 240 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &serversendtime_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string syncExt = 31;
+      case 31: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(250u /* 250 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_syncext()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->syncext().data(), static_cast<int>(this->syncext().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.MsgData.syncExt"));
         } else {
           goto handle_unusual;
         }
@@ -14112,29 +14188,54 @@ void MsgData::SerializeWithCachedSizes(
       22, this->attachedinfo(), output);
   }
 
-  // string ex = 23;
-  if (this->ex().size() > 0) {
+  // string ext = 23;
+  if (this->ext().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ex().data(), static_cast<int>(this->ex().length()),
+      this->ext().data(), static_cast<int>(this->ext().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "roc.imsdk.network.MsgData.ex");
+      "roc.imsdk.network.MsgData.ext");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      23, this->ex(), output);
+      23, this->ext(), output);
   }
 
-  // int64 serverOrdIndex = 24;
-  if (this->serverordindex() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(24, this->serverordindex(), output);
-  }
-
-  // bool isDeleted = 25;
+  // bool isDeleted = 24;
   if (this->isdeleted() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(25, this->isdeleted(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(24, this->isdeleted(), output);
   }
 
-  // bool isRecalled = 26;
+  // bool isRecalled = 25;
   if (this->isrecalled() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(26, this->isrecalled(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(25, this->isrecalled(), output);
+  }
+
+  // bool isPinned = 26;
+  if (this->ispinned() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(26, this->ispinned(), output);
+  }
+
+  // bool isGroupMsg = 27;
+  if (this->isgroupmsg() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(27, this->isgroupmsg(), output);
+  }
+
+  // int64 clientSendTime = 29;
+  if (this->clientsendtime() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(29, this->clientsendtime(), output);
+  }
+
+  // int64 serverSendTime = 30;
+  if (this->serversendtime() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(30, this->serversendtime(), output);
+  }
+
+  // string syncExt = 31;
+  if (this->syncext().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->syncext().data(), static_cast<int>(this->syncext().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.MsgData.syncExt");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      31, this->syncext(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -14361,30 +14462,56 @@ void MsgData::SerializeWithCachedSizes(
         22, this->attachedinfo(), target);
   }
 
-  // string ex = 23;
-  if (this->ex().size() > 0) {
+  // string ext = 23;
+  if (this->ext().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ex().data(), static_cast<int>(this->ex().length()),
+      this->ext().data(), static_cast<int>(this->ext().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "roc.imsdk.network.MsgData.ex");
+      "roc.imsdk.network.MsgData.ext");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        23, this->ex(), target);
+        23, this->ext(), target);
   }
 
-  // int64 serverOrdIndex = 24;
-  if (this->serverordindex() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(24, this->serverordindex(), target);
-  }
-
-  // bool isDeleted = 25;
+  // bool isDeleted = 24;
   if (this->isdeleted() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(25, this->isdeleted(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(24, this->isdeleted(), target);
   }
 
-  // bool isRecalled = 26;
+  // bool isRecalled = 25;
   if (this->isrecalled() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(26, this->isrecalled(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(25, this->isrecalled(), target);
+  }
+
+  // bool isPinned = 26;
+  if (this->ispinned() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(26, this->ispinned(), target);
+  }
+
+  // bool isGroupMsg = 27;
+  if (this->isgroupmsg() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(27, this->isgroupmsg(), target);
+  }
+
+  // int64 clientSendTime = 29;
+  if (this->clientsendtime() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(29, this->clientsendtime(), target);
+  }
+
+  // int64 serverSendTime = 30;
+  if (this->serversendtime() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(30, this->serversendtime(), target);
+  }
+
+  // string syncExt = 31;
+  if (this->syncext().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->syncext().data(), static_cast<int>(this->syncext().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.MsgData.syncExt");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        31, this->syncext(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -14489,11 +14616,18 @@ size_t MsgData::ByteSizeLong() const {
         this->attachedinfo());
   }
 
-  // string ex = 23;
-  if (this->ex().size() > 0) {
+  // string ext = 23;
+  if (this->ext().size() > 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->ex());
+        this->ext());
+  }
+
+  // string syncExt = 31;
+  if (this->syncext().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->syncext());
   }
 
   // .roc.imsdk.network.OfflinePushInfo offlinePushInfo = 20;
@@ -14564,21 +14698,38 @@ size_t MsgData::ByteSizeLong() const {
     total_size += 2 + 1;
   }
 
-  // bool isDeleted = 25;
+  // bool isDeleted = 24;
   if (this->isdeleted() != 0) {
     total_size += 2 + 1;
   }
 
-  // bool isRecalled = 26;
+  // bool isRecalled = 25;
   if (this->isrecalled() != 0) {
     total_size += 2 + 1;
   }
 
-  // int64 serverOrdIndex = 24;
-  if (this->serverordindex() != 0) {
+  // bool isPinned = 26;
+  if (this->ispinned() != 0) {
+    total_size += 2 + 1;
+  }
+
+  // int64 clientSendTime = 29;
+  if (this->clientsendtime() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->serverordindex());
+        this->clientsendtime());
+  }
+
+  // int64 serverSendTime = 30;
+  if (this->serversendtime() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->serversendtime());
+  }
+
+  // bool isGroupMsg = 27;
+  if (this->isgroupmsg() != 0) {
+    total_size += 2 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -14648,9 +14799,13 @@ void MsgData::MergeFrom(const MsgData& from) {
 
     attachedinfo_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.attachedinfo_);
   }
-  if (from.ex().size() > 0) {
+  if (from.ext().size() > 0) {
 
-    ex_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ex_);
+    ext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ext_);
+  }
+  if (from.syncext().size() > 0) {
+
+    syncext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.syncext_);
   }
   if (from.has_offlinepushinfo()) {
     mutable_offlinepushinfo()->::roc::imsdk::network::OfflinePushInfo::MergeFrom(from.offlinepushinfo());
@@ -14688,8 +14843,17 @@ void MsgData::MergeFrom(const MsgData& from) {
   if (from.isrecalled() != 0) {
     set_isrecalled(from.isrecalled());
   }
-  if (from.serverordindex() != 0) {
-    set_serverordindex(from.serverordindex());
+  if (from.ispinned() != 0) {
+    set_ispinned(from.ispinned());
+  }
+  if (from.clientsendtime() != 0) {
+    set_clientsendtime(from.clientsendtime());
+  }
+  if (from.serversendtime() != 0) {
+    set_serversendtime(from.serversendtime());
+  }
+  if (from.isgroupmsg() != 0) {
+    set_isgroupmsg(from.isgroupmsg());
   }
 }
 
@@ -14728,7 +14892,8 @@ void MsgData::InternalSwap(MsgData* other) {
   senderfaceurl_.Swap(&other->senderfaceurl_);
   content_.Swap(&other->content_);
   attachedinfo_.Swap(&other->attachedinfo_);
-  ex_.Swap(&other->ex_);
+  ext_.Swap(&other->ext_);
+  syncext_.Swap(&other->syncext_);
   swap(offlinepushinfo_, other->offlinepushinfo_);
   swap(senderplatformid_, other->senderplatformid_);
   swap(sessiontype_, other->sessiontype_);
@@ -14741,7 +14906,10 @@ void MsgData::InternalSwap(MsgData* other) {
   swap(isread_, other->isread_);
   swap(isdeleted_, other->isdeleted_);
   swap(isrecalled_, other->isrecalled_);
-  swap(serverordindex_, other->serverordindex_);
+  swap(ispinned_, other->ispinned_);
+  swap(clientsendtime_, other->clientsendtime_);
+  swap(serversendtime_, other->serversendtime_);
+  swap(isgroupmsg_, other->isgroupmsg_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -17485,7 +17653,7 @@ const int ConversationInfo::kIsMutedFieldNumber;
 const int ConversationInfo::kIsTopFieldNumber;
 const int ConversationInfo::kIsDeleteFieldNumber;
 const int ConversationInfo::kIsBlockedFieldNumber;
-const int ConversationInfo::kExtFieldNumber;
+const int ConversationInfo::kSyncExtFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ConversationInfo::ConversationInfo()
@@ -17518,9 +17686,9 @@ ConversationInfo::ConversationInfo(const ConversationInfo& from)
   if (from.convavatar().size() > 0) {
     convavatar_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.convavatar_);
   }
-  ext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.ext().size() > 0) {
-    ext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ext_);
+  syncext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.syncext().size() > 0) {
+    syncext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.syncext_);
   }
   if (from.has_lastmsg()) {
     lastmsg_ = new ::roc::imsdk::network::MsgData(*from.lastmsg_);
@@ -17538,7 +17706,7 @@ void ConversationInfo::SharedCtor() {
   owneruserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convavatar_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  syncext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&lastmsg_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&isblocked_) -
       reinterpret_cast<char*>(&lastmsg_)) + sizeof(isblocked_));
@@ -17555,7 +17723,7 @@ void ConversationInfo::SharedDtor() {
   owneruserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convavatar_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ext_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  syncext_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete lastmsg_;
 }
 
@@ -17593,7 +17761,7 @@ void ConversationInfo::Clear() {
   owneruserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convavatar_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  syncext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && lastmsg_ != NULL) {
     delete lastmsg_;
   }
@@ -17785,12 +17953,16 @@ bool ConversationInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // bytes ext = 13;
+      // string syncExt = 13;
       case 13: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(106u /* 106 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_ext()));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_syncext()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->syncext().data(), static_cast<int>(this->syncext().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.ConversationInfo.syncExt"));
         } else {
           goto handle_unusual;
         }
@@ -17906,10 +18078,14 @@ void ConversationInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(12, this->isblocked(), output);
   }
 
-  // bytes ext = 13;
-  if (this->ext().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      13, this->ext(), output);
+  // string syncExt = 13;
+  if (this->syncext().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->syncext().data(), static_cast<int>(this->syncext().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.ConversationInfo.syncExt");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      13, this->syncext(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -18015,11 +18191,15 @@ void ConversationInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(12, this->isblocked(), target);
   }
 
-  // bytes ext = 13;
-  if (this->ext().size() > 0) {
+  // string syncExt = 13;
+  if (this->syncext().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->syncext().data(), static_cast<int>(this->syncext().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.ConversationInfo.syncExt");
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        13, this->ext(), target);
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        13, this->syncext(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -18078,11 +18258,11 @@ size_t ConversationInfo::ByteSizeLong() const {
         this->convavatar());
   }
 
-  // bytes ext = 13;
-  if (this->ext().size() > 0) {
+  // string syncExt = 13;
+  if (this->syncext().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::BytesSize(
-        this->ext());
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->syncext());
   }
 
   // .roc.imsdk.network.MsgData lastMsg = 7;
@@ -18172,9 +18352,9 @@ void ConversationInfo::MergeFrom(const ConversationInfo& from) {
 
     convavatar_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.convavatar_);
   }
-  if (from.ext().size() > 0) {
+  if (from.syncext().size() > 0) {
 
-    ext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ext_);
+    syncext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.syncext_);
   }
   if (from.has_lastmsg()) {
     mutable_lastmsg()->::roc::imsdk::network::MsgData::MergeFrom(from.lastmsg());
@@ -18228,7 +18408,7 @@ void ConversationInfo::InternalSwap(ConversationInfo* other) {
   owneruserid_.Swap(&other->owneruserid_);
   convname_.Swap(&other->convname_);
   convavatar_.Swap(&other->convavatar_);
-  ext_.Swap(&other->ext_);
+  syncext_.Swap(&other->syncext_);
   swap(lastmsg_, other->lastmsg_);
   swap(convunreadcount_, other->convunreadcount_);
   swap(convtype_, other->convtype_);

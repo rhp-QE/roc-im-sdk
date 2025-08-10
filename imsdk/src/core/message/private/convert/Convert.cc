@@ -9,20 +9,49 @@ std::shared_ptr<core::message::MessageORM> Convert::convert_net_msg_to_db_msg(co
         return nullptr;
     }
     std::shared_ptr<core::message::MessageORM> db_msg = std::make_shared<core::message::MessageORM>();
-    db_msg->content = msg->content();
-    db_msg->client_msg_id = msg->clientmsgid();
-    db_msg->server_msg_id = msg->servermsgid();
-    db_msg->conv_id = msg->convid();
-    db_msg->sender_id = msg->sendid();
-    db_msg->send_time = msg->sendtime();
+    
+    // Status and flags
+    db_msg->status = msg->status();
+    
+    db_msg->is_pinned = msg->ispinned();
+    
     db_msg->is_deleted = msg->isdeleted(); 
+    
     db_msg->is_recalled = msg->isrecalled();
-
-    //ext
-    db_msg->ext = msg->ex();
-    db_msg->server_index = msg->serverordindex();
-    db_msg->client_index = msg->seq();
-
+    
+    db_msg->is_group_msg = msg->isgroupmsg();
+    
+    // Message content
+    db_msg->content = msg->content();
+    
+    // User IDs
+    db_msg->to_user_id = msg->recvid();
+    
+    db_msg->from_user_id = msg->sendid();
+    
+    // Message IDs
+    db_msg->client_msg_id = msg->clientmsgid();
+    
+    db_msg->server_msg_id = msg->servermsgid();
+    
+    // Conversation ID
+    db_msg->conversation_id = msg->convid();
+    
+    // Order indices
+    db_msg->client_order_index = 0; // TODO: Set from network message if available
+    
+    db_msg->server_order_index = msg->seq();
+    
+    // Timestamps
+    db_msg->client_send_time = 0; // TODO: Set from network message if available
+    
+    db_msg->server_send_time = msg->sendtime();
+    
+    // Extensions
+    db_msg->sync_ext = msg->syncext();
+    
+    db_msg->local_ext = ""; // TODO: Set from network message if available
+    
     return db_msg;
 }
 
@@ -32,13 +61,48 @@ std::shared_ptr<model::MessageModel> Convert::convert_db_msg_to_sdk_msg(const co
         return nullptr;
     }
     std::shared_ptr<model::MessageModel> sdk_msg = std::make_shared<model::MessageModel>();
+    
+    // Status and flags
+    sdk_msg->status_ = db_msg->status;
+    
+    sdk_msg->is_pinned_ = db_msg->is_pinned;
+    
+    sdk_msg->is_deleted_ = db_msg->is_deleted;
+    
+    sdk_msg->is_recalled_ = db_msg->is_recalled;
+    
+    sdk_msg->is_group_msg_ = db_msg->is_group_msg;
+    
+    // Message content
     sdk_msg->content_ = db_msg->content;
+    
+    // User IDs
+    sdk_msg->to_user_id_ = db_msg->to_user_id;
+    
+    sdk_msg->from_user_id_ = db_msg->from_user_id;
+    
+    // Message IDs
     sdk_msg->client_msg_id_ = db_msg->client_msg_id;
+    
     sdk_msg->server_msg_id_ = db_msg->server_msg_id;
-    sdk_msg->conversation_id_ = db_msg->conv_id;
-    sdk_msg->from_user_id_ = db_msg->sender_id;
-    sdk_msg->client_order_index_ = db_msg->client_index;
-    sdk_msg->server_order_index_ = db_msg->server_index;
+    
+    // Conversation ID
+    sdk_msg->conversation_id_ = db_msg->conversation_id;
+    
+    // Order indices
+    sdk_msg->client_order_index_ = db_msg->client_order_index;
+    
+    sdk_msg->server_order_index_ = db_msg->server_order_index;
+    
+    // Timestamps
+    sdk_msg->client_send_time_ = db_msg->client_send_time;
+    
+    sdk_msg->server_send_time_ = db_msg->server_send_time;
+    
+    // Extensions - TODO: Convert string to unordered_map
+    // sdk_msg->sync_ext_ = parse_ext_string(db_msg->sync_ext);
+    // sdk_msg->local_ext_ = parse_ext_string(db_msg->local_ext);
+    
     return sdk_msg;
 }
 
