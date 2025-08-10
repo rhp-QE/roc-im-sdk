@@ -7,6 +7,7 @@ namespace roc::imsdk {
 
 struct Config {
 public:
+    int platform;
     std::string app_id;
     std::string app_key;
     std::string app_secret;

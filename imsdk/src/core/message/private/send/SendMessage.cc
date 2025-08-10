@@ -55,6 +55,8 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
         } 
     }
 
+    std::cout<<"[rhpmark] send message success"<<std::endl;
+
     /// 保存消息
     auto sdk_msgs = message::SaveMessage::save_net_msgs(w_sdk_root, net_msgs);
 

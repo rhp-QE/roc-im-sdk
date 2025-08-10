@@ -40,7 +40,7 @@ namespace error {
 
 
 // call back
-using OnPushMesageCallbackType = std::function<void(std::unique_ptr<network::SdkWSResp>)> ;
+using OnPushMesageCallbackType = std::function<void(std::shared_ptr<network::SdkWSResp>)> ;
 
 // ------------------------------------------------------------------------------------------
 // 职责：1、长连接的初始化，链接的管理
@@ -66,6 +66,8 @@ private:
     std::unordered_map<std::string, std::shared_ptr<channel_type>> channel_map;
     boost::asio::io_context &net_io_context_;
     std::mutex mutex_;
+
+    std::vector<OnPushMesageCallbackType> on_push_message_callbacks;
 
     std::weak_ptr<SDKRoot> root_;
 

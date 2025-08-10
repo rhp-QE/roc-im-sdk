@@ -6,6 +6,7 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/network/request/SDKRequest.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
+#include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 
 #include "base/utils/utils.h"
 
@@ -29,14 +30,15 @@ std::unique_ptr<network::FetchConvMessageListReq> p_make_fetch_conv_message_list
 void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::FetchConvMessageListResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
-    std::vector<const network::MsgData *> msgs;
+    std::vector<std::shared_ptr<network::MsgData>> net_msgs;
 
-    for (auto &msg : resp->messages()) {
-        msgs.push_back(&msg);
+    while (!resp->messages().empty()) {
+        auto msg = resp->mutable_messages()->ReleaseLast();
+        net_msgs.push_back(std::shared_ptr<network::MsgData>(msg));
     }
 
     // 保存消息
-    message::SaveMessage::save_net_msgs(w_sdk_root, msgs);
+    message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs);
 }
 
 asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(W_SDK_ROOT, std::string conv_id, std::pair<int64_t, int64_t> range) {

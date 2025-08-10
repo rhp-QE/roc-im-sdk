@@ -21,6 +21,7 @@
 #include <mutex>
 #include <string>
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
+#include "base/utils/utils.h"
 
 namespace json = boost::json;
 namespace asio = boost::asio;
@@ -63,7 +64,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 }
 
 void SDKConnectionManager::set_on_push_message_callback(OnPushMesageCallbackType callback) {
-    
+    on_push_message_callbacks.push_back(callback);
 }
 
 
@@ -113,7 +114,11 @@ boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::b
         }
 
         if (!channel) {
-            // 转交给 push_message 处理
+            /// 直接转发给所有消息者消费， 自己进行数据解析
+            std::shared_ptr<network::SdkWSResp> s_resp = std::move(resp);
+            for (const auto &callback : on_push_message_callbacks) {
+                base::util::safe_invoke_block(callback, s_resp);
+            }
         } else {
             // 唤醒请求携程
             co_await channel->async_send(boost::system::error_code{}, std::move(resp), boost::asio::use_awaitable);

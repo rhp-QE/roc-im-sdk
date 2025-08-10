@@ -20,11 +20,8 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
 
     co_await imsdk->init_sdk(generateConfig());
 
-    auto response = co_await imsdk->send_message({generateSendMessageContext()});
-    if (response->is_success) {
-        std::cout << "send message success" << std::endl;
-    } else {
-        std::cout << "send message failed" << std::endl;
+    for (int i = 0; i < 1; ++i) {
+        auto response = co_await imsdk->send_message({generateSendMessageContext()});
     }
 
     while(true) {
@@ -38,8 +35,8 @@ inline void test_imsdk() {
 
 inline roc::imsdk::Config generateConfig() {
     roc::imsdk::Config config;
-    config.app_id = "3396";
-    config.user_device_id = "67890";
+    config.app_id = "appid_0000";
+    config.user_device_id = "did_0000";
     config.user_id = "12345";
     config.user_token = "token_mock";
 
@@ -49,7 +46,7 @@ inline roc::imsdk::Config generateConfig() {
 inline roc::imsdk::model::SendMsgContext generateSendMessageContext() {
     roc::imsdk::model::SendMsgContext context;
     context.content = "Hello, world!";
-    context.to_user_id = "67890";
+    context.to_user_id = "24680";
     context.is_group_msg = false;
     return context;
 }

@@ -5787,6 +5787,12 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_data();
   void set_allocated_data(::std::string* data);
 
+  // int32 type = 8;
+  void clear_type();
+  static const int kTypeFieldNumber = 8;
+  ::google::protobuf::int32 type() const;
+  void set_type(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.SdkWSResp)
  private:
 
@@ -5798,6 +5804,7 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::ArenaStringPtr errorcode_;
   ::google::protobuf::internal::ArenaStringPtr errormsg_;
   ::google::protobuf::internal::ArenaStringPtr data_;
+  ::google::protobuf::int32 type_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsSdkWSRespImpl();
@@ -20517,6 +20524,20 @@ inline void SdkWSResp::set_allocated_data(::std::string* data) {
   }
   data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SdkWSResp.data)
+}
+
+// int32 type = 8;
+inline void SdkWSResp::clear_type() {
+  type_ = 0;
+}
+inline ::google::protobuf::int32 SdkWSResp::type() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSResp.type)
+  return type_;
+}
+inline void SdkWSResp::set_type(::google::protobuf::int32 value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.type)
 }
 
 // -------------------------------------------------------------------

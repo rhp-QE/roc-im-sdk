@@ -2,10 +2,13 @@
 
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/message/private/send/SendMessage.h"
+#include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 
 namespace roc::imsdk::core {
 
-MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_sdk_root_(w_sdk_root) {}
+MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_sdk_root_(w_sdk_root) {
+    message::ReceiveMessage::start(w_sdk_root);
+}
 
 MessageManager::~MessageManager() = default;
 
