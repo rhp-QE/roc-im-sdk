@@ -12,39 +12,40 @@ public:
     ConversationORM();
     ~ConversationORM();
 
-    std::string conv_id;
-
+    // Basic conversation info
+    int type;
+    
     std::string name;
-
-    std::string avatar;
-
-    long long conv_type;
-
-    std::string last_message_clent_id;
-
+    
+    int unread_count;
+    
+    std::string avatar_url;
+    
+    int64_t last_message_time;
+    
+    std::string conversation_id;
+    
+    std::string last_message_client_id;
+    
     std::string last_message_server_id;
-
-    long long last_message_time;
-
-    long long unread_count;
-
-    std::string draft;
-
+    
+    // Conversation settings
     bool is_top;
-
+    
+    int64_t mask;
+    
     bool is_muted;
-
+    
     bool is_deleted;
-
-    long long delete_time;
-
+    
     bool is_blocked;
-
-    std::string core_info; // sdk 专用
-
-    std::string ext;
-
-    long long mask;
+    
+    std::string draft;
+    
+    // Extensions
+    std::string sync_ext;
+    
+    std::string local_ext;
 
     WCDB_CPP_ORM_DECLARATION(ConversationORM)
 };

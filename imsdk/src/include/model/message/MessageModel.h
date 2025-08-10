@@ -47,8 +47,11 @@ public:
 private:
 
     int  status_;
+    
     bool is_pinned_;
+    
     bool is_deleted_;
+    
     bool is_recalled_;
 
     bool is_group_msg_;
@@ -56,20 +59,25 @@ private:
     std::string content_;
 
     std::string to_user_id_; 
+    
     std::string from_user_id_;
 
     std::string client_msg_id_;
+    
     std::string server_msg_id_;
 
     std::string conversation_id_;
 
     int64_t client_order_index_;
+    
     int64_t server_order_index_;
 
     int64_t client_send_time_;
+    
     int64_t server_send_time_;
 
     std::unordered_map<std::string, std::string>  sync_ext_;
+    
     std::unordered_map<std::string, std::string>  local_ext_;
 
 };

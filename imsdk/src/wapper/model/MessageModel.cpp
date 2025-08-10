@@ -34,4 +34,41 @@ int64_t MessageModel::server_order_index() {
     return server_order_index_;
 }
 
+// Additional accessor methods
+int MessageModel::status() {
+    return status_;
+}
+
+bool MessageModel::is_pinned() {
+    return is_pinned_;
+}
+
+bool MessageModel::is_deleted() {
+    return is_deleted_;
+}
+
+bool MessageModel::is_recalled() {
+    return is_recalled_;
+}
+
+int64_t MessageModel::client_send_time() {
+    return client_send_time_;
+}
+
+int64_t MessageModel::server_send_time() {
+    return server_send_time_;
+}
+
+std::unordered_map<std::string, std::string> MessageModel::sync_ext() {
+    return sync_ext_;
+}
+
+std::unordered_map<std::string, std::string> MessageModel::local_ext() {
+    return local_ext_;
+}
+
+bool MessageModel::isGroupMessage() {
+    return is_group_msg_;
+}
+
 } // namespace roc::imsdk::model 

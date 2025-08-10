@@ -36,24 +36,67 @@ public:
     std::string conversation_id();
     std::shared_ptr<MessageModel> last_message();
 
+    // Additional accessor methods
+    std::string avatar_url();
+    int64_t last_message_time();
+    std::string last_message_client_id();
+    std::string last_message_server_id();
+    bool is_top();
+    int64_t mask();
+    bool is_muted();
+    bool is_deleted();
+    bool is_blocked();
+    std::string draft();
+    std::unordered_map<std::string, std::string> sync_ext();
+    std::unordered_map<std::string, std::string> local_ext();
+
     friend class roc::imsdk::core::ConversationManager;
     friend class roc::imsdk::core::conversation::Convert;
 
 private:
     ConvType type_;
+    
     std::string name_;
-    std::string avatar_;
+    
     int unread_count_ = 0;
+    
+    std::string avatar_url_;
+    
+    int64_t last_message_time_;
+    
     int64_t last_update_time_;
-    std::string last_message_id_;
+    
     std::string conversation_id_;
+    
+    std::string last_message_id_;
+    
+    std::string last_message_client_id_;
+    
+    std::string last_message_server_id_;
+    
     std::shared_ptr<MessageModel> last_message_;
+
+    bool is_top_;
+    
+    int64_t mask_;
+    
+    bool is_muted_;
+    
+    bool is_deleted_;
+    
+    bool is_blocked_;
+    
+    std::string draft_;
+
+    std::unordered_map<std::string, std::string> sync_ext_;
+    
+    std::unordered_map<std::string, std::string> local_ext_;
 };
 
 
-enum class ConvUpdateReason {
-    UPDATE,
-    DELETE,
+enum class ConvUpdateReason : int {
+    UPDATE = 0,
+    DELETE = 1,
 };
 
 
