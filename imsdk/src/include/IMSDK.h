@@ -104,7 +104,7 @@ public:
 
     /// 用户登录时获取首屏会话，后续加载更多会话 调用 convs_for_user_id
     boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> 
-        convs_when_login(std::string user_id);
+        convs_when_login();
 
     /// 设置会话置顶
     boost::asio::awaitable<bool>

@@ -245,12 +245,15 @@ void LongConnectionClient::p_start_receive_loop() {
 }
 
 boost::asio::awaitable<void> LongConnectionClient::p_receive_loop() {
+    std::string err;
+
     while (running_ && connected_) {
         try {
             // 使用 IWSClient 接口读取数据
             boost::beast::flat_buffer buffer = co_await ws_client_->read();
             p_handle_received_data(std::move(buffer));
         } catch (const std::exception& e) {
+            err = e.what();
             break;
         }
     }
@@ -258,7 +261,7 @@ boost::asio::awaitable<void> LongConnectionClient::p_receive_loop() {
     // 接收循环结束，可能是连接断开
     if (connected_) {
         connected_ = false;
-        p_notify_connection_status(false, "Connection lost");
+        p_notify_connection_status(false, err);
         
         // 启动自动重连
         if (config_.is_auto_reconnect_enabled()) {

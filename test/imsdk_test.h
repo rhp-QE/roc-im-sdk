@@ -20,9 +20,11 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
 
     co_await imsdk->init_sdk(generateConfig());
 
-    for (int i = 0; i < 1; ++i) {
+    for (int i = 0; i < 3; ++i) {
         auto response = co_await imsdk->send_message({generateSendMessageContext()});
     }
+
+    co_await imsdk->convs_when_login();
 
     while(true) {
 

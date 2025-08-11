@@ -13,7 +13,7 @@ struct FetchUserMessageResult {
 
 };
 
-asio::awaitable<void> UserMessageFetcher::fetch_user_messages(W_SDK_ROOT, std::string user_id) {
+asio::awaitable<void> UserMessageFetcher::fetch_user_messages(W_SDK_ROOT) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     auto conv_manager = sdk_root->conversation_manager();
@@ -29,6 +29,8 @@ asio::awaitable<void> UserMessageFetcher::fetch_user_messages(W_SDK_ROOT, std::s
     if (!resp || !resp.has_value()) {
         co_return;
     }
+
+    std::cout<<"fetch user message success"<<std::endl;
 
     co_await handle_fetched_user_message(w_sdk_root, std::move(resp.value()));
 

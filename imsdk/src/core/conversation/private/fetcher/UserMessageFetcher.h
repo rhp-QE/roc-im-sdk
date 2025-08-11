@@ -12,7 +12,7 @@ namespace roc::imsdk::core::conversation {
 class UserMessageFetcher {
 public:
     /// 获取用户消息
-    static boost::asio::awaitable<void> fetch_user_messages(W_SDK_ROOT, std::string user_id);
+    static boost::asio::awaitable<void> fetch_user_messages(W_SDK_ROOT);
     
 private:
     /// 构造获取用户消息列表请求

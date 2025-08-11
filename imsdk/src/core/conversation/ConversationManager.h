@@ -33,7 +33,7 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit);
 
     /// 用户登录时获取首屏会话，后续加载更多会话 调用 convs_for_user_id
-    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> convs_when_login(std::string user_id);
+    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> convs_when_login();
 
     /// 设置会话置顶
     boost::asio::awaitable<bool> set_conv_top(std::string conv_id, bool is_top);
@@ -48,7 +48,7 @@ public:
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root_;
-    int64_t cursor_ = 0;
+    int64_t cursor_ = -1;
 };
 
 } // namespace roc::imsdk::core

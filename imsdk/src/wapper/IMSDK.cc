@@ -75,8 +75,8 @@ boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> IMSDK::conv
     return sdk_root_->conversation_manager()->convs_for_user_id(user_id, cursor, limit);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> IMSDK::convs_when_login(std::string user_id) {
-    return sdk_root_->conversation_manager()->convs_when_login(user_id);
+boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> IMSDK::convs_when_login() {
+    return sdk_root_->conversation_manager()->convs_when_login();
 }
 
 boost::asio::awaitable<bool> IMSDK::set_conv_top(std::string conv_id, bool is_top) {

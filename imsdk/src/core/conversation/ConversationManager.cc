@@ -1,5 +1,6 @@
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/convert/convert.h"
+#include "imsdk/src/core/conversation/private/fetcher/UserMessageFetcher.h"
 
 namespace roc::imsdk::core {
 
@@ -68,8 +69,9 @@ boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> Conversatio
     co_return nullptr;
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> ConversationManager::convs_when_login(std::string user_id) {
+boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> ConversationManager::convs_when_login() {
     // TODO: Implement get first screen conversations when logging in
+    co_await conversation::UserMessageFetcher::fetch_user_messages(w_sdk_root_);
     co_return nullptr;
 }
 

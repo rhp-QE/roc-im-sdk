@@ -31,6 +31,8 @@ void ReceiveMessage::handle_push_message(W_SDK_ROOT, std::shared_ptr<network::Sd
         return;
     }
 
+    std::cout<<"receive push message"<<std::endl;
+
     /// 数据解析
     int a = 100;
 }
