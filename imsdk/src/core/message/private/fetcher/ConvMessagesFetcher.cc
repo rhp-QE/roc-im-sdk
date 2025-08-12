@@ -46,6 +46,7 @@ asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(W_S
     
     // 防止死循环
     int cnt = 10;
+    bool has_more = true;
     do {
         std::unique_ptr<network::FetchConvMessageListReq> req = p_make_fetch_conv_message_list_req(w_sdk_root, conv_id, range);
         if (!req) {
@@ -58,11 +59,12 @@ asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(W_S
         if (!resp.value()) {
             continue;
         }
+        has_more = resp.value()->havemore();
         
         // 处理数据
         p_handle_fetch_conv_messgae_list_resp(w_sdk_root, std::move(resp.value()));
 
-    } while(cnt-- > 0);
+    } while(cnt-- > 0 && has_more);
 }
 
 // ==========================================================================================================

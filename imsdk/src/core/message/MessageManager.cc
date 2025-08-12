@@ -1,16 +1,25 @@
 #include "imsdk/src/core/message/MessageManager.h"
 
+#include "im/base/coroutine.h"
+#include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/message/private/send/SendMessage.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
+#include "imsdk/src/core/message/private/fetcher/ConvMessagesFetcher.h"
 
 namespace roc::imsdk::core {
 
 MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_sdk_root_(w_sdk_root) {
-    message::ReceiveMessage::start(w_sdk_root);
 }
 
 MessageManager::~MessageManager() = default;
+
+void MessageManager::all_component_did_load() {
+    /// 创建BD 如果必要
+    message::DBOpt::create_message_table_if_need(w_sdk_root_);
+    /// 开启消息接收处理逻辑
+    message::ReceiveMessage::start(w_sdk_root_);
+}
 
 /// 保存网络消息
 std::vector<std::shared_ptr<model::MessageModel>> MessageManager::save_net_msgs(std::vector<const network::MsgData *> msgs) {
@@ -66,7 +75,7 @@ boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> MessageM
 }
 
 boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
-    // TODO: Implement get first screen messages when entering chat
+    co_await message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root_, conv_id);
     co_return nullptr;
 }
 

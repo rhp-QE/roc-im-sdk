@@ -5,6 +5,7 @@
 #include <boost/asio/detached.hpp>
 #include <boost/asio/io_context.hpp>
 #include <iostream>
+#include "im/base/coroutine.h"
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/include/config.h"
 #include "BaseConfig.h"
@@ -26,6 +27,9 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
 
     co_await imsdk->convs_when_login();
 
+    co_await imsdk->messages_when_enter_chat("0:1:12345:24680");
+
+    int a = 100;
     while(true) {
 
     }

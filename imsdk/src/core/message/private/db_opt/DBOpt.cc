@@ -29,15 +29,10 @@ bool DBOpt::insert_message(W_SDK_ROOT, std::vector<std::shared_ptr<core::message
     auto database = sdk_root->database();
     CHECK_POINTER_OR_RETURN_VALUE(database, false);
 
-    // TODO: 移动到 Manager 初始化中
-    bool ok = create_message_table_if_need(w_sdk_root);
-
-    std::string table_name = tabel_name(w_sdk_root);
-
     return database->runTransaction([&](WCDB::Handle &handle) {
         bool ret = true;
         for (auto &message : messages) {
-            ret &= database->insertObjects<core::message::MessageORM>(*message, table_name);
+            ret &= database->insertObjects<core::message::MessageORM>(*message, tabel_name(w_sdk_root));
         }
         return ret;
     });

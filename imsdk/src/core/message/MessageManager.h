@@ -15,6 +15,9 @@ class MessageManager : public roc::base::uncopyable {
 public:
     MessageManager(std::weak_ptr<SDKRoot> w_sdk_root);
     ~MessageManager();
+
+    // 组件加载完成后的初始化
+    void all_component_did_load();
     
     // 消息缓存
     void set_sdk_msg(const core::message::MessageORM *msg);

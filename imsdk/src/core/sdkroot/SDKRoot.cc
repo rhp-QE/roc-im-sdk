@@ -59,6 +59,12 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     // 初始化长连接管理器
     co_await connection_manager_->init_and_connect(weak_from_this());
     
+    // 调用各个组件的 all_component_did_load 方法
+    group_manager_->all_component_did_load();
+    message_manager_->all_component_did_load();
+    connection_manager_->all_component_did_load();
+    conversation_manager_->all_component_did_load();
+    
     co_return true;
 }
 

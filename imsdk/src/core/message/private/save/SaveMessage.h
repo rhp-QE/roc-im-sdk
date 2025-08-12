@@ -38,6 +38,9 @@ public:
     static bool mark_messages_as_read(W_SDK_ROOT, const std::vector<std::string> &msg_ids);
 
 private:
+    /// 更新消息缓存
+    static void update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
+    
     /// 更新消息区间
     static void update_message_range_for_message(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 

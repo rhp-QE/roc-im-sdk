@@ -30,11 +30,7 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
     });
 
     // 更新缓存
-    auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {})
-    for (const auto &sdk_msg : sdk_msgs) {
-        msg_manager->msg_cache_[sdk_msg->client_msg_id()] = sdk_msg;
-    }
+    update_msg_cache(w_sdk_root, sdk_msgs);
 
     // 自动更新消息区间
     update_message_range_for_message(w_sdk_root, sdk_msgs);
@@ -240,6 +236,20 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::message_range_for_conv_id(
     }
     
     return {};
+}
+
+/// 更新消息缓存
+void SaveMessage::update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
+    
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_RETURN_VOID(msg_manager);
+    
+    for (const auto &sdk_msg : sdk_msgs) {
+        CHECK_POINTER_OR_RETURN_VOID(sdk_msg);
+        // 通过友元关系访问MessageManager的私有成员
+        msg_manager->msg_cache_[sdk_msg->client_msg_id()] = sdk_msg;
+    }
 }
 
 } // namespace roc::imsdk::core::message

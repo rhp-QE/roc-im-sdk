@@ -20,15 +20,6 @@ fi
 CLANG_VERSION=$(clang++ --version | head -n1)
 echo "🔧 Using Clang: $CLANG_VERSION"
 
-# 检查 Clang 是否支持 C++23
-if ! clang++ -std=c++23 -E -x c++ /dev/null >/dev/null 2>&1; then
-    echo "❌ Error: Your Clang version doesn't support C++23"
-    echo "   Please upgrade to Clang 16+ for full C++23 support"
-    exit 1
-fi
-
-echo "✅ Clang supports C++23"
-
 # 创建构建目录
 BUILD_DIR="build_clang"
 mkdir -p "$BUILD_DIR"

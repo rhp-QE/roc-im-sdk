@@ -1,5 +1,6 @@
 #include "imsdk/src/core/conversation/ConversationManager.h"
-#include "imsdk/src/core/conversation/private/convert/convert.h"
+#include "imsdk/src/core/conversation/private/db_opt/DBOpt.h"
+#include "imsdk/src/core/conversation/private/save/SaveConversation.h"
 #include "imsdk/src/core/conversation/private/fetcher/UserMessageFetcher.h"
 
 namespace roc::imsdk::core {
@@ -8,55 +9,35 @@ ConversationManager::ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_
 
 ConversationManager::~ConversationManager() = default;
 
+void ConversationManager::all_component_did_load() {
+    /// 创建数据库表
+    conversation::DBOpt::create_conversation_table_if_need(w_sdk_root_);
+}
+
 std::vector<std::shared_ptr<model::ConversationModel>> ConversationManager::save_net_convs(std::vector<const network::ConversationInfo *> convs) {
-    std::vector<std::shared_ptr<model::ConversationModel>> sdk_convs;
-    
-    for (const auto &conv : convs) {
-        if (!conv) continue;
-        
-        // 转换为 db 会话
-        auto db_conv = core::conversation::Convert::convert_net_conv_to_db_conv(conv);
-        if (!db_conv) continue;
-        
-        // 转换为 sdk 会话
-        auto sdk_conv = core::conversation::Convert::convert_db_conv_to_sdk_conv(db_conv.get());
-        if (sdk_conv) {
-            sdk_convs.push_back(sdk_conv);
-        }
-    }
-    
-    return sdk_convs;
+    return conversation::SaveConversation::save_net_convs(w_sdk_root_, convs);
 }
 
 void ConversationManager::set_sdk_conv(const core::conversation::ConversationORM *conv) {
-    if (!conv) return;
-    
-    // 转换为 sdk 会话并缓存
-    auto sdk_conv = core::conversation::Convert::convert_db_conv_to_sdk_conv(conv);
-    if (sdk_conv) {
-        // TODO: 实现会话缓存逻辑
-        // conv_cache_[conv->conv_id] = sdk_conv;
-    }
+    conversation::SaveConversation::set_sdk_conv(w_sdk_root_, conv);
 }
 
 std::shared_ptr<model::ConversationModel> ConversationManager::sdk_conv_for_id(std::string conv_id) {
-    // TODO: 实现从缓存获取会话的逻辑
-    // return conv_cache_[conv_id];
-    return nullptr;
+    return conversation::SaveConversation::sdk_conv_for_id(w_sdk_root_, conv_id);
 }
 
 int64_t ConversationManager::cursor() {
-    return cursor_;
+    return conversation::SaveConversation::get_cursor(w_sdk_root_);
 }
 
 void ConversationManager::set_cursor(int64_t cursor) {
-    cursor_ = cursor;
+    conversation::SaveConversation::set_cursor(w_sdk_root_, cursor);
 }
 
 // =============================  conversation api implementations  ======================================
 
 void ConversationManager::on_conv_update(model::OnConvUpdateCallbackType callback) {
-    // TODO: Implement conversation update callback
+    on_conv_update_callback_ = callback;
 }
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::conv_for_id(std::string conv_id) {

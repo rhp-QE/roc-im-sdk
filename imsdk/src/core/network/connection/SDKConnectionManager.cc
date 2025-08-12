@@ -67,6 +67,10 @@ void SDKConnectionManager::set_on_push_message_callback(OnPushMesageCallbackType
     on_push_message_callbacks.push_back(callback);
 }
 
+void SDKConnectionManager::all_component_did_load() {
+    // 组件加载完成后的初始化逻辑
+}
+
 
 boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> SDKConnectionManager::send_request(network::SdkWSReq *req) {
     std::shared_ptr<SDKRoot> root = root_.lock();
