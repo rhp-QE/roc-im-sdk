@@ -20,7 +20,7 @@ namespace roc::imsdk::core::conversation {
 class SaveConversation {
 public:
     /// 保存网络会话
-    static std::vector<std::shared_ptr<model::ConversationModel>> save_net_convs(W_SDK_ROOT, std::vector<const network::ConversationInfo *> convs);
+    static std::vector<std::shared_ptr<model::ConversationModel>> save_net_convs(W_SDK_ROOT, std::vector<std::shared_ptr<network::ConversationInfo>> convs);
     
     /// 设置 SDK 会话
     static void set_sdk_conv(W_SDK_ROOT, const core::conversation::ConversationORM *conv);

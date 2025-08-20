@@ -3,6 +3,7 @@
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
+#include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 
 // Forward declaration
 namespace roc::imsdk::core::message {
@@ -24,21 +25,20 @@ public:
     std::shared_ptr<model::MessageModel> sdk_msg_for_id(std::string msg_id);
 
     // 收到消息回调
-    model::OnReceiveMessagesCallbackType on_receive_message_callback();
+    model::OnMessagesCallbackType on_receive_message_callback();
 
     // 保存网络消息
-    std::vector<std::shared_ptr<model::MessageModel>> save_net_msgs(std::vector<const network::MsgData *> msgs);
+    // std::vector<std::shared_ptr<model::MessageModel>> save_net_msgs(std::vector<const network::MsgData *> msgs);
+
+    void handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs);
 
     // 发送消息
     boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message(std::vector<model::SendMsgContext> contexts);
 
     // =============================  message api  ======================================
     
-    /// 消息更新回调
-    void on_message_update(model::OnMessageUpdateCallbackType callback);
-
     /// 接收消息回调
-    void on_receive_messages(model::OnReceiveMessagesCallbackType callback);
+    void on_messages(model::OnMessagesCallbackType callback);
 
     /// 删除消息
     boost::asio::awaitable<bool> delete_message(const std::vector<std::string> &msg_ids);
@@ -67,8 +67,7 @@ private:
     std::weak_ptr<SDKRoot> w_sdk_root_;
 
     /// 收到消息回调
-    model::OnReceiveMessagesCallbackType on_receive_message_callback_;
-    model::OnMessageUpdateCallbackType on_message_update_callback_;
+    model::OnMessagesCallbackType on_messages_callback_;
 
     /// 消息缓存
     std::unordered_map<std::string, std::shared_ptr<model::MessageModel>> msg_cache_;
@@ -78,7 +77,8 @@ private:
 
     // 友元类，允许SaveMessage访问私有成员
     friend class roc::imsdk::core::message::SaveMessage;
-
+    friend class roc::imsdk::core::message::Convert;
+    friend class roc::imsdk::core::message::ReceiveMessage;
 
 };
 

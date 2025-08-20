@@ -84,8 +84,11 @@ private:
 
 
 enum class MessageUpdateReson {
-    DELETE,
-    UPDATE,
+    DELETE,   // 删除消息
+    UPDATE,   // 更新消息
+    RECALL,   // 撤回消息
+    OFFLINE,  // 离线消息
+    DB_EMPTY, // 因BD为空而补齐的消息
 };
 
 
@@ -114,17 +117,32 @@ struct QueryConvMessagesResult {
 };
 
 
-struct ReceiveMessagesResult {
-    // 会话id -> 消息列表
-    std::unordered_map<std::string, std::vector<std::shared_ptr<const MessageModel>>> msgs;
+struct OnMessageResult {
+    /// 删除的消息
+    std::vector<std::shared_ptr<const MessageModel>> deleted_msgs;
+
+    /// 撤回的消息
+    std::vector<std::shared_ptr<const MessageModel>> recalled_msgs;
+
+    /// 更新的消息
+    std::vector<std::shared_ptr<const MessageModel>> updated_msgs; 
+
+    /// 实时消息 (在线收到的消息)
+    std::vector<std::shared_ptr<const MessageModel>> real_time_msgs;
+
+    /// 离线消息 (本设备离线状态下且没有被别的设备接收过的消息)
+    std::vector<std::shared_ptr<const MessageModel>> offline_not_received_msgs;
+
+    /// 空洞消息 (本设备离线状态下被别的设备接收过的消息 或 因本地数据库损坏而补齐的消息)
+    std::vector<std::shared_ptr<const MessageModel>> offline_received_msgs;
+    
     // 会话id -> 会话信息
     std::unordered_map<std::string, std::shared_ptr<const ConversationModel>> convs;
 };
 
 
 // callback -------------
-using OnMessageUpdateCallbackType = std::function<void(std::shared_ptr<const MessageModel> msg, MessageUpdateReson reason)>;
-using OnReceiveMessagesCallbackType = std::function<void(ReceiveMessagesResult result)>;
+using OnMessagesCallbackType = std::function<void(OnMessageResult result)>;
 // ------------------------
 
 }

@@ -6,6 +6,7 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/network/request/SDKRequest.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include <memory>
 
 namespace roc::imsdk::core::conversation {
 
@@ -59,22 +60,29 @@ boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(W_S
     auto msg_manager = sdk_root->message_manager();
     auto conv_manager = sdk_root->conversation_manager();
 
-    std::vector<const network::ConversationInfo *> net_convs;
-    std::vector<const network::MsgData *> net_msgs;
+    std::vector<std::shared_ptr<network::ConversationInfo>> net_convs;
+    std::vector<std::shared_ptr<network::MsgData>> net_msgs;
 
+    auto convs = resp->mutable_convsinfo();
 
-    for (auto &conv : resp->convsinfo()) {
-        net_convs.push_back(&conv);
-        for (auto &msg : conv.msgs()) {
-            if (msg.iscmd()) {
+    while (!convs->empty()) {
+        auto conv = convs->ReleaseLast();
+
+        auto msgs = conv->mutable_msgs();
+        while (!msgs->empty()) {
+            auto msg = msgs->ReleaseLast();
+            if (msg->iscmd()) {
                 continue;
             }
-            net_msgs.push_back(&(msg.msg()));
+            net_msgs.push_back(std::shared_ptr<network::MsgData>(msg->release_msg()));
         }
+
+        net_convs.push_back(std::shared_ptr<network::ConversationInfo>(conv));
     }
 
     // 保存消息和会话
-    msg_manager->save_net_msgs(net_msgs);
+    msg_manager->handle_receive_message(net_msgs);
+
     conv_manager->save_net_convs(net_convs);
 
     // 更新游标

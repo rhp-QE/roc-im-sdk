@@ -3,6 +3,7 @@
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
+#include "imsdk/src/core/message/db_model/MessageORM.h"
 
 namespace roc::imsdk::core::message {
 
@@ -17,6 +18,9 @@ private:
     
     /// 将发送上下文转换为网络消息
     static void convert_send_context_to_sdkws_message(W_SDK_ROOT, const model::SendMsgContext &contexts, std::string client_msg_id, network::MsgData *req);
+    
+    /// 将发送上下文转换为MessageORM对象
+    static std::shared_ptr<MessageORM> convert_send_context_to_message_orm(W_SDK_ROOT, const model::SendMsgContext &context, std::string client_msg_id);
 };
 
 } // namespace roc::imsdk::core::message

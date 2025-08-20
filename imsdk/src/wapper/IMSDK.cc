@@ -23,12 +23,8 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> IMSDK::send_
     return sdk_root_->message_manager()->send_message(context);
 }
 
-void IMSDK::on_message_update(model::OnMessageUpdateCallbackType callback) {
-    sdk_root_->message_manager()->on_message_update(callback);
-}
-
-void IMSDK::on_receive_messages(model::OnReceiveMessagesCallbackType callback) {
-    sdk_root_->message_manager()->on_receive_messages(callback);
+void IMSDK::on_messagee(model::OnMessagesCallbackType callback) {
+    sdk_root_->message_manager()->on_messages(callback);
 }
 
 boost::asio::awaitable<bool> IMSDK::delete_message(const std::vector<std::string> &msg_ids) {

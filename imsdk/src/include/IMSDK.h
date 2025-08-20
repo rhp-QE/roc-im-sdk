@@ -52,10 +52,7 @@ public:
         send_message(const std::vector<model::SendMsgContext> &context);
     
     /// 消息更新回调
-    void on_message_update(model::OnMessageUpdateCallbackType callback);
-
-    /// 接收消息回调
-    void on_receive_messages(model::OnReceiveMessagesCallbackType callback);
+    void on_messagee(model::OnMessagesCallbackType callback);
 
     /// 删除消息
     boost::asio::awaitable<bool>

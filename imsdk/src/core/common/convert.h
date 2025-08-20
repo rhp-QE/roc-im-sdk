@@ -4,7 +4,7 @@
 
 namespace roc::imsdk::core {
 
-model::ReceiveMessagesResult convert_sdk_msgs_to_receive_msgs_result(std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs);
+model::OnMessageResult convert_sdk_msgs_to_receive_msgs_result(std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs);
 
 
 

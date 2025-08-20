@@ -14,7 +14,7 @@ void ConversationManager::all_component_did_load() {
     conversation::DBOpt::create_conversation_table_if_need(w_sdk_root_);
 }
 
-std::vector<std::shared_ptr<model::ConversationModel>> ConversationManager::save_net_convs(std::vector<const network::ConversationInfo *> convs) {
+std::vector<std::shared_ptr<model::ConversationModel>> ConversationManager::save_net_convs(std::vector<std::shared_ptr<network::ConversationInfo>> convs) {
     return conversation::SaveConversation::save_net_convs(w_sdk_root_, convs);
 }
 

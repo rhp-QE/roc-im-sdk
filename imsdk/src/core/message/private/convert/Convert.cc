@@ -62,11 +62,23 @@ std::shared_ptr<core::message::MessageORM> Convert::convert_net_msg_to_db_msg(co
 }
 
 /// 消息转换 db 消息 -> sdk 消息
-std::shared_ptr<model::MessageModel> Convert::convert_db_msg_to_sdk_msg(const core::message::MessageORM *db_msg) {
-    if (!db_msg) {
+/// sdk 消息需要确保全局实例唯一性， 要从 cache 内查， 没有再构造
+std::shared_ptr<model::MessageModel> Convert::convert_db_msg_to_sdk_msg(W_SDK_ROOT, const core::message::MessageORM *db_msg) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
+
+    if (!db_msg || db_msg->client_msg_id.empty()) {
         return nullptr;
     }
-    std::shared_ptr<model::MessageModel> sdk_msg = std::make_shared<model::MessageModel>();
+
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, nullptr);
+
+    std::shared_ptr<model::MessageModel> sdk_msg;
+    if (msg_manager->msg_cache_.find(db_msg->client_msg_id) != msg_manager->msg_cache_.end()) {
+        sdk_msg = msg_manager->msg_cache_[db_msg->client_msg_id];
+    } else {
+        sdk_msg = std::make_shared<model::MessageModel>();
+    }
     
     // Status and flags
     sdk_msg->status_ = db_msg->status;

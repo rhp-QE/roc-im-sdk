@@ -37,6 +37,9 @@ void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::
         net_msgs.push_back(std::shared_ptr<network::MsgData>(msg));
     }
 
+    // received = true 表示为客户端空洞消息。  received = false 表示为离线。
+    
+
     // 保存消息
     message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs);
 }

@@ -254,7 +254,8 @@ message MsgData {
   bool isGroupMsg = 27;                 // 是否是群消息
   int64 clientSendTime = 29;            // 客户端消息发送时间戳
   int64 serverSendTime = 30;            // 服务端消息发送时间戳
-  string syncExt = 31;     // 同步扩展字段
+  string syncExt = 31;                  // 同步扩展字段
+  int32 dStatus = 32;                   // 状态， 二进制掩码  0：实时消息 1：离线消息（没有被接收过） 2：消息更新
 }
 
 // 发送消息 --------------------------------
@@ -345,6 +346,7 @@ message SdkWSReq {
   bytes data = 5; // 数据
   int32 type = 6; // 请求类型
   // 101: 发送消息  102：拉取单链  103：拉取混链
+  // 104: 下推用户消息  105: 下推命令消息
 }
 
 message SdkWSResp {

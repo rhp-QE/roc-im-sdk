@@ -3998,6 +3998,12 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   bool isgroupmsg() const;
   void set_isgroupmsg(bool value);
 
+  // int64 dStatus = 32;
+  void clear_dstatus();
+  static const int kDStatusFieldNumber = 32;
+  ::google::protobuf::int64 dstatus() const;
+  void set_dstatus(::google::protobuf::int64 value);
+
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.MsgData)
  private:
 
@@ -4036,6 +4042,7 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int64 clientsendtime_;
   ::google::protobuf::int64 serversendtime_;
   bool isgroupmsg_;
+  ::google::protobuf::int64 dstatus_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsMsgDataImpl();
@@ -18713,6 +18720,20 @@ inline void MsgData::set_allocated_syncext(::std::string* syncext) {
   }
   syncext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), syncext);
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.syncExt)
+}
+
+// int64 dStatus = 32;
+inline void MsgData::clear_dstatus() {
+  dstatus_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 MsgData::dstatus() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.dStatus)
+  return dstatus_;
+}
+inline void MsgData::set_dstatus(::google::protobuf::int64 value) {
+  
+  dstatus_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.dStatus)
 }
 
 // -------------------------------------------------------------------

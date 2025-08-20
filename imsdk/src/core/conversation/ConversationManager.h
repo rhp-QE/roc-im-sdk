@@ -28,7 +28,7 @@ public:
     void set_cursor(int64_t cursor);
 
     /// 保存网络会话
-    std::vector<std::shared_ptr<model::ConversationModel>> save_net_convs(std::vector<const network::ConversationInfo *> convs);
+    std::vector<std::shared_ptr<model::ConversationModel>> save_net_convs(std::vector<std::shared_ptr<network::ConversationInfo>> convs);
 
     // =============================  conversation api  ======================================
 

@@ -1,6 +1,5 @@
 #include "imsdk/src/core/message/MessageManager.h"
 
-#include "im/base/coroutine.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/message/private/send/SendMessage.h"
@@ -22,25 +21,23 @@ void MessageManager::all_component_did_load() {
 }
 
 /// 保存网络消息
-std::vector<std::shared_ptr<model::MessageModel>> MessageManager::save_net_msgs(std::vector<const network::MsgData *> msgs) {
-    return message::SaveMessage::save_net_msgs(w_sdk_root_, msgs);
-}
+// std::vector<std::shared_ptr<model::MessageModel>> MessageManager::save_net_msgs(std::vector<const network::MsgData *> msgs) {
+//     return message::SaveMessage::save_net_msgs(w_sdk_root_, msgs);
+// }
 
 /// 设置 sdk 消息
 void MessageManager::set_sdk_msg(const core::message::MessageORM *db_msg) {
     message::SaveMessage::set_sdk_msg(w_sdk_root_, db_msg);
 }
 
-
+void MessageManager::handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
+    message::ReceiveMessage::handle_receive_message(w_sdk_root_, net_msgs);
+}
 
 // =============================  message api implementations  ======================================
 
-void MessageManager::on_message_update(model::OnMessageUpdateCallbackType callback) {
-    on_message_update_callback_ = callback;
-}
-
-void MessageManager::on_receive_messages(model::OnReceiveMessagesCallbackType callback) {
-    on_receive_message_callback_ = callback;
+void MessageManager::on_messages(model::OnMessagesCallbackType callback) {
+    on_messages_callback_ = callback;
 }
 
 boost::asio::awaitable<bool> MessageManager::delete_message(const std::vector<std::string> &msg_ids) {

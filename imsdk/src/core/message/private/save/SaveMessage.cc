@@ -19,14 +19,14 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
     });
 
     // 保存到数据库
-    bool ret = message::DBOpt::insert_message(w_sdk_root, db_msgs);
+    bool ret = message::DBOpt::insert_or_replace_message(w_sdk_root, db_msgs);
     if (!ret) {
         return {};
     }
 
     // 转换为 sdk 消息
-    auto sdk_msgs = base::util::transform(db_msgs, [](const std::shared_ptr<core::message::MessageORM> &msg) {
-        return core::message::Convert::convert_db_msg_to_sdk_msg(msg.get());
+    auto sdk_msgs = base::util::transform(db_msgs, [w_sdk_root](const std::shared_ptr<core::message::MessageORM> &msg) {
+        return core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg.get());
     });
 
     // 更新缓存
@@ -48,7 +48,7 @@ void SaveMessage::set_sdk_msg(W_SDK_ROOT, const core::message::MessageORM *msg) 
     CHECK_POINTER_OR_RETURN_VOID(msg_manager);
 
     // 转换为SDK消息并保存到缓存
-    auto sdk_msg = core::message::Convert::convert_db_msg_to_sdk_msg(msg);
+    auto sdk_msg = core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg);
     if (sdk_msg) {
         // 通过友元关系访问MessageManager的私有成员
         msg_manager->msg_cache_[msg->client_msg_id] = sdk_msg;
@@ -104,9 +104,10 @@ void SaveMessage::update_message_range_for_message(W_SDK_ROOT, const std::vector
 
         auto current_ranges = msg_manager->msg_range_cache_[conv_id];
 
-        msg_manager->msg_range_cache_[conv_id] = merge_ranges(input_ranges, current_ranges);
+        std::vector<std::pair<int64_t, int64_t>> new_ranges = merge_ranges(input_ranges, current_ranges);
 
-        auto res = msg_manager->msg_range_cache_[conv_id];
+        msg_manager->msg_range_cache_[conv_id] = new_ranges;
+        message::DBOpt::save_message_range(w_sdk_root, new_ranges, conv_id);
     }
 }
 
@@ -137,6 +138,17 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::empty_message_range_for_co
     }
 
     return empty_ranges;
+}
+
+void SaveMessage::load_message_from_db(W_SDK_ROOT, std::string conv_id) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+
+    // load message range
+    auto ranges = message::DBOpt::message_range(sdk_root, conv_id);
+    sdk_root->message_manager()->msg_range_cache_[conv_id] = ranges;
+
+    // load message
+
 }
 
 /// 生成客户端消息 ID

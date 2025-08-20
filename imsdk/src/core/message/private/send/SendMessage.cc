@@ -10,6 +10,7 @@
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 
 #include <memory>
+#include <chrono>
 
 namespace roc::imsdk::core::message {
 
@@ -33,6 +34,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
         /// 将 context 转为 net_msg
         convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, req->add_msgs());
     }
+
 
     // TODO: 先将消息上抛给用户， 消息状态为发送中。 等 response 回来后 在上抛给用户，消息状态为 发送成功
 
@@ -123,6 +125,44 @@ void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, const model:
         net_msg->set_convid(conv_id);
     }
 }   
+
+std::shared_ptr<MessageORM> SendMessage::convert_send_context_to_message_orm(W_SDK_ROOT, const model::SendMsgContext &context, std::string client_msg_id) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
+    
+    auto message_orm = std::make_shared<MessageORM>();
+    
+    // 设置基本信息
+    message_orm->content = context.content;
+    message_orm->client_msg_id = client_msg_id;
+    message_orm->conversation_id = context.conv_id;
+    message_orm->from_user_id = sdk_root->config().user_id; // 从SDKRoot获取当前用户ID
+    message_orm->to_user_id = context.to_user_id;
+    
+    // 设置消息类型
+    message_orm->is_group_msg = context.is_group_msg;
+    
+    // 设置扩展信息
+    message_orm->sync_ext = context.sync_ext;
+    message_orm->local_ext = context.local_ext;
+    
+    // 设置状态和标志
+    message_orm->status = 0; // 默认状态
+    message_orm->is_pinned = false;
+    message_orm->is_deleted = false;
+    message_orm->is_recalled = false;
+    
+    // 设置时间戳
+    message_orm->client_send_time = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()
+    ).count();
+    message_orm->server_send_time = 0; // 服务器时间戳，发送成功后设置
+    
+    // 设置顺序索引
+    message_orm->client_order_index = 0; // 需要生成客户端顺序索引
+    message_orm->server_order_index = 0; // 服务器顺序索引，发送成功后设置
+    
+    return message_orm;
+}
 
 // -------------------------------------------------------------------------------------
 

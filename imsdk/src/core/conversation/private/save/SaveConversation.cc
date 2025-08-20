@@ -10,12 +10,12 @@
 namespace roc::imsdk::core::conversation {
 
 /// 保存网络会话
-std::vector<std::shared_ptr<model::ConversationModel>> SaveConversation::save_net_convs(W_SDK_ROOT, std::vector<const network::ConversationInfo *> convs) {
+std::vector<std::shared_ptr<model::ConversationModel>> SaveConversation::save_net_convs(W_SDK_ROOT, std::vector<std::shared_ptr<network::ConversationInfo>> convs) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
     
     // 转换为 db 会话
-    auto db_convs = base::util::transform(convs, [](const network::ConversationInfo *conv) {
-        return core::conversation::Convert::convert_net_conv_to_db_conv(conv);
+    auto db_convs = base::util::transform(convs, [](const std::shared_ptr<network::ConversationInfo> &conv) {
+        return core::conversation::Convert::convert_net_conv_to_db_conv(conv.get());
     });
 
     // 转换为 sdk 会话
