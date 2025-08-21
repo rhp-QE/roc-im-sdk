@@ -4,6 +4,7 @@
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/message/private/send/SendMessage.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
+#include "imsdk/src/core/message/private/cmd/CmdMessageOperator.h"
 #include "imsdk/src/core/message/private/fetcher/ConvMessagesFetcher.h"
 
 namespace roc::imsdk::core {
@@ -18,12 +19,10 @@ void MessageManager::all_component_did_load() {
     message::DBOpt::create_message_table_if_need(w_sdk_root_);
     /// 开启消息接收处理逻辑
     message::ReceiveMessage::start(w_sdk_root_);
+    /// 开启命令消息处理逻辑
+    message::CmdMessageOperator::start(w_sdk_root_);
 }
 
-/// 保存网络消息
-// std::vector<std::shared_ptr<model::MessageModel>> MessageManager::save_net_msgs(std::vector<const network::MsgData *> msgs) {
-//     return message::SaveMessage::save_net_msgs(w_sdk_root_, msgs);
-// }
 
 /// 设置 sdk 消息
 void MessageManager::set_sdk_msg(const core::message::MessageORM *db_msg) {

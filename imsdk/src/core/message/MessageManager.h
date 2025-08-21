@@ -4,6 +4,7 @@
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
+#include "imsdk/src/core/message/private/cmd/CmdMessageOperator.h"
 
 // Forward declaration
 namespace roc::imsdk::core::message {
@@ -76,9 +77,10 @@ private:
     std::unordered_map<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> msg_range_cache_;
 
     // 友元类，允许SaveMessage访问私有成员
-    friend class roc::imsdk::core::message::SaveMessage;
     friend class roc::imsdk::core::message::Convert;
+    friend class roc::imsdk::core::message::SaveMessage;
     friend class roc::imsdk::core::message::ReceiveMessage;
+    friend class roc::imsdk::core::message::CmdMessageOperator;
 
 };
 

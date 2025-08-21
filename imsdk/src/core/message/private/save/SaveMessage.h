@@ -51,8 +51,6 @@ private:
     /// 获取会话的消息区间
     static std::vector<std::pair<int64_t, int64_t>> message_range_for_conv_id(W_SDK_ROOT, const std::string &conv_id);
 
-    /// 将消息分为两组， 一组是新消息， 一组是更新消息  根据本地是否有来判断
-
     // 给定一个数字序列，生成若干区间。 一个区间内的所有数字都在 给定的数组序列内。 区间内数字是连续的，左右都闭合。
     static std::vector<std::pair<int64_t, int64_t>> generate_range(std::vector<int64_t> seqs);
 

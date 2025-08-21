@@ -102,16 +102,12 @@ void InitDefaultsPushMessagesImpl();
 void InitDefaultsPushMessages();
 void InitDefaultsCmdMessageImpl();
 void InitDefaultsCmdMessage();
-void InitDefaultsMessageUnionImpl();
-void InitDefaultsMessageUnion();
 void InitDefaultsFetchConvMessageListReqImpl();
 void InitDefaultsFetchConvMessageListReq();
 void InitDefaultsFetchConvMessageListRespImpl();
 void InitDefaultsFetchConvMessageListResp();
 void InitDefaultsFetchUserMessageListReqImpl();
 void InitDefaultsFetchUserMessageListReq();
-void InitDefaultsConversationInfoImpl();
-void InitDefaultsConversationInfo();
 void InitDefaultsFetchUserMessageListRespImpl();
 void InitDefaultsFetchUserMessageListResp();
 void InitDefaultsSdkWSReqImpl();
@@ -263,11 +259,9 @@ inline void InitDefaults() {
   InitDefaultsSendMessageResp();
   InitDefaultsPushMessages();
   InitDefaultsCmdMessage();
-  InitDefaultsMessageUnion();
   InitDefaultsFetchConvMessageListReq();
   InitDefaultsFetchConvMessageListResp();
   InitDefaultsFetchUserMessageListReq();
-  InitDefaultsConversationInfo();
   InitDefaultsFetchUserMessageListResp();
   InitDefaultsSdkWSReq();
   InitDefaultsSdkWSResp();
@@ -3986,23 +3980,23 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int64 clientsendtime() const;
   void set_clientsendtime(::google::protobuf::int64 value);
 
-  // int64 serverSendTime = 30;
-  void clear_serversendtime();
-  static const int kServerSendTimeFieldNumber = 30;
-  ::google::protobuf::int64 serversendtime() const;
-  void set_serversendtime(::google::protobuf::int64 value);
-
   // bool isGroupMsg = 27;
   void clear_isgroupmsg();
   static const int kIsGroupMsgFieldNumber = 27;
   bool isgroupmsg() const;
   void set_isgroupmsg(bool value);
 
-  // int64 dStatus = 32;
+  // int32 dStatus = 32;
   void clear_dstatus();
   static const int kDStatusFieldNumber = 32;
-  ::google::protobuf::int64 dstatus() const;
-  void set_dstatus(::google::protobuf::int64 value);
+  ::google::protobuf::int32 dstatus() const;
+  void set_dstatus(::google::protobuf::int32 value);
+
+  // int64 serverSendTime = 30;
+  void clear_serversendtime();
+  static const int kServerSendTimeFieldNumber = 30;
+  ::google::protobuf::int64 serversendtime() const;
+  void set_serversendtime(::google::protobuf::int64 value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.MsgData)
  private:
@@ -4040,9 +4034,9 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   bool isrecalled_;
   bool ispinned_;
   ::google::protobuf::int64 clientsendtime_;
-  ::google::protobuf::int64 serversendtime_;
   bool isgroupmsg_;
-  ::google::protobuf::int64 dstatus_;
+  ::google::protobuf::int32 dstatus_;
+  ::google::protobuf::int64 serversendtime_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsMsgDataImpl();
@@ -4578,6 +4572,24 @@ class CmdMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
+  // .roc.imsdk.network.MsgData msg = 2;
+  bool has_msg() const;
+  void clear_msg();
+  static const int kMsgFieldNumber = 2;
+  const ::roc::imsdk::network::MsgData& msg() const;
+  ::roc::imsdk::network::MsgData* release_msg();
+  ::roc::imsdk::network::MsgData* mutable_msg();
+  void set_allocated_msg(::roc::imsdk::network::MsgData* msg);
+
+  // .roc.imsdk.network.ConversationInfo convInfo = 3;
+  bool has_convinfo() const;
+  void clear_convinfo();
+  static const int kConvInfoFieldNumber = 3;
+  const ::roc::imsdk::network::ConversationInfo& convinfo() const;
+  ::roc::imsdk::network::ConversationInfo* release_convinfo();
+  ::roc::imsdk::network::ConversationInfo* mutable_convinfo();
+  void set_allocated_convinfo(::roc::imsdk::network::ConversationInfo* convinfo);
+
   // int32 cmd = 1;
   void clear_cmd();
   static const int kCmdFieldNumber = 1;
@@ -4588,6 +4600,8 @@ class CmdMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::roc::imsdk::network::MsgData* msg_;
+  ::roc::imsdk::network::ConversationInfo* convinfo_;
   ::google::protobuf::int32 cmd_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
@@ -4710,7 +4724,7 @@ class MessageUnion : public ::google::protobuf::Message /* @@protoc_insertion_po
   bool iscmd_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
-  friend void ::protobuf_sdkws_2eproto::InitDefaultsMessageUnionImpl();
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageImpl();
 };
 // -------------------------------------------------------------------
 
@@ -5317,7 +5331,7 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   bool isblocked_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
-  friend void ::protobuf_sdkws_2eproto::InitDefaultsConversationInfoImpl();
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageImpl();
 };
 // -------------------------------------------------------------------
 
@@ -18722,15 +18736,15 @@ inline void MsgData::set_allocated_syncext(::std::string* syncext) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.syncExt)
 }
 
-// int64 dStatus = 32;
+// int32 dStatus = 32;
 inline void MsgData::clear_dstatus() {
-  dstatus_ = GOOGLE_LONGLONG(0);
+  dstatus_ = 0;
 }
-inline ::google::protobuf::int64 MsgData::dstatus() const {
+inline ::google::protobuf::int32 MsgData::dstatus() const {
   // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.dStatus)
   return dstatus_;
 }
-inline void MsgData::set_dstatus(::google::protobuf::int64 value) {
+inline void MsgData::set_dstatus(::google::protobuf::int32 value) {
   
   dstatus_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.dStatus)
@@ -19014,6 +19028,106 @@ inline void CmdMessage::set_cmd(::google::protobuf::int32 value) {
   
   cmd_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.CmdMessage.cmd)
+}
+
+// .roc.imsdk.network.MsgData msg = 2;
+inline bool CmdMessage::has_msg() const {
+  return this != internal_default_instance() && msg_ != NULL;
+}
+inline void CmdMessage::clear_msg() {
+  if (GetArenaNoVirtual() == NULL && msg_ != NULL) {
+    delete msg_;
+  }
+  msg_ = NULL;
+}
+inline const ::roc::imsdk::network::MsgData& CmdMessage::msg() const {
+  const ::roc::imsdk::network::MsgData* p = msg_;
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessage.msg)
+  return p != NULL ? *p : *reinterpret_cast<const ::roc::imsdk::network::MsgData*>(
+      &::roc::imsdk::network::_MsgData_default_instance_);
+}
+inline ::roc::imsdk::network::MsgData* CmdMessage::release_msg() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.CmdMessage.msg)
+  
+  ::roc::imsdk::network::MsgData* temp = msg_;
+  msg_ = NULL;
+  return temp;
+}
+inline ::roc::imsdk::network::MsgData* CmdMessage::mutable_msg() {
+  
+  if (msg_ == NULL) {
+    msg_ = new ::roc::imsdk::network::MsgData;
+  }
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.CmdMessage.msg)
+  return msg_;
+}
+inline void CmdMessage::set_allocated_msg(::roc::imsdk::network::MsgData* msg) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete msg_;
+  }
+  if (msg) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      msg = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, msg, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  msg_ = msg;
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.CmdMessage.msg)
+}
+
+// .roc.imsdk.network.ConversationInfo convInfo = 3;
+inline bool CmdMessage::has_convinfo() const {
+  return this != internal_default_instance() && convinfo_ != NULL;
+}
+inline void CmdMessage::clear_convinfo() {
+  if (GetArenaNoVirtual() == NULL && convinfo_ != NULL) {
+    delete convinfo_;
+  }
+  convinfo_ = NULL;
+}
+inline const ::roc::imsdk::network::ConversationInfo& CmdMessage::convinfo() const {
+  const ::roc::imsdk::network::ConversationInfo* p = convinfo_;
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessage.convInfo)
+  return p != NULL ? *p : *reinterpret_cast<const ::roc::imsdk::network::ConversationInfo*>(
+      &::roc::imsdk::network::_ConversationInfo_default_instance_);
+}
+inline ::roc::imsdk::network::ConversationInfo* CmdMessage::release_convinfo() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.CmdMessage.convInfo)
+  
+  ::roc::imsdk::network::ConversationInfo* temp = convinfo_;
+  convinfo_ = NULL;
+  return temp;
+}
+inline ::roc::imsdk::network::ConversationInfo* CmdMessage::mutable_convinfo() {
+  
+  if (convinfo_ == NULL) {
+    convinfo_ = new ::roc::imsdk::network::ConversationInfo;
+  }
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.CmdMessage.convInfo)
+  return convinfo_;
+}
+inline void CmdMessage::set_allocated_convinfo(::roc::imsdk::network::ConversationInfo* convinfo) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete convinfo_;
+  }
+  if (convinfo) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      convinfo = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, convinfo, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  convinfo_ = convinfo;
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.CmdMessage.convInfo)
 }
 
 // -------------------------------------------------------------------

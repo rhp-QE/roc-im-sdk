@@ -281,7 +281,9 @@ message PushMessages {
 }
 
 message CmdMessage {
-  int32 cmd = 1;
+  int32 cmd                 = 1;
+  MsgData msg               = 2;
+  ConversationInfo convInfo = 3;
 }
 
 message MessageUnion {
