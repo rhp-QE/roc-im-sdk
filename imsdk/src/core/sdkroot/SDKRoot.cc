@@ -41,7 +41,7 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     // 开启网络IO Context
     // auto wark_work = boost::asio::make_work_guard(net_io_context_);
     // std::thread net_thread([this] { net_io_context_.run(); });
-    connection_manager_ = std::make_unique<network::SDKConnectionManager>(sdk_io_context);
+    connection_manager_ = std::make_unique<network::SDKConnectionManager>(net_io_context());
 
     group_manager_ = std::make_unique<core::GroupManager>(weak_from_this());
     message_manager_ = std::make_unique<core::MessageManager>(weak_from_this());
@@ -52,7 +52,7 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     database_ = new WCDB::Database(db_path);
 
     // 初始化MMKV
-    std::string rootDir = "/root/project/roc_im_sdk/db-data";
+    std::string rootDir = "/root/project/roc_im_sdk/db_data";
     MMKV::initializeMMKV(rootDir);
     mmkv_ = MMKV::defaultMMKV();
 

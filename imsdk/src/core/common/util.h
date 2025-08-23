@@ -1,5 +1,8 @@
 #pragma once
 
+#include "imsdk/src/core/common/macro.h"
+#include "imsdk/src/core/sdkroot/SDKRoot.h"
+#include <memory>
 #include <string>
 #include <utility>
 #include <stdexcept>
@@ -57,6 +60,27 @@ inline std::pair<std::string, std::string> parse_single_conv_id(const std::strin
     }
     
     return std::make_pair(user_id1, user_id2);
+}
+
+inline bool message_send_from_me(W_SDK_ROOT, std::shared_ptr<model::MessageModel> msg) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false)
+
+    return sdk_root->config().user_id == msg->from_user_id();
+}
+
+inline bool message_send_from_me(std::string login_uid, std::string from_uid) {
+    return login_uid == from_uid;
+}
+
+inline double current_time_since1970() {
+    // 获取当前时间点（UTC）
+    auto now = std::chrono::system_clock::now();
+    
+    // 转换为自 1970-01-01 00:00:00 UTC 以来的持续时间
+    auto duration = now.time_since_epoch();
+    
+    // 转换为秒（double 类型，包含小数微秒/纳秒）
+    return std::chrono::duration<double>(duration).count();
 }
 
 } // namespace roc::imsdk::core

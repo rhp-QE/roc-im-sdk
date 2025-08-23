@@ -3,10 +3,12 @@
 #include "base/utils/utils.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/common/sdkwsEnum.h"
+#include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
+#include <memory>
 
 static int PUSH_USER_MESSAGE_TYPE = 4001;
 
@@ -30,12 +32,20 @@ void ReceiveMessage::handle_push_message(W_SDK_ROOT, std::shared_ptr<network::Sd
     CHECK_POINTER_OR_RETURN_VOID(msg_manager);
 
     // 处理下推的用户消息
-    if (resp->type() == static_cast<int>(common::SdkWsEnum::PUSH_USER_MESSAGE)) {
-        std::shared_ptr<network::MsgData> net_msg;
-        if (net_msg->ParseFromString(resp->data())) {
-            handle_receive_message(w_sdk_root, {net_msg});
-        }
+    if (resp->type() != static_cast<int>(common::SdkWsEnum::PUSH_USER_MESSAGE)) {
+        return;
     }
+    
+    if (resp->data().empty()) {
+        return;
+    }
+
+    std::shared_ptr<network::MsgData> net_msg = std::make_shared<network::MsgData>();
+    if (!net_msg->ParseFromString(resp->data())) {
+        return;
+    }
+
+    handle_receive_message(w_sdk_root, {net_msg});
 
     std::cout<<"receive push message"<<std::endl;
 }
@@ -67,7 +77,7 @@ model::OnMessageResult ReceiveMessage::classify_message(W_SDK_ROOT, std::vector<
     model::OnMessageResult result;
 
     std::unordered_map<std::string, std::vector<std::shared_ptr<model::MessageModel>>> sdk_msg_map = base::util::group_by_key(sdk_msgs, [](const std::shared_ptr<model::MessageModel> &msg) {
-        return msg->client_msg_id();
+        return msg->server_msg_id();
     });
 
     for (const auto &msg : net_msgs) {

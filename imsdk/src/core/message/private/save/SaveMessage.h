@@ -22,9 +22,9 @@ class SaveMessage {
 public:
     /// 保存网络消息
     static std::vector<std::shared_ptr<model::MessageModel>> save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs);
-    
-    /// 设置 SDK 消息
-    static void set_sdk_msg(W_SDK_ROOT, const core::message::MessageORM *msg);
+
+    /// 保存db消息
+    static std::vector<std::shared_ptr<model::MessageModel>> save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
     
     /// 根据 ID 获取 SDK 消息
     static std::shared_ptr<model::MessageModel> sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id);
@@ -39,12 +39,16 @@ public:
     static bool mark_messages_as_read(W_SDK_ROOT, const std::vector<std::string> &msg_ids);
 
     /// 从数据库加载消息
-    static void load_message_from_db(W_SDK_ROOT, std::string conv_id);
+    static std::shared_ptr<model::LoadConvMessagesResult> load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward);
+
+    /// 更新消息缓存 TODO
+    static void update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
+
+    /// 会话消息的最大order_index
+    static int64_t max_message_order_index_in_conv(W_SDK_ROOT, const std::string &conv_id);
 
 private:
-    /// 更新消息缓存
-    static void update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
-    
+   
     /// 更新消息区间
     static void update_message_range_for_message(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 

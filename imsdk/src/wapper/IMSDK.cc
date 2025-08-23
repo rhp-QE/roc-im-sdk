@@ -19,8 +19,8 @@ boost::asio::awaitable<bool> IMSDK::init_sdk(const Config config) {
 
 // =============================  message api  ======================================
 
-boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> IMSDK::send_message(const std::vector<model::SendMsgContext> &context) {
-    return sdk_root_->message_manager()->send_message(context);
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> IMSDK::send_message(const model::SendMsgContext &context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+    return sdk_root_->message_manager()->send_message(context, callback);
 }
 
 void IMSDK::on_messagee(model::OnMessagesCallbackType callback) {
@@ -47,11 +47,11 @@ boost::asio::awaitable<std::shared_ptr<model::MessageModel>> IMSDK::message_for_
     return sdk_root_->message_manager()->message_for_id(msg_id);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> IMSDK::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
+boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> IMSDK::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
     return sdk_root_->message_manager()->messages_for_conv_id(conv_id, cursor, limit);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> IMSDK::messages_when_enter_chat(std::string conv_id) {
+boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> IMSDK::messages_when_enter_chat(std::string conv_id) {
     return sdk_root_->message_manager()->messages_when_enter_chat(conv_id);
 }
 
@@ -67,11 +67,11 @@ boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::conv_fo
     return sdk_root_->conversation_manager()->conv_for_id(conv_id);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> IMSDK::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
+boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
     return sdk_root_->conversation_manager()->convs_for_user_id(user_id, cursor, limit);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> IMSDK::convs_when_login() {
+boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::convs_when_login() {
     return sdk_root_->conversation_manager()->convs_when_login();
 }
 

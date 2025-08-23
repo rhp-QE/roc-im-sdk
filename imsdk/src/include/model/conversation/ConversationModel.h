@@ -13,6 +13,7 @@ namespace roc::imsdk::core {
 
 namespace roc::imsdk::core::conversation {
     class Convert;
+    class SaveConversation;
 }
 
 namespace roc::imsdk::model {
@@ -52,6 +53,7 @@ public:
 
     friend class roc::imsdk::core::ConversationManager;
     friend class roc::imsdk::core::conversation::Convert;
+    friend class roc::imsdk::core::conversation::SaveConversation;
 
 private:
     ConvType type_;
@@ -100,8 +102,8 @@ enum class ConvUpdateReason : int {
 };
 
 
-struct QueryUserConvsResult {
-    std::vector<std::shared_ptr<const ConversationModel>> convs;
+struct LoadUserConvsResult {
+    std::vector<std::shared_ptr<ConversationModel>> convs;
     int64_t cursor;
     bool has_more;
 };

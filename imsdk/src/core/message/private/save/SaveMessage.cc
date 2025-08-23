@@ -14,8 +14,8 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
     
     // 转换为 db 消息
-    auto db_msgs = base::util::transform(msgs, [](const network::MsgData *msg) {
-        return core::message::Convert::convert_net_msg_to_db_msg(msg);
+    auto db_msgs = base::util::transform(msgs, [w_sdk_root](const network::MsgData *msg) {
+        return core::message::Convert::convert_net_msg_to_db_msg(w_sdk_root, msg);
     });
 
     // 保存到数据库
@@ -38,21 +38,27 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
     return sdk_msgs;
 }
 
-/// 设置 SDK 消息
-void SaveMessage::set_sdk_msg(W_SDK_ROOT, const core::message::MessageORM *msg) {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
-    
-    CHECK_POINTER_OR_RETURN_VOID(msg);
+std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
-    auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VOID(msg_manager);
-
-    // 转换为SDK消息并保存到缓存
-    auto sdk_msg = core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg);
-    if (sdk_msg) {
-        // 通过友元关系访问MessageManager的私有成员
-        msg_manager->msg_cache_[msg->client_msg_id] = sdk_msg;
+    // 保存到数据库
+    bool ret = message::DBOpt::insert_or_replace_message(w_sdk_root, db_msgs);
+    if (!ret) {
+        return {};
     }
+
+    // 转换为 sdk 消息
+    auto sdk_msgs = base::util::transform(db_msgs, [w_sdk_root](const std::shared_ptr<core::message::MessageORM> &msg) {
+        return core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg.get());
+    });
+
+    // 更新缓存
+    update_msg_cache(w_sdk_root, sdk_msgs);
+
+    // 自动更新消息区间
+    update_message_range_for_message(w_sdk_root, sdk_msgs);
+
+    return sdk_msgs;
 }
 
 /// 根据 ID 获取 SDK 消息
@@ -62,12 +68,19 @@ std::shared_ptr<model::MessageModel> SaveMessage::sdk_msg_for_id(W_SDK_ROOT, con
     auto msg_manager = sdk_root->message_manager();
     CHECK_POINTER_OR_RETURN_VALUE(msg_manager, nullptr);
 
-    // 通过友元关系访问MessageManager的私有成员
+    /// 从缓存中获取
     auto it = msg_manager->msg_cache_.find(msg_id);
     if (it != msg_manager->msg_cache_.end()) {
         return it->second;
     }
-    return nullptr;
+
+    /// 从DB中获取
+    auto sdk_msg = message::DBOpt::message_for_id(w_sdk_root, msg_id);
+    if (sdk_msg) {
+        /// 更新缓存
+        msg_manager->msg_cache_[msg_id] = sdk_msg;
+    }
+    return sdk_msg;
 }
 
 /// 更新消息区间
@@ -140,15 +153,34 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::empty_message_range_for_co
     return empty_ranges;
 }
 
-void SaveMessage::load_message_from_db(W_SDK_ROOT, std::string conv_id) {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+std::shared_ptr<model::LoadConvMessagesResult> SaveMessage::load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
+
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
+
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
 
     // load message range
     auto ranges = message::DBOpt::message_range(sdk_root, conv_id);
     sdk_root->message_manager()->msg_range_cache_[conv_id] = ranges;
 
     // load message
+    auto msgs = message::DBOpt::query_messages_for_conv_id(w_sdk_root, conv_id, cursor, limit, forward);
 
+    /// 更新缓存
+    for (auto &msg : msgs) {
+        bool is_exit = msg_manager->msg_cache_.find(msg->client_msg_id()) != msg_manager->msg_cache_.end();
+        if (!is_exit) {
+            msg_manager->msg_cache_[msg->client_msg_id()] = msg;
+        }
+    }
+
+    auto result = std::make_shared<model::LoadConvMessagesResult>();
+    result->cursor = msgs.empty() ? -1 : msgs.back()->client_order_index();
+    result->has_more = false;
+    result->messages = std::move(msgs);
+
+    return result;
 }
 
 /// 生成客户端消息 ID
@@ -262,6 +294,15 @@ void SaveMessage::update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr
         // 通过友元关系访问MessageManager的私有成员
         msg_manager->msg_cache_[sdk_msg->client_msg_id()] = sdk_msg;
     }
+}
+
+int64_t SaveMessage::max_message_order_index_in_conv(W_SDK_ROOT, const std::string &conv_id) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, -1);
+    
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, -1);
+    
+    return 100;
 }
 
 } // namespace roc::imsdk::core::message

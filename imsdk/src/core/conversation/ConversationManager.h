@@ -20,7 +20,6 @@ public:
     // 组件加载完成后的初始化
     void all_component_did_load();
 
-    void set_sdk_conv(const core::conversation::ConversationORM *conv);
     std::shared_ptr<model::ConversationModel> sdk_conv_for_id(std::string conv_id);
 
     /// 游标
@@ -39,10 +38,10 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> conv_for_id(std::string conv_id);
 
     /// 查询会话列表
-    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit);
+    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit);
 
     /// 用户登录时获取首屏会话，后续加载更多会话 调用 convs_for_user_id
-    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> convs_when_login();
+    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> convs_when_login();
 
     /// 设置会话置顶
     boost::asio::awaitable<bool> set_conv_top(std::string conv_id, bool is_top);
@@ -67,6 +66,7 @@ private:
 
     // 友元类，允许SaveConversation访问私有成员
     friend class roc::imsdk::core::conversation::SaveConversation;
+    friend class roc::imsdk::core::conversation::Convert;
 };
 
 } // namespace roc::imsdk::core

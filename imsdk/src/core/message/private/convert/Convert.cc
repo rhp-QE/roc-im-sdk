@@ -1,22 +1,25 @@
 #include "Convert.h"
 
 #include "imsdk/src/core/common/macro.h"
+#include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/message/MessageManager.h"
-
+#include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 
 
 namespace roc::imsdk::core::message {
 
 /// 消息转换 网络消息 -> db 消息
-std::shared_ptr<core::message::MessageORM> Convert::convert_net_msg_to_db_msg(const network::MsgData *msg) {
-    if (!msg) {
-        return nullptr;
-    }
+std::shared_ptr<core::message::MessageORM> Convert::convert_net_msg_to_db_msg(W_SDK_ROOT, const network::MsgData *msg) {
+    CHECK_POINTER_OR_RETURN_VALUE(msg, nullptr)
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr)
+    
+    bool send_from_me = util::message_send_from_me(sdk_root->config().user_id, msg->sendid());
+
     std::shared_ptr<core::message::MessageORM> db_msg = std::make_shared<core::message::MessageORM>();
     
-    // Status and flags
+    /// -----------------------------------------------------------------------------------------------
     db_msg->status = msg->status();
     
     db_msg->is_pinned = msg->ispinned();
@@ -27,36 +30,31 @@ std::shared_ptr<core::message::MessageORM> Convert::convert_net_msg_to_db_msg(co
     
     db_msg->is_group_msg = msg->isgroupmsg();
     
-    // Message content
     db_msg->content = msg->content();
     
-    // User IDs
     db_msg->to_user_id = msg->recvid();
     
     db_msg->from_user_id = msg->sendid();
     
-    // Message IDs
-    db_msg->client_msg_id = msg->clientmsgid();
+    db_msg->client_msg_id = send_from_me ? msg->clientmsgid() : msg->servermsgid();
     
     db_msg->server_msg_id = msg->servermsgid();
     
-    // Conversation ID
     db_msg->conversation_id = msg->convid();
     
-    // Order indices
-    db_msg->client_order_index = 0; // TODO: Set from network message if available
+    db_msg->client_order_index = msg->seq() * 1000;
     
     db_msg->server_order_index = msg->seq();
     
-    // Timestamps
-    db_msg->client_send_time = 0; // TODO: Set from network message if available
+    db_msg->send_time = msg->sendtime();
     
-    db_msg->server_send_time = msg->sendtime();
-    
-    // Extensions
     db_msg->sync_ext = msg->syncext();
-    
-    db_msg->local_ext = ""; // TODO: Set from network message if available
+
+    db_msg->local_ext = "";
+
+
+    DBOpt::message_merge_with_local(w_sdk_root, db_msg->client_msg_id, db_msg.get());
+    // -----------------------------------------------------------------------------------------------
     
     return db_msg;
 }
@@ -113,9 +111,7 @@ std::shared_ptr<model::MessageModel> Convert::convert_db_msg_to_sdk_msg(W_SDK_RO
     sdk_msg->server_order_index_ = db_msg->server_order_index;
     
     // Timestamps
-    sdk_msg->client_send_time_ = db_msg->client_send_time;
-    
-    sdk_msg->server_send_time_ = db_msg->server_send_time;
+    sdk_msg->send_time_ = db_msg->send_time;
     
     // Extensions - TODO: Convert string to unordered_map
     // sdk_msg->sync_ext_ = parse_ext_string(db_msg->sync_ext);

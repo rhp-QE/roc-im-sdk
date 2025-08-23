@@ -49,7 +49,7 @@ public:
 
     /// 发送消息
     boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> 
-        send_message(const std::vector<model::SendMsgContext> &context);
+        send_message(const model::SendMsgContext &context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
     
     /// 消息更新回调
     void on_messagee(model::OnMessagesCallbackType callback);
@@ -75,11 +75,11 @@ public:
         message_for_id(std::string msg_id);
 
     /// 查询会话消息
-    boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> 
+    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> 
         messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit);
 
     /// 当进入会话时，获取首屏消息。 后续加载更多消息时使用 messages_for_conv
-    boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> 
+    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> 
         messages_when_enter_chat(std::string conv_id);
 
     /// ==================================================================================
@@ -96,11 +96,11 @@ public:
         conv_for_id(std::string conv_id);
 
     /// 查询会话列表
-    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> 
+    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
         convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit);
 
     /// 用户登录时获取首屏会话，后续加载更多会话 调用 convs_for_user_id
-    boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> 
+    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
         convs_when_login();
 
     /// 设置会话置顶

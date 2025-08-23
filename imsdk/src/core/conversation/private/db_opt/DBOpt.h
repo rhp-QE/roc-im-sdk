@@ -14,11 +14,14 @@ public:
     /// 插入会话到数据库
     static bool insert_conversation(W_SDK_ROOT, std::vector<std::shared_ptr<core::conversation::ConversationORM>> conversations);
 
+    /// 捞取会话
+    static std::vector<std::shared_ptr<model::ConversationModel>> query_conversations(W_SDK_ROOT, int64_t cursor, int64_t limit, bool forward = true);
+
     /// 批量更新会话状态（如已读状态）
     static bool update_conversations_status(W_SDK_ROOT, const std::vector<std::string> &conv_ids, int status);
 
     /// 根据会话ID查询会话
-    static std::shared_ptr<core::conversation::ConversationORM> query_conversation_by_id(W_SDK_ROOT, const std::string &conv_id);
+    static std::shared_ptr<model::ConversationModel> query_conversation_by_id(W_SDK_ROOT, const std::string &conv_id);
 
     /// 查询用户的所有会话
     static std::vector<std::shared_ptr<core::conversation::ConversationORM>> query_conversations_for_user(W_SDK_ROOT, int64_t cursor, int64_t limit);

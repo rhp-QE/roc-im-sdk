@@ -23,12 +23,6 @@ void MessageManager::all_component_did_load() {
     message::CmdMessageOperator::start(w_sdk_root_);
 }
 
-
-/// 设置 sdk 消息
-void MessageManager::set_sdk_msg(const core::message::MessageORM *db_msg) {
-    message::SaveMessage::set_sdk_msg(w_sdk_root_, db_msg);
-}
-
 void MessageManager::handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
     message::ReceiveMessage::handle_receive_message(w_sdk_root_, net_msgs);
 }
@@ -61,27 +55,26 @@ boost::asio::awaitable<bool> MessageManager::mark_messages_as_read(const std::ve
 }
 
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageManager::message_for_id(std::string msg_id) {
-    // TODO: Implement get message by id
-    co_return nullptr;
+    co_return message::SaveMessage::sdk_msg_for_id(w_sdk_root_, msg_id);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> MessageManager::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
-    // TODO: Implement get messages for conversation
-    co_return nullptr;
+// 查询DB
+boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
+    auto result = message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, cursor, limit, true);
+    co_return result;
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
+boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
+    /// 触发单链拉取
     co_await message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root_, conv_id);
-    co_return nullptr;
+
+    // 从DB 中加载消息
+    auto result = message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, -1, 100, true);
+    co_return result;
 }
 
-boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::send_message(std::vector<model::SendMsgContext> contexts) {
-    return message::SendMessage::send_message(w_sdk_root_, contexts);
-}
-
-/// 根据 ID 获取 SDK 消息
-std::shared_ptr<model::MessageModel> MessageManager::sdk_msg_for_id(std::string msg_id) {
-    return message::SaveMessage::sdk_msg_for_id(w_sdk_root_, msg_id);
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::send_message(model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+    return message::SendMessage::send_message(w_sdk_root_, context, callback);
 }
 
 /// ==================================================================================

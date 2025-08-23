@@ -2,8 +2,10 @@
 
 #include "base/utils/utils.h"
 #include "imsdk/src/core/message/MessageManager.h"
+#include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
+#include <memory>
 
 namespace roc::imsdk::core::message {
 
@@ -26,7 +28,7 @@ void CmdMessageOperator::handle_push_message(W_SDK_ROOT, std::shared_ptr<network
         return;
     }
 
-    std::shared_ptr<network::CmdMessage> cmd_msg;
+    std::shared_ptr<network::CmdMessage> cmd_msg = std::make_shared<network::CmdMessage>();
     if (!cmd_msg->ParseFromString(resp->data())) {
         return;
     }

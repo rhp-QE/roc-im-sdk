@@ -17,13 +17,13 @@ struct FetchUserMessageResult {
 asio::awaitable<void> UserMessageFetcher::fetch_user_messages(W_SDK_ROOT) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    auto conv_manager = sdk_root->conversation_manager();
+    // auto conv_manager = sdk_root->conversation_manager();
 
-    // 获取最新游标
-    int64_t cursor = conv_manager->cursor();
+    // // 获取最新游标
+    // int64_t cursor = conv_manager->cursor();
 
     // 构造请求
-    std::unique_ptr<network::FetchUserMessageListReq> req = make_fetch_user_message_list_req(w_sdk_root, cursor);
+    std::unique_ptr<network::FetchUserMessageListReq> req = make_fetch_user_message_list_req(w_sdk_root, -1);
 
     // 发送请求
     std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await network::request::fetch_user_message_list(sdk_root.get(), req.get());
@@ -46,10 +46,15 @@ std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::make_fetch
     auto req = std::make_unique<network::FetchUserMessageListReq>();
 
     req->set_userid(sdk_root->config().user_id);
-    req->set_cursor(cursor);
-    req->set_limit(20);
+    req->set_limit(40);
     req->set_forward(true);
-    req->set_news(true);
+    
+    if (cursor != -1) {
+        req->set_news(false);
+        req->set_cursor(cursor);
+    } else {
+        req->set_news(true);
+    }
 
     return req;
 }
@@ -86,7 +91,7 @@ boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(W_S
     conv_manager->save_net_convs(net_convs);
 
     // 更新游标
-    conv_manager->set_cursor(resp->cursor());
+    conv_manager->set_cursor(resp->stop());
 
     // 上抛
     co_return;

@@ -22,12 +22,22 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
     co_await imsdk->init_sdk(generateConfig());
 
     for (int i = 0; i < 3; ++i) {
-        auto response = co_await imsdk->send_message({generateSendMessageContext()});
+        auto context = generateSendMessageContext();
+        context.content = context.content + std::to_string(i);
+        auto response = co_await imsdk->send_message(context, [](std::shared_ptr<roc::imsdk::model::SendMessageResponse> response) {
+            std::cout << "send message response2: " << response->msg->content() << std::endl;
+            std::cout << "send message response address2: " << response->msg.get() << std::endl;
+            std::cout << "send message response order2: " << response->msg->server_order_index() << std::endl;
+        });
+
+        std::cout << "send message response1: " << response->msg->content() << std::endl;
+        std::cout << "send message response address1: " << response->msg.get() << std::endl;
+        std::cout << "send message response order1: " << response->msg->server_order_index() << std::endl;
     }
 
-    co_await imsdk->convs_when_login();
+    // auto convs = co_await imsdk->convs_when_login();
 
-    co_await imsdk->messages_when_enter_chat("0:1:12345:24680");
+    // auto messages = co_await imsdk->messages_when_enter_chat("0:1:12345:24680");
 
     int a = 100;
     while(true) {

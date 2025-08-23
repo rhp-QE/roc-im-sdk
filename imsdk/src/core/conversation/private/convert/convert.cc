@@ -1,5 +1,7 @@
 #include "convert.h"
 
+#include "imsdk/src/core/conversation/ConversationManager.h"
+
 namespace roc::imsdk::core::conversation {
 
 /// 会话转换 网络会话 -> db 会话
@@ -48,11 +50,22 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::convert_net_conv_t
 }
 
 /// 会话转换 db 会话 -> sdk 会话
-std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(const core::conversation::ConversationORM *db_conv) {
+std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(W_SDK_ROOT, const core::conversation::ConversationORM *db_conv) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
+
     if (!db_conv) {
         return nullptr;
     }
-    std::shared_ptr<model::ConversationModel> sdk_conv = std::make_shared<model::ConversationModel>();
+
+    auto conv_manager = sdk_root->conversation_manager();
+    CHECK_POINTER_OR_RETURN_VALUE(conv_manager, nullptr);
+
+    std::shared_ptr<model::ConversationModel> sdk_conv;
+    if (conv_manager->conv_cache_.find(db_conv->conversation_id) != conv_manager->conv_cache_.end()) {
+        sdk_conv = conv_manager->conv_cache_[db_conv->conversation_id];
+    } else {
+        sdk_conv = std::make_shared<model::ConversationModel>();
+    }
     
     // Basic conversation info
     sdk_conv->type_ = static_cast<model::ConvType>(db_conv->type);

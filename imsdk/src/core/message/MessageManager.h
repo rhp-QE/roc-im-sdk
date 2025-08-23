@@ -21,23 +21,17 @@ public:
     // 组件加载完成后的初始化
     void all_component_did_load();
     
-    // 消息缓存
-    void set_sdk_msg(const core::message::MessageORM *msg);
-    std::shared_ptr<model::MessageModel> sdk_msg_for_id(std::string msg_id);
-
     // 收到消息回调
     model::OnMessagesCallbackType on_receive_message_callback();
 
-    // 保存网络消息
-    // std::vector<std::shared_ptr<model::MessageModel>> save_net_msgs(std::vector<const network::MsgData *> msgs);
-
     void handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs);
 
-    // 发送消息
-    boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message(std::vector<model::SendMsgContext> contexts);
-
+ 
     // =============================  message api  ======================================
-    
+
+    /// 发送消息
+    boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message(model::SendMsgContext contexts, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
+
     /// 接收消息回调
     void on_messages(model::OnMessagesCallbackType callback);
 
@@ -57,10 +51,10 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::MessageModel>> message_for_id(std::string msg_id);
 
     /// 查询会话消息
-    boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit);
+    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit);
 
     /// 当进入会话时，获取首屏消息。 后续加载更多消息时使用 messages_for_conv
-    boost::asio::awaitable<std::shared_ptr<model::QueryConvMessagesResult>> messages_when_enter_chat(std::string conv_id);
+    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> messages_when_enter_chat(std::string conv_id);
 
     /// ==================================================================================
 

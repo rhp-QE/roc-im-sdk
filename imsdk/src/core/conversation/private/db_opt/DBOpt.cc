@@ -1,6 +1,10 @@
 #include "DBOpt.h"
 
+#include "WCDB/Expression.hpp"
+#include "WCDB/Field.hpp"
 #include "imsdk/src/core/common/util.h"
+#include "imsdk/src/core/conversation/private/convert/convert.h"
+#include "imsdk/src/core/conversation/db_model/ConversationORM.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 
 #include "WCDB/WCDBCpp.h"
@@ -32,10 +36,46 @@ bool DBOpt::insert_conversation(W_SDK_ROOT, std::vector<std::shared_ptr<core::co
     return database->runTransaction([&](WCDB::Handle &handle) {
         bool ret = true;
         for (auto &conversation : conversations) {
-            ret &= database->insertObjects<core::conversation::ConversationORM>(*conversation, table_name(w_sdk_root));
+            ret &= database->insertOrReplaceObject<core::conversation::ConversationORM>(*conversation, table_name(w_sdk_root));
         }
         return ret;
     });
+}
+
+std::vector<std::shared_ptr<model::ConversationModel>> DBOpt::query_conversations(W_SDK_ROOT, int64_t cursor, int64_t limit, bool forward) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, {});
+
+    auto where = WCDB::Expression();
+
+    if (cursor >= 0) {
+        if (forward) {
+            where = where && WCDB_FIELD(core::conversation::ConversationORM::last_message_time) < cursor;
+        } else {
+            where = where && WCDB_FIELD(core::conversation::ConversationORM::last_message_time) > cursor;
+        }
+    }
+
+    auto result = database->getAllObjects<core::conversation::ConversationORM>(
+        table_name(w_sdk_root),
+        where,
+        WCDB_FIELD(core::conversation::ConversationORM::last_message_server_id).asOrder(WCDB::Order::DESC),
+        WCDB::Expression(limit),
+        WCDB::Expression()
+    );
+
+    if (!result.hasValue()) {
+        return {};
+    }
+
+    std::vector<std::shared_ptr<model::ConversationModel>> convs;
+    for (auto &item : result.value()) {
+        convs.push_back(core::conversation::Convert::convert_db_conv_to_sdk_conv(w_sdk_root, &item));
+    }
+
+    return convs;
 }
 
 bool DBOpt::update_conversations_status(W_SDK_ROOT, const std::vector<std::string> &conv_ids, int status) {
@@ -43,9 +83,25 @@ bool DBOpt::update_conversations_status(W_SDK_ROOT, const std::vector<std::strin
     return false;
 }
 
-std::shared_ptr<core::conversation::ConversationORM> DBOpt::query_conversation_by_id(W_SDK_ROOT, const std::string &conv_id) {
-    // TODO: 实现根据ID查询会话
-    return nullptr;
+std::shared_ptr<model::ConversationModel> DBOpt::query_conversation_by_id(W_SDK_ROOT, const std::string &conv_id) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, nullptr);
+
+    auto result = database->getAllObjects<core::conversation::ConversationORM>(
+        table_name(w_sdk_root),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id,
+        WCDB::Expression(),
+        WCDB::Expression(),
+        WCDB::Expression()
+    );
+
+    if (!result.hasValue() || result.value().empty()) {
+        return nullptr;
+    }
+
+    return core::conversation::Convert::convert_db_conv_to_sdk_conv(w_sdk_root, &result.value()[0]);
 }
 
 std::vector<std::shared_ptr<core::conversation::ConversationORM>> DBOpt::query_conversations_for_user(W_SDK_ROOT, int64_t cursor, int64_t limit) {

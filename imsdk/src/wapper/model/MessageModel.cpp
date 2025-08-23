@@ -51,12 +51,8 @@ bool MessageModel::is_recalled() {
     return is_recalled_;
 }
 
-int64_t MessageModel::client_send_time() {
-    return client_send_time_;
-}
-
-int64_t MessageModel::server_send_time() {
-    return server_send_time_;
+double MessageModel::send_time() {
+    return send_time_;
 }
 
 std::unordered_map<std::string, std::string> MessageModel::sync_ext() {

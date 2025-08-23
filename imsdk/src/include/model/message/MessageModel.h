@@ -37,8 +37,7 @@ public:
     bool is_pinned();
     bool is_deleted();
     bool is_recalled();
-    int64_t client_send_time();
-    int64_t server_send_time();
+    double send_time();
     std::unordered_map<std::string, std::string> sync_ext();
     std::unordered_map<std::string, std::string> local_ext();
 
@@ -72,9 +71,7 @@ private:
     
     int64_t server_order_index_;
 
-    int64_t client_send_time_;
-    
-    int64_t server_send_time_;
+    int64_t send_time_;
 
     std::unordered_map<std::string, std::string>  sync_ext_;
     
@@ -110,7 +107,7 @@ struct SendMessageResponse {
 };
 
 
-struct QueryConvMessagesResult {
+struct LoadConvMessagesResult {
     std::vector<std::shared_ptr<MessageModel>> messages;
     int64_t cursor;
     bool has_more;

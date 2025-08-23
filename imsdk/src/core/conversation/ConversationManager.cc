@@ -18,10 +18,6 @@ std::vector<std::shared_ptr<model::ConversationModel>> ConversationManager::save
     return conversation::SaveConversation::save_net_convs(w_sdk_root_, convs);
 }
 
-void ConversationManager::set_sdk_conv(const core::conversation::ConversationORM *conv) {
-    conversation::SaveConversation::set_sdk_conv(w_sdk_root_, conv);
-}
-
 std::shared_ptr<model::ConversationModel> ConversationManager::sdk_conv_for_id(std::string conv_id) {
     return conversation::SaveConversation::sdk_conv_for_id(w_sdk_root_, conv_id);
 }
@@ -41,19 +37,19 @@ void ConversationManager::on_conv_update(model::OnConvUpdateCallbackType callbac
 }
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::conv_for_id(std::string conv_id) {
-    // TODO: Implement get conversation by id
-    co_return nullptr;
+    co_return conversation::SaveConversation::sdk_conv_for_id(w_sdk_root_, conv_id);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> ConversationManager::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
-    // TODO: Implement get conversations for user
-    co_return nullptr;
+boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
+    return conversation::SaveConversation::load_convs_from_db(w_sdk_root_, cursor, limit, true);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::QueryUserConvsResult>> ConversationManager::convs_when_login() {
-    // TODO: Implement get first screen conversations when logging in
+boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::convs_when_login() {
+    /// 触发混链拉取
     co_await conversation::UserMessageFetcher::fetch_user_messages(w_sdk_root_);
-    co_return nullptr;
+    /// 从DB 中加载会话
+    auto convs = co_await conversation::SaveConversation::load_convs_from_db(w_sdk_root_, -1, 100, true);
+    co_return convs;
 }
 
 boost::asio::awaitable<bool> ConversationManager::set_conv_top(std::string conv_id, bool is_top) {

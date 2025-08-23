@@ -6,6 +6,7 @@
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
 #include "imsdk/src/include/model/conversation/ConversationModel.h"
 
+#include <boost/asio/awaitable.hpp>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -22,11 +23,12 @@ public:
     /// 保存网络会话
     static std::vector<std::shared_ptr<model::ConversationModel>> save_net_convs(W_SDK_ROOT, std::vector<std::shared_ptr<network::ConversationInfo>> convs);
     
-    /// 设置 SDK 会话
-    static void set_sdk_conv(W_SDK_ROOT, const core::conversation::ConversationORM *conv);
-    
     /// 根据 ID 获取 SDK 会话
     static std::shared_ptr<model::ConversationModel> sdk_conv_for_id(W_SDK_ROOT, const std::string &conv_id);
+
+    /// 查询会话
+    static boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
+        load_convs_from_db(W_SDK_ROOT, int64_t cursor, int64_t limit, bool forward);
     
     /// 获取会话游标
     static int64_t get_cursor(W_SDK_ROOT);

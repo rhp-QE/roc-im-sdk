@@ -3708,19 +3708,19 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // map<string, bool> options = 19;
+  // map<string, bool> options = 17;
   int options_size() const;
   void clear_options();
-  static const int kOptionsFieldNumber = 19;
+  static const int kOptionsFieldNumber = 17;
   const ::google::protobuf::Map< ::std::string, bool >&
       options() const;
   ::google::protobuf::Map< ::std::string, bool >*
       mutable_options();
 
-  // repeated string atUserIDList = 21;
+  // repeated string atUserIDList = 19;
   int atuseridlist_size() const;
   void clear_atuseridlist();
-  static const int kAtUserIDListFieldNumber = 21;
+  static const int kAtUserIDListFieldNumber = 19;
   const ::std::string& atuseridlist(int index) const;
   ::std::string* mutable_atuseridlist(int index);
   void set_atuseridlist(int index, const ::std::string& value);
@@ -3851,9 +3851,9 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_content();
   void set_allocated_content(::std::string* content);
 
-  // string attachedInfo = 22;
+  // string attachedInfo = 20;
   void clear_attachedinfo();
-  static const int kAttachedInfoFieldNumber = 22;
+  static const int kAttachedInfoFieldNumber = 20;
   const ::std::string& attachedinfo() const;
   void set_attachedinfo(const ::std::string& value);
   #if LANG_CXX11
@@ -3865,9 +3865,9 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_attachedinfo();
   void set_allocated_attachedinfo(::std::string* attachedinfo);
 
-  // string ext = 23;
+  // string ext = 21;
   void clear_ext();
-  static const int kExtFieldNumber = 23;
+  static const int kExtFieldNumber = 21;
   const ::std::string& ext() const;
   void set_ext(const ::std::string& value);
   #if LANG_CXX11
@@ -3879,9 +3879,9 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_ext();
   void set_allocated_ext(::std::string* ext);
 
-  // string syncExt = 31;
+  // string syncExt = 26;
   void clear_syncext();
-  static const int kSyncExtFieldNumber = 31;
+  static const int kSyncExtFieldNumber = 26;
   const ::std::string& syncext() const;
   void set_syncext(const ::std::string& value);
   #if LANG_CXX11
@@ -3893,10 +3893,10 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_syncext();
   void set_allocated_syncext(::std::string* syncext);
 
-  // .roc.imsdk.network.OfflinePushInfo offlinePushInfo = 20;
+  // .roc.imsdk.network.OfflinePushInfo offlinePushInfo = 18;
   bool has_offlinepushinfo() const;
   void clear_offlinepushinfo();
-  static const int kOfflinePushInfoFieldNumber = 20;
+  static const int kOfflinePushInfoFieldNumber = 18;
   const ::roc::imsdk::network::OfflinePushInfo& offlinepushinfo() const;
   ::roc::imsdk::network::OfflinePushInfo* release_offlinepushinfo();
   ::roc::imsdk::network::OfflinePushInfo* mutable_offlinepushinfo();
@@ -3926,77 +3926,59 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int32 contenttype() const;
   void set_contenttype(::google::protobuf::int32 value);
 
-  // int64 seq = 14;
+  // int64 seq = 13;
   void clear_seq();
-  static const int kSeqFieldNumber = 14;
+  static const int kSeqFieldNumber = 13;
   ::google::protobuf::int64 seq() const;
   void set_seq(::google::protobuf::int64 value);
 
-  // int64 sendTime = 15;
+  // double sendTime = 14;
   void clear_sendtime();
-  static const int kSendTimeFieldNumber = 15;
-  ::google::protobuf::int64 sendtime() const;
-  void set_sendtime(::google::protobuf::int64 value);
+  static const int kSendTimeFieldNumber = 14;
+  double sendtime() const;
+  void set_sendtime(double value);
 
-  // int64 createTime = 16;
-  void clear_createtime();
-  static const int kCreateTimeFieldNumber = 16;
-  ::google::protobuf::int64 createtime() const;
-  void set_createtime(::google::protobuf::int64 value);
-
-  // int32 status = 17;
+  // int32 status = 15;
   void clear_status();
-  static const int kStatusFieldNumber = 17;
+  static const int kStatusFieldNumber = 15;
   ::google::protobuf::int32 status() const;
   void set_status(::google::protobuf::int32 value);
 
-  // bool isRead = 18;
+  // bool isRead = 16;
   void clear_isread();
-  static const int kIsReadFieldNumber = 18;
+  static const int kIsReadFieldNumber = 16;
   bool isread() const;
   void set_isread(bool value);
 
-  // bool isDeleted = 24;
+  // bool isDeleted = 22;
   void clear_isdeleted();
-  static const int kIsDeletedFieldNumber = 24;
+  static const int kIsDeletedFieldNumber = 22;
   bool isdeleted() const;
   void set_isdeleted(bool value);
 
-  // bool isRecalled = 25;
+  // bool isRecalled = 23;
   void clear_isrecalled();
-  static const int kIsRecalledFieldNumber = 25;
+  static const int kIsRecalledFieldNumber = 23;
   bool isrecalled() const;
   void set_isrecalled(bool value);
 
-  // bool isPinned = 26;
+  // bool isPinned = 24;
   void clear_ispinned();
-  static const int kIsPinnedFieldNumber = 26;
+  static const int kIsPinnedFieldNumber = 24;
   bool ispinned() const;
   void set_ispinned(bool value);
 
-  // int64 clientSendTime = 29;
-  void clear_clientsendtime();
-  static const int kClientSendTimeFieldNumber = 29;
-  ::google::protobuf::int64 clientsendtime() const;
-  void set_clientsendtime(::google::protobuf::int64 value);
-
-  // bool isGroupMsg = 27;
+  // bool isGroupMsg = 25;
   void clear_isgroupmsg();
-  static const int kIsGroupMsgFieldNumber = 27;
+  static const int kIsGroupMsgFieldNumber = 25;
   bool isgroupmsg() const;
   void set_isgroupmsg(bool value);
 
-  // int32 dStatus = 32;
+  // int32 dStatus = 27;
   void clear_dstatus();
-  static const int kDStatusFieldNumber = 32;
+  static const int kDStatusFieldNumber = 27;
   ::google::protobuf::int32 dstatus() const;
   void set_dstatus(::google::protobuf::int32 value);
-
-  // int64 serverSendTime = 30;
-  void clear_serversendtime();
-  static const int kServerSendTimeFieldNumber = 30;
-  ::google::protobuf::int64 serversendtime() const;
-  void set_serversendtime(::google::protobuf::int64 value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.MsgData)
  private:
@@ -4026,17 +4008,14 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int32 msgfrom_;
   ::google::protobuf::int32 contenttype_;
   ::google::protobuf::int64 seq_;
-  ::google::protobuf::int64 sendtime_;
-  ::google::protobuf::int64 createtime_;
+  double sendtime_;
   ::google::protobuf::int32 status_;
   bool isread_;
   bool isdeleted_;
   bool isrecalled_;
   bool ispinned_;
-  ::google::protobuf::int64 clientsendtime_;
   bool isgroupmsg_;
   ::google::protobuf::int32 dstatus_;
-  ::google::protobuf::int64 serversendtime_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsMsgDataImpl();
@@ -5429,15 +5408,21 @@ class FetchUserMessageListResp : public ::google::protobuf::Message /* @@protoc_
   const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >&
       convsinfo() const;
 
-  // int64 cursor = 2;
-  void clear_cursor();
-  static const int kCursorFieldNumber = 2;
-  ::google::protobuf::int64 cursor() const;
-  void set_cursor(::google::protobuf::int64 value);
+  // int64 start = 2;
+  void clear_start();
+  static const int kStartFieldNumber = 2;
+  ::google::protobuf::int64 start() const;
+  void set_start(::google::protobuf::int64 value);
 
-  // bool hasMore = 3;
+  // int64 stop = 3;
+  void clear_stop();
+  static const int kStopFieldNumber = 3;
+  ::google::protobuf::int64 stop() const;
+  void set_stop(::google::protobuf::int64 value);
+
+  // bool hasMore = 4;
   void clear_hasmore();
-  static const int kHasMoreFieldNumber = 3;
+  static const int kHasMoreFieldNumber = 4;
   bool hasmore() const;
   void set_hasmore(bool value);
 
@@ -5446,7 +5431,8 @@ class FetchUserMessageListResp : public ::google::protobuf::Message /* @@protoc_
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo > convsinfo_;
-  ::google::protobuf::int64 cursor_;
+  ::google::protobuf::int64 start_;
+  ::google::protobuf::int64 stop_;
   bool hasmore_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
@@ -18286,7 +18272,7 @@ inline void MsgData::set_allocated_content(::std::string* content) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.content)
 }
 
-// int64 seq = 14;
+// int64 seq = 13;
 inline void MsgData::clear_seq() {
   seq_ = GOOGLE_LONGLONG(0);
 }
@@ -18300,35 +18286,21 @@ inline void MsgData::set_seq(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.seq)
 }
 
-// int64 sendTime = 15;
+// double sendTime = 14;
 inline void MsgData::clear_sendtime() {
-  sendtime_ = GOOGLE_LONGLONG(0);
+  sendtime_ = 0;
 }
-inline ::google::protobuf::int64 MsgData::sendtime() const {
+inline double MsgData::sendtime() const {
   // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.sendTime)
   return sendtime_;
 }
-inline void MsgData::set_sendtime(::google::protobuf::int64 value) {
+inline void MsgData::set_sendtime(double value) {
   
   sendtime_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.sendTime)
 }
 
-// int64 createTime = 16;
-inline void MsgData::clear_createtime() {
-  createtime_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 MsgData::createtime() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.createTime)
-  return createtime_;
-}
-inline void MsgData::set_createtime(::google::protobuf::int64 value) {
-  
-  createtime_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.createTime)
-}
-
-// int32 status = 17;
+// int32 status = 15;
 inline void MsgData::clear_status() {
   status_ = 0;
 }
@@ -18342,7 +18314,7 @@ inline void MsgData::set_status(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.status)
 }
 
-// bool isRead = 18;
+// bool isRead = 16;
 inline void MsgData::clear_isread() {
   isread_ = false;
 }
@@ -18356,7 +18328,7 @@ inline void MsgData::set_isread(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isRead)
 }
 
-// map<string, bool> options = 19;
+// map<string, bool> options = 17;
 inline int MsgData::options_size() const {
   return options_.size();
 }
@@ -18374,7 +18346,7 @@ MsgData::mutable_options() {
   return options_.MutableMap();
 }
 
-// .roc.imsdk.network.OfflinePushInfo offlinePushInfo = 20;
+// .roc.imsdk.network.OfflinePushInfo offlinePushInfo = 18;
 inline bool MsgData::has_offlinepushinfo() const {
   return this != internal_default_instance() && offlinepushinfo_ != NULL;
 }
@@ -18424,7 +18396,7 @@ inline void MsgData::set_allocated_offlinepushinfo(::roc::imsdk::network::Offlin
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.offlinePushInfo)
 }
 
-// repeated string atUserIDList = 21;
+// repeated string atUserIDList = 19;
 inline int MsgData::atuseridlist_size() const {
   return atuseridlist_.size();
 }
@@ -18493,7 +18465,7 @@ MsgData::mutable_atuseridlist() {
   return &atuseridlist_;
 }
 
-// string attachedInfo = 22;
+// string attachedInfo = 20;
 inline void MsgData::clear_attachedinfo() {
   attachedinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18546,7 +18518,7 @@ inline void MsgData::set_allocated_attachedinfo(::std::string* attachedinfo) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.attachedInfo)
 }
 
-// string ext = 23;
+// string ext = 21;
 inline void MsgData::clear_ext() {
   ext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18599,7 +18571,7 @@ inline void MsgData::set_allocated_ext(::std::string* ext) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.ext)
 }
 
-// bool isDeleted = 24;
+// bool isDeleted = 22;
 inline void MsgData::clear_isdeleted() {
   isdeleted_ = false;
 }
@@ -18613,7 +18585,7 @@ inline void MsgData::set_isdeleted(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isDeleted)
 }
 
-// bool isRecalled = 25;
+// bool isRecalled = 23;
 inline void MsgData::clear_isrecalled() {
   isrecalled_ = false;
 }
@@ -18627,7 +18599,7 @@ inline void MsgData::set_isrecalled(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isRecalled)
 }
 
-// bool isPinned = 26;
+// bool isPinned = 24;
 inline void MsgData::clear_ispinned() {
   ispinned_ = false;
 }
@@ -18641,7 +18613,7 @@ inline void MsgData::set_ispinned(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isPinned)
 }
 
-// bool isGroupMsg = 27;
+// bool isGroupMsg = 25;
 inline void MsgData::clear_isgroupmsg() {
   isgroupmsg_ = false;
 }
@@ -18655,35 +18627,7 @@ inline void MsgData::set_isgroupmsg(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.isGroupMsg)
 }
 
-// int64 clientSendTime = 29;
-inline void MsgData::clear_clientsendtime() {
-  clientsendtime_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 MsgData::clientsendtime() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.clientSendTime)
-  return clientsendtime_;
-}
-inline void MsgData::set_clientsendtime(::google::protobuf::int64 value) {
-  
-  clientsendtime_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.clientSendTime)
-}
-
-// int64 serverSendTime = 30;
-inline void MsgData::clear_serversendtime() {
-  serversendtime_ = GOOGLE_LONGLONG(0);
-}
-inline ::google::protobuf::int64 MsgData::serversendtime() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.serverSendTime)
-  return serversendtime_;
-}
-inline void MsgData::set_serversendtime(::google::protobuf::int64 value) {
-  
-  serversendtime_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.serverSendTime)
-}
-
-// string syncExt = 31;
+// string syncExt = 26;
 inline void MsgData::clear_syncext() {
   syncext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18736,7 +18680,7 @@ inline void MsgData::set_allocated_syncext(::std::string* syncext) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.syncExt)
 }
 
-// int32 dStatus = 32;
+// int32 dStatus = 27;
 inline void MsgData::clear_dstatus() {
   dstatus_ = 0;
 }
@@ -19975,21 +19919,35 @@ FetchUserMessageListResp::convsinfo() const {
   return convsinfo_;
 }
 
-// int64 cursor = 2;
-inline void FetchUserMessageListResp::clear_cursor() {
-  cursor_ = GOOGLE_LONGLONG(0);
+// int64 start = 2;
+inline void FetchUserMessageListResp::clear_start() {
+  start_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 FetchUserMessageListResp::cursor() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserMessageListResp.cursor)
-  return cursor_;
+inline ::google::protobuf::int64 FetchUserMessageListResp::start() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserMessageListResp.start)
+  return start_;
 }
-inline void FetchUserMessageListResp::set_cursor(::google::protobuf::int64 value) {
+inline void FetchUserMessageListResp::set_start(::google::protobuf::int64 value) {
   
-  cursor_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.cursor)
+  start_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.start)
 }
 
-// bool hasMore = 3;
+// int64 stop = 3;
+inline void FetchUserMessageListResp::clear_stop() {
+  stop_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchUserMessageListResp::stop() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserMessageListResp.stop)
+  return stop_;
+}
+inline void FetchUserMessageListResp::set_stop(::google::protobuf::int64 value) {
+  
+  stop_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.stop)
+}
+
+// bool hasMore = 4;
 inline void FetchUserMessageListResp::clear_hasmore() {
   hasmore_ = false;
 }

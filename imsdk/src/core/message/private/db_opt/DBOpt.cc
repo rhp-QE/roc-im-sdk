@@ -1,9 +1,11 @@
 #include "DBOpt.h"
 
+#include "WCDB/CPPORMMacro.h"
 #include "WCDB/Field.hpp"
 #include "imsdk/src/core/common/util.h"
-#include "imsdk/src/core/message/db_model/MessageORM.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
+#include "imsdk/src/core/message/db_model/MessageORM.h"
+#include "imsdk/src/core/message/private/convert/Convert.h"
 
 #include "WCDB/WCDBCpp.h"
 #include <boost/json/array.hpp>
@@ -122,6 +124,89 @@ std::vector<std::pair<int64_t, int64_t>> DBOpt::message_range(W_SDK_ROOT, std::s
     }
 
     return ranges;
+}
+
+/// 获取消息 (直接从DB 中取)
+std::shared_ptr<model::MessageModel> DBOpt::message_for_id(W_SDK_ROOT, std::string msg_id) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, nullptr);
+
+    auto result = database->getAllObjects<core::message::MessageORM>(
+        tabel_name(w_sdk_root), 
+        WCDB::Field(&core::message::MessageORM::client_msg_id) == msg_id
+    );
+
+    if (result.hasValue() && !result.value().empty()) {
+        return core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, &(result.value().front()));
+    }
+
+    return nullptr;
+}
+
+std::vector<std::shared_ptr<model::MessageModel>> DBOpt::query_messages_for_conv_id(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, {});
+
+    auto condition = WCDB_FIELD(core::message::MessageORM::conversation_id) == conv_id;
+    if (cursor > 0) {
+        if (forward) {
+            condition = condition && WCDB_FIELD(core::message::MessageORM::client_order_index) > cursor;
+        } else {
+            condition = condition && WCDB_FIELD(core::message::MessageORM::client_order_index) < cursor;
+        }
+    }
+
+    auto result = database->getAllObjects<core::message::MessageORM>(
+        tabel_name(w_sdk_root), 
+        condition,
+        WCDB_FIELD(core::message::MessageORM::client_order_index).asOrder(WCDB::Order::DESC),
+        WCDB::Expression(limit),
+        WCDB::Expression()
+    );
+
+    if (!result.hasValue()) {
+        return {};
+    }
+
+    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs;
+    for (auto &msg : result.value()) {
+        sdk_msgs.push_back(core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, &msg));
+    }
+
+    return sdk_msgs;
+}
+
+
+/// 查询消息并设置优选使用的本地字段
+void DBOpt::message_merge_with_local(W_SDK_ROOT, std::string msg_id, message::MessageORM *db_msg_new) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VOID(database);
+
+    auto result = database->getFirstObjectWithFields<core::message::MessageORM>(
+        tabel_name(w_sdk_root), 
+        WCDB_FIELD(message::MessageORM::local_ext),
+        WCDB::Field(&core::message::MessageORM::client_msg_id) == msg_id
+    );
+
+    if (!result.hasValue()) {
+        return;
+    }
+
+    auto db_msg_old = &(result.value());
+
+    // --------------------------------------------------
+    if (db_msg_old->client_order_index > 0) {
+        db_msg_new->client_order_index = db_msg_old->client_order_index;
+    }
+
+    db_msg_new->local_ext = db_msg_old->local_ext;
+    // --------------------------------------------------
 }
 
 } // namespace roc::imsdk::core::message

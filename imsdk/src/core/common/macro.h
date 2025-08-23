@@ -45,5 +45,10 @@
         co_return; \
     }
 
+#define CHECK_POINTER_OR_CO_RETURN_VALUE(pointer, return_value) \
+    if (!pointer) { \
+        co_return return_value; \
+    }
+
 #define W_SDK_ROOT \
     std::weak_ptr<roc::imsdk::SDKRoot> w_sdk_root 
