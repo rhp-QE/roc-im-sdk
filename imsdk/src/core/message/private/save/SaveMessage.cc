@@ -6,6 +6,7 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/convert/Convert.h"
+#include <cstdint>
 
 namespace roc::imsdk::core::message {
 
@@ -35,6 +36,9 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
     // 自动更新消息区间
     update_message_range_for_message(w_sdk_root, sdk_msgs);
 
+    // 更新会话的最大 order_index
+    update_msg_order_in_conv(w_sdk_root, sdk_msgs);
+
     return sdk_msgs;
 }
 
@@ -58,7 +62,19 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_db_msgs(W_SD
     // 自动更新消息区间
     update_message_range_for_message(w_sdk_root, sdk_msgs);
 
+    // 更新会话的最大 order_index
+    update_msg_order_in_conv(w_sdk_root, sdk_msgs);
+
     return sdk_msgs;
+}
+
+/// 更新会话的最大 order_index
+void SaveMessage::update_msg_order_in_conv(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
+
+    for (const auto &msg : sdk_msgs) {
+        message::DBOpt::set_msg_order_in_conv(w_sdk_root, msg->conversation_id(), msg->client_order_index());
+    }
 }
 
 /// 根据 ID 获取 SDK 消息
@@ -294,15 +310,6 @@ void SaveMessage::update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr
         // 通过友元关系访问MessageManager的私有成员
         msg_manager->msg_cache_[sdk_msg->client_msg_id()] = sdk_msg;
     }
-}
-
-int64_t SaveMessage::max_message_order_index_in_conv(W_SDK_ROOT, const std::string &conv_id) {
-    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, -1);
-    
-    auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, -1);
-    
-    return 100;
 }
 
 } // namespace roc::imsdk::core::message

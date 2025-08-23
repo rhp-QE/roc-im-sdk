@@ -3,6 +3,7 @@
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
+#include <cstdint>
 
 namespace roc::imsdk::core::message {
 
@@ -30,9 +31,16 @@ public:
     /// 查询消息并设置优选使用的本地字段
     static void message_merge_with_local(W_SDK_ROOT, std::string msg_id, message::MessageORM *db_msg_new);
 
+    /// 设置会话最大 order_index
+    static void set_msg_order_in_conv(W_SDK_ROOT, std::string conv_id, int64_t order);
+
+    /// 获取会话最大 order_index
+    static int64_t max_msg_order_in_conv(W_SDK_ROOT, std::string conv_id);
+
 private:
     static std::string tabel_name(W_SDK_ROOT);
     static std::string message_range_key(W_SDK_ROOT, std::string conv_id);
+    static std::string order_index_key(W_SDK_ROOT, std::string conv_id);
 };
 
 } // namespace roc::imsdk::core::message

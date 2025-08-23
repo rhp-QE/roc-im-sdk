@@ -23,7 +23,7 @@ public:
     /// 保存网络消息
     static std::vector<std::shared_ptr<model::MessageModel>> save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs);
 
-    /// 保存db消息
+    /// 保存db消息 (只允许在没有 db 消息的时候调用)
     static std::vector<std::shared_ptr<model::MessageModel>> save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
     
     /// 根据 ID 获取 SDK 消息
@@ -44,8 +44,8 @@ public:
     /// 更新消息缓存 TODO
     static void update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
-    /// 会话消息的最大order_index
-    static int64_t max_message_order_index_in_conv(W_SDK_ROOT, const std::string &conv_id);
+    /// 更新会话的最大 order_index
+    static void update_msg_order_in_conv(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
 private:
    

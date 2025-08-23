@@ -18,7 +18,9 @@ namespace roc::imsdk::core::message {
 
 static const std::string MessageTableName = "messgae_table";
 static const std::string MessageRangeKey = "message_range";
+static const std::string OrderIndexKey = "order_index";
 
+//-----------------------
 std::string DBOpt::tabel_name(W_SDK_ROOT) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, "defaule_message_table");
     return core::util::key_for_user(sdk_root->config().user_id, MessageTableName);
@@ -28,6 +30,12 @@ std::string DBOpt::message_range_key(W_SDK_ROOT, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, MessageRangeKey);
     return core::util::key_for_user(sdk_root->config().user_id, MessageRangeKey + "_" + conv_id);
 }
+
+std::string DBOpt::order_index_key(W_SDK_ROOT, std::string conv_id) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, OrderIndexKey);
+    return core::util::key_for_user(sdk_root->config().user_id, OrderIndexKey + "_" + conv_id);
+}
+//-----------------------
 
 bool DBOpt::create_message_table_if_need(W_SDK_ROOT) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
@@ -188,10 +196,15 @@ void DBOpt::message_merge_with_local(W_SDK_ROOT, std::string msg_id, message::Me
     auto database = sdk_root->database();
     CHECK_POINTER_OR_RETURN_VOID(database);
 
+    auto resultFields = WCDB::ResultFields({
+        WCDB_FIELD(message::MessageORM::local_ext),
+        WCDB_FIELD(message::MessageORM::client_order_index)
+    });
+
     auto result = database->getFirstObjectWithFields<core::message::MessageORM>(
         tabel_name(w_sdk_root), 
-        WCDB_FIELD(message::MessageORM::local_ext),
-        WCDB::Field(&core::message::MessageORM::client_msg_id) == msg_id
+        resultFields,
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
     );
 
     if (!result.hasValue()) {
@@ -207,6 +220,28 @@ void DBOpt::message_merge_with_local(W_SDK_ROOT, std::string msg_id, message::Me
 
     db_msg_new->local_ext = db_msg_old->local_ext;
     // --------------------------------------------------
+}
+
+void DBOpt::set_msg_order_in_conv(W_SDK_ROOT, std::string conv_id, int64_t order) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
+
+    auto *mmkv = sdk_root->mmkv();
+    CHECK_POINTER_OR_RETURN_VOID(mmkv);
+
+    int64_t old_max_order = max_msg_order_in_conv(w_sdk_root, conv_id);
+
+    if (order > old_max_order) {
+        mmkv->set(order, order_index_key(w_sdk_root, conv_id));
+    }
+}
+
+int64_t DBOpt::max_msg_order_in_conv(W_SDK_ROOT, std::string conv_id) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, 1);
+
+    auto *mmkv = sdk_root->mmkv();
+    CHECK_POINTER_OR_RETURN_VALUE(mmkv, 1);
+
+    return mmkv->getInt64(order_index_key(w_sdk_root, conv_id), 1);
 }
 
 } // namespace roc::imsdk::core::message

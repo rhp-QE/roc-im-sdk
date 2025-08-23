@@ -153,7 +153,7 @@ std::shared_ptr<MessageORM> SendMessage::convert_send_context_to_message_orm(W_S
     message_orm->send_time = send_time;
     
     // 设置顺序索引
-    message_orm->client_order_index = message::SaveMessage::max_message_order_index_in_conv(w_sdk_root, context.conv_id) + 1;
+    message_orm->client_order_index = message::DBOpt::max_msg_order_in_conv(w_sdk_root, context.conv_id) + 1;
     
     return message_orm;
 }
