@@ -24,6 +24,7 @@
 #include <test/imsdk_test.h>
 #include <test/wcdb_test.h>
 #include <test/wcdb_simple_test.h>
+#include <examples/imsdk_demo.h>
 
 boost::asio::io_context net_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
 boost::asio::io_context main_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
@@ -73,19 +74,21 @@ void test_gcd() {
 
 int main() {
 
-    // testChannel();
+    // testChannel();;
 
     // test_func_();
 
     // test_mmkv();
 
-    // // 运行 WCDB 测试
+    // 运行 WCDB 测试
     // run_wcdb_tests();
     
     // 运行简化的 WCDB 测试（严格按照官方教程）
     // wcdb_simple_test();
 
-    test_imsdk();
+    // test_imsdk();
+
+    imsdk_demo();
 
     // co_cost_time_test();
 

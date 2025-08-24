@@ -68,6 +68,10 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     co_return true;
 }
 
+boost::asio::awaitable<bool> SDKRoot::login_out() {
+    return connection_manager_->disconnect();
+}
+
 network::SDKConnectionManager* SDKRoot::connection_manager() {
     return connection_manager_.get();
 }

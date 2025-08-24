@@ -32,12 +32,6 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
     double send_time = util::current_time_since1970();
     std::string client_msg_id = message::SaveMessage::generate_client_msg_id();
 
-    { 
-        std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
-        convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, send_time, req->add_msgs());
-        boost::asio::co_spawn(sdk_root->net_io_context(), async_send_message(w_sdk_root, std::move(req), std::move(callback)), boost::asio::detached);
-    } // 构造请求 异步发送数据
-
     {
         auto db_msg = convert_send_context_to_message_orm(w_sdk_root, context, client_msg_id, send_time);
         auto sdk_msgs = core::message::SaveMessage::save_db_msgs(w_sdk_root, {db_msg});
@@ -48,6 +42,13 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
 
         response->msg = sdk_msgs.front();
     } // 保存db 然后先返回给用户
+
+    { 
+        std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
+        convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, send_time, req->add_msgs());
+        boost::asio::co_spawn(sdk_root->net_io_context(), async_send_message(w_sdk_root, std::move(req), std::move(callback)), boost::asio::detached);
+    } // 构造请求 异步发送数据
+
 
     co_return response;
 }
@@ -90,7 +91,7 @@ bool SendMessage::check_send_context(const model::SendMsgContext &context) {
     return true;
 }
 
-void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, const model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MsgData *net_msg) {
+void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MsgData *net_msg) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     if (!net_msg) {
@@ -119,6 +120,9 @@ void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, const model:
 
         net_msg->set_recvid(receiver_id);
         net_msg->set_convid(conv_id);
+
+        context.conv_id = conv_id;
+        context.to_user_id = receiver_id;
     }
 }   
 

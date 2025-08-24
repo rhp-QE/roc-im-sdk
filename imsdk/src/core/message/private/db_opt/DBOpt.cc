@@ -241,7 +241,7 @@ int64_t DBOpt::max_msg_order_in_conv(W_SDK_ROOT, std::string conv_id) {
     auto *mmkv = sdk_root->mmkv();
     CHECK_POINTER_OR_RETURN_VALUE(mmkv, 1);
 
-    return mmkv->getInt64(order_index_key(w_sdk_root, conv_id), 1);
+    return mmkv->getInt64(order_index_key(w_sdk_root, conv_id), 0);
 }
 
 } // namespace roc::imsdk::core::message

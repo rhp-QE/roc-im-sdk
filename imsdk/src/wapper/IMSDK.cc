@@ -17,6 +17,10 @@ boost::asio::awaitable<bool> IMSDK::init_sdk(const Config config) {
     return sdk_root_->init_sdk(config);
 }
 
+boost::asio::awaitable<bool> IMSDK::login_out() {
+    return sdk_root_->login_out();
+}
+
 // =============================  message api  ======================================
 
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> IMSDK::send_message(const model::SendMsgContext &context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {

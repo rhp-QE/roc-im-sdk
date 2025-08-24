@@ -31,7 +31,7 @@ asio::awaitable<void> UserMessageFetcher::fetch_user_messages(W_SDK_ROOT) {
         co_return;
     }
 
-    std::cout<<"fetch user message success"<<std::endl;
+    // std::cout<<"fetch user message success"<<std::endl;
 
     co_await handle_fetched_user_message(w_sdk_root, std::move(resp.value()));
 

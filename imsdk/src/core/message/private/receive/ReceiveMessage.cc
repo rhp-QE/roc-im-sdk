@@ -51,6 +51,10 @@ void ReceiveMessage::handle_push_message(W_SDK_ROOT, std::shared_ptr<network::Sd
 }
 
 void ReceiveMessage::handle_receive_message(W_SDK_ROOT, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
+    if (net_msgs.empty()) {
+        return;
+    }
+
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->message_manager();

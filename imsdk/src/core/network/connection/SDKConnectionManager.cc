@@ -42,7 +42,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     // 观察网络状态变更
     lc_->set_connection_status_callback([](bool connected, const std::string &detail) {
-        std::cout << "SDKConnectionManager::connection_status: " << connected << std::endl;
+        std::cout << "\nSDKConnectionManager::connection_status: " << connected << std::endl;
     });
 
     // 
@@ -52,7 +52,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
             return;
         }
 
-        std::cout<<"[rhpmark] sdk receive message"<<std::endl;
+        // std::cout<<"[rhpmark] sdk receive message"<<std::endl;
 
         auto conn = sroot->connection_manager();
         boost::asio::co_spawn(conn->net_io_context_, conn->handle_data_received(std::move(data)), asio::detached);
@@ -61,6 +61,14 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
     auto res = co_await lc_->connect();
 
     co_return;
+}
+
+boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
+    auto res = co_await lc_->disconnect();
+    if (!res) {
+        std::cout << "SDKConnectionManager::disconnect error: " << res.error().to_string() << std::endl;
+    }
+    co_return res;
 }
 
 void SDKConnectionManager::set_on_push_message_callback(OnPushMesageCallbackType callback) {

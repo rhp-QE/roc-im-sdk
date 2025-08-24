@@ -45,6 +45,8 @@ public:
     // 初始化SDK
     boost::asio::awaitable<bool> init_sdk(const Config config);
 
+    boost::asio::awaitable<bool> login_out();
+
     /// =============================  message api  ======================================
 
     /// 发送消息

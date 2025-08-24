@@ -54,6 +54,8 @@ public:
 
     boost::asio::awaitable<void> init_and_connect(std::weak_ptr<SDKRoot> root);
 
+    boost::asio::awaitable<bool> disconnect();
+
     // 组件加载完成后的初始化
     void all_component_did_load();
 

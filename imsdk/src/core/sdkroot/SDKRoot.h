@@ -50,6 +50,8 @@ public:
     // 初始化sdk
     asio::awaitable<bool> init_sdk(const Config config);
 
+    boost::asio::awaitable<bool> login_out();
+
     // -------------------------------------------------
     MMKV* mmkv();
     const Config& config();

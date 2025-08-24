@@ -21,25 +21,25 @@ class ConversationModel;
 
 class MessageModel : public roc::base::uncopyable {
 public:
-    std::string content();
-    std::string to_user_id();
-    std::string from_user_id();
-    std::string client_msg_id();
-    std::string server_msg_id();
-    std::string conversation_id();
-    int64_t client_order_index();
-    int64_t server_order_index();
+    std::string content() const;
+    std::string to_user_id() const;
+    std::string from_user_id() const;
+    std::string client_msg_id() const;
+    std::string server_msg_id() const;
+    std::string conversation_id() const;
+    int64_t client_order_index() const;
+    int64_t server_order_index() const;
 
-    bool isGroupMessage();
+    bool isGroupMessage() const;
     
     // Additional accessor methods
-    int status();
-    bool is_pinned();
-    bool is_deleted();
-    bool is_recalled();
-    double send_time();
-    std::unordered_map<std::string, std::string> sync_ext();
-    std::unordered_map<std::string, std::string> local_ext();
+    int status() const;
+    bool is_pinned() const;
+    bool is_deleted() const;
+    bool is_recalled() const;
+    double send_time() const;
+    std::unordered_map<std::string, std::string> sync_ext() const;
+    std::unordered_map<std::string, std::string> local_ext() const;
 
     friend class roc::imsdk::core::message::Convert;
 

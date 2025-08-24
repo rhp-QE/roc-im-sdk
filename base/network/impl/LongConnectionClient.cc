@@ -262,7 +262,7 @@ boost::asio::awaitable<void> LongConnectionClient::p_send_ping() {
         
         // 使用 IWSClient 接口发送 ping 帧
         auto result = co_await ws_client_->ping(config_.get_heartbeat_payload());
-        std::cout << "LongConnectionClient::p_send_ping: " << result.value() << std::endl;
+        // std::cout << "LongConnectionClient::p_send_ping: " << result.value() << std::endl;
         if (result) {
             last_heartbeat_time_ = std::chrono::steady_clock::now();
         } else {

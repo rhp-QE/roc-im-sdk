@@ -22,7 +22,7 @@ private:
     static bool check_send_context(const model::SendMsgContext &contexts);
 
     /// 将发送上下文转换为网络消息
-    static void convert_send_context_to_sdkws_message(W_SDK_ROOT, const model::SendMsgContext &contexts, std::string client_msg_id, double send_time, network::MsgData *req);
+    static void convert_send_context_to_sdkws_message(W_SDK_ROOT, model::SendMsgContext &contexts, std::string client_msg_id, double send_time, network::MsgData *req);
     
     /// 将发送上下文转换为MessageORM对象
     static std::shared_ptr<MessageORM> convert_send_context_to_message_orm(W_SDK_ROOT, const model::SendMsgContext &context, std::string client_msg_id, double send_time);
