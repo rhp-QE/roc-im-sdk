@@ -6,13 +6,17 @@
 //
 
 #include "base/network/include/LongConnectionClient.h"
+#include <boost/asio/use_awaitable.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
+#include <boost/system/detail/error_code.hpp>
 #include <iostream>
 #include <chrono>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
 #include <boost/asio/steady_timer.hpp>
 #include <boost/beast/core/stream_traits.hpp>
+#include <memory>
+#include <vector>
 #include "base/network/include/Error.h"
 
 namespace asio = boost::asio;
@@ -33,6 +37,7 @@ LongConnectionClient::LongConnectionClient(LongConnectionConfig config, boost::a
     , running_(false)
     , connected_(false) {
     
+    ch = std::make_unique<channel_type>(io_context_, 1000);
     std::cout << "LongConnectionClient created with config:" << std::endl;
     std::cout << "  Host: " << config_.get_host() << ":" << config_.get_port() << std::endl;
     std::cout << "  Path: " << config_.get_path() << std::endl;
@@ -96,6 +101,9 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> LongConnectionCli
         
         // 启动数据接收循环
         p_start_receive_loop();
+
+        // 启动数据发送循环
+        p_start_send_loop();
         
         co_return true;
     } catch (const std::exception& e) {
@@ -167,6 +175,35 @@ boost::asio::awaitable<std::expected<size_t, roc::error::Error>> LongConnectionC
         co_return result.value();
     } catch (const std::exception& e) {
         co_return std::unexpected(roc::error::make_error(2011, "Send failed", e.what()));
+    }
+}
+
+boost::asio::awaitable<std::expected<size_t, roc::error::Error>> LongConnectionClient::send_data(std::vector<char> buf) {
+    size_t size = buf.size();
+    co_await ch->async_send(boost::system::error_code{}, std::make_shared<std::vector<char>>(std::move(buf)), boost::asio::use_awaitable);
+    co_return size;
+}
+
+void LongConnectionClient::p_start_send_loop() {
+    asio::co_spawn(io_context_, [this]() -> asio::awaitable<void> {
+        co_await p_send_loop();
+    }, asio::detached);
+}
+
+boost::asio::awaitable<void> LongConnectionClient::p_send_loop() {
+
+    while (running_ && connected_) {
+        try {
+            auto buf = co_await ch->async_receive(boost::asio::use_awaitable);
+
+            // 使用 IWSClient 接口发送数据
+            auto result = co_await ws_client_->send(buf->data(), buf->size());
+            if (!result) {
+                break;
+            }
+        } catch (const std::exception& e) {
+            break;
+        }
     }
 }
 

@@ -91,7 +91,7 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
 
     std::vector<char> buffer(req->ByteSizeLong());
     req->SerializeToArray(buffer.data(), req->ByteSizeLong());
-    auto result = co_await lc_->send_data(buffer.data(), buffer.size());
+    auto result = co_await lc_->send_data(std::move(buffer));
 
     std::unique_ptr<network::SdkWSResp> resp = co_await channel->async_receive(boost::asio::use_awaitable);
     {

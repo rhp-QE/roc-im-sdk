@@ -29,10 +29,6 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
             std::cout << "send message response address2: " << response->msg.get() << std::endl;
             std::cout << "send message response order2: " << response->msg->server_order_index() << std::endl;
         });
-
-        std::cout << "send message response1: " << response->msg->content() << std::endl;
-        std::cout << "send message response address1: " << response->msg.get() << std::endl;
-        std::cout << "send message response order1: " << response->msg->server_order_index() << std::endl;
     }
 
     auto convs = co_await imsdk->convs_when_login();

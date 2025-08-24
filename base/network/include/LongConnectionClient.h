@@ -11,6 +11,7 @@
 #include "base/network/include/IWSClient.h"
 #include "base/network/include/WSClientConfig.h"
 #include "base/network/include/WSClient.h"
+#include <boost/asio/experimental/channel.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <functional>
 #include <memory>
@@ -177,6 +178,8 @@ public:
      * @return 发送结果
      */
     boost::asio::awaitable<std::expected<size_t, roc::error::Error>> send_data(const void* data, size_t size);
+
+    boost::asio::awaitable<std::expected<size_t, roc::error::Error>> send_data(std::vector<char> buf);
     
     /**
      * @brief 异步发送字符串数据
@@ -242,6 +245,12 @@ private:
      * @brief 数据接收循环
      */
     boost::asio::awaitable<void> p_receive_loop();
+
+    /**启动数据发送循环 */
+    void p_start_send_loop();
+
+    /**数据发送循环 */
+    boost::asio::awaitable<void> p_send_loop();
     
     /**
      * @brief 处理接收到的数据
@@ -290,6 +299,10 @@ private:
     mutable std::mutex callback_mutex_; ///< 回调函数互斥锁
     std::atomic<bool> running_{false}; ///< 运行状态
     std::atomic<bool> connected_{false}; ///< 连接状态
+
+    // 数据缓冲区
+    using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::shared_ptr<std::vector<char>>)>;
+    std::unique_ptr<channel_type> ch;
 };
 
 } // namespace roc::base::net

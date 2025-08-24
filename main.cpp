@@ -73,12 +73,14 @@ void test_gcd() {
 
 int main() {
 
-    test_func_();
+    // testChannel();
 
-    test_mmkv();
+    // test_func_();
 
-    // 运行 WCDB 测试
-    run_wcdb_tests();
+    // test_mmkv();
+
+    // // 运行 WCDB 测试
+    // run_wcdb_tests();
     
     // 运行简化的 WCDB 测试（严格按照官方教程）
     // wcdb_simple_test();

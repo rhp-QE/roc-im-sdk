@@ -7,12 +7,13 @@
 namespace asio = boost::asio;
 using channel_type = asio::experimental::channel<void(boost::system::error_code, int, double)>;
 
-int cnt = 30000;
+int cnt = 10;
 auto start = std::chrono::high_resolution_clock::now();
 // 使用 C++20 协程
 asio::awaitable<void> producer(std::shared_ptr<channel_type> ch) {
     for (int i = 0; i < cnt; ++i) {
         co_await ch->async_send(boost::system::error_code{}, i, i + 1, asio::use_awaitable);
+        int a = 10;
     }
     ch->close(); // 发送完毕后关闭通道
 }
@@ -48,5 +49,5 @@ void testChannel() {
   
     start = std::chrono::high_resolution_clock::now();
     asio::co_spawn(main_io_context, producer(ch), asio::detached);
-    asio::co_spawn(main_io_context, consumer(ch), asio::detached);
+    // asio::co_spawn(main_io_context, consumer(ch), asio::detached);
 }
