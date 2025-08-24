@@ -14,6 +14,7 @@
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include <algorithm>
 #include <memory>
+#include <utility>
 
 namespace roc::imsdk::core::message {
 

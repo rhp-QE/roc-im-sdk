@@ -31,9 +31,9 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
         });
     }
 
-    auto convs = co_await imsdk->convs_when_login();
+    // auto convs = co_await imsdk->convs_when_login();
 
-    auto messages = co_await imsdk->messages_when_enter_chat("0:1:12345:24680");
+    // auto messages = co_await imsdk->messages_when_enter_chat("0:1:12345:24680");
 
     int a = 100;
     while(true) {
@@ -42,7 +42,7 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
 }
 
 inline void test_imsdk() {
-    boost::asio::co_spawn(sdk_io_context, p_test_imsdk(), boost::asio::detached);
+    boost::asio::co_spawn(main_io_context, p_test_imsdk(), boost::asio::detached);
 }
 
 inline roc::imsdk::Config generateConfig() {

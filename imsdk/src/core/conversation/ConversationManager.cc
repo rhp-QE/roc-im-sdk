@@ -1,7 +1,10 @@
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/conversation/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/conversation/private/save/SaveConversation.h"
 #include "imsdk/src/core/conversation/private/fetcher/UserMessageFetcher.h"
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
 
 namespace roc::imsdk::core {
 
@@ -45,8 +48,11 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> Conversation
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::convs_when_login() {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root_, nullptr)
+
     /// 触发混链拉取
-    co_await conversation::UserMessageFetcher::fetch_user_messages(w_sdk_root_);
+    asio::co_spawn(sdk_root->net_io_context(), conversation::UserMessageFetcher::fetch_user_messages(w_sdk_root_), asio::detached);
+
     /// 从DB 中加载会话
     auto convs = co_await conversation::SaveConversation::load_convs_from_db(w_sdk_root_, -1, 100, true);
     co_return convs;

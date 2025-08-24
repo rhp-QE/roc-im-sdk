@@ -37,7 +37,7 @@ LongConnectionClient::LongConnectionClient(LongConnectionConfig config, boost::a
     , running_(false)
     , connected_(false) {
     
-    ch = std::make_unique<channel_type>(io_context_, 1000);
+    ch = std::make_unique<channel_type>(io_context_.get_executor(), 10);
     std::cout << "LongConnectionClient created with config:" << std::endl;
     std::cout << "  Host: " << config_.get_host() << ":" << config_.get_port() << std::endl;
     std::cout << "  Path: " << config_.get_path() << std::endl;
