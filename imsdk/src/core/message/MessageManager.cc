@@ -1,11 +1,14 @@
 #include "imsdk/src/core/message/MessageManager.h"
 
+#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/message/private/send/SendMessage.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 #include "imsdk/src/core/message/private/cmd/CmdMessageOperator.h"
 #include "imsdk/src/core/message/private/fetcher/ConvMessagesFetcher.h"
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
 
 namespace roc::imsdk::core {
 
@@ -65,8 +68,10 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root_, nullptr)
+
     /// 触发单链拉取
-    co_await message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root_, conv_id);
+    boost::asio::co_spawn(sdk_root->net_io_context(), message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root_, conv_id), boost::asio::detached);
 
     // 从DB 中加载消息
     auto result = message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, -1, 100, true);

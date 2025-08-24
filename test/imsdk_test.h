@@ -4,20 +4,26 @@
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
 #include <boost/asio/io_context.hpp>
+#include <boost/asio/post.hpp>
+#include <boost/asio/use_awaitable.hpp>
 #include <iostream>
+#include <memory>
 #include "im/base/coroutine.h"
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/include/config.h"
 #include "BaseConfig.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
+#include "base/utils/utils.h"
 
 
 inline roc::imsdk::Config generateConfig();
 inline roc::imsdk::model::SendMsgContext generateSendMessageContext();
 
+std::shared_ptr<roc::imsdk::IMSDK> imsdk;
 
 inline boost::asio::awaitable<void> p_test_imsdk() {
-    auto imsdk = std::make_shared<roc::imsdk::IMSDK>();
+
+    imsdk = std::make_shared<roc::imsdk::IMSDK>();
 
     co_await imsdk->init_sdk(generateConfig());
 
@@ -31,18 +37,19 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
         });
     }
 
-    // auto convs = co_await imsdk->convs_when_login();
+    auto convs = co_await imsdk->convs_when_login();
 
-    // auto messages = co_await imsdk->messages_when_enter_chat("0:1:12345:24680");
+    auto messages = co_await imsdk->messages_when_enter_chat("0:1:12345:24680");
+
+    // auto executor = co_await boost::asio::this_coro::executor;
+    // co_await roc::base::util::switch_if_needed(net_io_context.get_executor());
 
     int a = 100;
-    while(true) {
-
-    }
+    
 }
 
 inline void test_imsdk() {
-    boost::asio::co_spawn(main_io_context, p_test_imsdk(), boost::asio::detached);
+    boost::asio::co_spawn(sdk_io_context, p_test_imsdk(), boost::asio::detached);
 }
 
 inline roc::imsdk::Config generateConfig() {

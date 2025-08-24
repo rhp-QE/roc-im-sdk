@@ -80,6 +80,8 @@ boost::asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list(W_SDK_
     for (const auto &range : msg_empty_ranges) {
         co_await fetch_conv_message_list_for_range(w_sdk_root, conv_id, range);
     }
+
+    std::cout<<"fetch conv message success"<<std::endl;
 }
 
 // ==========================================================================================================

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <boost/asio/any_io_executor.hpp>
+#include <boost/asio/awaitable.hpp>
+#include <boost/asio/dispatch.hpp>
+#include <boost/asio/use_awaitable.hpp>
 #include <functional>
 #include <string>
 #include <unordered_map>
@@ -100,6 +104,24 @@ inline std::string uuid() {
        << random_str;  // 8位随机字母
     
     return ss.str();
+}
+
+
+// 检查当前是否在目标执行器上运行，如果不是则切换
+inline boost::asio::awaitable<void> switch_if_needed(boost::asio::any_io_executor target_executor) {
+    auto current_executor = co_await boost::asio::this_coro::executor;
+    
+    // 检查当前执行器是否与目标执行器相同
+    if (current_executor != target_executor) {
+        co_await boost::asio::dispatch(target_executor, boost::asio::use_awaitable);
+
+
+        auto current_executor1 = co_await boost::asio::this_coro::executor;
+        if (current_executor1 != target_executor) {
+            int a = 100;
+        }
+    } 
+    co_return;
 }
 
 } // namespace roc::base::utils
