@@ -30,7 +30,11 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
     } 
 
     double send_time = util::current_time_since1970();
-    std::string client_msg_id = message::SaveMessage::generate_client_msg_id();
+    std::string client_msg_id = message::SaveMessage::generate_client_msg_id(); 
+
+
+    std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
+    convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, send_time, req->add_msgs());
 
     {
         auto db_msg = convert_send_context_to_message_orm(w_sdk_root, context, client_msg_id, send_time);
@@ -44,8 +48,6 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
     } // 保存db 然后先返回给用户
 
     { 
-        std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
-        convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, send_time, req->add_msgs());
         boost::asio::co_spawn(sdk_root->net_io_context(), async_send_message(w_sdk_root, std::move(req), std::move(callback)), boost::asio::detached);
     } // 构造请求 异步发送数据
 
@@ -158,7 +160,7 @@ std::shared_ptr<MessageORM> SendMessage::convert_send_context_to_message_orm(W_S
     message_orm->send_time = send_time;
     
     // 设置顺序索引
-    message_orm->client_order_index = message::DBOpt::max_msg_order_in_conv(w_sdk_root, context.conv_id) + 1;
+    message_orm->client_order_index = message::DBOpt::next_msg_order_in_conv(w_sdk_root, context.conv_id);
     
     return message_orm;
 }

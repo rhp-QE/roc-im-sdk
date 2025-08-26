@@ -35,7 +35,7 @@ public:
     static void set_msg_order_in_conv(W_SDK_ROOT, std::string conv_id, int64_t order);
 
     /// 获取会话最大 order_index
-    static int64_t max_msg_order_in_conv(W_SDK_ROOT, std::string conv_id);
+    static int64_t next_msg_order_in_conv(W_SDK_ROOT, std::string conv_id);
 
 private:
     static std::string tabel_name(W_SDK_ROOT);

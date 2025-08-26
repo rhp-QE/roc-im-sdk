@@ -54,7 +54,7 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     // 初始化MMKV
     std::string rootDir = "/root/project/roc_im_sdk/db_data";
     MMKV::initializeMMKV(rootDir);
-    mmkv_ = MMKV::defaultMMKV();
+    mmkv_ = MMKV::mmkvWithID(config_.user_id);
 
     // 初始化长连接管理器
     co_await connection_manager_->init_and_connect(weak_from_this());

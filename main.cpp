@@ -89,6 +89,7 @@ int main() {
     // test_imsdk();
 
     imsdk_demo();
+    // test_thread_safe_vector();
 
     // co_cost_time_test();
 

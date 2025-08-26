@@ -2,9 +2,12 @@
 
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
+#include "base/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
+#include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 #include "imsdk/src/core/message/private/cmd/CmdMessageOperator.h"
+#include <mutex>
 
 // Forward declaration
 namespace roc::imsdk::core::message {
@@ -61,20 +64,24 @@ public:
 private:
     std::weak_ptr<SDKRoot> w_sdk_root_;
 
+    std::mutex msg_order_mutex_;
+
     /// 收到消息回调
     model::OnMessagesCallbackType on_messages_callback_;
 
     /// 消息缓存
-    std::unordered_map<std::string, std::shared_ptr<model::MessageModel>> msg_cache_;
+    base::containers::ThreadSafeUnorderedMap<std::string, std::shared_ptr<model::MessageModel>> msg_cache_;
 
     /// 消息区间
-    std::unordered_map<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> msg_range_cache_;
+    base::containers::ThreadSafeUnorderedMap<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> msg_range_cache_;
 
     // 友元类，允许SaveMessage访问私有成员
+    friend class roc::imsdk::core::message::DBOpt;
     friend class roc::imsdk::core::message::Convert;
     friend class roc::imsdk::core::message::SaveMessage;
     friend class roc::imsdk::core::message::ReceiveMessage;
     friend class roc::imsdk::core::message::CmdMessageOperator;
+
 
 };
 

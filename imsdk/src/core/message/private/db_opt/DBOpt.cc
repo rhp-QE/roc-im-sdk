@@ -4,6 +4,7 @@
 #include "WCDB/Field.hpp"
 #include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
+#include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
 #include "imsdk/src/core/message/private/convert/Convert.h"
 
@@ -11,6 +12,7 @@
 #include <boost/json/array.hpp>
 #include <boost/json/parse.hpp>
 #include <boost/json/serialize.hpp>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -228,20 +230,33 @@ void DBOpt::set_msg_order_in_conv(W_SDK_ROOT, std::string conv_id, int64_t order
     auto *mmkv = sdk_root->mmkv();
     CHECK_POINTER_OR_RETURN_VOID(mmkv);
 
-    int64_t old_max_order = max_msg_order_in_conv(w_sdk_root, conv_id);
+    auto msg_manager = sdk_root->message_manager();
 
+    // lock
+    std::lock_guard<std::mutex> lock(msg_manager->msg_order_mutex_);
+
+    int64_t old_max_order = mmkv->getInt64(order_index_key(w_sdk_root, conv_id), 0);
     if (order > old_max_order) {
+        // std::cout<<"set_msg_order_in_conv: "<<conv_id<<" : "<<order<<std::endl;
         mmkv->set(order, order_index_key(w_sdk_root, conv_id));
     }
 }
 
-int64_t DBOpt::max_msg_order_in_conv(W_SDK_ROOT, std::string conv_id) {
+int64_t DBOpt::next_msg_order_in_conv(W_SDK_ROOT, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, 1);
 
     auto *mmkv = sdk_root->mmkv();
     CHECK_POINTER_OR_RETURN_VALUE(mmkv, 1);
 
-    return mmkv->getInt64(order_index_key(w_sdk_root, conv_id), 0);
+    auto msg_manager = sdk_root->message_manager();
+
+    // lock
+    std::lock_guard<std::mutex> lock(msg_manager->msg_order_mutex_);
+
+    int64_t max_order = mmkv->getInt64(order_index_key(w_sdk_root, conv_id), 0);
+    mmkv->set(max_order + 1, order_index_key(w_sdk_root, conv_id));
+    // std::cout<<"max_msg_order_in_conv: "<<conv_id<<" : "<<max_order<<std::endl;
+    return max_order + 1;
 }
 
 } // namespace roc::imsdk::core::message

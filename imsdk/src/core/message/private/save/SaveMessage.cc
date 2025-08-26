@@ -27,7 +27,9 @@ std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_S
 
     // 转换为 sdk 消息
     auto sdk_msgs = base::util::transform(db_msgs, [w_sdk_root](const std::shared_ptr<core::message::MessageORM> &msg) {
-        return core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg.get());
+        auto res = core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg.get());
+        int a = 100;
+        return res;
     });
 
     // 更新缓存
@@ -85,16 +87,16 @@ std::shared_ptr<model::MessageModel> SaveMessage::sdk_msg_for_id(W_SDK_ROOT, con
     CHECK_POINTER_OR_RETURN_VALUE(msg_manager, nullptr);
 
     /// 从缓存中获取
-    auto it = msg_manager->msg_cache_.find(msg_id);
-    if (it != msg_manager->msg_cache_.end()) {
-        return it->second;
+    auto sdk_msg_opt = msg_manager->msg_cache_.get_copy(msg_id);
+    if (sdk_msg_opt) {
+        return sdk_msg_opt.value();
     }
 
     /// 从DB中获取
     auto sdk_msg = message::DBOpt::message_for_id(w_sdk_root, msg_id);
     if (sdk_msg) {
         /// 更新缓存
-        msg_manager->msg_cache_[msg_id] = sdk_msg;
+        msg_manager->msg_cache_.insert_or_assign(msg_id, sdk_msg);
     }
     return sdk_msg;
 }
@@ -131,12 +133,12 @@ void SaveMessage::update_message_range_for_message(W_SDK_ROOT, const std::vector
 
         auto input_ranges = generate_range(seqs);
 
-        auto current_ranges = msg_manager->msg_range_cache_[conv_id];
+        auto current_ranges = msg_manager->msg_range_cache_.modify_or_create(conv_id, [input_ranges](std::vector<std::pair<int64_t, int64_t>> &current_ranges) {
+            current_ranges = merge_ranges(input_ranges, current_ranges);
+        });
 
-        std::vector<std::pair<int64_t, int64_t>> new_ranges = merge_ranges(input_ranges, current_ranges);
+        message::DBOpt::save_message_range(w_sdk_root, current_ranges, conv_id);
 
-        msg_manager->msg_range_cache_[conv_id] = new_ranges;
-        message::DBOpt::save_message_range(w_sdk_root, new_ranges, conv_id);
     }
 }
 
@@ -178,17 +180,14 @@ std::shared_ptr<model::LoadConvMessagesResult> SaveMessage::load_message_from_db
 
     // load message range
     auto ranges = message::DBOpt::message_range(sdk_root, conv_id);
-    sdk_root->message_manager()->msg_range_cache_[conv_id] = ranges;
+    msg_manager->msg_range_cache_.insert_or_assign(conv_id, ranges);
 
     // load message
     auto msgs = message::DBOpt::query_messages_for_conv_id(w_sdk_root, conv_id, cursor, limit, forward);
 
     /// 更新缓存
     for (auto &msg : msgs) {
-        bool is_exit = msg_manager->msg_cache_.find(msg->client_msg_id()) != msg_manager->msg_cache_.end();
-        if (!is_exit) {
-            msg_manager->msg_cache_[msg->client_msg_id()] = msg;
-        }
+        msg_manager->msg_cache_.insert_or_assign(msg->client_msg_id(), msg);
     }
 
     auto result = std::make_shared<model::LoadConvMessagesResult>();
@@ -290,11 +289,11 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::message_range_for_conv_id(
     CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
 
     // 从消息管理器的缓存中获取会话的消息区间
-    auto it = msg_manager->msg_range_cache_.find(conv_id);
-    if (it != msg_manager->msg_range_cache_.end()) {
-        return it->second;
+    auto it = msg_manager->msg_range_cache_.get_copy(conv_id);
+    if (it) {
+        return it.value();
     }
-    
+
     return {};
 }
 
@@ -308,7 +307,7 @@ void SaveMessage::update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr
     for (const auto &sdk_msg : sdk_msgs) {
         CHECK_POINTER_OR_RETURN_VOID(sdk_msg);
         // 通过友元关系访问MessageManager的私有成员
-        msg_manager->msg_cache_[sdk_msg->client_msg_id()] = sdk_msg;
+        msg_manager->msg_cache_.insert_or_assign(sdk_msg->client_msg_id(), sdk_msg);
     }
 }
 
