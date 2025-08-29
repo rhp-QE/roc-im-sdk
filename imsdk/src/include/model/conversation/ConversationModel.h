@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <shared_mutex>
 
 
 namespace roc::imsdk::core {
@@ -28,6 +29,7 @@ enum class ConvType {
 
 class ConversationModel {
 public:
+    // 线程安全的访问器方法
     std::string name();
     int unread_count();
     std::string avatar();
@@ -56,6 +58,11 @@ public:
     friend class roc::imsdk::core::conversation::SaveConversation;
 
 private:
+    // 私有移动操作 - 绕过系统移动赋值，手动实现数据移动
+    void move_from(ConversationModel&& other) noexcept;
+    
+    // 线程安全保护
+    mutable std::shared_mutex mutex_;
     ConvType type_;
     
     std::string name_;

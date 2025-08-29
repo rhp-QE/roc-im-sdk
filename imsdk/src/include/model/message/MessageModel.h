@@ -4,6 +4,7 @@
 #include <functional>
 #include <vector>
 #include <memory>
+#include <shared_mutex>
 #include "base/Uncopyable.h"
 
 namespace roc::imsdk::core {
@@ -21,6 +22,7 @@ class ConversationModel;
 
 class MessageModel : public roc::base::uncopyable {
 public:
+    // 线程安全的访问器方法
     std::string content() const;
     std::string to_user_id() const;
     std::string from_user_id() const;
@@ -44,6 +46,11 @@ public:
     friend class roc::imsdk::core::message::Convert;
 
 private:
+    // 私有移动操作 - 绕过系统移动赋值，手动实现数据移动
+    void move_from(MessageModel&& other) noexcept;
+    
+    // 线程安全保护
+    mutable std::shared_mutex mutex_;
 
     int  status_;
     
