@@ -106,6 +106,10 @@ std::unordered_map<std::string, std::string> ConversationModel::local_ext() {
 }
 
 void ConversationModel::move_from(ConversationModel&& other) noexcept {
+    if (this == &other) {
+        return;
+    }
+
     // 获取写锁保护当前对象
     std::unique_lock<std::shared_mutex> write_lock(mutex_);
     // 获取源对象的写锁保护

@@ -70,28 +70,24 @@ std::shared_ptr<model::MessageModel> Convert::convert_db_msg_to_sdk_msg(W_SDK_RO
         return nullptr;
     }
 
-    auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, nullptr);
+    std::shared_ptr<model::MessageModel> sdk_msg = std::make_shared<model::MessageModel>();
 
-
-    auto sdk_msg = msg_manager->msg_cache_.modify_or_create(db_msg->client_msg_id, [db_msg](std::shared_ptr<model::MessageModel> &sdk_msg) {
-        sdk_msg->status_ = db_msg->status;
-        sdk_msg->is_pinned_ = db_msg->is_pinned;
-        sdk_msg->is_deleted_ = db_msg->is_deleted;
-        sdk_msg->is_recalled_ = db_msg->is_recalled;
-        sdk_msg->is_group_msg_ = db_msg->is_group_msg;
-        sdk_msg->content_ = db_msg->content;
-        sdk_msg->to_user_id_ = db_msg->to_user_id;
-        sdk_msg->from_user_id_ = db_msg->from_user_id;
-        sdk_msg->client_msg_id_ = db_msg->client_msg_id;
-        sdk_msg->server_msg_id_ = db_msg->server_msg_id;
-        sdk_msg->conversation_id_ = db_msg->conversation_id;
-        sdk_msg->client_order_index_ = db_msg->client_order_index;
-        sdk_msg->server_order_index_ = db_msg->server_order_index;
-        sdk_msg->send_time_ = db_msg->send_time;
-        // sdk_msg->sync_ext_ = db_msg->sync_ext;
-        // sdk_msg->local_ext_ = db_msg->local_ext;
-    }, std::make_shared<model::MessageModel>());
+    sdk_msg->status_ = db_msg->status;
+    sdk_msg->is_pinned_ = db_msg->is_pinned;
+    sdk_msg->is_deleted_ = db_msg->is_deleted;
+    sdk_msg->is_recalled_ = db_msg->is_recalled;
+    sdk_msg->is_group_msg_ = db_msg->is_group_msg;
+    sdk_msg->content_ = db_msg->content;
+    sdk_msg->to_user_id_ = db_msg->to_user_id;
+    sdk_msg->from_user_id_ = db_msg->from_user_id;
+    sdk_msg->client_msg_id_ = db_msg->client_msg_id;
+    sdk_msg->server_msg_id_ = db_msg->server_msg_id;
+    sdk_msg->conversation_id_ = db_msg->conversation_id;
+    sdk_msg->client_order_index_ = db_msg->client_order_index;
+    sdk_msg->server_order_index_ = db_msg->server_order_index;
+    sdk_msg->send_time_ = db_msg->send_time;
+    // sdk_msg->sync_ext_ = db_msg->sync_ext;
+    // sdk_msg->local_ext_ = db_msg->local_ext;
     
     return sdk_msg;
 }

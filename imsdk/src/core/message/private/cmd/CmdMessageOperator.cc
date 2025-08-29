@@ -36,48 +36,48 @@ void CmdMessageOperator::handle_push_message(W_SDK_ROOT, std::shared_ptr<network
     switch (cmd_msg->cmd()) {
         // 撤回消息
         case static_cast<int>(common::CmdMessageOp::Recall):
-            handle_recall_message(w_sdk_root, cmd_msg);
+            boost::asio::co_spawn(sdk_root->net_io_context(), handle_recall_message(w_sdk_root, cmd_msg), boost::asio::detached);
             break;
         // 删除消息
         case static_cast<int>(common::CmdMessageOp::Delete):
-            handle_delete_message(w_sdk_root, cmd_msg);
+            boost::asio::co_spawn(sdk_root->net_io_context(), handle_delete_message(w_sdk_root, cmd_msg), boost::asio::detached);
             break;
         // 更新消息
         case static_cast<int>(common::CmdMessageOp::Update):
-            handle_update_message(w_sdk_root, cmd_msg);
+            boost::asio::co_spawn(sdk_root->net_io_context(), handle_update_message(w_sdk_root, cmd_msg), boost::asio::detached);
             break;
     }
 }
 
 // 撤回消息
-void CmdMessageOperator::handle_recall_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg) {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+boost::asio::awaitable<void> CmdMessageOperator::handle_recall_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VOID(msg_manager);
+    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
 }
 
 // 删除消息
-void CmdMessageOperator::handle_delete_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg) {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+boost::asio::awaitable<void> CmdMessageOperator::handle_delete_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VOID(msg_manager);
+    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
 }
 
 // 更新消息
-void CmdMessageOperator::handle_update_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg) {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+boost::asio::awaitable<void> CmdMessageOperator::handle_update_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VOID(msg_manager);
+    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
 
     std::shared_ptr<network::MsgData> msg_data(cmd_msg->release_msg());
 
     // 保存消息
-    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = message::SaveMessage::save_net_msgs(w_sdk_root, {msg_data.get()});
+    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = co_await message::SaveMessage::save_net_msgs(w_sdk_root, {msg_data.get()});
     if (sdk_msgs.empty()) {
-        return;
+        co_return;
     }
 
     model::OnMessageResult result{

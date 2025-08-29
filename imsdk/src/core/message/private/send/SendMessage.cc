@@ -38,7 +38,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
 
     {
         auto db_msg = convert_send_context_to_message_orm(w_sdk_root, context, client_msg_id, send_time);
-        auto sdk_msgs = core::message::SaveMessage::save_db_msgs(w_sdk_root, {db_msg});
+        auto sdk_msgs = co_await core::message::SaveMessage::save_db_msgs(w_sdk_root, {db_msg});
         if (sdk_msgs.empty()) {
             response->error_msg = "save message failed";
             co_return response;
@@ -65,7 +65,7 @@ boost::asio::awaitable<void> SendMessage::async_send_message(W_SDK_ROOT, std::un
         co_return;
     }
 
-    auto sdk_msgs = core::message::SaveMessage::save_net_msgs(w_sdk_root, {&(resp.value()->infos()[0].msg())});
+    auto sdk_msgs = co_await core::message::SaveMessage::save_net_msgs(w_sdk_root, {&(resp.value()->infos()[0].msg())});
     if (sdk_msgs.empty()) {
         base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, "save message failed", nullptr));
         co_return;

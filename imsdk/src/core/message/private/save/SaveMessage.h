@@ -21,10 +21,12 @@ namespace roc::imsdk::core::message {
 class SaveMessage {
 public:
     /// 保存网络消息
-    static std::vector<std::shared_ptr<model::MessageModel>> save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs);
+    static boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
+        save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs);
 
     /// 保存db消息 (只允许在没有 db 消息的时候调用)
-    static std::vector<std::shared_ptr<model::MessageModel>> save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
+    static boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
+        save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
     
     /// 根据 ID 获取 SDK 消息
     static std::shared_ptr<model::MessageModel> sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id);
@@ -42,7 +44,7 @@ public:
     static std::shared_ptr<model::LoadConvMessagesResult> load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward);
 
     /// 更新消息缓存 TODO
-    static void update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
+    static std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
     /// 更新会话的最大 order_index
     static void update_msg_order_in_conv(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);

@@ -13,6 +13,7 @@ namespace roc::imsdk::core {
 
 namespace roc::imsdk::core::message {
     class Convert;
+    class SaveMessage;
 }
 
 namespace roc::imsdk::model {
@@ -44,6 +45,7 @@ public:
     std::unordered_map<std::string, std::string> local_ext() const;
 
     friend class roc::imsdk::core::message::Convert;
+    friend class roc::imsdk::core::message::SaveMessage;
 
 private:
     // 私有移动操作 - 绕过系统移动赋值，手动实现数据移动
@@ -79,6 +81,8 @@ private:
     int64_t server_order_index_;
 
     int64_t send_time_;
+
+    std::mutex db_mutex_;
 
     std::unordered_map<std::string, std::string>  sync_ext_;
     

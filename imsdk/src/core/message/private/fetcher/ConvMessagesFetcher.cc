@@ -41,7 +41,7 @@ void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::
     
 
     // 保存消息
-    message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs);
+    boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs), boost::asio::detached);
 }
 
 asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(W_SDK_ROOT, std::string conv_id, std::pair<int64_t, int64_t> range) {

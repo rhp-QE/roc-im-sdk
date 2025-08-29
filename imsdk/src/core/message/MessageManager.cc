@@ -27,7 +27,8 @@ void MessageManager::all_component_did_load() {
 }
 
 void MessageManager::handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
-    message::ReceiveMessage::handle_receive_message(w_sdk_root_, net_msgs);
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root_)
+    boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root_, net_msgs), boost::asio::detached);
 }
 
 // =============================  message api implementations  ======================================

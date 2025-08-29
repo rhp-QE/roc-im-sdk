@@ -6,68 +6,52 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/convert/Convert.h"
+#include <boost/asio/use_awaitable.hpp>
 #include <cstdint>
 
 namespace roc::imsdk::core::message {
 
 /// 保存网络消息
-std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs) {
-    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
+boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
+SaveMessage::save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
     
     // 转换为 db 消息
     auto db_msgs = base::util::transform(msgs, [w_sdk_root](const network::MsgData *msg) {
         return core::message::Convert::convert_net_msg_to_db_msg(w_sdk_root, msg);
-    });
+    }); 
 
-    // 保存到数据库
-    bool ret = message::DBOpt::insert_or_replace_message(w_sdk_root, db_msgs);
-    if (!ret) {
-        return {};
-    }
-
-    // 转换为 sdk 消息
-    auto sdk_msgs = base::util::transform(db_msgs, [w_sdk_root](const std::shared_ptr<core::message::MessageORM> &msg) {
-        auto res = core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg.get());
-        int a = 100;
-        return res;
-    });
-
-    // 更新缓存
-    update_msg_cache(w_sdk_root, sdk_msgs);
-
-    // 自动更新消息区间
-    update_message_range_for_message(w_sdk_root, sdk_msgs);
-
-    // 更新会话的最大 order_index
-    update_msg_order_in_conv(w_sdk_root, sdk_msgs);
-
-    return sdk_msgs;
+    co_return co_await save_db_msgs(w_sdk_root, std::move(db_msgs));
 }
 
-std::vector<std::shared_ptr<model::MessageModel>> SaveMessage::save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
-    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
-
-    // 保存到数据库
-    bool ret = message::DBOpt::insert_or_replace_message(w_sdk_root, db_msgs);
-    if (!ret) {
-        return {};
-    }
+boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
+SaveMessage::save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
     // 转换为 sdk 消息
     auto sdk_msgs = base::util::transform(db_msgs, [w_sdk_root](const std::shared_ptr<core::message::MessageORM> &msg) {
         return core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg.get());
     });
 
-    // 更新缓存
-    update_msg_cache(w_sdk_root, sdk_msgs);
+    /// 在同一个线程内执行 确保 db 和 缓存的一致性
+    auto saved_msgs = co_await boost::asio::co_spawn(sdk_root->net_io_context(), [sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+        // 保存到数据库
+        bool ret = message::DBOpt::insert_or_replace_message(w_sdk_root, db_msgs);
+        if (!ret) {
+            co_return std::vector<std::shared_ptr<model::MessageModel>>();
+        }
+
+        // 更新缓存
+        co_return update_msg_cache(w_sdk_root, sdk_msgs);
+    }, boost::asio::use_awaitable);
 
     // 自动更新消息区间
-    update_message_range_for_message(w_sdk_root, sdk_msgs);
+    update_message_range_for_message(w_sdk_root, saved_msgs);
 
     // 更新会话的最大 order_index
-    update_msg_order_in_conv(w_sdk_root, sdk_msgs);
+    update_msg_order_in_conv(w_sdk_root, saved_msgs);
 
-    return sdk_msgs;
+    co_return saved_msgs;
 }
 
 /// 更新会话的最大 order_index
@@ -298,17 +282,27 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::message_range_for_conv_id(
 }
 
 /// 更新消息缓存
-void SaveMessage::update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
+std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> SaveMessage::update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
     
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VOID(msg_manager);
+    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
+
+    std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> updated_msgs;
     
     for (const auto &sdk_msg : sdk_msgs) {
-        CHECK_POINTER_OR_RETURN_VOID(sdk_msg);
-        // 通过友元关系访问MessageManager的私有成员
-        msg_manager->msg_cache_.insert_or_assign(sdk_msg->client_msg_id(), sdk_msg);
+        if (sdk_msg == nullptr) {
+            continue;
+        }
+
+        auto cache_sdk_msg = msg_manager->msg_cache_.modify_or_create(sdk_msg->client_msg_id(), [sdk_msg](std::shared_ptr<model::MessageModel> &sdk_msg_old) {
+        }, std::make_shared<model::MessageModel>());
+
+        cache_sdk_msg->move_from(std::move(*sdk_msg));
+        updated_msgs.push_back(cache_sdk_msg);
     }
+
+    return updated_msgs;
 }
 
 } // namespace roc::imsdk::core::message
