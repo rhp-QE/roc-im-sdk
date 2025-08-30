@@ -83,7 +83,7 @@ bool DBOpt::update_conversations_status(W_SDK_ROOT, const std::vector<std::strin
     return false;
 }
 
-std::shared_ptr<model::ConversationModel> DBOpt::query_conversation_by_id(W_SDK_ROOT, const std::string &conv_id) {
+std::shared_ptr<model::ConversationModel> DBOpt::conversation_for_id(W_SDK_ROOT, const std::string &conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto database = sdk_root->database();

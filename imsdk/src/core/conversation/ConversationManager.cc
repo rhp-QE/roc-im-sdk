@@ -5,10 +5,14 @@
 #include "imsdk/src/core/conversation/private/fetcher/UserMessageFetcher.h"
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
+#include <boost/asio/io_context.hpp>
 
 namespace roc::imsdk::core {
 
-ConversationManager::ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_sdk_root_(w_sdk_root) {}
+ConversationManager::ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor) 
+    : w_sdk_root_(w_sdk_root), 
+      conv_strand_(boost::asio::make_strand(executor))
+{}
 
 ConversationManager::~ConversationManager() = default;
 
@@ -17,20 +21,12 @@ void ConversationManager::all_component_did_load() {
     conversation::DBOpt::create_conversation_table_if_need(w_sdk_root_);
 }
 
-std::vector<std::shared_ptr<model::ConversationModel>> ConversationManager::save_net_convs(std::vector<std::shared_ptr<network::ConversationInfo>> convs) {
-    return conversation::SaveConversation::save_net_convs(w_sdk_root_, convs);
+boost::asio::strand<boost::asio::io_context::executor_type> ConversationManager::conv_strand() {
+    return conv_strand_;
 }
 
-std::shared_ptr<model::ConversationModel> ConversationManager::sdk_conv_for_id(std::string conv_id) {
-    return conversation::SaveConversation::sdk_conv_for_id(w_sdk_root_, conv_id);
-}
-
-int64_t ConversationManager::cursor() {
-    return conversation::SaveConversation::get_cursor(w_sdk_root_);
-}
-
-void ConversationManager::set_cursor(int64_t cursor) {
-    conversation::SaveConversation::set_cursor(w_sdk_root_, cursor);
+model::OnConvUpdateCallbackType& ConversationManager::on_conv_update_callback() {
+    return on_conv_update_callback_;
 }
 
 // =============================  conversation api implementations  ======================================
@@ -40,11 +36,11 @@ void ConversationManager::on_conv_update(model::OnConvUpdateCallbackType callbac
 }
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::conv_for_id(std::string conv_id) {
-    co_return conversation::SaveConversation::sdk_conv_for_id(w_sdk_root_, conv_id);
+    co_return co_await conversation::SaveConversation::sdk_conv_for_id(w_sdk_root_, conv_id);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
-    return conversation::SaveConversation::load_convs_from_db(w_sdk_root_, cursor, limit, true);
+    co_return co_await conversation::SaveConversation::load_convs_from_db(w_sdk_root_, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::convs_when_login() {

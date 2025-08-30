@@ -57,6 +57,7 @@ public:
     const Config& config();
     WCDB::Database* database();
     asio::io_context& net_io_context();
+    asio::io_context& sdk_io_context();
     core::GroupManager* group_manager();
     core::MessageManager* message_manager();
     core::ConversationManager* conversation_manager();
@@ -74,7 +75,6 @@ private:
     std::unique_ptr<core::ConversationManager> conversation_manager_;
     std::unique_ptr<network::SDKConnectionManager> connection_manager_;
 
-    asio::io_context net_io_context_;
 };
 
 } // namespace roc::im::sdk

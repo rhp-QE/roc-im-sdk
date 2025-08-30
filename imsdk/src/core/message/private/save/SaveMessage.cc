@@ -13,7 +13,7 @@ namespace roc::imsdk::core::message {
 
 /// 保存网络消息
 boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
-SaveMessage::save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs) {
+SaveMessage::save_net_messages(W_SDK_ROOT, std::vector<const network::MsgData *> msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
     
     // 转换为 db 消息
@@ -28,13 +28,15 @@ boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>>
 SaveMessage::save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
+    auto msg_manager = sdk_root->message_manager();
+
     // 转换为 sdk 消息
     auto sdk_msgs = base::util::transform(db_msgs, [w_sdk_root](const std::shared_ptr<core::message::MessageORM> &msg) {
         return core::message::Convert::convert_db_msg_to_sdk_msg(w_sdk_root, msg.get());
     });
 
     /// 在同一个线程内执行 确保 db 和 缓存的一致性
-    auto saved_msgs = co_await boost::asio::co_spawn(sdk_root->net_io_context(), [sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+    auto saved_msgs = co_await boost::asio::co_spawn(msg_manager->msg_strand(), [sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         // 保存到数据库
         bool ret = message::DBOpt::insert_or_replace_message(w_sdk_root, db_msgs);
         if (!ret) {
@@ -42,7 +44,7 @@ SaveMessage::save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message:
         }
 
         // 更新缓存
-        co_return update_msg_cache(w_sdk_root, sdk_msgs);
+        co_return update_msg_cache(w_sdk_root, std::move(sdk_msgs));
     }, boost::asio::use_awaitable);
 
     // 自动更新消息区间
@@ -69,7 +71,10 @@ SaveMessage::sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_CO_RETURN_VALUE(msg_manager, nullptr);
+
+    if (msg_id.empty()) {
+        co_return nullptr;
+    }
 
     /// 从缓存中获取
     auto sdk_msg_opt = msg_manager->msg_cache_.at(msg_id);
@@ -77,7 +82,7 @@ SaveMessage::sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id) {
         co_return sdk_msg_opt.value();
     }
 
-    auto sdk_msg = co_await boost::asio::co_spawn(sdk_root->net_io_context(), [w_sdk_root, msg_id]() -> boost::asio::awaitable<std::shared_ptr<model::MessageModel>> {
+    auto sdk_msg = co_await boost::asio::co_spawn(msg_manager->msg_strand(), [w_sdk_root, msg_id]() -> boost::asio::awaitable<std::shared_ptr<model::MessageModel>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
         // 二次检查
@@ -86,13 +91,16 @@ SaveMessage::sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id) {
             co_return result.value();
         }
 
-        /// 从DB中获取 然后更行缓存
-        auto sdk_msg = message::DBOpt::message_for_id(w_sdk_root, msg_id);
-        if (sdk_msg) {
-            sdk_root->message_manager()->msg_cache_.at(msg_id, std::move(sdk_msg));
+        /// 从DB中获取
+        auto sdk_msg_copy = message::DBOpt::message_for_id(w_sdk_root, msg_id);
+        if (!sdk_msg_copy) {
+            co_return nullptr;
         }
+    
+        /// 更新缓存
+        auto sdk_msgs = update_msg_cache(w_sdk_root, {std::move(sdk_msg_copy)});
+        co_return sdk_msgs.size() > 0 ? sdk_msgs.front() : nullptr;
 
-        co_return sdk_msg;
     }, boost::asio::use_awaitable);
 
     co_return sdk_msg;
@@ -169,23 +177,19 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::empty_message_range_for_co
 
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> 
 SaveMessage::load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
-
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
-    auto sdk_msgs = co_await boost::asio::co_spawn(sdk_root->net_io_context(), [=]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+    auto msg_manager = sdk_root->message_manager();
+
+    auto sdk_msgs = co_await boost::asio::co_spawn(msg_manager->msg_strand(), [=]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
+        /// 从DB 中获取消息
         auto sdk_msgs_copy = message::DBOpt::query_messages_for_conv_id(w_sdk_root, conv_id, cursor, limit, forward);
-        std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs;
 
-        /// 更新缓存
-        for (auto &msg : sdk_msgs_copy) {
-            auto sdk_msg = sdk_root->message_manager()->msg_cache_.at(msg->client_msg_id(), std::move(msg));
-            sdk_msg->move_from(std::move(*msg));
-            sdk_msgs.push_back(sdk_msg);
-        }
+        /// 更新消息缓存
+        co_return update_msg_cache(w_sdk_root, sdk_msgs_copy);
 
-        co_return sdk_msgs;
     }, boost::asio::use_awaitable);
     
     auto result = std::make_shared<model::LoadConvMessagesResult>();
@@ -302,7 +306,7 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::message_range_for_conv_id(
 }
 
 /// 更新消息缓存
-std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> SaveMessage::update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
+std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> SaveMessage::update_msg_cache(W_SDK_ROOT, std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> sdk_msgs) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
     
     auto msg_manager = sdk_root->message_manager();

@@ -57,15 +57,7 @@ std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(W
         return nullptr;
     }
 
-    auto conv_manager = sdk_root->conversation_manager();
-    CHECK_POINTER_OR_RETURN_VALUE(conv_manager, nullptr);
-
-    std::shared_ptr<model::ConversationModel> sdk_conv;
-    if (conv_manager->conv_cache_.find(db_conv->conversation_id) != conv_manager->conv_cache_.end()) {
-        sdk_conv = conv_manager->conv_cache_[db_conv->conversation_id];
-    } else {
-        sdk_conv = std::make_shared<model::ConversationModel>();
-    }
+    std::shared_ptr<model::ConversationModel> sdk_conv = std::make_shared<model::ConversationModel>();
     
     // Basic conversation info
     sdk_conv->type_ = static_cast<model::ConvType>(db_conv->type);

@@ -65,7 +65,7 @@ boost::asio::awaitable<void> SendMessage::async_send_message(W_SDK_ROOT, std::un
         co_return;
     }
 
-    auto sdk_msgs = co_await core::message::SaveMessage::save_net_msgs(w_sdk_root, {&(resp.value()->infos()[0].msg())});
+    auto sdk_msgs = co_await core::message::SaveMessage::save_net_messages(w_sdk_root, {&(resp.value()->infos()[0].msg())});
     if (sdk_msgs.empty()) {
         base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, "save message failed", nullptr));
         co_return;

@@ -18,7 +18,7 @@ namespace roc::imsdk::core {
 
 class MessageManager : public roc::base::uncopyable {
 public:
-    MessageManager(std::weak_ptr<SDKRoot> w_sdk_root);
+    MessageManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor);
     ~MessageManager();
 
     // 组件加载完成后的初始化
@@ -28,6 +28,9 @@ public:
     model::OnMessagesCallbackType on_receive_message_callback();
 
     void handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs);
+
+    // 消息操作串行队列
+    boost::asio::strand<boost::asio::io_context::executor_type> msg_strand();
 
  
     // =============================  message api  ======================================
@@ -64,10 +67,15 @@ public:
 private:
     std::weak_ptr<SDKRoot> w_sdk_root_;
 
+    /// 消息顺序锁
     std::mutex msg_order_mutex_;
 
     /// 收到消息回调
     model::OnMessagesCallbackType on_messages_callback_;
+
+    /// 消息操作串行队列
+    /// 所有的消息操作 都在这个串行队列中串行执行，确保 db 和 缓存的一致性。
+    boost::asio::strand<boost::asio::io_context::executor_type> msg_strand_;
 
     /// 消息缓存
     base::containers::ThreadSafeUnorderedMap<std::string, std::shared_ptr<model::MessageModel>> msg_cache_;

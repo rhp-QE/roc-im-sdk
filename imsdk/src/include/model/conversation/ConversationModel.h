@@ -103,10 +103,18 @@ private:
 };
 
 
-enum class ConvUpdateReason : int {
-    UPDATE = 0,
-    DELETE = 1,
+
+struct OnConversationResult {
+    /// 新增的会话
+    std::vector<std::shared_ptr<ConversationModel>> added_convs;
+
+    /// 更新的会话
+    std::vector<std::shared_ptr<ConversationModel>> updated_convs;
+
+    /// 删除的会话
+    std::vector<std::shared_ptr<ConversationModel>> deleted_convs;
 };
+
 
 
 struct LoadUserConvsResult {
@@ -117,7 +125,7 @@ struct LoadUserConvsResult {
 
 
 // callback -------------
-using OnConvUpdateCallbackType = std::function<void(std::shared_ptr<const ConversationModel> conv, ConvUpdateReason reason)>;
+using OnConvUpdateCallbackType = std::function<void(std::shared_ptr<OnConversationResult> result)>;
 // ------------------------
 
 } // namespace roc::imsdk::model

@@ -4,6 +4,7 @@
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include <boost/asio/io_context.hpp>
 
 namespace roc::imsdk {
 

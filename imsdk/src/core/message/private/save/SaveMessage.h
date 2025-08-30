@@ -22,7 +22,7 @@ class SaveMessage {
 public:
     /// 保存网络消息
     static boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
-        save_net_msgs(W_SDK_ROOT, std::vector<const network::MsgData *> msgs);
+        save_net_messages(W_SDK_ROOT, std::vector<const network::MsgData *> msgs);
 
     /// 保存db消息 (只允许在没有 db 消息的时候调用)
     static boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
@@ -49,7 +49,7 @@ public:
     static std::vector<std::pair<int64_t, int64_t>> load_message_range_from_db(W_SDK_ROOT, const std::string &conv_id);
 
     /// 更新消息缓存
-    static std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
+    static std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> update_msg_cache(W_SDK_ROOT, std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> sdk_msgs);
 
     /// 更新会话的最大 order_index
     static void update_msg_order_in_conv(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);

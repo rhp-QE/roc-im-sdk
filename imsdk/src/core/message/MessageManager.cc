@@ -14,8 +14,10 @@
 
 namespace roc::imsdk::core {
 
-MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_sdk_root_(w_sdk_root) {
-}
+MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor) 
+    : w_sdk_root_(w_sdk_root), 
+      msg_strand_(boost::asio::make_strand(executor))
+{}
 
 MessageManager::~MessageManager() = default;
 
@@ -30,7 +32,11 @@ void MessageManager::all_component_did_load() {
 
 void MessageManager::handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root_)
-    boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root_, net_msgs), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root_, net_msgs), boost::asio::detached);
+}
+
+boost::asio::strand<boost::asio::io_context::executor_type> MessageManager::msg_strand() {
+    return msg_strand_;
 }
 
 // =============================  message api implementations  ======================================
@@ -61,13 +67,12 @@ boost::asio::awaitable<bool> MessageManager::mark_messages_as_read(const std::ve
 }
 
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageManager::message_for_id(std::string msg_id) {
-    co_return message::SaveMessage::sdk_msg_for_id(w_sdk_root_, msg_id);
+    co_return co_await message::SaveMessage::sdk_msg_for_id(w_sdk_root_, msg_id);
 }
 
 // 查询DB
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
-    auto result = message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, cursor, limit, true);
-    co_return result;
+    co_return co_await message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
@@ -86,8 +91,7 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
     }, boost::asio::detached);
 
     // 从DB 中加载消息
-    auto result = message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, -1, 100, true);
-    co_return result;
+    co_return co_await message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, -1, 100, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::send_message(model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {

@@ -1,9 +1,12 @@
 #pragma once
 
+#include <atomic>
+#include <boost/asio/io_context.hpp>
+#include <boost/asio/strand.hpp>
 #include "imsdk/src/include/IMSDK.h"
+#include "base/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
-#include <unordered_map>
 
 // Forward declaration
 namespace roc::imsdk::core::conversation {
@@ -14,20 +17,15 @@ namespace roc::imsdk::core {
 
 class ConversationManager : public roc::base::uncopyable {
 public:
-    ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root);
+    ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor);
     ~ConversationManager();
 
     // 组件加载完成后的初始化
     void all_component_did_load();
 
-    std::shared_ptr<model::ConversationModel> sdk_conv_for_id(std::string conv_id);
+    boost::asio::strand<boost::asio::io_context::executor_type> conv_strand();
 
-    /// 游标
-    int64_t cursor();
-    void set_cursor(int64_t cursor);
-
-    /// 保存网络会话
-    std::vector<std::shared_ptr<model::ConversationModel>> save_net_convs(std::vector<std::shared_ptr<network::ConversationInfo>> convs);
+    model::OnConvUpdateCallbackType& on_conv_update_callback();
 
     // =============================  conversation api  ======================================
 
@@ -56,13 +54,16 @@ public:
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root_;
-    int64_t cursor_ = -1;
+    std::atomic<int64_t> cursor_ = -1;
     
     /// 会话缓存
-    std::unordered_map<std::string, std::shared_ptr<model::ConversationModel>> conv_cache_;
+    base::containers::ThreadSafeUnorderedMap<std::string, std::shared_ptr<model::ConversationModel>> conv_cache_;
     
     /// 会话更新回调
     model::OnConvUpdateCallbackType on_conv_update_callback_;
+
+    /// 会话操作串行队列
+    boost::asio::strand<boost::asio::io_context::executor_type> conv_strand_;
 
     // 友元类，允许SaveConversation访问私有成员
     friend class roc::imsdk::core::conversation::SaveConversation;

@@ -7,6 +7,7 @@
 #include <boost/asio/use_awaitable.hpp>
 #include <iostream>
 #include <memory>
+#include <thread>
 #include "im/base/coroutine.h"
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/include/config.h"
@@ -16,6 +17,17 @@
 
 int64_t message_cursor = -1;
 int64_t conv_cursor = -1;
+
+// ==================
+std::vector<std::thread> threads;
+
+std::unique_ptr<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> demo_net_io_context_work;
+std::unique_ptr<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> demo_sdk_io_context_work;
+
+std::shared_ptr<boost::asio::io_context> demo_net_io_context;
+std::shared_ptr<boost::asio::io_context> demo_sdk_io_context;
+// ==================
+
 
 inline roc::imsdk::Config generateConfig(std::string user_id);
 inline roc::imsdk::model::SendMsgContext generateSendMessageContext(std::string to_user_id, std::string content);
@@ -133,6 +145,23 @@ inline boost::asio::awaitable<void> entrance() {
 }
 
 inline void imsdk_demo() {
+
+    demo_net_io_context = std::make_shared<boost::asio::io_context>();
+    demo_sdk_io_context = std::make_shared<boost::asio::io_context>();
+
+    demo_net_io_context_work = std::make_unique<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>>(boost::asio::make_work_guard(*demo_net_io_context));
+    demo_sdk_io_context_work = std::make_unique<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>>(boost::asio::make_work_guard(*demo_sdk_io_context));
+
+    threads.push_back(std::thread([&]() {
+        demo_net_io_context->run();
+    }));
+
+    for (int i = 0; i < 3; ++i) {
+        threads.push_back(std::thread([&]() {
+            demo_sdk_io_context->run();
+        }));
+    }
+
     boost::asio::co_spawn(main_io_context, entrance(), boost::asio::detached);
 }
 
@@ -146,6 +175,9 @@ inline roc::imsdk::Config generateConfig(std::string user_id) {
     config.user_device_id = "did_0000";
     config.user_id = user_id;
     config.user_token = "token_mock";
+
+    config.net_io_context = demo_net_io_context;
+    config.sdk_io_context = demo_sdk_io_context;
 
     return config;
 }

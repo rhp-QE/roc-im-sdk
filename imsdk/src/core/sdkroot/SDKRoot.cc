@@ -38,32 +38,33 @@ SDKRoot::~SDKRoot() {
 asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     config_ = config;
  
-    // 开启网络IO Context
-    // auto wark_work = boost::asio::make_work_guard(net_io_context_);
-    // std::thread net_thread([this] { net_io_context_.run(); });
-    connection_manager_ = std::make_unique<network::SDKConnectionManager>(net_io_context());
+    {
+        // 初始化数据库
+        std::string db_path = "/root/project/roc_im_sdk/db_data/" + config_.user_id + "_test.db";
+        database_ = new WCDB::Database(db_path);
 
-    group_manager_ = std::make_unique<core::GroupManager>(weak_from_this());
-    message_manager_ = std::make_unique<core::MessageManager>(weak_from_this());
-    conversation_manager_ = std::make_unique<core::ConversationManager>(weak_from_this());
+        // 初始化MMKV
+        std::string rootDir = "/root/project/roc_im_sdk/db_data";
+        MMKV::initializeMMKV(rootDir);
+        mmkv_ = MMKV::mmkvWithID(config_.user_id);
+    }
 
-    // 初始化数据库
-    std::string db_path = "/root/project/roc_im_sdk/db_data/" + config_.user_id + "_test.db";
-    database_ = new WCDB::Database(db_path);
-
-    // 初始化MMKV
-    std::string rootDir = "/root/project/roc_im_sdk/db_data";
-    MMKV::initializeMMKV(rootDir);
-    mmkv_ = MMKV::mmkvWithID(config_.user_id);
+    {
+        group_manager_ = std::make_unique<core::GroupManager>(weak_from_this());
+        message_manager_ = std::make_unique<core::MessageManager>(weak_from_this(), sdk_io_context().get_executor());
+        conversation_manager_ = std::make_unique<core::ConversationManager>(weak_from_this(), sdk_io_context().get_executor());
+        connection_manager_ = std::make_unique<network::SDKConnectionManager>(net_io_context());
+    }
 
     // 初始化长连接管理器
     co_await connection_manager_->init_and_connect(weak_from_this());
     
-    // 调用各个组件的 all_component_did_load 方法
-    group_manager_->all_component_did_load();
-    message_manager_->all_component_did_load();
-    connection_manager_->all_component_did_load();
-    conversation_manager_->all_component_did_load();
+    {
+        group_manager_->all_component_did_load();
+        message_manager_->all_component_did_load();
+        conversation_manager_->all_component_did_load();
+        connection_manager_->all_component_did_load();
+    }
     
     co_return true;
 }
@@ -81,7 +82,11 @@ const Config& SDKRoot::config() {
 }
 
 asio::io_context& SDKRoot::net_io_context() {
-    return sdk_io_context;
+    return *(config_.net_io_context);
+}
+
+asio::io_context& SDKRoot::sdk_io_context() {
+    return *(config_.sdk_io_context);
 }
 
 WCDB::Database* SDKRoot::database() {

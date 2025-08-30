@@ -6,6 +6,9 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/network/request/SDKRequest.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include "imsdk/src/core/conversation/private/save/SaveConversation.h"
+#include "imsdk/src/core/conversation/private/receive/ReceiveConversation.h"
+
 #include <memory>
 
 namespace roc::imsdk::core::conversation {
@@ -62,9 +65,6 @@ std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::make_fetch
 boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(W_SDK_ROOT, std::unique_ptr<network::FetchUserMessageListResp> resp) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    auto msg_manager = sdk_root->message_manager();
-    auto conv_manager = sdk_root->conversation_manager();
-
     std::vector<std::shared_ptr<network::ConversationInfo>> net_convs;
     std::vector<std::shared_ptr<network::MsgData>> net_msgs;
 
@@ -85,13 +85,14 @@ boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(W_S
         net_convs.push_back(std::shared_ptr<network::ConversationInfo>(conv));
     }
 
-    // 保存消息和会话
-    msg_manager->handle_receive_message(net_msgs);
+    // 处理接收到的消息
+    co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs), asio::detached);
 
-    conv_manager->save_net_convs(net_convs);
+    // 处理接收到的会话
+    co_spawn(sdk_root->sdk_io_context(), conversation::ReceiveConversation::handle_receive_conversation(w_sdk_root, std::move(net_convs)), asio::detached);
 
-    // 更新游标
-    conv_manager->set_cursor(resp->stop());
+    // // 更新游标
+    // conv_manager->set_cursor(resp->stop());
 
     // 上抛
     co_return;

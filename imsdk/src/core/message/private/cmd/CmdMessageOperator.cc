@@ -75,7 +75,7 @@ boost::asio::awaitable<void> CmdMessageOperator::handle_update_message(W_SDK_ROO
     std::shared_ptr<network::MsgData> msg_data(cmd_msg->release_msg());
 
     // 保存消息
-    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = co_await message::SaveMessage::save_net_msgs(w_sdk_root, {msg_data.get()});
+    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = co_await message::SaveMessage::save_net_messages(w_sdk_root, {msg_data.get()});
     if (sdk_msgs.empty()) {
         co_return;
     }

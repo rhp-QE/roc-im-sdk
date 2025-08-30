@@ -1,6 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+#include <boost/asio/io_context.hpp>
+#include <memory>
 #include <string>
 
 namespace roc::imsdk {
@@ -21,6 +23,10 @@ public:
     std::string user_phone;
     std::string user_address;
     std::string user_device_id;
+
+    std::shared_ptr<boost::asio::io_context> net_io_context;
+    std::shared_ptr<boost::asio::io_context> sdk_io_context;
+
 };
 
 }

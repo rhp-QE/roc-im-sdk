@@ -58,7 +58,6 @@ boost::asio::awaitable<void> ReceiveMessage::handle_receive_message(W_SDK_ROOT, 
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
 
     std::vector<const network::MsgData *> net_msgs_ptr;
     for (const auto &msg : net_msgs) {
@@ -66,7 +65,7 @@ boost::asio::awaitable<void> ReceiveMessage::handle_receive_message(W_SDK_ROOT, 
     }
 
     /// 数据保存
-    auto sdk_msgs = co_await message::SaveMessage::save_net_msgs(w_sdk_root, net_msgs_ptr);
+    auto sdk_msgs = co_await message::SaveMessage::save_net_messages(w_sdk_root, net_msgs_ptr);
     
     // 对消息进行分类
     auto result = classify_message(w_sdk_root, net_msgs, sdk_msgs);

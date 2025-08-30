@@ -286,7 +286,7 @@ public:
     }
 
     /// @brief 使用新分配器移动数据
-    ThreadSafeUnorderedMap with_allocator(const Allocator& alloc) && {
+    ThreadSafeUnorderedMap with_allocator(const Allocator& alloc) {
         std::unique_lock<std::shared_mutex> write_lock(mutex_);
         return ThreadSafeUnorderedMap(std::move(*this), alloc);
     }
