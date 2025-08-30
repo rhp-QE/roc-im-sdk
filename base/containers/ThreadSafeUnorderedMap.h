@@ -186,7 +186,7 @@ public:
 
     // 元素访问操作 - 多种安全方式
     // 1. 安全的副本访问
-    std::optional<T> get_copy(const Key& key) const {
+    std::optional<T> at(const Key& key) const {
         std::shared_lock<std::shared_mutex> read_lock(mutex_);
         auto it = data_.find(key);
         if (it != data_.end()) {
@@ -195,14 +195,14 @@ public:
         return std::nullopt;
     }
 
-    // 2. 带默认值的访问
-    T at(const Key& key, const T& default_value = T{}) const {
-        std::shared_lock<std::shared_mutex> read_lock(mutex_);
+    // 2. 带默认值的访问, 如果没有找到会创建
+    T at(const Key& key, T&& default_value) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
         auto it = data_.find(key);
-        if (it != data_.end()) {
-            return it->second;
+        if (it == data_.end()) {
+            it = data_.emplace(key, std::move(default_value)).first;
         }
-        return default_value;
+        return it->second;
     }
 
     // 3. 带回调的安全访问（const，只读）
@@ -286,7 +286,7 @@ public:
     }
 
     /// @brief 使用新分配器移动数据
-    ThreadSafeUnorderedMap with_allocator_move(const Allocator& alloc) {
+    ThreadSafeUnorderedMap with_allocator(const Allocator& alloc) && {
         std::unique_lock<std::shared_mutex> write_lock(mutex_);
         return ThreadSafeUnorderedMap(std::move(*this), alloc);
     }

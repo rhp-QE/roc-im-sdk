@@ -71,7 +71,7 @@ std::shared_ptr<model::MessageModel> SaveMessage::sdk_msg_for_id(W_SDK_ROOT, con
     CHECK_POINTER_OR_RETURN_VALUE(msg_manager, nullptr);
 
     /// 从缓存中获取
-    auto sdk_msg_opt = msg_manager->msg_cache_.get_copy(msg_id);
+    auto sdk_msg_opt = msg_manager->msg_cache_.at(msg_id);
     if (sdk_msg_opt) {
         return sdk_msg_opt.value();
     }
@@ -122,7 +122,6 @@ void SaveMessage::update_message_range_for_message(W_SDK_ROOT, const std::vector
         });
 
         message::DBOpt::save_message_range(w_sdk_root, current_ranges, conv_id);
-
     }
 }
 
@@ -273,7 +272,7 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::message_range_for_conv_id(
     CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
 
     // 从消息管理器的缓存中获取会话的消息区间
-    auto it = msg_manager->msg_range_cache_.get_copy(conv_id);
+    auto it = msg_manager->msg_range_cache_.at(conv_id);
     if (it) {
         return it.value();
     }
@@ -295,8 +294,7 @@ std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> SaveMessage::updat
             continue;
         }
 
-        auto cache_sdk_msg = msg_manager->msg_cache_.modify_or_create(sdk_msg->client_msg_id(), [sdk_msg](std::shared_ptr<model::MessageModel> &sdk_msg_old) {
-        }, std::make_shared<model::MessageModel>());
+        auto cache_sdk_msg = msg_manager->msg_cache_.at(sdk_msg->client_msg_id(), std::make_shared<model::MessageModel>());
 
         cache_sdk_msg->move_from(std::move(*sdk_msg));
         updated_msgs.push_back(cache_sdk_msg);
