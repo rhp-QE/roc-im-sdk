@@ -109,6 +109,18 @@ target_link_libraries(main PRIVATE
 )
 # --------------------------------------------
 
+# SPDLOG 库
+# --------------------------------------------
+find_package(spdlog CONFIG REQUIRED)
+
+message(STATUS "✅ Found spdlog library:")
+message(STATUS "  - spdlog version: ${spdlog_VERSION}")
+
+target_link_libraries(main PRIVATE 
+    spdlog::spdlog
+)
+# --------------------------------------------
+
 # WCDB 库
 # --------------------------------------------
 # WCDB 路径配置

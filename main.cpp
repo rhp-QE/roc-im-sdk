@@ -25,6 +25,7 @@
 #include <test/wcdb_test.h>
 #include <test/wcdb_simple_test.h>
 #include <examples/imsdk_demo.h>
+#include <test/spdlog_example.h>
 
 boost::asio::io_context net_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
 boost::asio::io_context main_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
@@ -88,7 +89,8 @@ int main() {
 
     // test_imsdk();
 
-    imsdk_demo();
+    test_logger();
+    // imsdk_demo();
     // test_thread_safe_vector();
 
     // co_cost_time_test();
