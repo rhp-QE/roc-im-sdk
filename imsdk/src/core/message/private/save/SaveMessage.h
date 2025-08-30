@@ -29,7 +29,8 @@ public:
         save_db_msgs(W_SDK_ROOT, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
     
     /// 根据 ID 获取 SDK 消息
-    static std::shared_ptr<model::MessageModel> sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id);
+    static boost::asio::awaitable<std::shared_ptr<model::MessageModel>> 
+        sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id);
     
     /// 获取会话的缺失消息区间
     static std::vector<std::pair<int64_t, int64_t>> empty_message_range_for_conv_id(W_SDK_ROOT, const std::string &conv_id);
@@ -41,9 +42,13 @@ public:
     static bool mark_messages_as_read(W_SDK_ROOT, const std::vector<std::string> &msg_ids);
 
     /// 从数据库加载消息
-    static std::shared_ptr<model::LoadConvMessagesResult> load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward);
+    static boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> 
+        load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward);
 
-    /// 更新消息缓存 TODO
+    /// 从数据库中加载缓存区间
+    static std::vector<std::pair<int64_t, int64_t>> load_message_range_from_db(W_SDK_ROOT, const std::string &conv_id);
+
+    /// 更新消息缓存
     static std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> update_msg_cache(W_SDK_ROOT, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
     /// 更新会话的最大 order_index

@@ -9,6 +9,8 @@
 #include "imsdk/src/core/message/private/fetcher/ConvMessagesFetcher.h"
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
+#include <boost/asio/use_awaitable.hpp>
+#include <boost/asio/use_future.hpp>
 
 namespace roc::imsdk::core {
 
@@ -71,8 +73,17 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root_, nullptr)
 
-    /// 触发单链拉取
-    boost::asio::co_spawn(sdk_root->net_io_context(), message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root_, conv_id), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->net_io_context(), [w_sdk_root = w_sdk_root_, conv_id]() -> boost::asio::awaitable<void> {
+        CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+        /// 加载消息区间
+        auto ranges = message::SaveMessage::load_message_range_from_db(w_sdk_root, conv_id);
+        sdk_root->message_manager()->msg_range_cache_.insert_or_assign(conv_id, std::move(ranges));
+
+        /// 触发单链拉取
+        boost::asio::co_spawn(sdk_root->net_io_context(), message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root, conv_id), boost::asio::detached);
+
+    }, boost::asio::detached);
 
     // 从DB 中加载消息
     auto result = message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, -1, 100, true);

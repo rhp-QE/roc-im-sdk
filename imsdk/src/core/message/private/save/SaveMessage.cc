@@ -64,25 +64,38 @@ void SaveMessage::update_msg_order_in_conv(W_SDK_ROOT, const std::vector<std::sh
 }
 
 /// 根据 ID 获取 SDK 消息
-std::shared_ptr<model::MessageModel> SaveMessage::sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id) {
-    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
+boost::asio::awaitable<std::shared_ptr<model::MessageModel>>
+SaveMessage::sdk_msg_for_id(W_SDK_ROOT, const std::string &msg_id) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, nullptr);
+    CHECK_POINTER_OR_CO_RETURN_VALUE(msg_manager, nullptr);
 
     /// 从缓存中获取
     auto sdk_msg_opt = msg_manager->msg_cache_.at(msg_id);
     if (sdk_msg_opt) {
-        return sdk_msg_opt.value();
+        co_return sdk_msg_opt.value();
     }
 
-    /// 从DB中获取
-    auto sdk_msg = message::DBOpt::message_for_id(w_sdk_root, msg_id);
-    if (sdk_msg) {
-        /// 更新缓存
-        msg_manager->msg_cache_.insert_or_assign(msg_id, sdk_msg);
-    }
-    return sdk_msg;
+    auto sdk_msg = co_await boost::asio::co_spawn(sdk_root->net_io_context(), [w_sdk_root, msg_id]() -> boost::asio::awaitable<std::shared_ptr<model::MessageModel>> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
+
+        // 二次检查
+        auto result = sdk_root->message_manager()->msg_cache_.at(msg_id);
+        if (result) {
+            co_return result.value();
+        }
+
+        /// 从DB中获取 然后更行缓存
+        auto sdk_msg = message::DBOpt::message_for_id(w_sdk_root, msg_id);
+        if (sdk_msg) {
+            sdk_root->message_manager()->msg_cache_.at(msg_id, std::move(sdk_msg));
+        }
+
+        co_return sdk_msg;
+    }, boost::asio::use_awaitable);
+
+    co_return sdk_msg;
 }
 
 /// 更新消息区间
@@ -154,31 +167,39 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::empty_message_range_for_co
     return empty_ranges;
 }
 
-std::shared_ptr<model::LoadConvMessagesResult> SaveMessage::load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
+boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> 
+SaveMessage::load_message_from_db(W_SDK_ROOT, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
 
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
+
+    auto sdk_msgs = co_await boost::asio::co_spawn(sdk_root->net_io_context(), [=]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
+
+        auto sdk_msgs_copy = message::DBOpt::query_messages_for_conv_id(w_sdk_root, conv_id, cursor, limit, forward);
+        std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs;
+
+        /// 更新缓存
+        for (auto &msg : sdk_msgs_copy) {
+            auto sdk_msg = sdk_root->message_manager()->msg_cache_.at(msg->client_msg_id(), std::move(msg));
+            sdk_msg->move_from(std::move(*msg));
+            sdk_msgs.push_back(sdk_msg);
+        }
+
+        co_return sdk_msgs;
+    }, boost::asio::use_awaitable);
+    
+    auto result = std::make_shared<model::LoadConvMessagesResult>();
+    result->cursor = sdk_msgs.empty() ? -1 : sdk_msgs.back()->client_order_index();
+    result->has_more = false;
+    result->messages = std::move(sdk_msgs);
+
+    co_return result;
+}
+
+std::vector<std::pair<int64_t, int64_t>> SaveMessage::load_message_range_from_db(W_SDK_ROOT, const std::string &conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
-    auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
-
-    // load message range
-    auto ranges = message::DBOpt::message_range(sdk_root, conv_id);
-    msg_manager->msg_range_cache_.insert_or_assign(conv_id, ranges);
-
-    // load message
-    auto msgs = message::DBOpt::query_messages_for_conv_id(w_sdk_root, conv_id, cursor, limit, forward);
-
-    /// 更新缓存
-    for (auto &msg : msgs) {
-        msg_manager->msg_cache_.insert_or_assign(msg->client_msg_id(), msg);
-    }
-
-    auto result = std::make_shared<model::LoadConvMessagesResult>();
-    result->cursor = msgs.empty() ? -1 : msgs.back()->client_order_index();
-    result->has_more = false;
-    result->messages = std::move(msgs);
-
-    return result;
+    return message::DBOpt::message_range(sdk_root, conv_id);
 }
 
 /// 生成客户端消息 ID
