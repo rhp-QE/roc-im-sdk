@@ -216,10 +216,28 @@ if(MOLD_LINKER)
         set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -B${MOLD_LINKER}")
     endif()
     
+    # 启用并行链接（mold 原生支持并行，不需要 --parallel 参数）
+    # mold 会自动使用可用的 CPU 核心进行并行链接
     message(STATUS "🔧 Mold linker enabled for faster linking")
+    message(STATUS "🔧 Parallel linking enabled (mold native)")
 else()
     message(STATUS "ℹ️  Mold linker not found, using default linker")
     message(STATUS "💡 Consider installing mold for faster linking: sudo apt install mold")
+    
+    # 对于默认链接器，尝试启用并行链接
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        # GCC 的 gold 链接器支持并行
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=gold")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=gold")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -fuse-ld=gold")
+        
+        # 启用并行链接
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--parallel")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--parallel")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--parallel")
+        
+        message(STATUS "🔧 Gold linker enabled with parallel linking")
+    endif()
 endif()
 
 # Ninja 构建优化
@@ -246,14 +264,43 @@ if(CMAKE_GENERATOR STREQUAL "Ninja")
     # 启用增量编译优化
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-color=always")
+    
+    # 设置链接器的并行作业数
+    set(CMAKE_NINJA_PARALLEL_LINK_JOBS $ENV{NINJA_LINK_JOBS})
+    if(NOT CMAKE_NINJA_PARALLEL_LINK_JOBS)
+        # 链接器通常使用较少的并行度，避免内存不足
+        if(N GREATER 2)
+            set(CMAKE_NINJA_PARALLEL_LINK_JOBS 2)
+        else()
+            set(CMAKE_NINJA_PARALLEL_LINK_JOBS 1)
+        endif()
+    endif()
+    
+    message(STATUS "🚀 Ninja parallel link jobs: ${CMAKE_NINJA_PARALLEL_LINK_JOBS}")
 endif()
 
 # 6. 尝试启用编译器缓存 (如 ccache) 来加速重复编译:cite[3]:cite[7]
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
     message(STATUS "✅ Found ccache: ${CCACHE_PROGRAM}, enabling compiler caching")
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CCACHE_PROGRAM})
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE_PROGRAM})
+    
+    # 如果环境变量中设置了 CC 和 CXX，使用它们
+    if(DEFINED ENV{CC} AND DEFINED ENV{CXX})
+        message(STATUS "🔧 Using ccache compiler wrappers: $ENV{CC}, $ENV{CXX}")
+        set(CMAKE_C_COMPILER $ENV{CC})
+        set(CMAKE_CXX_COMPILER $ENV{CXX})
+        
+        # 设置 ccache 作为编译器启动器
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CCACHE_PROGRAM})
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE_PROGRAM})
+        
+        message(STATUS "🔧 ccache compiler caching enabled via environment variables")
+    else()
+        # 如果没有设置环境变量，使用传统的 RULE_LAUNCH 方式
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CCACHE_PROGRAM})
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE_PROGRAM})
+        message(STATUS "🔧 ccache compiler caching enabled via RULE_LAUNCH")
+    endif()
 else()
     message(STATUS "ℹ️  ccache not found, consider installing it for faster rebuilds")
 endif()

@@ -6,6 +6,87 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_SCRIPT="$SCRIPT_DIR/build_ninja.sh"
 
+# 自动设置并行链接环境变量
+setup_parallel_linking() {
+    # 获取 CPU 核心数
+    CPU_CORES=$(nproc 2>/dev/null || echo 4)
+    
+    # 设置 Ninja 编译并行度
+    export NINJA_JOBS=$CPU_CORES
+    
+    # 设置链接器并行参数
+    if command -v mold >/dev/null 2>&1; then
+        # mold 原生支持并行，不需要额外参数
+        # mold 会自动使用可用的 CPU 核心进行并行链接
+        export MOLD_FLAGS=""
+        # mold 不支持 NINJA_LINK_JOBS，使用其内置的并行控制
+        unset NINJA_LINK_JOBS
+        echo "✅ 检测到 mold 链接器，原生并行链接已启用"
+        echo "💡 mold 会自动使用 CPU 核心进行并行链接，无需 NINJA_LINK_JOBS 设置"
+    else
+        # 对于其他链接器，设置 Ninja 链接并行度
+        if [ $CPU_CORES -gt 2 ]; then
+            export NINJA_LINK_JOBS=2
+        else
+            export NINJA_LINK_JOBS=1
+        fi
+        echo "🔗 设置 NINJA_LINK_JOBS=$NINJA_LINK_JOBS"
+        
+        # 对于 gold 链接器，使用 --parallel 参数
+        export LDFLAGS="-Wl,--parallel"
+        echo "ℹ️  使用默认链接器，并行链接参数已设置"
+    fi
+    
+    # 配置 ccache 编译缓存
+    if command -v ccache >/dev/null 2>&1; then
+        # 设置 ccache 环境变量
+        export CCACHE_DIR="${HOME}/.ccache"
+        export CCACHE_MAXSIZE="5G"
+        export CCACHE_COMPRESS=1
+        export CCACHE_COMPRESSLEVEL=6
+        export CCACHE_HARDLINK=1
+        export CCACHE_VERBOSE=0
+        
+        # 确保缓存目录存在
+        mkdir -p "$CCACHE_DIR"
+        
+        # 应用 ccache 配置文件（如果存在）
+        CCACHE_CONF="${SCRIPT_DIR}/ccache.conf"
+        if [ -f "$CCACHE_CONF" ]; then
+            echo "📋 应用 ccache 配置文件: $CCACHE_CONF"
+            cp "$CCACHE_CONF" "$CCACHE_DIR/ccache.conf"
+        fi
+        
+        # 设置 PATH 确保 ccache 优先（系统已有符号链接）
+        export PATH="/usr/lib/ccache:$PATH"
+        
+        # 设置编译器环境变量
+        export CC="gcc-14"
+        export CXX="g++-14"
+        
+        echo "✅ 检测到 ccache 4.9.1，编译缓存已启用"
+        echo "💾 缓存目录: $CCACHE_DIR"
+        echo "💾 缓存大小: $CCACHE_MAXSIZE"
+        echo "🔧 编译器: $CC, $CXX (通过 PATH 自动使用 ccache)"
+        echo "🔧 PATH 已调整: /usr/lib/ccache 优先"
+    else
+        echo "ℹ️  ccache 未安装，建议安装以获得更快的重复编译速度"
+        echo "💡 安装命令: sudo apt install ccache"
+    fi
+}
+
+# 在脚本开始时自动设置并行链接
+setup_parallel_linking
+
+# 显示并行链接状态（仅在非静默模式下）
+if [ "$1" != "quiet" ] && [ "$1" != "q" ] && [ "$1" != "silent" ] && [ "$1" != "s" ] && [ "$1" != "help" ] && [ "$1" != "h" ] && [ "$1" != "-h" ] && [ "$1" != "--help" ] && [ "$1" != "parallel" ] && [ "$1" != "p" ]; then
+    if command -v mold >/dev/null 2>&1; then
+        echo "🔧 并行链接已自动启用: NINJA_JOBS=${NINJA_JOBS}, 链接器: mold (原生并行)"
+    else
+        echo "🔧 并行链接已自动启用: NINJA_JOBS=${NINJA_JOBS}, NINJA_LINK_JOBS=${NINJA_LINK_JOBS}"
+    fi
+fi
+
 # 检查构建脚本是否存在
 if [ ! -f "$BUILD_SCRIPT" ]; then
     echo "❌ 错误：找不到构建脚本 $BUILD_SCRIPT"
@@ -70,10 +151,65 @@ case "${1:-build}" in
     "jobs"|"j")
         if [ -n "$2" ]; then
             echo "⚡ 使用 $2 个并行任务构建..."
+            export NINJA_JOBS="$2"
             "$BUILD_SCRIPT" -j "$2"
         else
             echo "❌ 请指定任务数，例如: $0 jobs 8"
             exit 1
+        fi
+        ;;
+        "parallel"|"p")
+        echo "🔧 显示当前并行链接配置..."
+        echo "💻 CPU 核心数: $(nproc 2>/dev/null || echo 4)"
+        echo "🚀 编译并行度 (NINJA_JOBS): ${NINJA_JOBS:-$(nproc 2>/dev/null || echo 4)}"
+        if command -v mold >/dev/null 2>&1; then
+            echo "🔗 链接器: Mold (原生并行支持)"
+            echo "🔗 链接并行: 自动使用 CPU 核心 (无需 NINJA_LINK_JOBS)"
+            echo "🔗 Mold 参数 (MOLD_FLAGS): ${MOLD_FLAGS:-无}"
+            echo "✅ Mold 链接器已安装: $(which mold)"
+            echo "💡 mold 会自动检测 CPU 核心数并使用最佳并行度"
+        else
+            echo "🔗 链接器: 默认链接器"
+            echo "🔗 链接并行度 (NINJA_LINK_JOBS): ${NINJA_LINK_JOBS:-2}"
+            echo "🔗 链接器参数 (LDFLAGS): ${LDFLAGS:--Wl,--parallel}"
+            echo "ℹ️  Mold 链接器未安装，建议安装以获得更好的并行链接性能"
+            echo "💡 安装命令: sudo apt install mold"
+        fi
+        
+        # 显示 ccache 状态
+        if command -v ccache >/dev/null 2>&1; then
+            echo ""
+            echo "💾 编译缓存 (ccache):"
+            echo "  版本: $(ccache --version | head -1)"
+            echo "  缓存目录: ${CCACHE_DIR:-~/.ccache}"
+            echo "  缓存大小: ${CCACHE_MAXSIZE:-5G}"
+            echo "  编译器包装器: ${CC:-ccache gcc-14}, ${CXX:-ccache g++-14}"
+        fi
+        ;;
+    "ccache"|"cache")
+        if command -v ccache >/dev/null 2>&1; then
+            echo "💾 ccache 编译缓存状态:"
+            ccache -s
+            echo ""
+            echo "🔧 ccache 配置:"
+            echo "  缓存目录: ${CCACHE_DIR:-~/.ccache}"
+            echo "  最大大小: ${CCACHE_MAXSIZE:-5G}"
+            echo "  压缩: ${CCACHE_COMPRESS:-1}"
+            echo "  压缩级别: ${CCACHE_COMPRESSLEVEL:-6}"
+            echo "  硬链接: ${CCACHE_HARDLINK:-1}"
+            echo "  详细输出: ${CCACHE_VERBOSE:-0}"
+        else
+            echo "❌ ccache 未安装"
+            echo "💡 安装命令: sudo apt install ccache"
+        fi
+        ;;
+    "ccache-clear"|"cache-clear")
+        if command -v ccache >/dev/null 2>&1; then
+            echo "🧹 清理 ccache 编译缓存..."
+            ccache -C
+            echo "✅ ccache 缓存已清理"
+        else
+            echo "❌ ccache 未安装"
         fi
         ;;
     "help"|"h"|"-h"|"--help")
@@ -96,6 +232,9 @@ case "${1:-build}" in
         echo "  reset, rs         重置配置"
         echo "  fix, fx           修复配置"
         echo "  jobs, j N         指定并行任务数"
+        echo "  parallel, p       显示并行链接配置"
+        echo "  ccache, cache     显示编译缓存状态"
+        echo "  ccache-clear      清理编译缓存"
         echo "  help, h           显示帮助"
         echo ""
         echo "示例:"
@@ -103,6 +242,9 @@ case "${1:-build}" in
         echo "  $0 clean          # 清理后构建"
         echo "  $0 run            # 构建并运行"
         echo "  $0 jobs 8         # 使用8个任务构建"
+        echo "  $0 parallel       # 显示并行链接配置"
+        echo "  $0 ccache         # 显示编译缓存状态"
+        echo "  $0 ccache-clear   # 清理编译缓存"
         echo "  $0 debug          # Debug 模式构建"
         echo "  $0 reconfigure    # 重新配置（解决编译器问题）"
         echo "  $0 reset          # 重置配置"
