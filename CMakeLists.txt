@@ -8,6 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_C_COMPILER gcc-14)
 set(CMAKE_CXX_COMPILER g++-14)
 
+# set(CMAKE_C_COMPILER clang)
+# set(CMAKE_CXX_COMPILER clang++)
+
 # Ninja 构建系统配置
 find_program(CMAKE_MAKE_PROGRAM ninja)
 if(CMAKE_MAKE_PROGRAM)
