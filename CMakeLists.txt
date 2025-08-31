@@ -4,9 +4,9 @@ cmake_minimum_required(VERSION 3.28.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# 编译器设置
-find_program(CMAKE_C_COMPILER gcc-14)
-find_program(CMAKE_CXX_COMPILER g++-14)
+# 强制设置编译器为 Clang
+set(CMAKE_C_COMPILER gcc-14)
+set(CMAKE_CXX_COMPILER g++-14)
 
 # Ninja 构建系统配置
 find_program(CMAKE_MAKE_PROGRAM ninja)
@@ -239,6 +239,8 @@ enable_testing()
 # 项目信息
 message(STATUS "🚀 Project: ${PROJECT_NAME} v${PROJECT_VERSION}")
 message(STATUS "🚀 C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "🚀 C Compiler: ${CMAKE_C_COMPILER}")
+message(STATUS "🚀 C++ Compiler: ${CMAKE_CXX_COMPILER}")
 message(STATUS "🚀 Build system: ${CMAKE_GENERATOR}")
 if(CMAKE_GENERATOR STREQUAL "Ninja")
     message(STATUS "🚀 Ninja parallel jobs: ${CMAKE_NINJA_PARALLEL_JOBS}")
