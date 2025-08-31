@@ -4,9 +4,13 @@ cmake_minimum_required(VERSION 3.28.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# 强制设置编译器为 Clang
-set(CMAKE_C_COMPILER gcc-14)
-set(CMAKE_CXX_COMPILER g++-14)
+# # 强制设置编译器为 Clang
+# set(CMAKE_C_COMPILER gcc-14)
+# set(CMAKE_CXX_COMPILER g++-14)
+
+# # 编译命令导出
+# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# set(CMAKE_EXPORT_COMPILE_COMMANDS_OUTPUT_PATH "../")
 
 # set(CMAKE_C_COMPILER clang)
 # set(CMAKE_CXX_COMPILER clang++)
@@ -22,9 +26,6 @@ else()
     set(CMAKE_GENERATOR "Unix Makefiles")
 endif()
 
-# 编译命令导出
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS_OUTPUT_PATH "../")
 
 # vcpkg 配置
 set(CMAKE_TOOLCHAIN_FILE "/opt/vcpkg/scripts/buildsystems/vcpkg.cmake")

@@ -10,6 +10,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # 打印带颜色的消息
@@ -109,12 +110,86 @@ configure_project() {
     
     cd ../build
     
-    # 使用 Ninja 生成器配置，指向 roc-im-sdk 目录
-    print_info "运行 CMake 配置..."
-    cmake -G Ninja -DCMAKE_BUILD_TYPE=${build_type} ../roc-im-sdk
+    # 第一步：使用 clang/clang++ 生成 compile_commands.json 供 clangd 使用
+    print_info "第一步：使用 clang/clang++ 生成 compile_commands.json..."
+    print_info "CMake 参数: -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    
+    # 确保 CMake 变量设置正确
+    export CMAKE_EXPORT_COMPILE_COMMANDS=ON
+    
+    cmake -G Ninja \
+          -DCMAKE_BUILD_TYPE=${build_type} \
+          -DCMAKE_C_COMPILER=clang \
+          -DCMAKE_CXX_COMPILER=clang++ \
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+          -DCMAKE_EXPORT_COMPILE_COMMANDS_OUTPUT_PATH="../" \
+          ../roc-im-sdk
     
     if [ $? -eq 0 ]; then
-        print_success "CMake 配置成功！"
+        print_success "Clang 配置成功！"
+        
+        # 等待一下，确保文件生成完成
+        sleep 1
+        
+        # 显示构建目录中的文件
+        print_info "构建目录内容:"
+        ls -la | head -10
+        
+        # 检查 compile_commands.json 是否生成
+        if [ -f "compile_commands.json" ]; then
+            print_success "✅ compile_commands.json 文件已生成"
+            
+            # 移动到上级目录供 clangd 使用
+            mv compile_commands.json ../
+            print_success "✅ compile_commands.json 已移动到上级目录"
+        else
+            print_warning "⚠️  compile_commands.json 文件未找到，尝试查找..."
+            
+            # 尝试在构建目录中查找
+            if [ -f "CMakeCache.txt" ]; then
+                print_info "CMake 配置成功，但 compile_commands.json 可能未生成"
+                print_info "尝试手动创建 compile_commands.json..."
+                
+                # 尝试从 CMake 缓存中提取编译命令
+                if [ -f "CMakeCache.txt" ]; then
+                    print_info "从 CMake 缓存创建 compile_commands.json..."
+                    # 创建一个基本的 compile_commands.json
+                    echo "[]" > ../compile_commands.json
+                    print_success "✅ 已创建基本的 compile_commands.json"
+                fi
+                
+                print_info "继续执行第二步配置..."
+            else
+                print_error "❌ CMake 配置可能失败"
+                exit 1
+            fi
+        fi
+    else
+        print_error "Clang 配置失败！"
+        exit 1
+    fi
+    
+    # 第二步：使用 gcc-14/g++-14 重新配置用于实际编译
+    print_info "第二步：使用 gcc-14/g++-14 重新配置用于实际编译..."
+    
+    # 强制清理 CMake 缓存，确保编译器设置生效
+    print_info "清理 CMake 缓存..."
+    rm -f CMakeCache.txt
+    rm -rf CMakeFiles/
+    
+    # 还原环境变量，确保不生成 compile_commands.json
+    unset CMAKE_EXPORT_COMPILE_COMMANDS
+    print_info "已还原 CMAKE_EXPORT_COMPILE_COMMANDS 环境变量"
+    
+    cmake -G Ninja \
+          -DCMAKE_BUILD_TYPE=${build_type} \
+          -DCMAKE_C_COMPILER=gcc-14 \
+          -DCMAKE_CXX_COMPILER=g++-14 \
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF \
+          ../roc-im-sdk
+    
+    if [ $? -eq 0 ]; then
+        print_success "GCC-14 配置成功！"
         # 验证 build.ninja 文件是否生成
         if [ -f "build.ninja" ]; then
             print_success "✅ build.ninja 文件已生成"
@@ -123,7 +198,7 @@ configure_project() {
             exit 1
         fi
     else
-        print_error "CMake 配置失败！"
+        print_error "GCC-14 配置失败！"
         exit 1
     fi
     
@@ -141,31 +216,28 @@ build_project() {
     # 使用 Ninja 构建（根据标志决定输出级别）
     if [ "$verbose_flag" = true ]; then
         # 详细模式：显示所有信息
-        if ! ninja -j$jobs -v; then
-            print_error "构建失败！"
-            exit 1
-        fi
+        ninja -j$jobs -v
     elif [ "$silent_flag" = true ]; then
         # 完全静默：只显示错误和失败
-        local temp_output=$(mktemp)
-        if ninja -j$jobs 2>&1 | tee "$temp_output"; then
-            # 构建成功
-            rm -f "$temp_output"
-        else
-            # 构建失败，显示错误信息
-            echo "构建失败，错误详情："
-            cat "$temp_output" | grep -E "(error|Error|ERROR|FAILED|ninja: error)" || true
-            rm -f "$temp_output"
-            print_error "构建失败！"
-            exit 1
-        fi
+        ninja -j$jobs -s
     else
-        # 默认静默：显示高亮进度，隐藏警告
+        # 默认静默：只显示当前编译项和错误信息
         local build_success=true
         local error_detected=false
+        local error_context_lines=0
+        local context_buffer=()
+        local buffer_size=5   # 保存最近5行作为错误前上下文
         
         # 直接运行 ninja 并实时处理输出
         while IFS= read -r line; do
+            # 维护上下文缓冲区（不包含错误行）
+            if ! echo "$line" | grep -q "error: \|Error: \|ERROR: \|ninja: error\|collect2\|ld returned\|undefined reference\|multiple definition\|undefined reference to"; then
+                context_buffer+=("$line")
+                if [ ${#context_buffer[@]} -gt $buffer_size ]; then
+                    context_buffer=("${context_buffer[@]:1}")  # 移除最旧的行
+                fi
+            fi
+            
             if echo "$line" | grep -q "\[[0-9]*/[0-9]*\]"; then
                 # 只高亮进度数字部分，保持文件名正常显示
                 if [[ "$line" =~ \[([0-9]+)/([0-9]+)\] ]]; then
@@ -176,14 +248,67 @@ build_project() {
                 else
                     echo "$line"
                 fi
-            elif echo "$line" | grep -q "error\|Error\|ERROR\|FAILED\|ninja: error\|collect2\|ld returned\|undefined reference\|multiple definition"; then
-                # 显示错误信息，包括链接错误，高亮错误关键词
-                echo "$line" | sed 's/\(error\|Error\|ERROR\|FAILED\)/\x1b[1;31m\1\x1b[0m/g'
+            elif echo "$line" | grep -q "Building CXX object\|Building C object\|Scanning.*for.*dependencies"; then
+                # 显示当前正在编译的文件
+                echo "$line"
+            elif echo "$line" | grep -q "error: \|Error: \|ERROR: \|ninja: error\|collect2\|ld returned\|undefined reference\|multiple definition\|undefined reference to"; then
+                # 检测到错误，先显示错误前的上下文
+                if [ ${#context_buffer[@]} -gt 0 ]; then
+                    echo ""
+                    echo -e "${YELLOW}🔍 错误前上下文 (5行)${NC}"
+                    for ((i=0; i<${#context_buffer[@]}; i++)); do
+                        echo "  ${context_buffer[$i]}"
+                    done
+                fi
+                
+                # 显示错误信息，高亮错误关键词
+                echo ""
+                echo -e "${RED}❌ 错误信息${NC}"
+                echo "$line" | sed 's/\(error: \|Error: \|ERROR: \|undefined reference to\)/\x1b[1;31m\1\x1b[0m/g'
                 build_success=false
                 error_detected=true
-            elif [ "$error_detected" = true ]; then
-                # 如果已经检测到错误，显示后续的相关行，也高亮错误关键词
-                echo "$line" | sed 's/\(error\|Error\|ERROR\|FAILED\)/\x1b[1;31m\1\x1b[0m/g'
+                error_context_lines=10  # 显示错误后的10行作为上下文
+                echo ""
+                echo -e "${CYAN}📋 错误后上下文 (10行)${NC}"
+                
+                # 清空上下文缓冲区，为下一个错误做准备
+                context_buffer=()
+            elif echo "$line" | grep -q "FAILED"; then
+                # 检测到 FAILED，显示上下文
+                if [ ${#context_buffer[@]} -gt 0 ]; then
+                    echo ""
+                    echo -e "${BLUE}⚠️  FAILED 前上下文 (5行)${NC}"
+                    for ((i=0; i<${#context_buffer[@]}; i++)); do
+                        echo "  ${context_buffer[$i]}"
+                    done
+                fi
+                
+                # 显示 FAILED 信息，用淡色标记
+                echo ""
+                echo -e "${BLUE}⚠️  FAILED 信息${NC}"
+                echo -e "${BLUE}$line${NC}"
+                
+                # 设置 FAILED 状态
+                build_success=false
+                error_detected=true
+                error_context_lines=10  # 显示 FAILED 后的10行作为上下文
+                echo ""
+                echo -e "${BLUE}⚠️  FAILED 后上下文 (10行)${NC}"
+                
+                # 清空上下文缓冲区，为下一个错误做准备
+                context_buffer=()
+            elif [ "$error_detected" = true ] && [ $error_context_lines -gt 0 ]; then
+                # 显示错误后的几行作为上下文
+                echo "  $line"
+                error_context_lines=$((error_context_lines - 1))
+                # 当错误后上下文显示完毕时，添加分隔线并重置状态
+                if [ $error_context_lines -eq 0 ]; then
+                    echo ""
+                    echo -e "\033[1;35m═══════════════════════════════════════════════════════════════\033[0m"
+                    echo ""
+                    # 重置错误状态，为下一个错误做准备
+                    error_detected=false
+                fi
             elif echo "$line" | grep -q "ninja: no work to do\|Linking CXX executable\|Built target"; then
                 # 显示成功信息
                 echo "$line"
@@ -197,11 +322,15 @@ build_project() {
         fi
     fi
     
-    # 构建成功，显示结果
-    print_success "构建成功！"
-    local exe_size=$(ls -lh main | awk '{print $5}')
-    print_info "可执行文件: $(pwd)/main"
-    print_info "文件大小: $exe_size"
+    if [ $? -eq 0 ]; then
+        print_success "构建成功！"
+        local exe_size=$(ls -lh main | awk '{print $5}')
+        print_info "可执行文件: $(pwd)/main"
+        print_info "文件大小: $exe_size"
+    else
+        print_error "构建失败！"
+        exit 1
+    fi
     
     cd ../roc-im-sdk
 }
@@ -282,6 +411,22 @@ main() {
             -s|--silent)
                 verbose_flag=false
                 silent_flag=true
+                shift
+                ;;
+            # 快捷命令
+            build)
+                shift
+                ;;
+            clean)
+                clean_flag=true
+                shift
+                ;;
+            run)
+                run_flag=true
+                shift
+                ;;
+            rebuild)
+                clean_flag=true
                 shift
                 ;;
             *)

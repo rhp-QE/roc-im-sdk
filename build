@@ -1,0 +1,116 @@
+#!/bin/bash
+
+# ROCIM 项目构建快捷命令
+# 这个脚本提供常用的构建命令快捷方式
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BUILD_SCRIPT="$SCRIPT_DIR/build_ninja.sh"
+
+# 检查构建脚本是否存在
+if [ ! -f "$BUILD_SCRIPT" ]; then
+    echo "❌ 错误：找不到构建脚本 $BUILD_SCRIPT"
+    exit 1
+fi
+
+# 根据命令执行相应的操作
+case "${1:-build}" in
+    # 常用命令
+    "build"|"b")
+        echo "🚀 开始构建项目..."
+        "$BUILD_SCRIPT"
+        ;;
+    "clean"|"c")
+        echo "🧹 清理构建文件..."
+        "$BUILD_SCRIPT" -c
+        ;;
+    "run"|"r")
+        echo "▶️  构建并运行项目..."
+        "$BUILD_SCRIPT" -r
+        ;;
+    "rebuild"|"rb")
+        echo "🔄 重新构建项目..."
+        "$BUILD_SCRIPT" -c
+        ;;
+    "full"|"f")
+        echo "🎯 完整流程：清理 + 构建 + 运行..."
+        "$BUILD_SCRIPT" -f
+        ;;
+    "debug"|"d")
+        echo "🐛 Debug 模式构建..."
+        "$BUILD_SCRIPT" -d
+        ;;
+    "release"|"rel")
+        echo "🚀 Release 模式构建..."
+        "$BUILD_SCRIPT" -R
+        ;;
+    "verbose"|"v")
+        echo "📝 详细构建信息..."
+        "$BUILD_SCRIPT" -v
+        ;;
+    "quiet"|"q")
+        echo "🔇 静默模式构建..."
+        "$BUILD_SCRIPT" -q
+        ;;
+    "silent"|"s")
+        echo "🔇 完全静默模式..."
+        "$BUILD_SCRIPT" -s
+        ;;
+    "reconfigure"|"rc")
+        echo "⚙️  重新配置项目..."
+        "$BUILD_SCRIPT" --reconfigure
+        ;;
+    "reset"|"rs")
+        echo "🔄 重置项目配置（清理 + 重新配置）..."
+        "$BUILD_SCRIPT" --reconfigure
+        ;;
+    "fix"|"fx")
+        echo "🔧 修复项目配置（重新配置）..."
+        "$BUILD_SCRIPT" --reconfigure
+        ;;
+    "jobs"|"j")
+        if [ -n "$2" ]; then
+            echo "⚡ 使用 $2 个并行任务构建..."
+            "$BUILD_SCRIPT" -j "$2"
+        else
+            echo "❌ 请指定任务数，例如: $0 jobs 8"
+            exit 1
+        fi
+        ;;
+    "help"|"h"|"-h"|"--help")
+        echo "ROCIM 项目构建快捷命令"
+        echo ""
+        echo "用法: $0 [命令] [参数]"
+        echo ""
+        echo "命令:"
+        echo "  build, b          构建项目（默认）"
+        echo "  clean, c          清理后构建"
+        echo "  run, r            构建后运行"
+        echo "  rebuild, rb       重新构建"
+        echo "  full, f           完整流程"
+        echo "  debug, d          Debug 模式"
+        echo "  release, rel      Release 模式"
+        echo "  verbose, v        详细输出"
+        echo "  quiet, q          静默模式"
+        echo "  silent, s         完全静默"
+        echo "  reconfigure, rc   重新配置"
+        echo "  reset, rs         重置配置"
+        echo "  fix, fx           修复配置"
+        echo "  jobs, j N         指定并行任务数"
+        echo "  help, h           显示帮助"
+        echo ""
+        echo "示例:"
+        echo "  $0                 # 构建项目"
+        echo "  $0 clean          # 清理后构建"
+        echo "  $0 run            # 构建并运行"
+        echo "  $0 jobs 8         # 使用8个任务构建"
+        echo "  $0 debug          # Debug 模式构建"
+        echo "  $0 reconfigure    # 重新配置（解决编译器问题）"
+        echo "  $0 reset          # 重置配置"
+        echo "  $0 fix            # 修复配置"
+        ;;
+    *)
+        echo "❌ 未知命令: $1"
+        echo "使用 '$0 help' 查看可用命令"
+        exit 1
+        ;;
+esac
