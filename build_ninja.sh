@@ -44,17 +44,24 @@ show_help() {
     echo "  -d, --debug    使用 Debug 模式构建"
     echo "  -R, --release  使用 Release 模式构建"
     echo "  --reconfigure  强制重新配置 CMake 项目"
+    echo "  -v, --verbose  显示详细构建信息"
+    echo "  -q, --quiet    静默模式（默认）"
+    echo "  -s, --silent   完全静默（只显示错误）"
     echo ""
     echo "环境变量:"
-    echo "  NINJA_JOBS     设置 Ninja 并行任务数"
+echo "  NINJA_JOBS     设置 Ninja 并行任务数"
+echo "  VERBOSE_BUILD  设置为 'true' 时显示详细构建信息"
     echo ""
     echo "示例:"
-    echo "  $0              # 普通构建"
-    echo "  $0 -c           # 清理后构建"
-    echo "  $0 -r           # 构建后运行"
-    echo "  $0 -f           # 完整流程"
-    echo "  $0 -j 8         # 使用8个并行任务"
-    echo "  $0 -d           # Debug 模式构建"
+echo "  $0              # 普通构建（静默模式）"
+echo "  $0 -c           # 清理后构建"
+echo "  $0 -r           # 构建后运行"
+echo "  $0 -f           # 完整流程"
+echo "  $0 -j 8         # 使用8个并行任务"
+echo "  $0 -d           # Debug 模式构建"
+echo "  $0 -v           # 详细构建信息"
+echo "  $0 -q           # 静默模式（默认，显示进度）"
+echo "  $0 -s           # 完全静默（只显示错误）"
 }
 
 # 检查 Ninja 是否安装
@@ -131,8 +138,32 @@ build_project() {
     
     cd ../build
     
-    # 使用 Ninja 构建
-    ninja -j$jobs
+    # 使用 Ninja 构建（根据标志决定输出级别）
+    if [ "$verbose_flag" = true ]; then
+        # 详细模式：显示所有信息
+        ninja -j$jobs -v
+    elif [ "$silent_flag" = true ]; then
+        # 完全静默：只显示错误和失败
+        ninja -j$jobs 2>&1 | grep -E "(error|Error|ERROR|FAILED|ninja:)" || true
+    else
+        # 默认静默：显示高亮进度，隐藏警告
+        ninja -j$jobs 2>&1 | while IFS= read -r line; do
+            if echo "$line" | grep -q "\[[0-9]*/[0-9]*\]"; then
+                # 只高亮进度数字部分，保持文件名正常显示
+                if [[ "$line" =~ \[([0-9]+)/([0-9]+)\] ]]; then
+                    local progress="${BASH_REMATCH[0]}"
+                    local before_progress="${line%\[*}"
+                    local after_progress="${line#*\]}"
+                    echo -e "${before_progress}${GREEN}${progress}${NC}${after_progress}"
+                else
+                    echo "$line"
+                fi
+            elif echo "$line" | grep -q "error\|Error\|ERROR\|FAILED\|ninja:"; then
+                # 显示错误信息
+                echo "$line"
+            fi
+        done
+    fi
     
     if [ $? -eq 0 ]; then
         print_success "构建成功！"
@@ -167,6 +198,8 @@ main() {
     local run_flag=false
     local build_type="Debug"
     local jobs=${NINJA_JOBS:-$(get_cpu_cores)}
+    local verbose_flag=false
+    local silent_flag=false
     
     # 解析命令行参数
     while [[ $# -gt 0 ]]; do
@@ -207,6 +240,20 @@ main() {
                 ;;
             --reconfigure)
                 clean_flag=true
+                shift
+                ;;
+            -v|--verbose)
+                verbose_flag=true
+                shift
+                ;;
+            -q|--quiet)
+                verbose_flag=false
+                silent_flag=false
+                shift
+                ;;
+            -s|--silent)
+                verbose_flag=false
+                silent_flag=true
                 shift
                 ;;
             *)

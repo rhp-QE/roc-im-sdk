@@ -13,9 +13,6 @@ find_program(CMAKE_MAKE_PROGRAM ninja)
 if(CMAKE_MAKE_PROGRAM)
     message(STATUS "✅ Found Ninja build system: ${CMAKE_MAKE_PROGRAM}")
     set(CMAKE_GENERATOR "Ninja")
-    # Ninja 特定的优化设置
-    set(CMAKE_NINJA_FORCE_RESPONSE_FILE OFF)
-    set(CMAKE_NINJA_SPLIT_RESPONSE_FILE OFF)
 else()
     message(STATUS "ℹ️  Ninja not found, using default generator")
     # 如果没有 Ninja，尝试使用 Makefiles 作为备选
