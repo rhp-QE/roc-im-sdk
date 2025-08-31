@@ -200,6 +200,28 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     message(STATUS "🔧 Release flags: ${CMAKE_CXX_FLAGS_RELEASE}")
 endif()
 
+# Mold 链接器配置
+find_program(MOLD_LINKER mold)
+if(MOLD_LINKER)
+    message(STATUS "✅ Found Mold linker: ${MOLD_LINKER}")
+    # 设置链接器为 mold
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=mold")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=mold")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -fuse-ld=mold")
+    
+    # 为 GCC 编译器设置 mold 链接器
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -B${MOLD_LINKER}")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -B${MOLD_LINKER}")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -B${MOLD_LINKER}")
+    endif()
+    
+    message(STATUS "🔧 Mold linker enabled for faster linking")
+else()
+    message(STATUS "ℹ️  Mold linker not found, using default linker")
+    message(STATUS "💡 Consider installing mold for faster linking: sudo apt install mold")
+endif()
+
 # Ninja 构建优化
 if(CMAKE_GENERATOR STREQUAL "Ninja")
     # 启用并行编译
@@ -248,6 +270,11 @@ message(STATUS "🚀 C++ Compiler: ${CMAKE_CXX_COMPILER}")
 message(STATUS "🚀 Build system: ${CMAKE_GENERATOR}")
 if(CMAKE_GENERATOR STREQUAL "Ninja")
     message(STATUS "🚀 Ninja parallel jobs: ${CMAKE_NINJA_PARALLEL_JOBS}")
+endif()
+if(MOLD_LINKER)
+    message(STATUS "🚀 Linker: Mold (${MOLD_LINKER})")
+else()
+    message(STATUS "🚀 Linker: Default system linker")
 endif()
 message(STATUS "🚀 Source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "🚀 Binary directory: ${CMAKE_BINARY_DIR}")
