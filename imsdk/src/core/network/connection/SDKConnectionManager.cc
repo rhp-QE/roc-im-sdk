@@ -65,7 +65,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     auto res = co_await lc_->connect();
 
-    LOG_INFO("ws_connection", "【init_and_connected】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : res.error().to_string())
+         LOG_INFO("ws","【init_and_connected】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "connection failed")
 
     co_return;
 }
@@ -75,7 +75,7 @@ boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
 
     auto res = co_await lc_->disconnect();
 
-    LOG_INFO("ws_connection", "【disconnect】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : res.error().to_string())
+         LOG_INFO("ws", "【disconnect】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "disconnect failed")
 
     co_return res.has_value();
 }

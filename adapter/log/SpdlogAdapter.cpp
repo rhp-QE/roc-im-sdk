@@ -100,7 +100,7 @@ std::shared_ptr<ILogger> SpdlogAdapter::get_logger() const {
         if (!spdlogLogger_) return;
         
         // 构建完整的日志消息，包含模块名
-        std::string fullMessage = "[" + module + "] " + message;
+        std::string fullMessage = "【" + module + "】" + message;
         
         // 根据级别调用相应的 spdlog 方法
         switch (level) {
