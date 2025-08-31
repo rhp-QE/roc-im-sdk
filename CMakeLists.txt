@@ -8,6 +8,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_program(CMAKE_C_COMPILER gcc-14)
 find_program(CMAKE_CXX_COMPILER g++-14)
 
+# Ninja 构建系统配置
+find_program(CMAKE_MAKE_PROGRAM ninja)
+if(CMAKE_MAKE_PROGRAM)
+    message(STATUS "✅ Found Ninja build system: ${CMAKE_MAKE_PROGRAM}")
+    set(CMAKE_GENERATOR "Ninja")
+    # Ninja 特定的优化设置
+    set(CMAKE_NINJA_FORCE_RESPONSE_FILE OFF)
+    set(CMAKE_NINJA_SPLIT_RESPONSE_FILE OFF)
+else()
+    message(STATUS "ℹ️  Ninja not found, using default generator")
+    # 如果没有 Ninja，尝试使用 Makefiles 作为备选
+    set(CMAKE_GENERATOR "Unix Makefiles")
+endif()
+
 # 编译命令导出
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS_OUTPUT_PATH "../")
@@ -185,6 +199,32 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     message(STATUS "🔧 Release flags: ${CMAKE_CXX_FLAGS_RELEASE}")
 endif()
 
+# Ninja 构建优化
+if(CMAKE_GENERATOR STREQUAL "Ninja")
+    # 启用并行编译
+    set(CMAKE_NINJA_PARALLEL_JOBS $ENV{NINJA_JOBS})
+    if(NOT CMAKE_NINJA_PARALLEL_JOBS)
+        # 如果没有设置环境变量，使用 CPU 核心数
+        include(ProcessorCount)
+        ProcessorCount(N)
+        if(N GREATER 0)
+            set(CMAKE_NINJA_PARALLEL_JOBS ${N})
+        else()
+            set(CMAKE_NINJA_PARALLEL_JOBS 4)  # 默认值
+        endif()
+    endif()
+    
+    message(STATUS "🚀 Ninja parallel jobs: ${CMAKE_NINJA_PARALLEL_JOBS}")
+    
+    # Ninja 特定的编译优化
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe")  # 减少临时文件
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe")
+    
+    # 启用增量编译优化
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-color=always")
+endif()
+
 # 6. 尝试启用编译器缓存 (如 ccache) 来加速重复编译:cite[3]:cite[7]
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
@@ -202,6 +242,10 @@ enable_testing()
 # 项目信息
 message(STATUS "🚀 Project: ${PROJECT_NAME} v${PROJECT_VERSION}")
 message(STATUS "🚀 C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "🚀 Build system: ${CMAKE_GENERATOR}")
+if(CMAKE_GENERATOR STREQUAL "Ninja")
+    message(STATUS "🚀 Ninja parallel jobs: ${CMAKE_NINJA_PARALLEL_JOBS}")
+endif()
 message(STATUS "🚀 Source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "🚀 Binary directory: ${CMAKE_BINARY_DIR}")
 message(STATUS "🚀 vcpkg installed directory: ${VCPKG_INSTALLED_DIR}")
