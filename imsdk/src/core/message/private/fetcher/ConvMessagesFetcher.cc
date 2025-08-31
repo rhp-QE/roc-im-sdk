@@ -38,7 +38,7 @@ void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::
         net_msgs.push_back(std::shared_ptr<network::MsgData>(msg));
     }
 
-    LOG_INFO("ConvMessagesFetcher", "handle_fetch_conv_message_list_resp, size: {}", net_msgs.size());
+    LOG_INFO("MsgManager", "handle_fetch_conv_message_list_resp, size: {}", net_msgs.size());
 
     // 保存消息
     boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs), boost::asio::detached);
@@ -79,7 +79,7 @@ boost::asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list(W_SDK_
 
     for (const auto &range : msg_empty_ranges) {
 
-        LOG_INFO("ConvMessagesFetcher", "start_fetch_conv_message_list, conv_id: {}, range: {{{}, {}}}", conv_id, range.first, range.second);
+        LOG_INFO("MsgManager", "start_fetch_conv_message_list, conv_id: {}, range: {{{}, {}}}", conv_id, range.first, range.second);
 
         co_await fetch_conv_message_list_for_range(w_sdk_root, conv_id, range);
     }

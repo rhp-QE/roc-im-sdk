@@ -68,7 +68,7 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     }
 
     auto sdk_root = shared_from_this();
-    LOG_DEBUG("imsdk", "init_sdk {}", "over")
+    LOG_DEBUG("SDKRoot", "init_sdk {}", "over")
     
     co_return true;
 }

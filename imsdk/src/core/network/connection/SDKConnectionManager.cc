@@ -47,7 +47,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
     // 观察网络状态变更
     lc_->set_connection_status_callback([root](bool connected, const std::string &detail) {
         CHECK_ROOT_OR_RETURN_VOID(root)
-        LOG_INFO("ws_connection", "connected_status: {}, error_info: {}", connected, detail)
+        LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail)
     });
 
     // 
@@ -65,7 +65,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     auto res = co_await lc_->connect();
 
-         LOG_INFO("ws","【init_and_connected】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "connection failed")
+         LOG_INFO("WS","【init_and_connected】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "connection failed")
 
     co_return;
 }
@@ -75,7 +75,7 @@ boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
 
     auto res = co_await lc_->disconnect();
 
-         LOG_INFO("ws", "【disconnect】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "disconnect failed")
+         LOG_INFO("WS", "【disconnect】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "disconnect failed")
 
     co_return res.has_value();
 }

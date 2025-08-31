@@ -90,7 +90,7 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
         for (auto& range : ranges) {
             range_str += "[" + std::to_string(range.first) + ", " + std::to_string(range.second) + "] ";
         }
-        LOG_INFO("message_manager", "【load_message_range_from_db】: {}", range_str)
+        LOG_INFO("MsgManager", "【load_message_range_from_db】: {}", range_str)
         
 
         /// 触发单链拉取

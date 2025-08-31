@@ -46,11 +46,9 @@ void ReceiveMessage::handle_push_message(W_SDK_ROOT, std::shared_ptr<network::Sd
         return;
     }
 
-    LOG_INFO("ReceiveMessage", "receive_message, from: {}", net_msg->sendid());
+    LOG_INFO("MsgManager", "receive_message, from: {}", net_msg->sendid());
 
     boost::asio::co_spawn(sdk_root->net_io_context(), handle_receive_message(w_sdk_root, {net_msg}), boost::asio::detached);
-
-    std::cout<<"receive push message"<<std::endl;
 }
 
 boost::asio::awaitable<void> ReceiveMessage::handle_receive_message(W_SDK_ROOT, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
@@ -70,7 +68,7 @@ boost::asio::awaitable<void> ReceiveMessage::handle_receive_message(W_SDK_ROOT, 
     /// 数据保存
     auto sdk_msgs = co_await message::SaveMessage::save_net_messages(w_sdk_root, net_msgs_ptr);
     
-    LOG_INFO("ReceiveMessage", "handle_receive_message, size: {}", sdk_msgs.size());
+    LOG_INFO("MsgManager", "handle_receive_message, size: {}", sdk_msgs.size());
 
     // 对消息进行分类
     auto result = classify_message(w_sdk_root, net_msgs, sdk_msgs);

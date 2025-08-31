@@ -86,7 +86,7 @@ boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(W_S
         net_convs.push_back(std::shared_ptr<network::ConversationInfo>(conv));
     }
 
-    LOG_INFO("UserMessageFetcher", "finish_fetch_user_message, net_msgs: {}, net_convs: {}", net_msgs.size(), net_convs.size());
+    LOG_INFO("ConvManager", "finish_fetch_user_message, net_msgs: {}, net_convs: {}", net_msgs.size(), net_convs.size());
 
     // 处理接收到的消息
     co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs), asio::detached);
