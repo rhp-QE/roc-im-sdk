@@ -14,6 +14,7 @@
 #include "BaseConfig.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
 #include "base/utils/utils.h"
+#include "adapter/log/SpdlogAdapter.h"
 
 int64_t message_cursor = -1;
 int64_t conv_cursor = -1;
@@ -26,6 +27,8 @@ std::unique_ptr<boost::asio::executor_work_guard<boost::asio::io_context::execut
 
 std::shared_ptr<boost::asio::io_context> demo_net_io_context;
 std::shared_ptr<boost::asio::io_context> demo_sdk_io_context;
+
+std::shared_ptr<roc::imsdk::SpdlogAdapter> spdlog_adapter;
 // ==================
 
 
@@ -50,8 +53,19 @@ inline boost::asio::awaitable<bool> p_login() {
     std::string user_id;
     std::cin >> user_id;
 
+    // 创建 spdlog 适配器
+    spdlog_adapter = roc::imsdk::SpdlogAdapter::create(user_id+"_log");
+    spdlog_adapter->start_periodic_flush_async(demo_sdk_io_context, 1000);
+
     auto config = generateConfig(user_id);
+
+    // 创建sdk
     imsdk = std::make_shared<roc::imsdk::IMSDK>();
+
+    // 注入日志器
+    imsdk->inject_logger(spdlog_adapter->get_logger());
+
+    // 初始化sdk
     co_await imsdk->init_sdk(config);
 
     imsdk->on_messagee([](roc::imsdk::model::OnMessageResult result) {

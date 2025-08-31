@@ -1,11 +1,15 @@
 #include "SaveMessage.h"
 
 #include "base/utils/utils.h"
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/convert/Convert.h"
+#include <boost/asio/awaitable.hpp>
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 #include <cstdint>
 
@@ -138,11 +142,18 @@ void SaveMessage::update_message_range_for_message(W_SDK_ROOT, const std::vector
 
         auto input_ranges = generate_range(seqs);
 
-        auto current_ranges = msg_manager->msg_range_cache_.modify_or_create(conv_id, [input_ranges](std::vector<std::pair<int64_t, int64_t>> &current_ranges) {
+        /// 如果缓存中没有区间，则从DB中获取
+        auto old_ranges = msg_manager->msg_range_cache_.at(conv_id);
+        if (!old_ranges) {
+            LOG_INFO("message_range", "no range in cahce, get from db. 【conv_id】: {}", conv_id);
+            input_ranges = merge_ranges(input_ranges, DBOpt::message_range(w_sdk_root, conv_id));
+        }
+
+        auto new_ranges = msg_manager->msg_range_cache_.modify_or_create(conv_id, [input_ranges](std::vector<std::pair<int64_t, int64_t>> &current_ranges) {
             current_ranges = merge_ranges(input_ranges, current_ranges);
         });
 
-        message::DBOpt::save_message_range(w_sdk_root, current_ranges, conv_id);
+        message::DBOpt::save_message_range(w_sdk_root, new_ranges, conv_id);
     }
 }
 

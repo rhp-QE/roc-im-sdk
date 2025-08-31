@@ -6,6 +6,7 @@
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
 #include <boost/asio/io_context.hpp>
+#include "imsdk/src/core/common/logger_macro.h"
 
 namespace roc::imsdk::core {
 
@@ -17,6 +18,8 @@ ConversationManager::ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root, boos
 ConversationManager::~ConversationManager() = default;
 
 void ConversationManager::all_component_did_load() {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root_)
+
     /// 创建数据库表
     conversation::DBOpt::create_conversation_table_if_need(w_sdk_root_);
 }

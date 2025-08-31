@@ -7,6 +7,7 @@
 
 #include "base/Uncopyable.h"
 #include "imsdk/src/include/config.h"
+#include "imsdk/src/include/injection/log/ILogger.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
 #include "imsdk/src/include/model/conversation/ConversationModel.h"
 
@@ -46,6 +47,10 @@ public:
     boost::asio::awaitable<bool> init_sdk(const Config config);
 
     boost::asio::awaitable<bool> login_out();
+
+    /// ========================== injection api ==========================
+    void inject_logger(std::shared_ptr<ILogger> logger);
+    /// ========================== injection api ==========================
 
     /// =============================  message api  ======================================
 

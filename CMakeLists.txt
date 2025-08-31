@@ -37,6 +37,8 @@ file(GLOB_RECURSE SOURCES
   "sdk/*.cc"
   "imsdk/*.cpp"
   "imsdk/*.cc"
+  "adapter/*.cpp"
+  "adapter/*.cc"
   "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
 )
 

@@ -108,6 +108,7 @@ struct SendMsgContext {
     bool is_group_msg;
     std::string conv_id;
     std::string to_user_id;
+    std::string from_user_id;
 };
 
 

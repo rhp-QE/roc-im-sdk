@@ -1,5 +1,6 @@
 #include "ConvMessagesFetcher.h"
 
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/common/convert.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
@@ -37,8 +38,7 @@ void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::
         net_msgs.push_back(std::shared_ptr<network::MsgData>(msg));
     }
 
-    // received = true 表示为客户端空洞消息。  received = false 表示为离线。
-    
+    LOG_INFO("ConvMessagesFetcher", "handle_fetch_conv_message_list_resp, size: {}", net_msgs.size());
 
     // 保存消息
     boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs), boost::asio::detached);
@@ -78,6 +78,9 @@ boost::asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list(W_SDK_
     auto msg_empty_ranges = message::SaveMessage::empty_message_range_for_conv_id(w_sdk_root, conv_id);
 
     for (const auto &range : msg_empty_ranges) {
+
+        LOG_INFO("ConvMessagesFetcher", "start_fetch_conv_message_list, conv_id: {}, range: {{{}, {}}}", conv_id, range.first, range.second);
+
         co_await fetch_conv_message_list_for_range(w_sdk_root, conv_id, range);
     }
 

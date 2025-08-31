@@ -14,6 +14,14 @@ IMSDK::IMSDK() : sdk_root_(std::make_shared<SDKRoot>()) {
 IMSDK::~IMSDK() {
 }
 
+/// ========================== injection api ==========================
+
+void IMSDK::inject_logger(std::shared_ptr<ILogger> logger) {
+    sdk_root_->inject_logger(logger);
+}
+
+/// ========================== sdk api ==========================
+
 boost::asio::awaitable<bool> IMSDK::init_sdk(const Config config) {
     return sdk_root_->init_sdk(config);
 }

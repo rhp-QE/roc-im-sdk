@@ -1,6 +1,7 @@
 #include "imsdk/src/core/message/private/send/SendMessage.h"
 
 #include "base/utils/utils.h"
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
@@ -36,6 +37,8 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
     std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
     convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, send_time, req->add_msgs());
 
+    LOG_INFO("SendMessage", "call_async_send_message, is_group_msg: {}, conv_id: {}, from: {}, to: {}", context.is_group_msg, context.conv_id, context.from_user_id, context.to_user_id);
+
     {
         auto db_msg = convert_send_context_to_message_orm(w_sdk_root, context, client_msg_id, send_time);
         auto sdk_msgs = co_await core::message::SaveMessage::save_db_msgs(w_sdk_root, {db_msg});
@@ -66,6 +69,9 @@ boost::asio::awaitable<void> SendMessage::async_send_message(W_SDK_ROOT, std::un
     }
 
     auto sdk_msgs = co_await core::message::SaveMessage::save_net_messages(w_sdk_root, {&(resp.value()->infos()[0].msg())});
+
+    LOG_INFO("SendMessage", "async_send_message, result: {}", sdk_msgs.empty() ? "failed" : "success");
+
     if (sdk_msgs.empty()) {
         base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, "save message failed", nullptr));
         co_return;
@@ -125,6 +131,7 @@ void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, model::SendM
 
         context.conv_id = conv_id;
         context.to_user_id = receiver_id;
+        context.from_user_id = sdk_root->config().user_id;
     }
 }   
 

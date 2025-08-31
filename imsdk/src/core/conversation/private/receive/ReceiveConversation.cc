@@ -1,6 +1,7 @@
 #include "ReceiveConversation.h"
 
 #include "base/utils/utils.h"
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/save/SaveConversation.h"
 
@@ -17,6 +18,8 @@ boost::asio::awaitable<void> ReceiveConversation::handle_receive_conversation(W_
 
     // 保存会话
     auto sdk_convs = co_await conversation::SaveConversation::save_net_conversations(w_sdk_root, std::move(conversations));
+
+    LOG_INFO("ReceiveConversation", "handle_receive_conversation, sdk_convs: {}", sdk_convs.size());
 
     auto on_conversation_result = std::make_shared<model::OnConversationResult>();
     on_conversation_result->updated_convs = sdk_convs;

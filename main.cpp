@@ -89,8 +89,8 @@ int main() {
 
     // test_imsdk();
 
-    test_logger();
-    // imsdk_demo();
+    // test_logger();
+    imsdk_demo();
     // test_thread_safe_vector();
 
     // co_cost_time_test();

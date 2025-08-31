@@ -8,6 +8,7 @@
 
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "base/network/include/LongConnectionClient.h"
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/include/config.h"
 #include <boost/asio/io_context.hpp>
@@ -65,12 +66,23 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
         conversation_manager_->all_component_did_load();
         connection_manager_->all_component_did_load();
     }
+
+    auto sdk_root = shared_from_this();
+    LOG_DEBUG("imsdk", "init_sdk {}", "over")
     
     co_return true;
 }
 
 boost::asio::awaitable<bool> SDKRoot::login_out() {
     return connection_manager_->disconnect();
+}
+
+void SDKRoot::inject_logger(std::shared_ptr<ILogger> logger) {
+    logger_ = logger;
+}
+
+std::shared_ptr<ILogger> SDKRoot::logger() {
+    return logger_;
 }
 
 network::SDKConnectionManager* SDKRoot::connection_manager() {

@@ -1,5 +1,6 @@
 #include "imsdk/src/core/conversation/private/fetcher/UserMessageFetcher.h"
 
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
@@ -84,6 +85,8 @@ boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(W_S
 
         net_convs.push_back(std::shared_ptr<network::ConversationInfo>(conv));
     }
+
+    LOG_INFO("UserMessageFetcher", "finish_fetch_user_message, net_msgs: {}, net_convs: {}", net_msgs.size(), net_convs.size());
 
     // 处理接收到的消息
     co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs), asio::detached);

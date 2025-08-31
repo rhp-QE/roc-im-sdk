@@ -1,5 +1,6 @@
 #include "imsdk/src/core/message/MessageManager.h"
 
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
@@ -78,12 +79,19 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root_, nullptr)
 
-    boost::asio::co_spawn(sdk_root->net_io_context(), [w_sdk_root = w_sdk_root_, conv_id]() -> boost::asio::awaitable<void> {
+    boost::asio::co_spawn(sdk_root->sdk_io_context(), [w_sdk_root = w_sdk_root_, conv_id]() -> boost::asio::awaitable<void> {
         CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
         /// 加载消息区间
         auto ranges = message::SaveMessage::load_message_range_from_db(w_sdk_root, conv_id);
-        sdk_root->message_manager()->msg_range_cache_.insert_or_assign(conv_id, std::move(ranges));
+        sdk_root->message_manager()->msg_range_cache_.insert_or_assign(conv_id, ranges);
+        
+        std::string range_str;
+        for (auto& range : ranges) {
+            range_str += "[" + std::to_string(range.first) + ", " + std::to_string(range.second) + "] ";
+        }
+        LOG_INFO("message_manager", "【load_message_range_from_db】: {}", range_str)
+        
 
         /// 触发单链拉取
         boost::asio::co_spawn(sdk_root->net_io_context(), message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root, conv_id), boost::asio::detached);

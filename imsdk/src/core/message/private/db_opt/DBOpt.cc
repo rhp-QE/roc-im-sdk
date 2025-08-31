@@ -2,6 +2,7 @@
 
 #include "WCDB/CPPORMMacro.h"
 #include "WCDB/Field.hpp"
+#include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
@@ -105,6 +106,9 @@ bool DBOpt::save_message_range(W_SDK_ROOT, std::vector<std::pair<int64_t, int64_
     }
 
     std::string json_str = boost::json::serialize(json_ranges);
+
+    LOG_INFO("DBOpt", "save_message_range, conv_id: {}, ranges: {}", conv_id, json_str);
+
     return mmkv->set(json_str, message_range_key(w_sdk_root, conv_id));
 }
 

@@ -9,6 +9,8 @@
 
 #include "SDKConnectionManager.h"
 #include "base/network/include/LongConnectionClient.h"
+#include "imsdk/src/core/common/logger_macro.h"
+#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
@@ -38,11 +40,14 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     root_ = root;
 
+    CHECK_ROOT_OR_CO_RETURN_VOID(root)
+
     lc_ = std::make_unique<base::net::LongConnectionClient>(generateNetConfig(root.lock().get()), net_io_context_);
 
     // 观察网络状态变更
-    lc_->set_connection_status_callback([](bool connected, const std::string &detail) {
-        std::cout << "\nSDKConnectionManager::connection_status: " << connected << std::endl;
+    lc_->set_connection_status_callback([root](bool connected, const std::string &detail) {
+        CHECK_ROOT_OR_RETURN_VOID(root)
+        LOG_INFO("ws_connection", "connected_status: {}, error_info: {}", connected, detail)
     });
 
     // 
@@ -60,15 +65,19 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     auto res = co_await lc_->connect();
 
+    LOG_INFO("ws_connection", "【init_and_connected】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : res.error().to_string())
+
     co_return;
 }
 
 boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(root_, false)
+
     auto res = co_await lc_->disconnect();
-    if (!res) {
-        std::cout << "SDKConnectionManager::disconnect error: " << res.error().to_string() << std::endl;
-    }
-    co_return res;
+
+    LOG_INFO("ws_connection", "【disconnect】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : res.error().to_string())
+
+    co_return res.has_value();
 }
 
 void SDKConnectionManager::set_on_push_message_callback(OnPushMesageCallbackType callback) {

@@ -11,6 +11,7 @@
 #include "imsdk/src/core/injection/Injection.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/include/config.h"
+#include "imsdk/src/include/injection/log/ILogger.h"
 
 #include <boost/asio/io_context.hpp>
 #include <memory>
@@ -47,6 +48,10 @@ public:
     SDKRoot();
     ~SDKRoot();
 
+    // 设置日志器
+    void inject_logger(std::shared_ptr<ILogger> logger);
+    std::shared_ptr<ILogger> logger();
+
     // 初始化sdk
     asio::awaitable<bool> init_sdk(const Config config);
 
@@ -69,6 +74,7 @@ private:
     MMKV *mmkv_;
     Config config_;
     WCDB::Database *database_;
+    std::shared_ptr<ILogger> logger_;
 
     std::unique_ptr<core::GroupManager> group_manager_;
     std::unique_ptr<core::MessageManager> message_manager_;
