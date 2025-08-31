@@ -131,7 +131,7 @@ set(WCDB_BUILD_DIR "${WCDB_ROOT}/build")
 set(WCDB_INCLUDE_DIR "${WCDB_BUILD_DIR}/export_headers")
 set(WCDB_LIB_DIR "${WCDB_BUILD_DIR}")
 
-# 检查 WCDB 库文件是否存在
+# 1. 检查 WCDB 库文件是否存在
 if(EXISTS "${WCDB_LIB_DIR}/libWCDB.so")
     message(STATUS "✅ Found WCDB library: ${WCDB_LIB_DIR}/libWCDB.so")
 else()
@@ -145,20 +145,21 @@ else()
     message(FATAL_ERROR "❌ WCDB include directory not found at ${WCDB_INCLUDE_DIR}")
 endif()
 
-# 添加 WCDB 头文件路径
-target_include_directories(main PRIVATE ${WCDB_INCLUDE_DIR})
+# 2. 关键优化：将 WCDB 头文件标记为系统头文件以抑制警告
+# 这能有效消除 'ignoring #pragma unused/mark' 等未知pragma警告
+target_include_directories(main SYSTEM PRIVATE ${WCDB_INCLUDE_DIR}) # 使用 SYSTEM 关键字
 
-# 添加 WCDB 库文件路径
+# 3. 添加 WCDB 库文件路径
 target_link_directories(main PRIVATE ${WCDB_LIB_DIR})
 
-# 链接 WCDB 库
+# 4. 链接 WCDB 及其依赖库
 target_link_libraries(main PRIVATE 
     WCDB
     sqlcipher
     zstd
 )
 
-message(STATUS "✅ Found WCDB libraries:")
+message(STATUS "✅ WCDB libraries configured:")
 message(STATUS "  - WCDB: ${WCDB_LIB_DIR}/libWCDB.so")
 message(STATUS "  - SQLCipher: ${WCDB_LIB_DIR}/libsqlcipher.a")
 message(STATUS "  - Zstd: ${WCDB_LIB_DIR}/libzstd.a")
@@ -182,6 +183,16 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
     message(STATUS "🔧 Release flags: ${CMAKE_CXX_FLAGS_RELEASE}")
+endif()
+
+# 6. 尝试启用编译器缓存 (如 ccache) 来加速重复编译:cite[3]:cite[7]
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    message(STATUS "✅ Found ccache: ${CCACHE_PROGRAM}, enabling compiler caching")
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CCACHE_PROGRAM})
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE_PROGRAM})
+else()
+    message(STATUS "ℹ️  ccache not found, consider installing it for faster rebuilds")
 endif()
 
 # 测试配置
