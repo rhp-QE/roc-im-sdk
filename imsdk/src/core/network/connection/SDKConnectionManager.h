@@ -59,7 +59,7 @@ public:
     // 组件加载完成后的初始化
     void all_component_did_load();
 
-    void set_on_push_message_callback(OnPushMesageCallbackType callback);
+    void add_on_push_message_callback(OnPushMesageCallbackType callback);
 
     boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> send_request(network::SdkWSReq *req);
 

@@ -88,6 +88,10 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::convs
     return sdk_root_->conversation_manager()->convs_when_login();
 }
 
+boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::create_conv(std::vector<std::string> member_user_ids, std::string conv_name) {
+    return sdk_root_->conversation_manager()->create_conv(std::move(member_user_ids), std::move(conv_name));
+}
+
 boost::asio::awaitable<bool> IMSDK::set_conv_top(std::string conv_id, bool is_top) {
     return sdk_root_->conversation_manager()->set_conv_top(conv_id, is_top);
 }

@@ -110,6 +110,10 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
         convs_when_login();
 
+    /// 创建会话
+    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>>
+        create_conv(std::vector<std::string> member_user_ids, std::string conv_name);
+
     /// 设置会话置顶
     boost::asio::awaitable<bool>
         set_conv_top(std::string conv_id, bool is_top);

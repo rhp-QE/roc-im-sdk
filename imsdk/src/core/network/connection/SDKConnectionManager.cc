@@ -65,7 +65,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     auto res = co_await lc_->connect();
 
-         LOG_INFO("WS","【init_and_connected】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "connection failed")
+         LOG_INFO("WS","init_and_connected: {}, error_info: {}", res.has_value(), res.has_value() ? "" : "connection failed")
 
     co_return;
 }
@@ -80,7 +80,8 @@ boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
     co_return res.has_value();
 }
 
-void SDKConnectionManager::set_on_push_message_callback(OnPushMesageCallbackType callback) {
+void SDKConnectionManager::add_on_push_message_callback(OnPushMesageCallbackType callback) {
+    std::lock_guard<std::mutex> lock(mutex_);
     on_push_message_callbacks.push_back(callback);
 }
 
@@ -121,6 +122,8 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
 
 boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::beast::flat_buffer data) {
     try {
+        CHECK_ROOT_OR_CO_RETURN_VOID(root_)
+
         std::unique_ptr<network::SdkWSResp> resp = std::make_unique<network::SdkWSResp>();
         resp->ParseFromArray(data.data().data(), data.size());
         const std::string &request_id = resp->requestid();
@@ -135,12 +138,22 @@ boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::b
         }
 
         if (!channel) {
+            LOG_INFO("WS", "handle_long_connection_push_data, request_id: {}", request_id);
+
             /// 直接转发给所有消息者消费， 自己进行数据解析
+            std::vector<OnPushMesageCallbackType> callbacks;
+            {
+                std::lock_guard<std::mutex> lock(mutex_);
+                callbacks = on_push_message_callbacks;
+            } // lock
             std::shared_ptr<network::SdkWSResp> s_resp = std::move(resp);
-            for (const auto &callback : on_push_message_callbacks) {
+            for (const auto &callback : callbacks) {
                 base::util::safe_invoke_block(callback, s_resp);
             }
+
         } else {
+            LOG_INFO("WS", "handle_request_response, request_id: {}, request_type: {}", request_id, resp->type());
+
             // 唤醒请求携程
             co_await channel->async_send(boost::system::error_code{}, std::move(resp), boost::asio::use_awaitable);
         }

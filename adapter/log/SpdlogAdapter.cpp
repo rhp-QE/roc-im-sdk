@@ -105,16 +105,16 @@ std::shared_ptr<ILogger> SpdlogAdapter::get_logger() const {
         // 根据级别调用相应的 spdlog 方法
         switch (level) {
             case LogLevel::Trace:
-                spdlogLogger_->trace(fullMessage);
+                spdlogLogger_->trace("" + fullMessage);
                 break;
             case LogLevel::Debug:
-                spdlogLogger_->debug(fullMessage);
+                spdlogLogger_->debug("" + fullMessage);
                 break;
             case LogLevel::Info:
-                spdlogLogger_->info(fullMessage);
+                spdlogLogger_->info(" " + fullMessage);
                 break;
             case LogLevel::Warn:
-                spdlogLogger_->warn(fullMessage);
+                spdlogLogger_->warn(" " + fullMessage);
                 break;
             case LogLevel::Error:
                 spdlogLogger_->error(fullMessage);
@@ -123,7 +123,7 @@ std::shared_ptr<ILogger> SpdlogAdapter::get_logger() const {
                 spdlogLogger_->critical(fullMessage);
                 break;
             default:
-                spdlogLogger_->info(fullMessage);
+                spdlogLogger_->info(" " + fullMessage);
                 break;
         }
     });

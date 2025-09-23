@@ -33,22 +33,32 @@ public:
     void on_conv_update(model::OnConvUpdateCallbackType callback);
 
     /// 查询会话
-    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> conv_for_id(std::string conv_id);
+    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>>
+        conv_for_id(std::string conv_id);
 
     /// 查询会话列表
-    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit);
+    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>>
+        convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit);
 
     /// 用户登录时获取首屏会话，后续加载更多会话 调用 convs_for_user_id
-    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> convs_when_login();
+    boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>>
+        convs_when_login();
+
+    /// 创建会话
+    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> 
+        create_conv(std::vector<std::string> member_user_ids, std::string conv_name);
 
     /// 设置会话置顶
-    boost::asio::awaitable<bool> set_conv_top(std::string conv_id, bool is_top);
+    boost::asio::awaitable<bool>
+        set_conv_top(std::string conv_id, bool is_top);
 
     /// 设置会话免打扰
-    boost::asio::awaitable<bool> set_conv_mute(std::string conv_id, bool is_mute);
+    boost::asio::awaitable<bool>
+        set_conv_mute(std::string conv_id, bool is_mute);
 
     /// 删除会话
-    boost::asio::awaitable<bool> delete_conv(std::string conv_id);
+    boost::asio::awaitable<bool>
+        delete_conv(std::string conv_id);
 
     /// =======================================================================================
 

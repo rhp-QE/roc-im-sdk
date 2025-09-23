@@ -15,7 +15,7 @@ void CmdMessageOperator::start(W_SDK_ROOT) {
     auto conn = sdk_root->connection_manager();
     CHECK_POINTER_OR_RETURN_VOID(conn);
 
-    conn->set_on_push_message_callback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+    conn->add_on_push_message_callback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
         message::CmdMessageOperator::handle_push_message(w_sdk_root, resp);
     });
 }
