@@ -19,7 +19,7 @@
 
 namespace roc::imsdk::core::message {
 
-boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage::send_message(W_SDK_ROOT, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage::send_message(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     std::shared_ptr<model::SendMessageResponse> response = std::make_shared<model::SendMessageResponse>(false, "", nullptr);
@@ -35,13 +35,13 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
 
 
     std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
-    convert_send_context_to_sdkws_message(w_sdk_root, context, client_msg_id, send_time, req->add_msgs());
+    convert_send_context_to_sdkws_message(CONTEXT_V, context, client_msg_id, send_time, req->add_msgs());
 
     LOG_INFO("MsgManager", "call_async_send_message, is_group_msg: {}, conv_id: {}, from: {}, to: {}", context.is_group_msg, context.conv_id, context.from_user_id, context.to_user_id);
 
     {
-        auto db_msg = convert_send_context_to_message_orm(w_sdk_root, context, client_msg_id, send_time);
-        auto sdk_msgs = co_await core::message::SaveMessage::save_db_msgs(w_sdk_root, {db_msg});
+        auto db_msg = convert_send_context_to_message_orm(CONTEXT_V, context, client_msg_id, send_time);
+        auto sdk_msgs = co_await core::message::SaveMessage::save_db_msgs(CONTEXT_V, {db_msg});
         if (sdk_msgs.empty()) {
             response->error_msg = "save message failed";
             co_return response;
@@ -51,14 +51,14 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
     } // 保存db 然后先返回给用户
 
     { 
-        boost::asio::co_spawn(sdk_root->net_io_context(), async_send_message(w_sdk_root, std::move(req), std::move(callback)), boost::asio::detached);
+        boost::asio::co_spawn(sdk_root->net_io_context(), async_send_message(CONTEXT_V, std::move(req), std::move(callback)), boost::asio::detached);
     } // 构造请求 异步发送数据
 
 
     co_return response;
 }
 
-boost::asio::awaitable<void> SendMessage::async_send_message(W_SDK_ROOT, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+boost::asio::awaitable<void> SendMessage::async_send_message(CONTEXT_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error> resp = co_await network::request::send_message(sdk_root.get(), req.get());
@@ -68,7 +68,7 @@ boost::asio::awaitable<void> SendMessage::async_send_message(W_SDK_ROOT, std::un
         co_return;
     }
 
-    auto sdk_msgs = co_await core::message::SaveMessage::save_net_messages(w_sdk_root, {&(resp.value()->infos()[0].msg())});
+    auto sdk_msgs = co_await core::message::SaveMessage::save_net_messages(CONTEXT_V, {&(resp.value()->infos()[0].msg())});
 
     LOG_INFO("MsgManager", "async_send_message, result: {}", sdk_msgs.empty() ? "failed" : "success");
 
@@ -99,7 +99,7 @@ bool SendMessage::check_send_context(const model::SendMsgContext &context) {
     return true;
 }
 
-void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MsgData *net_msg) {
+void SendMessage::convert_send_context_to_sdkws_message(CONTEXT_T, model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MsgData *net_msg) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     if (!net_msg) {
@@ -135,7 +135,7 @@ void SendMessage::convert_send_context_to_sdkws_message(W_SDK_ROOT, model::SendM
     }
 }   
 
-std::shared_ptr<MessageORM> SendMessage::convert_send_context_to_message_orm(W_SDK_ROOT, const model::SendMsgContext &context, std::string client_msg_id, double send_time) {
+std::shared_ptr<MessageORM> SendMessage::convert_send_context_to_message_orm(CONTEXT_T, const model::SendMsgContext &context, std::string client_msg_id, double send_time) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto msg_manager = sdk_root->message_manager();
@@ -167,7 +167,7 @@ std::shared_ptr<MessageORM> SendMessage::convert_send_context_to_message_orm(W_S
     message_orm->send_time = send_time;
     
     // 设置顺序索引
-    message_orm->client_order_index = message::DBOpt::next_msg_order_in_conv(w_sdk_root, context.conv_id);
+    message_orm->client_order_index = message::DBOpt::next_msg_order_in_conv(CONTEXT_V, context.conv_id);
     
     return message_orm;
 }

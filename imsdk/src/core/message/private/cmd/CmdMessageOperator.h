@@ -8,19 +8,19 @@ namespace roc::imsdk::core::message {
 
 class CmdMessageOperator {
 public:
-    static void start(W_SDK_ROOT);
+    static void start(CONTEXT_T);
 
 private:
-    static void handle_push_message(W_SDK_ROOT, std::shared_ptr<network::SdkWSResp> resp);
+    static void handle_push_message(CONTEXT_T, std::shared_ptr<network::SdkWSResp> resp);
     
     // 处理删除消息
-    static boost::asio::awaitable<void> handle_delete_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg);
+    static boost::asio::awaitable<void> handle_delete_message(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg);
 
     // 处理撤回消息
-    static boost::asio::awaitable<void> handle_recall_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg);
+    static boost::asio::awaitable<void> handle_recall_message(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg);
 
     // 处理更新消息
-    static boost::asio::awaitable<void> handle_update_message(W_SDK_ROOT, std::shared_ptr<network::CmdMessage> cmd_msg);
+    static boost::asio::awaitable<void> handle_update_message(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg);
 
 };
 

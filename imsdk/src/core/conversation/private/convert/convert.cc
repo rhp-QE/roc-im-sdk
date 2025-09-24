@@ -50,7 +50,7 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::convert_net_conv_t
 }
 
 /// 会话转换 db 会话 -> sdk 会话
-std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(W_SDK_ROOT, const core::conversation::ConversationORM *db_conv) {
+std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(CONTEXT_T, const core::conversation::ConversationORM *db_conv) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     if (!db_conv) {

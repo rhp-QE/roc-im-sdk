@@ -42,11 +42,14 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     CHECK_ROOT_OR_CO_RETURN_VOID(root)
 
+    CONTEXT_NEW_V2
+
     lc_ = std::make_unique<base::net::LongConnectionClient>(generateNetConfig(root.lock().get()), net_io_context_);
 
     // 观察网络状态变更
     lc_->set_connection_status_callback([root](bool connected, const std::string &detail) {
         CHECK_ROOT_OR_RETURN_VOID(root)
+        CONTEXT_NEW_V2
         LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail)
     });
 
@@ -64,8 +67,8 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
     });
 
     auto res = co_await lc_->connect();
-
-         LOG_INFO("WS","init_and_connected: {}, error_info: {}", res.has_value(), res.has_value() ? "" : "connection failed")
+    
+    LOG_INFO("WS","init_and_connected: {}, error_info: {}", res.has_value(), res.has_value() ? "" : "connection failed")
 
     co_return;
 }
@@ -73,9 +76,11 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
     CHECK_ROOT_OR_CO_RETURN_VALUE(root_, false)
 
+    CONTEXT_NEW_V2
+
     auto res = co_await lc_->disconnect();
 
-         LOG_INFO("WS", "【disconnect】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "disconnect failed")
+    LOG_INFO("WS", "【disconnect】: {}, 【error_info】: {}", res.has_value(), res.has_value() ? "" : "disconnect failed")
 
     co_return res.has_value();
 }
@@ -123,6 +128,7 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
 boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::beast::flat_buffer data) {
     try {
         CHECK_ROOT_OR_CO_RETURN_VOID(root_)
+        CONTEXT_NEW_V2
 
         std::unique_ptr<network::SdkWSResp> resp = std::make_unique<network::SdkWSResp>();
         resp->ParseFromArray(data.data().data(), data.size());

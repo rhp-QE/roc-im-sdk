@@ -62,7 +62,7 @@ inline std::pair<std::string, std::string> parse_single_conv_id(const std::strin
     return std::make_pair(user_id1, user_id2);
 }
 
-inline bool message_send_from_me(W_SDK_ROOT, std::shared_ptr<model::MessageModel> msg) {
+inline bool message_send_from_me(CONTEXT_T, std::shared_ptr<model::MessageModel> msg) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false)
 
     return sdk_root->config().user_id == msg->from_user_id();

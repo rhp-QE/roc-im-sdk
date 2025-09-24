@@ -14,7 +14,7 @@
 namespace roc::imsdk::core::message {
 
 // 生成请求
-std::unique_ptr<network::FetchConvMessageListReq> p_make_fetch_conv_message_list_req(W_SDK_ROOT, std::string conv_id, std::pair<int64_t, int64_t> range) {
+std::unique_ptr<network::FetchConvMessageListReq> p_make_fetch_conv_message_list_req(CONTEXT_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto req = std::make_unique<network::FetchConvMessageListReq>();
@@ -28,7 +28,7 @@ std::unique_ptr<network::FetchConvMessageListReq> p_make_fetch_conv_message_list
 }
 
 // 处理返回数据
-void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::FetchConvMessageListResp> resp) {
+void p_handle_fetch_conv_messgae_list_resp(CONTEXT_T, std::unique_ptr<network::FetchConvMessageListResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     std::vector<std::shared_ptr<network::MsgData>> net_msgs;
@@ -38,20 +38,20 @@ void p_handle_fetch_conv_messgae_list_resp(W_SDK_ROOT, std::unique_ptr<network::
         net_msgs.push_back(std::shared_ptr<network::MsgData>(msg));
     }
 
-    LOG_INFO("MsgManager", "handle_fetch_conv_message_list_resp, size: {}", net_msgs.size());
+    LOG_INFO("MsgManager", "call_track_id: {}, handle_fetch_conv_message_list_resp, size: {}", TRACK_ID, net_msgs.size());
 
     // 保存消息
-    boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root, net_msgs), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::handle_receive_message(CONTEXT_V, net_msgs), boost::asio::detached);
 }
 
-asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(W_SDK_ROOT, std::string conv_id, std::pair<int64_t, int64_t> range) {
+asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(CONTEXT_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
     
     // 防止死循环
     int cnt = 10;
     bool has_more = true;
     do {
-        std::unique_ptr<network::FetchConvMessageListReq> req = p_make_fetch_conv_message_list_req(w_sdk_root, conv_id, range);
+        std::unique_ptr<network::FetchConvMessageListReq> req = p_make_fetch_conv_message_list_req(CONTEXT_V, conv_id, range);
         if (!req) {
             break;
         }
@@ -65,23 +65,23 @@ asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(W_S
         has_more = resp.value()->havemore();
         
         // 处理数据
-        p_handle_fetch_conv_messgae_list_resp(w_sdk_root, std::move(resp.value()));
+        p_handle_fetch_conv_messgae_list_resp(CONTEXT_V, std::move(resp.value()));
 
     } while(cnt-- > 0 && has_more);
 }
 
 // ==========================================================================================================
 
-boost::asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list(W_SDK_ROOT, std::string conv_id) {
+boost::asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list(CONTEXT_T, std::string conv_id) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    auto msg_empty_ranges = message::SaveMessage::empty_message_range_for_conv_id(w_sdk_root, conv_id);
+    auto msg_empty_ranges = message::SaveMessage::empty_message_range_for_conv_id(CONTEXT_V, conv_id);
 
     for (const auto &range : msg_empty_ranges) {
 
         LOG_INFO("MsgManager", "start_fetch_conv_message_list, conv_id: {}, range: {{{}, {}}}", conv_id, range.first, range.second);
 
-        co_await fetch_conv_message_list_for_range(w_sdk_root, conv_id, range);
+        co_await fetch_conv_message_list_for_range(CONTEXT_V, conv_id, range);
     }
 
     std::cout<<"fetch conv message success"<<std::endl;

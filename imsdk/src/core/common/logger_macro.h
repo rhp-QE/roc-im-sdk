@@ -69,7 +69,7 @@ inline std::string extract_filename(const std::string& file_path) {
          std::string im_sdk_log_context_macro = LOG_COLOR_CYAN + std::string("<") + extract_class_method(__PRETTY_FUNCTION__) + ">" + LOG_COLOR_RESET + \
                                               LOG_COLOR_GREEN + "<" + extract_filename(__FILE__) + ":" + std::to_string(__LINE__) + ">" + LOG_COLOR_RESET + \
                                               LOG_COLOR_YELLOW + "<" + std::string(module) + ">" + LOG_COLOR_RESET; \
-         sdk_root->logger()->log_fmt(roc::imsdk::LogLevel::Debug, im_sdk_log_context_macro, format, ##__VA_ARGS__); \
+         sdk_root->logger()->log_fmt(roc::imsdk::LogLevel::Debug, im_sdk_log_context_macro,"\n    track_id = {}, " format "\n", TRACK_ID, ##__VA_ARGS__); \
      } \
  } while(0);
 
@@ -79,7 +79,7 @@ inline std::string extract_filename(const std::string& file_path) {
          std::string im_sdk_log_context_macro = LOG_COLOR_CYAN + std::string("<") + extract_class_method(__PRETTY_FUNCTION__) + ">" + LOG_COLOR_RESET + \
                                               LOG_COLOR_GREEN + "<" + extract_filename(__FILE__) + ":" + std::to_string(__LINE__) + ">" + LOG_COLOR_RESET + \
                                               LOG_COLOR_YELLOW + "<" + std::string(module) + ">" + LOG_COLOR_RESET; \
-         sdk_root->logger()->log_fmt(roc::imsdk::LogLevel::Info, im_sdk_log_context_macro, format, ##__VA_ARGS__); \
+         sdk_root->logger()->log_fmt(roc::imsdk::LogLevel::Info, im_sdk_log_context_macro, "\n    track_id = {}, " format "\n", TRACK_ID, ##__VA_ARGS__); \
      } \
  } while(0);
 

@@ -23,17 +23,21 @@ MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::i
 MessageManager::~MessageManager() = default;
 
 void MessageManager::all_component_did_load() {
+    CONTEXT_NEW_V1
+
     /// 创建BD 如果必要
-    message::DBOpt::create_message_table_if_need(w_sdk_root_);
+    message::DBOpt::create_message_table_if_need(CONTEXT_V);
     /// 开启消息接收处理逻辑
-    message::ReceiveMessage::start(w_sdk_root_);
+    message::ReceiveMessage::start(CONTEXT_V);
     /// 开启命令消息处理逻辑
-    message::CmdMessageOperator::start(w_sdk_root_);
+    message::CmdMessageOperator::start(CONTEXT_V);
 }
 
 void MessageManager::handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root_)
-    boost::asio::co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(w_sdk_root_, net_msgs), boost::asio::detached);
+
+    CONTEXT_NEW_V1
+    boost::asio::co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(CONTEXT_V, net_msgs), boost::asio::detached);
 }
 
 boost::asio::strand<boost::asio::io_context::executor_type> MessageManager::msg_strand() {
@@ -62,28 +66,32 @@ boost::asio::awaitable<bool> MessageManager::update_message_sync_ext(std::string
 }
 
 boost::asio::awaitable<bool> MessageManager::mark_messages_as_read(const std::vector<std::string> &msg_ids) {
-    // 调用 SaveMessage 的静态方法设置消息为已读
-    bool result = message::SaveMessage::mark_messages_as_read(w_sdk_root_, msg_ids);
+    CONTEXT_NEW_V1
+    bool result = message::SaveMessage::mark_messages_as_read(CONTEXT_V, msg_ids);
     co_return result;
 }
 
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageManager::message_for_id(std::string msg_id) {
-    co_return co_await message::SaveMessage::sdk_msg_for_id(w_sdk_root_, msg_id);
+    CONTEXT_NEW_V1
+    co_return co_await message::SaveMessage::sdk_msg_for_id(CONTEXT_V, msg_id);
 }
 
 // 查询DB
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
-    co_return co_await message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, cursor, limit, true);
+    CONTEXT_NEW_V1
+    co_return co_await message::SaveMessage::load_message_from_db(CONTEXT_V, conv_id, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root_, nullptr)
 
-    boost::asio::co_spawn(sdk_root->sdk_io_context(), [w_sdk_root = w_sdk_root_, conv_id]() -> boost::asio::awaitable<void> {
+    CONTEXT_NEW_V1
+
+    boost::asio::co_spawn(sdk_root->sdk_io_context(), [=]() -> boost::asio::awaitable<void> {
         CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
         /// 加载消息区间
-        auto ranges = message::SaveMessage::load_message_range_from_db(w_sdk_root, conv_id);
+        auto ranges = message::SaveMessage::load_message_range_from_db(CONTEXT_V, conv_id);
         sdk_root->message_manager()->msg_range_cache_.insert_or_assign(conv_id, ranges);
         
         std::string range_str;
@@ -94,16 +102,17 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
         
 
         /// 触发单链拉取
-        boost::asio::co_spawn(sdk_root->net_io_context(), message::ConvMessagesFetcher::fetch_conv_message_list(w_sdk_root, conv_id), boost::asio::detached);
+        boost::asio::co_spawn(sdk_root->net_io_context(), message::ConvMessagesFetcher::fetch_conv_message_list(CONTEXT_V, conv_id), boost::asio::detached);
 
     }, boost::asio::detached);
 
     // 从DB 中加载消息
-    co_return co_await message::SaveMessage::load_message_from_db(w_sdk_root_, conv_id, -1, 100, true);
+    co_return co_await message::SaveMessage::load_message_from_db(CONTEXT_V, conv_id, -1, 100, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::send_message(model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
-    return message::SendMessage::send_message(w_sdk_root_, context, callback);
+    CONTEXT_NEW_V1
+    return message::SendMessage::send_message(CONTEXT_V, context, callback);
 }
 
 /// ==================================================================================

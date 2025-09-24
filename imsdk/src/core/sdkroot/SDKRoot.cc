@@ -9,6 +9,7 @@
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "base/network/include/LongConnectionClient.h"
 #include "imsdk/src/core/common/logger_macro.h"
+#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/include/config.h"
 #include <boost/asio/io_context.hpp>
@@ -68,6 +69,10 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     }
 
     auto sdk_root = shared_from_this();
+    auto w_sdk_root = weak_from_this();
+
+    CONTEXT_NEW_V2
+
     LOG_DEBUG("SDKRoot", "init_sdk {}", "over")
     
     co_return true;
