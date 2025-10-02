@@ -19,6 +19,7 @@
 #include <boost/json.hpp>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
+#include <cstdint>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -128,11 +129,13 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
 boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::beast::flat_buffer data) {
     try {
         CHECK_ROOT_OR_CO_RETURN_VOID(root_)
-        CONTEXT_NEW_V2
 
         std::unique_ptr<network::SdkWSResp> resp = std::make_unique<network::SdkWSResp>();
         resp->ParseFromArray(data.data().data(), data.size());
+
+        uint32_t call_track_id = resp->trackid();
         const std::string &request_id = resp->requestid();
+
         std::shared_ptr<channel_type> channel;
         {
             std::lock_guard<std::mutex> lock(mutex_);

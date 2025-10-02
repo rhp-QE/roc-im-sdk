@@ -61,7 +61,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
 boost::asio::awaitable<void> SendMessage::async_send_message(CONTEXT_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error> resp = co_await network::request::send_message(sdk_root.get(), req.get());
+    std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error> resp = co_await network::request::send_message(CONTEXT_V, req.get());
 
     if (!resp || !resp.has_value() || resp.value()->infos().size() != 1) {
         base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, resp.error().message(), nullptr));
@@ -146,6 +146,7 @@ std::shared_ptr<MessageORM> SendMessage::convert_send_context_to_message_orm(CON
     // 设置基本信息
     message_orm->content = context.content;
     message_orm->client_msg_id = client_msg_id;
+    message_orm->server_order_index = 0;  /// 设置为0 保证本地 ranges不变， 等response 回来后再更新
     message_orm->conversation_id = context.conv_id;
     message_orm->from_user_id = sdk_root->config().user_id; // 从SDKRoot获取当前用户ID
     message_orm->to_user_id = context.to_user_id;

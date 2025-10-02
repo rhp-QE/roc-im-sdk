@@ -5598,6 +5598,12 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::int32 type() const;
   void set_type(::google::protobuf::int32 value);
 
+  // int32 trackID = 7;
+  void clear_trackid();
+  static const int kTrackIDFieldNumber = 7;
+  ::google::protobuf::int32 trackid() const;
+  void set_trackid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.SdkWSReq)
  private:
 
@@ -5608,6 +5614,7 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::ArenaStringPtr deviceid_;
   ::google::protobuf::internal::ArenaStringPtr data_;
   ::google::protobuf::int32 type_;
+  ::google::protobuf::int32 trackid_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsSdkWSReqImpl();
@@ -5794,11 +5801,31 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_data();
   void set_allocated_data(::std::string* data);
 
+  // string logID = 10;
+  void clear_logid();
+  static const int kLogIDFieldNumber = 10;
+  const ::std::string& logid() const;
+  void set_logid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_logid(::std::string&& value);
+  #endif
+  void set_logid(const char* value);
+  void set_logid(const char* value, size_t size);
+  ::std::string* mutable_logid();
+  ::std::string* release_logid();
+  void set_allocated_logid(::std::string* logid);
+
   // int32 type = 8;
   void clear_type();
   static const int kTypeFieldNumber = 8;
   ::google::protobuf::int32 type() const;
   void set_type(::google::protobuf::int32 value);
+
+  // int32 trackID = 9;
+  void clear_trackid();
+  static const int kTrackIDFieldNumber = 9;
+  ::google::protobuf::int32 trackid() const;
+  void set_trackid(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.SdkWSResp)
  private:
@@ -5811,7 +5838,9 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::ArenaStringPtr errorcode_;
   ::google::protobuf::internal::ArenaStringPtr errormsg_;
   ::google::protobuf::internal::ArenaStringPtr data_;
+  ::google::protobuf::internal::ArenaStringPtr logid_;
   ::google::protobuf::int32 type_;
+  ::google::protobuf::int32 trackid_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsSdkWSRespImpl();
@@ -20244,6 +20273,20 @@ inline void SdkWSReq::set_type(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.type)
 }
 
+// int32 trackID = 7;
+inline void SdkWSReq::clear_trackid() {
+  trackid_ = 0;
+}
+inline ::google::protobuf::int32 SdkWSReq::trackid() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSReq.trackID)
+  return trackid_;
+}
+inline void SdkWSReq::set_trackid(::google::protobuf::int32 value) {
+  
+  trackid_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.trackID)
+}
+
 // -------------------------------------------------------------------
 
 // SdkWSResp
@@ -20631,6 +20674,73 @@ inline void SdkWSResp::set_type(::google::protobuf::int32 value) {
   
   type_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.type)
+}
+
+// int32 trackID = 9;
+inline void SdkWSResp::clear_trackid() {
+  trackid_ = 0;
+}
+inline ::google::protobuf::int32 SdkWSResp::trackid() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSResp.trackID)
+  return trackid_;
+}
+inline void SdkWSResp::set_trackid(::google::protobuf::int32 value) {
+  
+  trackid_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.trackID)
+}
+
+// string logID = 10;
+inline void SdkWSResp::clear_logid() {
+  logid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SdkWSResp::logid() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSResp.logID)
+  return logid_.GetNoArena();
+}
+inline void SdkWSResp::set_logid(const ::std::string& value) {
+  
+  logid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.logID)
+}
+#if LANG_CXX11
+inline void SdkWSResp::set_logid(::std::string&& value) {
+  
+  logid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.SdkWSResp.logID)
+}
+#endif
+inline void SdkWSResp::set_logid(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  logid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.SdkWSResp.logID)
+}
+inline void SdkWSResp::set_logid(const char* value, size_t size) {
+  
+  logid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.SdkWSResp.logID)
+}
+inline ::std::string* SdkWSResp::mutable_logid() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.SdkWSResp.logID)
+  return logid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SdkWSResp::release_logid() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.SdkWSResp.logID)
+  
+  return logid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SdkWSResp::set_allocated_logid(::std::string* logid) {
+  if (logid != NULL) {
+    
+  } else {
+    
+  }
+  logid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), logid);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SdkWSResp.logID)
 }
 
 // -------------------------------------------------------------------

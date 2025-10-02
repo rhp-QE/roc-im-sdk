@@ -58,7 +58,7 @@ asio::awaitable<void> ConvMessagesFetcher::fetch_conv_message_list_for_range(CON
 
         // 发送请求
         std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error> resp = 
-            co_await network::request::fetch_conv_message_list(sdk_root.get(), req.get());
+            co_await network::request::fetch_conv_message_list(CONTEXT_V, req.get());
         if (!resp.value()) {
             continue;
         }

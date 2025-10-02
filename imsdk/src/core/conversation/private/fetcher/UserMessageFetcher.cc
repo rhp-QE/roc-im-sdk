@@ -30,7 +30,7 @@ asio::awaitable<void> UserMessageFetcher::fetch_user_messages(CONTEXT_T) {
     std::unique_ptr<network::FetchUserMessageListReq> req = make_fetch_user_message_list_req(CONTEXT_V, -1);
 
     // 发送请求
-    std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await network::request::fetch_user_message_list(sdk_root.get(), req.get());
+    std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await network::request::fetch_user_message_list(CONTEXT_V, req.get());
     if (!resp || !resp.has_value()) {
         co_return;
     }

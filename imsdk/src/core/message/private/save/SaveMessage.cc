@@ -145,7 +145,7 @@ void SaveMessage::update_message_range_for_message(CONTEXT_T, const std::vector<
         /// 如果缓存中没有区间，则从DB中获取
         auto old_ranges = msg_manager->msg_range_cache_.at(conv_id);
         if (!old_ranges) {
-            LOG_INFO("MsgManager", "no range in cahce, get from db. 【conv_id】: {}", conv_id);
+            LOG_INFO("MsgManager", "no range in cahce, get from db. conv_id: {}", conv_id);
             input_ranges = merge_ranges(input_ranges, DBOpt::message_range(CONTEXT_V, conv_id));
         }
 

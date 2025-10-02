@@ -2887,6 +2887,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, deviceid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, data_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, trackid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2900,6 +2901,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, errormsg_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, data_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, trackid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, logid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::OfflinePushInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -3442,65 +3445,65 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 340, -1, sizeof(::roc::imsdk::network::ConversationInfo)},
   { 358, -1, sizeof(::roc::imsdk::network::FetchUserMessageListResp)},
   { 367, -1, sizeof(::roc::imsdk::network::SdkWSReq)},
-  { 378, -1, sizeof(::roc::imsdk::network::SdkWSResp)},
-  { 391, -1, sizeof(::roc::imsdk::network::OfflinePushInfo)},
-  { 402, -1, sizeof(::roc::imsdk::network::TipsComm)},
-  { 410, -1, sizeof(::roc::imsdk::network::PullMixListReq)},
-  { 419, -1, sizeof(::roc::imsdk::network::PullMixListResp)},
-  { 425, -1, sizeof(::roc::imsdk::network::PullSingleListReq)},
-  { 434, -1, sizeof(::roc::imsdk::network::PullSingleListResp)},
-  { 440, -1, sizeof(::roc::imsdk::network::GroupCreatedTips)},
-  { 452, -1, sizeof(::roc::imsdk::network::GroupInfoSetTips)},
-  { 462, -1, sizeof(::roc::imsdk::network::GroupInfoSetNameTips)},
-  { 471, -1, sizeof(::roc::imsdk::network::GroupInfoSetAnnouncementTips)},
-  { 480, -1, sizeof(::roc::imsdk::network::JoinGroupApplicationTips)},
-  { 488, -1, sizeof(::roc::imsdk::network::MemberQuitTips)},
-  { 498, -1, sizeof(::roc::imsdk::network::GroupApplicationAcceptedTips)},
-  { 507, -1, sizeof(::roc::imsdk::network::GroupApplicationRejectedTips)},
-  { 516, -1, sizeof(::roc::imsdk::network::GroupOwnerTransferredTips)},
-  { 529, -1, sizeof(::roc::imsdk::network::MemberKickedTips)},
-  { 540, -1, sizeof(::roc::imsdk::network::MemberInvitedTips)},
-  { 552, -1, sizeof(::roc::imsdk::network::MemberEnterTips)},
-  { 562, -1, sizeof(::roc::imsdk::network::GroupDismissedTips)},
-  { 570, -1, sizeof(::roc::imsdk::network::GroupMemberMutedTips)},
-  { 582, -1, sizeof(::roc::imsdk::network::GroupMemberCancelMutedTips)},
-  { 593, -1, sizeof(::roc::imsdk::network::GroupMutedTips)},
-  { 603, -1, sizeof(::roc::imsdk::network::GroupCancelMutedTips)},
-  { 613, -1, sizeof(::roc::imsdk::network::GroupMemberInfoSetTips)},
-  { 625, -1, sizeof(::roc::imsdk::network::FriendApplication)},
-  { 633, -1, sizeof(::roc::imsdk::network::FromToUserID)},
-  { 640, -1, sizeof(::roc::imsdk::network::FriendApplicationTips)},
-  { 646, -1, sizeof(::roc::imsdk::network::FriendApplicationApprovedTips)},
-  { 655, -1, sizeof(::roc::imsdk::network::FriendApplicationRejectedTips)},
-  { 662, -1, sizeof(::roc::imsdk::network::FriendAddedTips)},
-  { 672, -1, sizeof(::roc::imsdk::network::FriendDeletedTips)},
-  { 680, -1, sizeof(::roc::imsdk::network::BlackAddedTips)},
-  { 686, -1, sizeof(::roc::imsdk::network::BlackDeletedTips)},
-  { 692, -1, sizeof(::roc::imsdk::network::FriendInfoChangedTips)},
-  { 701, -1, sizeof(::roc::imsdk::network::UserInfoUpdatedTips)},
-  { 707, -1, sizeof(::roc::imsdk::network::UserStatusChangeTips)},
-  { 716, -1, sizeof(::roc::imsdk::network::UserCommandAddTips)},
-  { 723, -1, sizeof(::roc::imsdk::network::UserCommandUpdateTips)},
-  { 730, -1, sizeof(::roc::imsdk::network::UserCommandDeleteTips)},
-  { 737, -1, sizeof(::roc::imsdk::network::ConversationUpdateTips)},
-  { 744, -1, sizeof(::roc::imsdk::network::ConversationSetPrivateTips)},
-  { 753, -1, sizeof(::roc::imsdk::network::ConversationHasReadTips)},
-  { 762, -1, sizeof(::roc::imsdk::network::NotificationElem)},
-  { 768, -1, sizeof(::roc::imsdk::network::DeleteMessageTips)},
-  { 776, -1, sizeof(::roc::imsdk::network::RevokeMsgTips)},
-  { 788, -1, sizeof(::roc::imsdk::network::MessageRevokedContent)},
-  { 804, -1, sizeof(::roc::imsdk::network::ClearConversationTips)},
-  { 811, -1, sizeof(::roc::imsdk::network::DeleteMsgsTips)},
-  { 819, -1, sizeof(::roc::imsdk::network::MarkAsReadTips)},
-  { 828, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusReq)},
-  { 835, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusResp)},
-  { 840, -1, sizeof(::roc::imsdk::network::ProcessUserCommand)},
-  { 850, -1, sizeof(::roc::imsdk::network::RequestPagination)},
-  { 857, -1, sizeof(::roc::imsdk::network::FriendsInfoUpdateTips)},
-  { 866, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusElem)},
-  { 873, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusTips)},
-  { 879, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatus)},
-  { 886, -1, sizeof(::roc::imsdk::network::StreamMsgTips)},
+  { 379, -1, sizeof(::roc::imsdk::network::SdkWSResp)},
+  { 394, -1, sizeof(::roc::imsdk::network::OfflinePushInfo)},
+  { 405, -1, sizeof(::roc::imsdk::network::TipsComm)},
+  { 413, -1, sizeof(::roc::imsdk::network::PullMixListReq)},
+  { 422, -1, sizeof(::roc::imsdk::network::PullMixListResp)},
+  { 428, -1, sizeof(::roc::imsdk::network::PullSingleListReq)},
+  { 437, -1, sizeof(::roc::imsdk::network::PullSingleListResp)},
+  { 443, -1, sizeof(::roc::imsdk::network::GroupCreatedTips)},
+  { 455, -1, sizeof(::roc::imsdk::network::GroupInfoSetTips)},
+  { 465, -1, sizeof(::roc::imsdk::network::GroupInfoSetNameTips)},
+  { 474, -1, sizeof(::roc::imsdk::network::GroupInfoSetAnnouncementTips)},
+  { 483, -1, sizeof(::roc::imsdk::network::JoinGroupApplicationTips)},
+  { 491, -1, sizeof(::roc::imsdk::network::MemberQuitTips)},
+  { 501, -1, sizeof(::roc::imsdk::network::GroupApplicationAcceptedTips)},
+  { 510, -1, sizeof(::roc::imsdk::network::GroupApplicationRejectedTips)},
+  { 519, -1, sizeof(::roc::imsdk::network::GroupOwnerTransferredTips)},
+  { 532, -1, sizeof(::roc::imsdk::network::MemberKickedTips)},
+  { 543, -1, sizeof(::roc::imsdk::network::MemberInvitedTips)},
+  { 555, -1, sizeof(::roc::imsdk::network::MemberEnterTips)},
+  { 565, -1, sizeof(::roc::imsdk::network::GroupDismissedTips)},
+  { 573, -1, sizeof(::roc::imsdk::network::GroupMemberMutedTips)},
+  { 585, -1, sizeof(::roc::imsdk::network::GroupMemberCancelMutedTips)},
+  { 596, -1, sizeof(::roc::imsdk::network::GroupMutedTips)},
+  { 606, -1, sizeof(::roc::imsdk::network::GroupCancelMutedTips)},
+  { 616, -1, sizeof(::roc::imsdk::network::GroupMemberInfoSetTips)},
+  { 628, -1, sizeof(::roc::imsdk::network::FriendApplication)},
+  { 636, -1, sizeof(::roc::imsdk::network::FromToUserID)},
+  { 643, -1, sizeof(::roc::imsdk::network::FriendApplicationTips)},
+  { 649, -1, sizeof(::roc::imsdk::network::FriendApplicationApprovedTips)},
+  { 658, -1, sizeof(::roc::imsdk::network::FriendApplicationRejectedTips)},
+  { 665, -1, sizeof(::roc::imsdk::network::FriendAddedTips)},
+  { 675, -1, sizeof(::roc::imsdk::network::FriendDeletedTips)},
+  { 683, -1, sizeof(::roc::imsdk::network::BlackAddedTips)},
+  { 689, -1, sizeof(::roc::imsdk::network::BlackDeletedTips)},
+  { 695, -1, sizeof(::roc::imsdk::network::FriendInfoChangedTips)},
+  { 704, -1, sizeof(::roc::imsdk::network::UserInfoUpdatedTips)},
+  { 710, -1, sizeof(::roc::imsdk::network::UserStatusChangeTips)},
+  { 719, -1, sizeof(::roc::imsdk::network::UserCommandAddTips)},
+  { 726, -1, sizeof(::roc::imsdk::network::UserCommandUpdateTips)},
+  { 733, -1, sizeof(::roc::imsdk::network::UserCommandDeleteTips)},
+  { 740, -1, sizeof(::roc::imsdk::network::ConversationUpdateTips)},
+  { 747, -1, sizeof(::roc::imsdk::network::ConversationSetPrivateTips)},
+  { 756, -1, sizeof(::roc::imsdk::network::ConversationHasReadTips)},
+  { 765, -1, sizeof(::roc::imsdk::network::NotificationElem)},
+  { 771, -1, sizeof(::roc::imsdk::network::DeleteMessageTips)},
+  { 779, -1, sizeof(::roc::imsdk::network::RevokeMsgTips)},
+  { 791, -1, sizeof(::roc::imsdk::network::MessageRevokedContent)},
+  { 807, -1, sizeof(::roc::imsdk::network::ClearConversationTips)},
+  { 814, -1, sizeof(::roc::imsdk::network::DeleteMsgsTips)},
+  { 822, -1, sizeof(::roc::imsdk::network::MarkAsReadTips)},
+  { 831, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusReq)},
+  { 838, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusResp)},
+  { 843, -1, sizeof(::roc::imsdk::network::ProcessUserCommand)},
+  { 853, -1, sizeof(::roc::imsdk::network::RequestPagination)},
+  { 860, -1, sizeof(::roc::imsdk::network::FriendsInfoUpdateTips)},
+  { 869, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusElem)},
+  { 876, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusTips)},
+  { 882, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatus)},
+  { 889, -1, sizeof(::roc::imsdk::network::StreamMsgTips)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -3748,217 +3751,219 @@ void AddDescriptorsImpl() {
       "\n\030FetchUserMessageListResp\0226\n\tconvsInfo\030"
       "\001 \003(\0132#.roc.imsdk.network.ConversationIn"
       "fo\022\r\n\005start\030\002 \001(\003\022\014\n\004stop\030\003 \001(\003\022\017\n\007hasMo"
-      "re\030\004 \001(\010\"j\n\010SdkWSReq\022\021\n\trequestId\030\001 \001(\t\022"
+      "re\030\004 \001(\010\"{\n\010SdkWSReq\022\021\n\trequestId\030\001 \001(\t\022"
       "\r\n\005token\030\002 \001(\t\022\016\n\006userID\030\003 \001(\t\022\020\n\010device"
-      "ID\030\004 \001(\t\022\014\n\004data\030\005 \001(\014\022\014\n\004type\030\006 \001(\005\"\220\001\n"
-      "\tSdkWSResp\022\021\n\trequestId\030\001 \001(\t\022\r\n\005token\030\002"
-      " \001(\t\022\016\n\006userID\030\003 \001(\t\022\020\n\010deviceID\030\004 \001(\t\022\021"
-      "\n\terrorCode\030\005 \001(\t\022\020\n\010errorMsg\030\006 \001(\t\022\014\n\004d"
-      "ata\030\007 \001(\014\022\014\n\004type\030\010 \001(\005\"{\n\017OfflinePushIn"
-      "fo\022\r\n\005title\030\001 \001(\t\022\014\n\004desc\030\002 \001(\t\022\n\n\002ex\030\003 "
-      "\001(\t\022\024\n\014iOSPushSound\030\004 \001(\t\022\025\n\riOSBadgeCou"
-      "nt\030\005 \001(\010\022\022\n\nsignalInfo\030\006 \001(\t\"C\n\010TipsComm"
-      "\022\016\n\006detail\030\001 \001(\014\022\023\n\013defaultTips\030\002 \001(\t\022\022\n"
-      "\njsonDetail\030\003 \001(\t\"V\n\016PullMixListReq\022\016\n\006c"
-      "ursor\030\001 \001(\003\022\021\n\tconvLimit\030\002 \001(\005\022\020\n\010msgLim"
-      "it\030\003 \001(\005\022\017\n\007forward\030\004 \001(\010\"M\n\017PullMixList"
-      "Resp\022:\n\rconversations\030\001 \003(\0132#.roc.imsdk."
-      "network.ConversationInfo\"^\n\021PullSingleLi"
-      "stReq\022\026\n\016conversationID\030\001 \001(\t\022\020\n\010msgLimi"
-      "t\030\002 \001(\005\022\017\n\007forward\030\003 \001(\010\022\016\n\006cursor\030\004 \001(\003"
-      "\">\n\022PullSingleListResp\022(\n\004msgs\030\001 \003(\0132\032.r"
-      "oc.imsdk.network.MsgData\"\304\002\n\020GroupCreate"
-      "dTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network"
-      ".GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.n"
-      "etwork.GroupMemberFullInfo\022:\n\nmemberList"
-      "\030\003 \003(\0132&.roc.imsdk.network.GroupMemberFu"
-      "llInfo\022\025\n\roperationTime\030\004 \001(\003\022>\n\016groupOw"
-      "nerUser\030\005 \001(\0132&.roc.imsdk.network.GroupM"
-      "emberFullInfo\022\032\n\022groupMemberVersion\030\006 \001("
-      "\004\022\034\n\024groupMemberVersionID\030\007 \001(\t\"\303\001\n\020Grou"
-      "pInfoSetTips\0226\n\006opUser\030\001 \001(\0132&.roc.imsdk"
-      ".network.GroupMemberFullInfo\022\020\n\010muteTime"
-      "\030\002 \001(\003\022+\n\005group\030\003 \001(\0132\034.roc.imsdk.networ"
-      "k.GroupInfo\022\032\n\022groupMemberVersion\030\004 \001(\004\022"
-      "\034\n\024groupMemberVersionID\030\005 \001(\t\"\265\001\n\024GroupI"
-      "nfoSetNameTips\0226\n\006opUser\030\001 \001(\0132&.roc.ims"
-      "dk.network.GroupMemberFullInfo\022+\n\005group\030"
-      "\002 \001(\0132\034.roc.imsdk.network.GroupInfo\022\032\n\022g"
-      "roupMemberVersion\030\003 \001(\004\022\034\n\024groupMemberVe"
-      "rsionID\030\004 \001(\t\"\275\001\n\034GroupInfoSetAnnounceme"
-      "ntTips\0226\n\006opUser\030\001 \001(\0132&.roc.imsdk.netwo"
-      "rk.GroupMemberFullInfo\022+\n\005group\030\002 \001(\0132\034."
-      "roc.imsdk.network.GroupInfo\022\032\n\022groupMemb"
-      "erVersion\030\003 \001(\004\022\034\n\024groupMemberVersionID\030"
-      "\004 \001(\t\"\215\001\n\030JoinGroupApplicationTips\022+\n\005gr"
+      "ID\030\004 \001(\t\022\014\n\004data\030\005 \001(\014\022\014\n\004type\030\006 \001(\005\022\017\n\007"
+      "trackID\030\007 \001(\005\"\260\001\n\tSdkWSResp\022\021\n\trequestId"
+      "\030\001 \001(\t\022\r\n\005token\030\002 \001(\t\022\016\n\006userID\030\003 \001(\t\022\020\n"
+      "\010deviceID\030\004 \001(\t\022\021\n\terrorCode\030\005 \001(\t\022\020\n\010er"
+      "rorMsg\030\006 \001(\t\022\014\n\004data\030\007 \001(\014\022\014\n\004type\030\010 \001(\005"
+      "\022\017\n\007trackID\030\t \001(\005\022\r\n\005logID\030\n \001(\t\"{\n\017Offl"
+      "inePushInfo\022\r\n\005title\030\001 \001(\t\022\014\n\004desc\030\002 \001(\t"
+      "\022\n\n\002ex\030\003 \001(\t\022\024\n\014iOSPushSound\030\004 \001(\t\022\025\n\riO"
+      "SBadgeCount\030\005 \001(\010\022\022\n\nsignalInfo\030\006 \001(\t\"C\n"
+      "\010TipsComm\022\016\n\006detail\030\001 \001(\014\022\023\n\013defaultTips"
+      "\030\002 \001(\t\022\022\n\njsonDetail\030\003 \001(\t\"V\n\016PullMixLis"
+      "tReq\022\016\n\006cursor\030\001 \001(\003\022\021\n\tconvLimit\030\002 \001(\005\022"
+      "\020\n\010msgLimit\030\003 \001(\005\022\017\n\007forward\030\004 \001(\010\"M\n\017Pu"
+      "llMixListResp\022:\n\rconversations\030\001 \003(\0132#.r"
+      "oc.imsdk.network.ConversationInfo\"^\n\021Pul"
+      "lSingleListReq\022\026\n\016conversationID\030\001 \001(\t\022\020"
+      "\n\010msgLimit\030\002 \001(\005\022\017\n\007forward\030\003 \001(\010\022\016\n\006cur"
+      "sor\030\004 \001(\003\">\n\022PullSingleListResp\022(\n\004msgs\030"
+      "\001 \003(\0132\032.roc.imsdk.network.MsgData\"\304\002\n\020Gr"
+      "oupCreatedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsd"
+      "k.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.ro"
+      "c.imsdk.network.GroupMemberFullInfo\022:\n\nm"
+      "emberList\030\003 \003(\0132&.roc.imsdk.network.Grou"
+      "pMemberFullInfo\022\025\n\roperationTime\030\004 \001(\003\022>"
+      "\n\016groupOwnerUser\030\005 \001(\0132&.roc.imsdk.netwo"
+      "rk.GroupMemberFullInfo\022\032\n\022groupMemberVer"
+      "sion\030\006 \001(\004\022\034\n\024groupMemberVersionID\030\007 \001(\t"
+      "\"\303\001\n\020GroupInfoSetTips\0226\n\006opUser\030\001 \001(\0132&."
+      "roc.imsdk.network.GroupMemberFullInfo\022\020\n"
+      "\010muteTime\030\002 \001(\003\022+\n\005group\030\003 \001(\0132\034.roc.ims"
+      "dk.network.GroupInfo\022\032\n\022groupMemberVersi"
+      "on\030\004 \001(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\265"
+      "\001\n\024GroupInfoSetNameTips\0226\n\006opUser\030\001 \001(\0132"
+      "&.roc.imsdk.network.GroupMemberFullInfo\022"
+      "+\n\005group\030\002 \001(\0132\034.roc.imsdk.network.Group"
+      "Info\022\032\n\022groupMemberVersion\030\003 \001(\004\022\034\n\024grou"
+      "pMemberVersionID\030\004 \001(\t\"\275\001\n\034GroupInfoSetA"
+      "nnouncementTips\0226\n\006opUser\030\001 \001(\0132&.roc.im"
+      "sdk.network.GroupMemberFullInfo\022+\n\005group"
+      "\030\002 \001(\0132\034.roc.imsdk.network.GroupInfo\022\032\n\022"
+      "groupMemberVersion\030\003 \001(\004\022\034\n\024groupMemberV"
+      "ersionID\030\004 \001(\t\"\215\001\n\030JoinGroupApplicationT"
+      "ips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.G"
+      "roupInfo\0224\n\tapplicant\030\002 \001(\0132!.roc.imsdk."
+      "network.PublicUserInfo\022\016\n\006reqMsg\030\003 \001(\t\"\310"
+      "\001\n\016MemberQuitTips\022+\n\005group\030\001 \001(\0132\034.roc.i"
+      "msdk.network.GroupInfo\0228\n\010quitUser\030\002 \001(\013"
+      "2&.roc.imsdk.network.GroupMemberFullInfo"
+      "\022\025\n\roperationTime\030\003 \001(\003\022\032\n\022groupMemberVe"
+      "rsion\030\004 \001(\004\022\034\n\024groupMemberVersionID\030\005 \001("
+      "\t\"\252\001\n\034GroupApplicationAcceptedTips\022+\n\005gr"
       "oup\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo\022"
-      "4\n\tapplicant\030\002 \001(\0132!.roc.imsdk.network.P"
-      "ublicUserInfo\022\016\n\006reqMsg\030\003 \001(\t\"\310\001\n\016Member"
-      "QuitTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netw"
-      "ork.GroupInfo\0228\n\010quitUser\030\002 \001(\0132&.roc.im"
-      "sdk.network.GroupMemberFullInfo\022\025\n\ropera"
-      "tionTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\004 \001"
-      "(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\252\001\n\034Gro"
-      "upApplicationAcceptedTips\022+\n\005group\030\001 \001(\013"
-      "2\034.roc.imsdk.network.GroupInfo\0226\n\006opUser"
-      "\030\002 \001(\0132&.roc.imsdk.network.GroupMemberFu"
-      "llInfo\022\021\n\thandleMsg\030\004 \001(\t\022\022\n\nreceiverAs\030"
-      "\005 \001(\005\"\252\001\n\034GroupApplicationRejectedTips\022+"
-      "\n\005group\030\001 \001(\0132\034.roc.imsdk.network.GroupI"
-      "nfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.network."
-      "GroupMemberFullInfo\022\021\n\thandleMsg\030\004 \001(\t\022\022"
-      "\n\nreceiverAs\030\005 \001(\005\"\352\002\n\031GroupOwnerTransfe"
-      "rredTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netw"
-      "ork.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsd"
-      "k.network.GroupMemberFullInfo\022=\n\rnewGrou"
-      "pOwner\030\003 \001(\0132&.roc.imsdk.network.GroupMe"
-      "mberFullInfo\022\025\n\roldGroupOwner\030\004 \001(\t\022\025\n\ro"
-      "perationTime\030\005 \001(\003\022A\n\021oldGroupOwnerInfo\030"
-      "\006 \001(\0132&.roc.imsdk.network.GroupMemberFul"
-      "lInfo\022\032\n\022groupMemberVersion\030\007 \001(\004\022\034\n\024gro"
-      "upMemberVersionID\030\010 \001(\t\"\210\002\n\020MemberKicked"
-      "Tips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network."
-      "GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.ne"
-      "twork.GroupMemberFullInfo\022>\n\016kickedUserL"
-      "ist\030\003 \003(\0132&.roc.imsdk.network.GroupMembe"
-      "rFullInfo\022\025\n\roperationTime\030\004 \001(\003\022\032\n\022grou"
-      "pMemberVersion\030\005 \001(\004\022\034\n\024groupMemberVersi"
-      "onID\030\006 \001(\t\"\307\002\n\021MemberInvitedTips\022+\n\005grou"
-      "p\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo\0226\n"
-      "\006opUser\030\002 \001(\0132&.roc.imsdk.network.GroupM"
-      "emberFullInfo\022\?\n\017invitedUserList\030\003 \003(\0132&"
-      ".roc.imsdk.network.GroupMemberFullInfo\022\025"
-      "\n\roperationTime\030\004 \001(\003\022\032\n\022groupMemberVers"
-      "ion\030\005 \001(\004\022\034\n\024groupMemberVersionID\030\006 \001(\t\022"
-      ";\n\013inviterUser\030\007 \001(\0132&.roc.imsdk.network"
-      ".GroupMemberFullInfo\"\314\001\n\017MemberEnterTips"
-      "\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Grou"
-      "pInfo\022;\n\013entrantUser\030\002 \001(\0132&.roc.imsdk.n"
-      "etwork.GroupMemberFullInfo\022\025\n\roperationT"
-      "ime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n"
-      "\024groupMemberVersionID\030\006 \001(\t\"\220\001\n\022GroupDis"
-      "missedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.ne"
-      "twork.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.im"
-      "sdk.network.GroupMemberFullInfo\022\025\n\ropera"
-      "tionTime\030\003 \001(\003\"\235\002\n\024GroupMemberMutedTips\022"
-      "+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Group"
-      "Info\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.network"
-      ".GroupMemberFullInfo\022\025\n\roperationTime\030\003 "
-      "\001(\003\0229\n\tmutedUser\030\004 \001(\0132&.roc.imsdk.netwo"
-      "rk.GroupMemberFullInfo\022\024\n\014mutedSeconds\030\005"
-      " \001(\r\022\032\n\022groupMemberVersion\030\006 \001(\004\022\034\n\024grou"
-      "pMemberVersionID\030\007 \001(\t\"\215\002\n\032GroupMemberCa"
-      "ncelMutedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk"
+      "6\n\006opUser\030\002 \001(\0132&.roc.imsdk.network.Grou"
+      "pMemberFullInfo\022\021\n\thandleMsg\030\004 \001(\t\022\022\n\nre"
+      "ceiverAs\030\005 \001(\005\"\252\001\n\034GroupApplicationRejec"
+      "tedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netwo"
+      "rk.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk"
+      ".network.GroupMemberFullInfo\022\021\n\thandleMs"
+      "g\030\004 \001(\t\022\022\n\nreceiverAs\030\005 \001(\005\"\352\002\n\031GroupOwn"
+      "erTransferredTips\022+\n\005group\030\001 \001(\0132\034.roc.i"
+      "msdk.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&"
+      ".roc.imsdk.network.GroupMemberFullInfo\022="
+      "\n\rnewGroupOwner\030\003 \001(\0132&.roc.imsdk.networ"
+      "k.GroupMemberFullInfo\022\025\n\roldGroupOwner\030\004"
+      " \001(\t\022\025\n\roperationTime\030\005 \001(\003\022A\n\021oldGroupO"
+      "wnerInfo\030\006 \001(\0132&.roc.imsdk.network.Group"
+      "MemberFullInfo\022\032\n\022groupMemberVersion\030\007 \001"
+      "(\004\022\034\n\024groupMemberVersionID\030\010 \001(\t\"\210\002\n\020Mem"
+      "berKickedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk"
       ".network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc"
-      ".imsdk.network.GroupMemberFullInfo\022\025\n\rop"
-      "erationTime\030\003 \001(\003\0229\n\tmutedUser\030\004 \001(\0132&.r"
-      "oc.imsdk.network.GroupMemberFullInfo\022\032\n\022"
-      "groupMemberVersion\030\005 \001(\004\022\034\n\024groupMemberV"
-      "ersionID\030\006 \001(\t\"\306\001\n\016GroupMutedTips\022+\n\005gro"
-      "up\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo\0226"
-      "\n\006opUser\030\002 \001(\0132&.roc.imsdk.network.Group"
-      "MemberFullInfo\022\025\n\roperationTime\030\003 \001(\003\022\032\n"
-      "\022groupMemberVersion\030\004 \001(\004\022\034\n\024groupMember"
-      "VersionID\030\005 \001(\t\"\314\001\n\024GroupCancelMutedTips"
-      "\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Grou"
-      "pInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.networ"
-      "k.GroupMemberFullInfo\022\025\n\roperationTime\030\003"
-      " \001(\003\022\032\n\022groupMemberVersion\030\004 \001(\004\022\034\n\024grou"
-      "pMemberVersionID\030\005 \001(\t\"\245\002\n\026GroupMemberIn"
-      "foSetTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.net"
+      ".imsdk.network.GroupMemberFullInfo\022>\n\016ki"
+      "ckedUserList\030\003 \003(\0132&.roc.imsdk.network.G"
+      "roupMemberFullInfo\022\025\n\roperationTime\030\004 \001("
+      "\003\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024groupMe"
+      "mberVersionID\030\006 \001(\t\"\307\002\n\021MemberInvitedTip"
+      "s\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Gro"
+      "upInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.netwo"
+      "rk.GroupMemberFullInfo\022\?\n\017invitedUserLis"
+      "t\030\003 \003(\0132&.roc.imsdk.network.GroupMemberF"
+      "ullInfo\022\025\n\roperationTime\030\004 \001(\003\022\032\n\022groupM"
+      "emberVersion\030\005 \001(\004\022\034\n\024groupMemberVersion"
+      "ID\030\006 \001(\t\022;\n\013inviterUser\030\007 \001(\0132&.roc.imsd"
+      "k.network.GroupMemberFullInfo\"\314\001\n\017Member"
+      "EnterTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.net"
+      "work.GroupInfo\022;\n\013entrantUser\030\002 \001(\0132&.ro"
+      "c.imsdk.network.GroupMemberFullInfo\022\025\n\ro"
+      "perationTime\030\003 \001(\003\022\032\n\022groupMemberVersion"
+      "\030\005 \001(\004\022\034\n\024groupMemberVersionID\030\006 \001(\t\"\220\001\n"
+      "\022GroupDismissedTips\022+\n\005group\030\001 \001(\0132\034.roc"
+      ".imsdk.network.GroupInfo\0226\n\006opUser\030\002 \001(\013"
+      "2&.roc.imsdk.network.GroupMemberFullInfo"
+      "\022\025\n\roperationTime\030\003 \001(\003\"\235\002\n\024GroupMemberM"
+      "utedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netw"
+      "ork.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsd"
+      "k.network.GroupMemberFullInfo\022\025\n\roperati"
+      "onTime\030\003 \001(\003\0229\n\tmutedUser\030\004 \001(\0132&.roc.im"
+      "sdk.network.GroupMemberFullInfo\022\024\n\014muted"
+      "Seconds\030\005 \001(\r\022\032\n\022groupMemberVersion\030\006 \001("
+      "\004\022\034\n\024groupMemberVersionID\030\007 \001(\t\"\215\002\n\032Grou"
+      "pMemberCancelMutedTips\022+\n\005group\030\001 \001(\0132\034."
+      "roc.imsdk.network.GroupInfo\0226\n\006opUser\030\002 "
+      "\001(\0132&.roc.imsdk.network.GroupMemberFullI"
+      "nfo\022\025\n\roperationTime\030\003 \001(\003\0229\n\tmutedUser\030"
+      "\004 \001(\0132&.roc.imsdk.network.GroupMemberFul"
+      "lInfo\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024gro"
+      "upMemberVersionID\030\006 \001(\t\"\306\001\n\016GroupMutedTi"
+      "ps\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Gr"
+      "oupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.netw"
+      "ork.GroupMemberFullInfo\022\025\n\roperationTime"
+      "\030\003 \001(\003\022\032\n\022groupMemberVersion\030\004 \001(\004\022\034\n\024gr"
+      "oupMemberVersionID\030\005 \001(\t\"\314\001\n\024GroupCancel"
+      "MutedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.net"
       "work.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.ims"
       "dk.network.GroupMemberFullInfo\022\025\n\roperat"
-      "ionTime\030\003 \001(\003\022;\n\013changedUser\030\004 \001(\0132&.roc"
-      ".imsdk.network.GroupMemberFullInfo\022\032\n\022gr"
-      "oupMemberVersion\030\005 \001(\004\022\034\n\024groupMemberVer"
-      "sionID\030\006 \001(\t\022\030\n\020groupSortVersion\030\007 \001(\004\"K"
-      "\n\021FriendApplication\022\017\n\007addTime\030\001 \001(\003\022\021\n\t"
-      "addSource\030\002 \001(\t\022\022\n\naddWording\030\003 \001(\t\"4\n\014F"
-      "romToUserID\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUse"
-      "rID\030\002 \001(\t\"N\n\025FriendApplicationTips\0225\n\014fr"
-      "omToUserID\030\001 \001(\0132\037.roc.imsdk.network.Fro"
-      "mToUserID\"\231\001\n\035FriendApplicationApprovedT"
+      "ionTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\004 \001("
+      "\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\245\002\n\026Grou"
+      "pMemberInfoSetTips\022+\n\005group\030\001 \001(\0132\034.roc."
+      "imsdk.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132"
+      "&.roc.imsdk.network.GroupMemberFullInfo\022"
+      "\025\n\roperationTime\030\003 \001(\003\022;\n\013changedUser\030\004 "
+      "\001(\0132&.roc.imsdk.network.GroupMemberFullI"
+      "nfo\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024group"
+      "MemberVersionID\030\006 \001(\t\022\030\n\020groupSortVersio"
+      "n\030\007 \001(\004\"K\n\021FriendApplication\022\017\n\007addTime\030"
+      "\001 \001(\003\022\021\n\taddSource\030\002 \001(\t\022\022\n\naddWording\030\003"
+      " \001(\t\"4\n\014FromToUserID\022\022\n\nfromUserID\030\001 \001(\t"
+      "\022\020\n\010toUserID\030\002 \001(\t\"N\n\025FriendApplicationT"
       "ips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.ne"
-      "twork.FromToUserID\022\021\n\thandleMsg\030\002 \001(\t\022\025\n"
-      "\rfriendVersion\030\003 \001(\004\022\027\n\017friendVersionID\030"
-      "\004 \001(\t\"i\n\035FriendApplicationRejectedTips\0225"
-      "\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.network"
-      ".FromToUserID\022\021\n\thandleMsg\030\002 \001(\t\"\272\001\n\017Fri"
-      "endAddedTips\022-\n\006friend\030\001 \001(\0132\035.roc.imsdk"
-      ".network.FriendInfo\022\025\n\roperationTime\030\002 \001"
-      "(\003\0221\n\006opUser\030\003 \001(\0132!.roc.imsdk.network.P"
-      "ublicUserInfo\022\025\n\rfriendVersion\030\004 \001(\004\022\027\n\017"
-      "friendVersionID\030\005 \001(\t\"z\n\021FriendDeletedTi"
-      "ps\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.net"
-      "work.FromToUserID\022\025\n\rfriendVersion\030\002 \001(\004"
-      "\022\027\n\017friendVersionID\030\003 \001(\t\"G\n\016BlackAddedT"
-      "ips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.ne"
-      "twork.FromToUserID\"I\n\020BlackDeletedTips\0225"
-      "\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.network"
-      ".FromToUserID\"\231\001\n\025FriendInfoChangedTips\022"
-      "5\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.networ"
-      "k.FromToUserID\022\025\n\rfriendVersion\030\002 \001(\004\022\027\n"
-      "\017friendVersionID\030\003 \001(\t\022\031\n\021friendSortVers"
-      "ion\030\004 \001(\004\"%\n\023UserInfoUpdatedTips\022\016\n\006user"
-      "ID\030\001 \001(\t\"`\n\024UserStatusChangeTips\022\022\n\nfrom"
-      "UserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\022\016\n\006status"
-      "\030\003 \001(\005\022\022\n\nplatformID\030\004 \001(\005\":\n\022UserComman"
-      "dAddTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID"
-      "\030\002 \001(\t\"=\n\025UserCommandUpdateTips\022\022\n\nfromU"
-      "serID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\"=\n\025UserCom"
-      "mandDeleteTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010to"
-      "UserID\030\002 \001(\t\"D\n\026ConversationUpdateTips\022\016"
-      "\n\006userID\030\001 \001(\t\022\032\n\022conversationIDList\030\002 \003"
-      "(\t\"g\n\032ConversationSetPrivateTips\022\016\n\006recv"
-      "ID\030\001 \001(\t\022\016\n\006sendID\030\002 \001(\t\022\021\n\tisPrivate\030\003 "
-      "\001(\010\022\026\n\016conversationID\030\004 \001(\t\"n\n\027Conversat"
-      "ionHasReadTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016conver"
-      "sationID\030\002 \001(\t\022\022\n\nhasReadSeq\030\003 \001(\003\022\027\n\017un"
-      "readCountTime\030\004 \001(\003\"\"\n\020NotificationElem\022"
-      "\016\n\006detail\030\001 \001(\t\"C\n\021DeleteMessageTips\022\020\n\010"
-      "opUserID\030\001 \001(\t\022\016\n\006userID\030\002 \001(\t\022\014\n\004seqs\030\003"
-      " \003(\003\"\241\001\n\rRevokeMsgTips\022\025\n\rrevokerUserID\030"
-      "\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nrevokeTime"
-      "\030\003 \001(\003\022\024\n\014sesstionType\030\005 \001(\005\022\013\n\003seq\030\006 \001("
-      "\003\022\026\n\016conversationID\030\007 \001(\t\022\025\n\risAdminRevo"
-      "ke\030\010 \001(\010\"\220\002\n\025MessageRevokedContent\022\021\n\tre"
-      "vokerID\030\001 \001(\t\022\023\n\013revokerRole\030\002 \001(\005\022\023\n\013cl"
-      "ientMsgID\030\003 \001(\t\022\027\n\017revokerNickname\030\004 \001(\t"
-      "\022\022\n\nrevokeTime\030\005 \001(\003\022\035\n\025sourceMessageSen"
-      "dTime\030\006 \001(\003\022\033\n\023sourceMessageSendID\030\007 \001(\t"
-      "\022#\n\033sourceMessageSenderNickname\030\010 \001(\t\022\023\n"
-      "\013sessionType\030\n \001(\005\022\013\n\003seq\030\013 \001(\003\022\n\n\002ex\030\014 "
-      "\001(\t\"@\n\025ClearConversationTips\022\016\n\006userID\030\001"
-      " \001(\t\022\027\n\017conversationIDs\030\002 \003(\t\"F\n\016DeleteM"
-      "sgsTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016conversationI"
-      "D\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\"d\n\016MarkAsReadTips\022"
-      "\030\n\020markAsReadUserID\030\001 \001(\t\022\026\n\016conversatio"
-      "nID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\022\022\n\nhasReadSeq\030\004 "
-      "\001(\003\"A\n\031SetAppBackgroundStatusReq\022\016\n\006user"
-      "ID\030\001 \001(\t\022\024\n\014isBackground\030\002 \001(\010\"\034\n\032SetApp"
-      "BackgroundStatusResp\"c\n\022ProcessUserComma"
-      "nd\022\016\n\006userID\030\001 \001(\t\022\014\n\004type\030\002 \001(\005\022\022\n\ncrea"
-      "teTime\030\003 \001(\003\022\014\n\004uuid\030\004 \001(\t\022\r\n\005value\030\005 \001("
-      "\t\";\n\021RequestPagination\022\022\n\npageNumber\030\001 \001"
-      "(\005\022\022\n\nshowNumber\030\002 \001(\005\"\221\001\n\025FriendsInfoUp"
-      "dateTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.ims"
-      "dk.network.FromToUserID\022\021\n\tfriendIDs\030\002 \003"
-      "(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017friendVersi"
-      "onID\030\004 \001(\t\"D\n\027SubUserOnlineStatusElem\022\016\n"
-      "\006userID\030\001 \001(\t\022\031\n\021onlinePlatformIDs\030\002 \003(\005"
-      "\"Z\n\027SubUserOnlineStatusTips\022\?\n\013subscribe"
-      "rs\030\001 \003(\0132*.roc.imsdk.network.SubUserOnli"
-      "neStatusElem\"I\n\023SubUserOnlineStatus\022\027\n\017s"
-      "ubscribeUserID\030\001 \003(\t\022\031\n\021unsubscribeUserI"
-      "D\030\002 \003(\t\"n\n\rStreamMsgTips\022\026\n\016conversation"
-      "ID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nstartIn"
-      "dex\030\003 \001(\003\022\017\n\007packets\030\004 \003(\t\022\013\n\003end\030\005 \001(\010*"
-      "0\n\tPullOrder\022\020\n\014PullOrderAsc\020\000\022\021\n\rPullOr"
-      "derDesc\020\001B7Z5github.com/roc/roc-im-serve"
-      "r/internal/kitex_gen/sdkwsb\006proto3"
+      "twork.FromToUserID\"\231\001\n\035FriendApplication"
+      "ApprovedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc"
+      ".imsdk.network.FromToUserID\022\021\n\thandleMsg"
+      "\030\002 \001(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017friendV"
+      "ersionID\030\004 \001(\t\"i\n\035FriendApplicationRejec"
+      "tedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsd"
+      "k.network.FromToUserID\022\021\n\thandleMsg\030\002 \001("
+      "\t\"\272\001\n\017FriendAddedTips\022-\n\006friend\030\001 \001(\0132\035."
+      "roc.imsdk.network.FriendInfo\022\025\n\roperatio"
+      "nTime\030\002 \001(\003\0221\n\006opUser\030\003 \001(\0132!.roc.imsdk."
+      "network.PublicUserInfo\022\025\n\rfriendVersion\030"
+      "\004 \001(\004\022\027\n\017friendVersionID\030\005 \001(\t\"z\n\021Friend"
+      "DeletedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc."
+      "imsdk.network.FromToUserID\022\025\n\rfriendVers"
+      "ion\030\002 \001(\004\022\027\n\017friendVersionID\030\003 \001(\t\"G\n\016Bl"
+      "ackAddedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc"
+      ".imsdk.network.FromToUserID\"I\n\020BlackDele"
+      "tedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsd"
+      "k.network.FromToUserID\"\231\001\n\025FriendInfoCha"
+      "ngedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.ims"
+      "dk.network.FromToUserID\022\025\n\rfriendVersion"
+      "\030\002 \001(\004\022\027\n\017friendVersionID\030\003 \001(\t\022\031\n\021frien"
+      "dSortVersion\030\004 \001(\004\"%\n\023UserInfoUpdatedTip"
+      "s\022\016\n\006userID\030\001 \001(\t\"`\n\024UserStatusChangeTip"
+      "s\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\022"
+      "\016\n\006status\030\003 \001(\005\022\022\n\nplatformID\030\004 \001(\005\":\n\022U"
+      "serCommandAddTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n"
+      "\010toUserID\030\002 \001(\t\"=\n\025UserCommandUpdateTips"
+      "\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\"="
+      "\n\025UserCommandDeleteTips\022\022\n\nfromUserID\030\001 "
+      "\001(\t\022\020\n\010toUserID\030\002 \001(\t\"D\n\026ConversationUpd"
+      "ateTips\022\016\n\006userID\030\001 \001(\t\022\032\n\022conversationI"
+      "DList\030\002 \003(\t\"g\n\032ConversationSetPrivateTip"
+      "s\022\016\n\006recvID\030\001 \001(\t\022\016\n\006sendID\030\002 \001(\t\022\021\n\tisP"
+      "rivate\030\003 \001(\010\022\026\n\016conversationID\030\004 \001(\t\"n\n\027"
+      "ConversationHasReadTips\022\016\n\006userID\030\001 \001(\t\022"
+      "\026\n\016conversationID\030\002 \001(\t\022\022\n\nhasReadSeq\030\003 "
+      "\001(\003\022\027\n\017unreadCountTime\030\004 \001(\003\"\"\n\020Notifica"
+      "tionElem\022\016\n\006detail\030\001 \001(\t\"C\n\021DeleteMessag"
+      "eTips\022\020\n\010opUserID\030\001 \001(\t\022\016\n\006userID\030\002 \001(\t\022"
+      "\014\n\004seqs\030\003 \003(\003\"\241\001\n\rRevokeMsgTips\022\025\n\rrevok"
+      "erUserID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nr"
+      "evokeTime\030\003 \001(\003\022\024\n\014sesstionType\030\005 \001(\005\022\013\n"
+      "\003seq\030\006 \001(\003\022\026\n\016conversationID\030\007 \001(\t\022\025\n\ris"
+      "AdminRevoke\030\010 \001(\010\"\220\002\n\025MessageRevokedCont"
+      "ent\022\021\n\trevokerID\030\001 \001(\t\022\023\n\013revokerRole\030\002 "
+      "\001(\005\022\023\n\013clientMsgID\030\003 \001(\t\022\027\n\017revokerNickn"
+      "ame\030\004 \001(\t\022\022\n\nrevokeTime\030\005 \001(\003\022\035\n\025sourceM"
+      "essageSendTime\030\006 \001(\003\022\033\n\023sourceMessageSen"
+      "dID\030\007 \001(\t\022#\n\033sourceMessageSenderNickname"
+      "\030\010 \001(\t\022\023\n\013sessionType\030\n \001(\005\022\013\n\003seq\030\013 \001(\003"
+      "\022\n\n\002ex\030\014 \001(\t\"@\n\025ClearConversationTips\022\016\n"
+      "\006userID\030\001 \001(\t\022\027\n\017conversationIDs\030\002 \003(\t\"F"
+      "\n\016DeleteMsgsTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016conv"
+      "ersationID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\"d\n\016MarkAs"
+      "ReadTips\022\030\n\020markAsReadUserID\030\001 \001(\t\022\026\n\016co"
+      "nversationID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\022\022\n\nhasR"
+      "eadSeq\030\004 \001(\003\"A\n\031SetAppBackgroundStatusRe"
+      "q\022\016\n\006userID\030\001 \001(\t\022\024\n\014isBackground\030\002 \001(\010\""
+      "\034\n\032SetAppBackgroundStatusResp\"c\n\022Process"
+      "UserCommand\022\016\n\006userID\030\001 \001(\t\022\014\n\004type\030\002 \001("
+      "\005\022\022\n\ncreateTime\030\003 \001(\003\022\014\n\004uuid\030\004 \001(\t\022\r\n\005v"
+      "alue\030\005 \001(\t\";\n\021RequestPagination\022\022\n\npageN"
+      "umber\030\001 \001(\005\022\022\n\nshowNumber\030\002 \001(\005\"\221\001\n\025Frie"
+      "ndsInfoUpdateTips\0225\n\014fromToUserID\030\001 \001(\0132"
+      "\037.roc.imsdk.network.FromToUserID\022\021\n\tfrie"
+      "ndIDs\030\002 \003(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017fr"
+      "iendVersionID\030\004 \001(\t\"D\n\027SubUserOnlineStat"
+      "usElem\022\016\n\006userID\030\001 \001(\t\022\031\n\021onlinePlatform"
+      "IDs\030\002 \003(\005\"Z\n\027SubUserOnlineStatusTips\022\?\n\013"
+      "subscribers\030\001 \003(\0132*.roc.imsdk.network.Su"
+      "bUserOnlineStatusElem\"I\n\023SubUserOnlineSt"
+      "atus\022\027\n\017subscribeUserID\030\001 \003(\t\022\031\n\021unsubsc"
+      "ribeUserID\030\002 \003(\t\"n\n\rStreamMsgTips\022\026\n\016con"
+      "versationID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022"
+      "\n\nstartIndex\030\003 \001(\003\022\017\n\007packets\030\004 \003(\t\022\013\n\003e"
+      "nd\030\005 \001(\010*0\n\tPullOrder\022\020\n\014PullOrderAsc\020\000\022"
+      "\021\n\rPullOrderDesc\020\001B7Z5github.com/roc/roc"
+      "-im-server/internal/kitex_gen/sdkwsb\006pro"
+      "to3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 13354);
+      descriptor, 13403);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "sdkws.proto", &protobuf_RegisterTypes);
 }
@@ -18789,6 +18794,7 @@ const int SdkWSReq::kUserIDFieldNumber;
 const int SdkWSReq::kDeviceIDFieldNumber;
 const int SdkWSReq::kDataFieldNumber;
 const int SdkWSReq::kTypeFieldNumber;
+const int SdkWSReq::kTrackIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SdkWSReq::SdkWSReq()
@@ -18824,7 +18830,9 @@ SdkWSReq::SdkWSReq(const SdkWSReq& from)
   if (from.data().size() > 0) {
     data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
-  type_ = from.type_;
+  ::memcpy(&type_, &from.type_,
+    static_cast<size_t>(reinterpret_cast<char*>(&trackid_) -
+    reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.SdkWSReq)
 }
 
@@ -18834,7 +18842,9 @@ void SdkWSReq::SharedCtor() {
   userid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   deviceid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  type_ = 0;
+  ::memset(&type_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&trackid_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
   _cached_size_ = 0;
 }
 
@@ -18885,7 +18895,9 @@ void SdkWSReq::Clear() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   deviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  type_ = 0;
+  ::memset(&type_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&trackid_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
   _internal_metadata_.Clear();
 }
 
@@ -18989,6 +19001,20 @@ bool SdkWSReq::MergePartialFromCodedStream(
         break;
       }
 
+      // int32 trackID = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &trackid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -19066,6 +19092,11 @@ void SdkWSReq::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->type(), output);
   }
 
+  // int32 trackID = 7;
+  if (this->trackid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->trackid(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -19136,6 +19167,11 @@ void SdkWSReq::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->type(), target);
   }
 
+  // int32 trackID = 7;
+  if (this->trackid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->trackid(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -19195,6 +19231,13 @@ size_t SdkWSReq::ByteSizeLong() const {
         this->type());
   }
 
+  // int32 trackID = 7;
+  if (this->trackid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->trackid());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -19247,6 +19290,9 @@ void SdkWSReq::MergeFrom(const SdkWSReq& from) {
   if (from.type() != 0) {
     set_type(from.type());
   }
+  if (from.trackid() != 0) {
+    set_trackid(from.trackid());
+  }
 }
 
 void SdkWSReq::CopyFrom(const ::google::protobuf::Message& from) {
@@ -19279,6 +19325,7 @@ void SdkWSReq::InternalSwap(SdkWSReq* other) {
   deviceid_.Swap(&other->deviceid_);
   data_.Swap(&other->data_);
   swap(type_, other->type_);
+  swap(trackid_, other->trackid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -19302,6 +19349,8 @@ const int SdkWSResp::kErrorCodeFieldNumber;
 const int SdkWSResp::kErrorMsgFieldNumber;
 const int SdkWSResp::kDataFieldNumber;
 const int SdkWSResp::kTypeFieldNumber;
+const int SdkWSResp::kTrackIDFieldNumber;
+const int SdkWSResp::kLogIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SdkWSResp::SdkWSResp()
@@ -19345,7 +19394,13 @@ SdkWSResp::SdkWSResp(const SdkWSResp& from)
   if (from.data().size() > 0) {
     data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
-  type_ = from.type_;
+  logid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.logid().size() > 0) {
+    logid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.logid_);
+  }
+  ::memcpy(&type_, &from.type_,
+    static_cast<size_t>(reinterpret_cast<char*>(&trackid_) -
+    reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.SdkWSResp)
 }
 
@@ -19357,7 +19412,10 @@ void SdkWSResp::SharedCtor() {
   errorcode_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  type_ = 0;
+  logid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&type_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&trackid_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
   _cached_size_ = 0;
 }
 
@@ -19374,6 +19432,7 @@ void SdkWSResp::SharedDtor() {
   errorcode_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   errormsg_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  logid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void SdkWSResp::SetCachedSize(int size) const {
@@ -19412,7 +19471,10 @@ void SdkWSResp::Clear() {
   errorcode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  type_ = 0;
+  logid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&type_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&trackid_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
   _internal_metadata_.Clear();
 }
 
@@ -19548,6 +19610,36 @@ bool SdkWSResp::MergePartialFromCodedStream(
         break;
       }
 
+      // int32 trackID = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &trackid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string logID = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_logid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->logid().data(), static_cast<int>(this->logid().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.SdkWSResp.logID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -19645,6 +19737,21 @@ void SdkWSResp::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->type(), output);
   }
 
+  // int32 trackID = 9;
+  if (this->trackid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->trackid(), output);
+  }
+
+  // string logID = 10;
+  if (this->logid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->logid().data(), static_cast<int>(this->logid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.SdkWSResp.logID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      10, this->logid(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -19737,6 +19844,22 @@ void SdkWSResp::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->type(), target);
   }
 
+  // int32 trackID = 9;
+  if (this->trackid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->trackid(), target);
+  }
+
+  // string logID = 10;
+  if (this->logid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->logid().data(), static_cast<int>(this->logid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.SdkWSResp.logID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->logid(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -19803,11 +19926,25 @@ size_t SdkWSResp::ByteSizeLong() const {
         this->data());
   }
 
+  // string logID = 10;
+  if (this->logid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->logid());
+  }
+
   // int32 type = 8;
   if (this->type() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->type());
+  }
+
+  // int32 trackID = 9;
+  if (this->trackid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->trackid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -19867,8 +20004,15 @@ void SdkWSResp::MergeFrom(const SdkWSResp& from) {
 
     data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
+  if (from.logid().size() > 0) {
+
+    logid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.logid_);
+  }
   if (from.type() != 0) {
     set_type(from.type());
+  }
+  if (from.trackid() != 0) {
+    set_trackid(from.trackid());
   }
 }
 
@@ -19903,7 +20047,9 @@ void SdkWSResp::InternalSwap(SdkWSResp* other) {
   errorcode_.Swap(&other->errorcode_);
   errormsg_.Swap(&other->errormsg_);
   data_.Swap(&other->data_);
+  logid_.Swap(&other->logid_);
   swap(type_, other->type_);
+  swap(trackid_, other->trackid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

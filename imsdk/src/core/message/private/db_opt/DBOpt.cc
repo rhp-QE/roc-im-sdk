@@ -137,6 +137,8 @@ std::vector<std::pair<int64_t, int64_t>> DBOpt::message_range(CONTEXT_T, std::st
         ranges.emplace_back(first, second);
     }
 
+    LOG_INFO("DBOpt", "load messages range from db, cid = {}, ranges = {}", conv_id, json_str);
+
     return ranges;
 }
 

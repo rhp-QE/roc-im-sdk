@@ -2,6 +2,7 @@
 
 #include "base/network/include/LongConnectionClient.h"
 #include "base/Uncopyable.h"
+#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "base/network/include/Error.h"
@@ -13,15 +14,15 @@ namespace roc::imsdk::network::request {
 
 // 发送消息
 asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
-    send_message(SDKRoot *root, network::SendMessageReq *request);
+    send_message(CONTEXT_T, network::SendMessageReq *request);
 
 // 拉取混链列表
 asio::awaitable<std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error>> 
-    fetch_user_message_list(SDKRoot *root, network::FetchUserMessageListReq *request);
+    fetch_user_message_list(CONTEXT_T, network::FetchUserMessageListReq *request);
 
 // 拉取单链
 asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
-    fetch_conv_message_list(SDKRoot *root, network::FetchConvMessageListReq *request);
+    fetch_conv_message_list(CONTEXT_T, network::FetchConvMessageListReq *request);
 
 // ------------------------------------------------------------------------------------------
 
