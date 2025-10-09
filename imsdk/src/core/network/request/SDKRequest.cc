@@ -3,6 +3,7 @@
 #include "imsdk/src/core/common/macro.h"
 
 #include <atomic>
+#include <expected>
 #include <string>
 
 namespace roc::imsdk::network::request {
@@ -17,7 +18,7 @@ static inline std::string next_request_id(SDKRoot *root) {
 // 发送消息
 asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
 send_message(CONTEXT_T, network::SendMessageReq *request) {
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, roc::error::make_error("sdk root is empty"))
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
     req->set_type(static_cast<int32_t>(SDKRequestType::SEND_MESSAGE));
@@ -42,7 +43,7 @@ send_message(CONTEXT_T, network::SendMessageReq *request) {
 // 拉取混链列表
 asio::awaitable<std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error>> 
 fetch_user_message_list(CONTEXT_T, network::FetchUserMessageListReq *request) {
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, roc::error::make_error("sdk root is empty"))
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
     req->set_type(static_cast<int32_t>(SDKRequestType::FETCH_USER_MESSAGE_LIST));
@@ -67,7 +68,7 @@ fetch_user_message_list(CONTEXT_T, network::FetchUserMessageListReq *request) {
 // 拉取单链
 asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
 fetch_conv_message_list(CONTEXT_T, network::FetchConvMessageListReq *request) {
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, roc::error::make_error("sdk root is empty"))
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
     req->set_type(static_cast<int32_t>(SDKRequestType::FETCH_CONV_MESSAGE_LIST));

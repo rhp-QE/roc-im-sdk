@@ -3,6 +3,7 @@
 #include "base/utils/utils.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
+#include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
@@ -12,8 +13,27 @@
 #include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 #include <cstdint>
+#include <string>
 
 namespace roc::imsdk::core::message {
+
+// 私有方法 =======================
+
+/// 保存消息日志
+void log_save_messags(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
+
+    std::string info = "[";
+    for (auto ptr : db_msgs) {
+        info += ", message_id = " + ptr->client_msg_id + " conv_id = " + ptr->conversation_id;
+    }
+    info += "]";
+    
+    LOG_INFO("message", "call save message, {}", info);
+}
+// ===============================
+
+
 
 /// 保存网络消息
 boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
@@ -31,6 +51,8 @@ SaveMessage::save_net_messages(CONTEXT_T, std::vector<const network::MsgData *> 
 boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
 SaveMessage::save_db_msgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
+
+    log_save_messags(CONTEXT_V, db_msgs);
 
     auto msg_manager = sdk_root->message_manager();
 
