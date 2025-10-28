@@ -85,18 +85,18 @@ target_link_libraries(main PRIVATE
 )
 # --------------------------------------------
 
-# MMKV 库
-add_subdirectory("/root/ccdep/src/MMKV/POSIX/src" mmkv)
-target_link_libraries(main PRIVATE mmkv)
+# MMKV 库 - 通过 vcpkg 自定义端口
+# --------------------------------------------
+find_package(mmkv CONFIG REQUIRED)
+message(STATUS "✅ Found MMKV (via vcpkg 自定义端口)")
+target_link_libraries(main PRIVATE mmkv::mmkv)
+# --------------------------------------------
 
 # OPENSSL 库
 # --------------------------------------------
 find_package(OpenSSL REQUIRED)
-
-message(STATUS "✅ Found OpenSSL libraries:")
+message(STATUS "✅ Found OpenSSL library:")
 message(STATUS "  - OpenSSL version: ${OPENSSL_VERSION}")
-message(STATUS "  - OpenSSL include: ${OPENSSL_INCLUDE_DIR}")
-
 target_link_libraries(main PRIVATE 
     OpenSSL::SSL
     OpenSSL::Crypto
@@ -106,20 +106,7 @@ target_link_libraries(main PRIVATE
 # PROTOBUF 库
 # --------------------------------------------
 find_package(protobuf CONFIG REQUIRED)
-
-# 验证 protobuf 版本
-if(protobuf_VERSION)
-    message(STATUS "✅ Found protobuf version: ${protobuf_VERSION}")
-    # 确保版本符合要求（3.5.x，不依赖 Abseil）
-    if(protobuf_VERSION VERSION_GREATER_EQUAL "3.6.0")
-        message(WARNING "⚠️  protobuf version ${protobuf_VERSION} may depend on Abseil")
-    else()
-        message(STATUS "✅ protobuf version ${protobuf_VERSION} does not depend on Abseil")
-    endif()
-else()
-    message(WARNING "⚠️  Could not determine protobuf version")
-endif()
-
+message(STATUS "✅ Found protobuf version: ${protobuf_VERSION}")
 target_link_libraries(main PRIVATE 
     protobuf::libprotobuf 
     protobuf::libprotobuf-lite
@@ -129,55 +116,35 @@ target_link_libraries(main PRIVATE
 # SPDLOG 库
 # --------------------------------------------
 find_package(spdlog CONFIG REQUIRED)
-
-message(STATUS "✅ Found spdlog library:")
 message(STATUS "  - spdlog version: ${spdlog_VERSION}")
-
 target_link_libraries(main PRIVATE 
     spdlog::spdlog
 )
 # --------------------------------------------
 
-# WCDB 库
+# WCDB 库 - 从 vcpkg_installed 目录查找
 # --------------------------------------------
-# WCDB 路径配置
-set(WCDB_ROOT "/root/ccdep/src/wcdb/src")
-set(WCDB_BUILD_DIR "${WCDB_ROOT}/build")
-set(WCDB_INCLUDE_DIR "${WCDB_BUILD_DIR}/export_headers")
-set(WCDB_LIB_DIR "${WCDB_BUILD_DIR}")
+# WCDB 路径配置（vcpkg manifest 模式）
+set(WCDB_ROOT "${VCPKG_INSTALLED_DIR}/x64-linux")
+set(WCDB_INCLUDE_DIR "${WCDB_ROOT}/include")
+set(WCDB_LIB_DIR "${WCDB_ROOT}/lib")
 
-# 1. 检查 WCDB 库文件是否存在
-if(EXISTS "${WCDB_LIB_DIR}/libWCDB.so")
-    message(STATUS "✅ Found WCDB library: ${WCDB_LIB_DIR}/libWCDB.so")
-else()
-    message(FATAL_ERROR "❌ WCDB library not found at ${WCDB_LIB_DIR}/libWCDB.so")
-endif()
-
-# 检查 WCDB 头文件目录是否存在
-if(EXISTS "${WCDB_INCLUDE_DIR}")
-    message(STATUS "✅ Found WCDB include directory: ${WCDB_INCLUDE_DIR}")
-else()
-    message(FATAL_ERROR "❌ WCDB include directory not found at ${WCDB_INCLUDE_DIR}")
-endif()
-
-# 2. 关键优化：将 WCDB 头文件标记为系统头文件以抑制警告
-# 这能有效消除 'ignoring #pragma unused/mark' 等未知pragma警告
-target_include_directories(main SYSTEM PRIVATE ${WCDB_INCLUDE_DIR}) # 使用 SYSTEM 关键字
-
-# 3. 添加 WCDB 库文件路径
+# 添加 WCDB 头文件（标记为 SYSTEM 以抑制警告）
+target_include_directories(main SYSTEM PRIVATE ${WCDB_INCLUDE_DIR})
+# 添加库路径
 target_link_directories(main PRIVATE ${WCDB_LIB_DIR})
-
-# 4. 链接 WCDB 及其依赖库
+# 链接 WCDB 及其子模块（参考原始版本）
 target_link_libraries(main PRIVATE 
     WCDB
     sqlcipher
     zstd
 )
 
-message(STATUS "✅ WCDB libraries configured:")
-message(STATUS "  - WCDB: ${WCDB_LIB_DIR}/libWCDB.so")
-message(STATUS "  - SQLCipher: ${WCDB_LIB_DIR}/libsqlcipher.a")
-message(STATUS "  - Zstd: ${WCDB_LIB_DIR}/libzstd.a")
+message(STATUS "✅ WCDB configured:")
+message(STATUS "  - Library: ${WCDB_LIBRARY}")
+message(STATUS "  - Headers: ${WCDB_INCLUDE_DIR}")
+message(STATUS "  - sqlcipher: ${WCDB_LIB_DIR}/libsqlcipher.a")
+message(STATUS "  - zstd: ${WCDB_LIB_DIR}/libzstd.a")
 # --------------------------------------------
 
 # 构建配置
@@ -200,45 +167,9 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     message(STATUS "🔧 Release flags: ${CMAKE_CXX_FLAGS_RELEASE}")
 endif()
 
-# Mold 链接器配置
-find_program(MOLD_LINKER mold)
-if(MOLD_LINKER)
-    message(STATUS "✅ Found Mold linker: ${MOLD_LINKER}")
-    # 设置链接器为 mold
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=mold")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=mold")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -fuse-ld=mold")
-    
-    # 为 GCC 编译器设置 mold 链接器
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -B${MOLD_LINKER}")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -B${MOLD_LINKER}")
-        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -B${MOLD_LINKER}")
-    endif()
-    
-    # 启用并行链接（mold 原生支持并行，不需要 --parallel 参数）
-    # mold 会自动使用可用的 CPU 核心进行并行链接
-    message(STATUS "🔧 Mold linker enabled for faster linking")
-    message(STATUS "🔧 Parallel linking enabled (mold native)")
-else()
-    message(STATUS "ℹ️  Mold linker not found, using default linker")
-    message(STATUS "💡 Consider installing mold for faster linking: sudo apt install mold")
-    
-    # 对于默认链接器，尝试启用并行链接
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        # GCC 的 gold 链接器支持并行
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=gold")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=gold")
-        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -fuse-ld=gold")
-        
-        # 启用并行链接
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--parallel")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--parallel")
-        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--parallel")
-        
-        message(STATUS "🔧 Gold linker enabled with parallel linking")
-    endif()
-endif()
+# 链接器配置
+# 使用平台默认链接器，确保与 vcpkg 库的 LTO 设置一致
+message(STATUS "🔧 Using platform default linker for LTO compatibility")
 
 # Ninja 构建优化
 if(CMAKE_GENERATOR STREQUAL "Ninja")
@@ -279,32 +210,6 @@ if(CMAKE_GENERATOR STREQUAL "Ninja")
     message(STATUS "🚀 Ninja parallel link jobs: ${CMAKE_NINJA_PARALLEL_LINK_JOBS}")
 endif()
 
-# 6. 尝试启用编译器缓存 (如 ccache) 来加速重复编译:cite[3]:cite[7]
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-    message(STATUS "✅ Found ccache: ${CCACHE_PROGRAM}, enabling compiler caching")
-    
-    # 如果环境变量中设置了 CC 和 CXX，使用它们
-    if(DEFINED ENV{CC} AND DEFINED ENV{CXX})
-        message(STATUS "🔧 Using ccache compiler wrappers: $ENV{CC}, $ENV{CXX}")
-        set(CMAKE_C_COMPILER $ENV{CC})
-        set(CMAKE_CXX_COMPILER $ENV{CXX})
-        
-        # 设置 ccache 作为编译器启动器
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CCACHE_PROGRAM})
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE_PROGRAM})
-        
-        message(STATUS "🔧 ccache compiler caching enabled via environment variables")
-    else()
-        # 如果没有设置环境变量，使用传统的 RULE_LAUNCH 方式
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CCACHE_PROGRAM})
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE_PROGRAM})
-        message(STATUS "🔧 ccache compiler caching enabled via RULE_LAUNCH")
-    endif()
-else()
-    message(STATUS "ℹ️  ccache not found, consider installing it for faster rebuilds")
-endif()
-
 # 测试配置
 include(CTest)
 enable_testing()
@@ -318,11 +223,7 @@ message(STATUS "🚀 Build system: ${CMAKE_GENERATOR}")
 if(CMAKE_GENERATOR STREQUAL "Ninja")
     message(STATUS "🚀 Ninja parallel jobs: ${CMAKE_NINJA_PARALLEL_JOBS}")
 endif()
-if(MOLD_LINKER)
-    message(STATUS "🚀 Linker: Mold (${MOLD_LINKER})")
-else()
-    message(STATUS "🚀 Linker: Default system linker")
-endif()
+message(STATUS "🚀 Linker: Platform default linker")
 message(STATUS "🚀 Source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "🚀 Binary directory: ${CMAKE_BINARY_DIR}")
 message(STATUS "🚀 vcpkg installed directory: ${VCPKG_INSTALLED_DIR}")
