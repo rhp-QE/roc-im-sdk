@@ -123,13 +123,13 @@ private:
         // 转换HTTP方法
         http::verb verb = http::verb::get;
         switch (builder.method_) {
-            case HttpMethod::GET: verb = http::verb::get; break;
-            case HttpMethod::POST: verb = http::verb::post; break;
-            case HttpMethod::PUT: verb = http::verb::put; break;
-            case HttpMethod::DELETE: verb = http::verb::delete_; break;
-            case HttpMethod::PATCH: verb = http::verb::patch; break;
-            case HttpMethod::HEAD: verb = http::verb::head; break;
-            case HttpMethod::OPTIONS: verb = http::verb::options; break;
+            case HttpMethod::M_GET: verb = http::verb::get; break;
+            case HttpMethod::M_POST: verb = http::verb::post; break;
+            case HttpMethod::M_PUT: verb = http::verb::put; break;
+            case HttpMethod::M_DELETE: verb = http::verb::delete_; break;
+            case HttpMethod::M_PATCH: verb = http::verb::patch; break;
+            case HttpMethod::M_HEAD: verb = http::verb::head; break;
+            case HttpMethod::M_OPTIONS: verb = http::verb::options; break;
         }
         
         http::request<http::string_body> req{verb, path, 11};
@@ -346,49 +346,49 @@ HttpClient& HttpClient::operator=(HttpClient&&) noexcept = default;
 
 HttpRequestBuilder HttpClient::get(std::string_view url) {
     HttpRequestBuilder builder;
-    builder.url(url).method(HttpMethod::GET);
+    builder.url(url).method(HttpMethod::M_GET);
     builder.client_ = this;
     return builder;
 }
 
 HttpRequestBuilder HttpClient::post(std::string_view url) {
     HttpRequestBuilder builder;
-    builder.url(url).method(HttpMethod::POST);
+    builder.url(url).method(HttpMethod::M_POST);
     builder.client_ = this;
     return builder;
 }
 
 HttpRequestBuilder HttpClient::put(std::string_view url) {
     HttpRequestBuilder builder;
-    builder.url(url).method(HttpMethod::PUT);
+    builder.url(url).method(HttpMethod::M_PUT);
     builder.client_ = this;
     return builder;
 }
 
 HttpRequestBuilder HttpClient::delete_request(std::string_view url) {
     HttpRequestBuilder builder;
-    builder.url(url).method(HttpMethod::DELETE);
+    builder.url(url).method(HttpMethod::M_DELETE);
     builder.client_ = this;
     return builder;
 }
 
 HttpRequestBuilder HttpClient::patch(std::string_view url) {
     HttpRequestBuilder builder;
-    builder.url(url).method(HttpMethod::PATCH);
+    builder.url(url).method(HttpMethod::M_PATCH);
     builder.client_ = this;
     return builder;
 }
 
 HttpRequestBuilder HttpClient::head(std::string_view url) {
     HttpRequestBuilder builder;
-    builder.url(url).method(HttpMethod::HEAD);
+    builder.url(url).method(HttpMethod::M_HEAD);
     builder.client_ = this;
     return builder;
 }
 
 HttpRequestBuilder HttpClient::options(std::string_view url) {
     HttpRequestBuilder builder;
-    builder.url(url).method(HttpMethod::OPTIONS);
+    builder.url(url).method(HttpMethod::M_OPTIONS);
     builder.client_ = this;
     return builder;
 }
@@ -457,13 +457,13 @@ std::unique_ptr<HttpClient> create_http_client(net::io_context& io_context, Http
 // 辅助函数
 std::string http_method_to_string(HttpMethod method) {
     switch (method) {
-        case HttpMethod::GET: return "GET";
-        case HttpMethod::POST: return "POST";
-        case HttpMethod::PUT: return "PUT";
-        case HttpMethod::DELETE: return "DELETE";
-        case HttpMethod::PATCH: return "PATCH";
-        case HttpMethod::HEAD: return "HEAD";
-        case HttpMethod::OPTIONS: return "OPTIONS";
+        case HttpMethod::M_GET: return "GET";
+        case HttpMethod::M_POST: return "POST";
+        case HttpMethod::M_PUT: return "PUT";
+        case HttpMethod::M_DELETE: return "DELETE";
+        case HttpMethod::M_PATCH: return "PATCH";
+        case HttpMethod::M_HEAD: return "HEAD";
+        case HttpMethod::M_OPTIONS: return "OPTIONS";
         default: return "GET";
     }
 }

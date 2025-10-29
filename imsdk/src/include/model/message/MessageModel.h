@@ -92,11 +92,11 @@ private:
 
 
 enum class MessageUpdateReson {
-    DELETE,   // 删除消息
-    UPDATE,   // 更新消息
-    RECALL,   // 撤回消息
-    OFFLINE,  // 离线消息
-    DB_EMPTY, // 因BD为空而补齐的消息
+    MSG_DELETE,   // 删除消息
+    MSG_UPDATE,   // 更新消息
+    MSG_RECALL,   // 撤回消息
+    MSG_OFFLINE,  // 离线消息
+    MSG_DB_EMPTY, // 因BD为空而补齐的消息
 };
 
 

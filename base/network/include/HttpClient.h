@@ -19,7 +19,7 @@ using json = boost::json::value;
 
 // HTTP 方法枚举
 enum class HttpMethod {
-    GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
+    M_GET, M_POST, M_PUT, M_DELETE, M_PATCH, M_HEAD, M_OPTIONS
 };
 
 // HTTP 错误类型
@@ -114,7 +114,7 @@ public:
     
 private:
     std::string url_;
-    HttpMethod method_{HttpMethod::GET};
+    HttpMethod method_{HttpMethod::M_GET};
     std::unordered_map<std::string, std::string> headers_;
     std::unordered_map<std::string, std::string> query_params_;
     std::string body_;
