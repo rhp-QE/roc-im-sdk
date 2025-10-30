@@ -4,8 +4,16 @@
 #include <iostream>
 
 inline void test_mmkv() {
-    std::string rootDir = "/root/project/roc_im_sdk/db-data";
+    // 使用相对路径（相对于运行时工作目录）
+#ifdef _WIN32
+    // Windows 上 MMKVPath_t 是 std::wstring
+    std::wstring rootDir = L"./db_data";
     MMKV::initializeMMKV(rootDir);
+#else
+    // Linux/POSIX 上 MMKVPath_t 是 std::string
+    std::string rootDir = "./db_data";
+    MMKV::initializeMMKV(rootDir);
+#endif
 
     auto mmkv = MMKV::defaultMMKV();
     mmkv->set(true, "bool");

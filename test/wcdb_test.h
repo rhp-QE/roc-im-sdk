@@ -13,8 +13,8 @@ inline void test_wcdb_linking() {
         // 创建 WCDB 管理器
         roc::base::database::WCDBManager db_manager;
         
-        // 初始化数据库
-        bool ret = db_manager.init_database("/root/project/ROCIM/dbData/test_wcdb.db");
+        // 初始化数据库 - 使用相对路径
+        bool ret = db_manager.init_database("./db_data/test_wcdb.db");
         if (ret) {
             std::cout << "✅ WCDB library linking test passed" << std::endl;
         } else {
@@ -32,8 +32,8 @@ inline void test_wcdb_basic_operations() {
     try {
         roc::base::database::WCDBManager db_manager;
         
-        // 初始化数据库
-        if (!db_manager.init_database("/root/project/ROCIM/dbData/test_operations.db")) {
+        // 初始化数据库 - 使用相对路径
+        if (!db_manager.init_database("./db_data/test_operations.db")) {
             std::cout << "❌ Failed to initialize database" << std::endl;
             return;
         }

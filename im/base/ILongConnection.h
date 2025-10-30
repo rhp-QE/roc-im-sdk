@@ -5,7 +5,6 @@
 #include <boost/asio/buffer.hpp>
 #include <cstddef>
 #include <functional>
-#include <linux/stat.h>
 #include <memory>
 #include <vector>
 #include "LinkBuffer.h"

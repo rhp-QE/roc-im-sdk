@@ -46,7 +46,8 @@ void wcdb_simple_test() {
     try {
         // 1. 创建数据库对象 - 严格按照官方教程
         std::cout << "1. Creating database..." << std::endl;
-        WCDB::Database database("/root/project/ROCIM/dbData/simple_test.db");
+        // 使用相对路径（相对于运行时工作目录）
+        WCDB::Database database("./db_data/simple_test.db");
         std::cout << "✅ Database created successfully" << std::endl;
         
         // 2. 创建表 - 严格按照官方教程

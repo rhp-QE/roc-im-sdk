@@ -41,13 +41,22 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     config_ = config;
  
     {
-        // 初始化数据库
-        std::string db_path = "/root/project/roc_im_sdk/db_data/" + config_.user_id + "_test.db";
+        // 初始化数据库 - 使用相对路径（相对于运行时工作目录）
+        // 数据库文件将存储在: <工作目录>/db_data/<user_id>_test.db
+        std::string db_path = "./db_data/" + config_.user_id + "_test.db";
         database_ = new WCDB::Database(db_path);
 
-        // 初始化MMKV
-        std::string rootDir = "/root/project/roc_im_sdk/db_data";
+        // 初始化MMKV - 使用相对路径
+        // MMKV 文件将存储在: <工作目录>/db_data/
+#ifdef _WIN32
+        // Windows 上 MMKVPath_t 是 std::wstring
+        std::wstring rootDir = L"./db_data";
         MMKV::initializeMMKV(rootDir);
+#else
+        // Linux/POSIX 上 MMKVPath_t 是 std::string
+        std::string rootDir = "./db_data";
+        MMKV::initializeMMKV(rootDir);
+#endif
         mmkv_ = MMKV::mmkvWithID(config_.user_id);
     }
 

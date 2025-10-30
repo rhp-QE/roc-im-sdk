@@ -1,10 +1,14 @@
 #pragma once
 
 #include <string>
-#include <unistd.h>
+// MSVC 使用 __FUNCSIG__，GCC/Clang 使用 __PRETTY_FUNCTION__
+#ifdef _MSC_VER
+#define __PRETTY_FUNCTION__ __FUNCSIG__
+#endif
 
 // 检测是否输出到终端
 inline bool need_color() {
+    // isatty 是 POSIX 函数，暂时禁用
     // return isatty(fileno(stdout));
     return false;
 }

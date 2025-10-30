@@ -22,13 +22,15 @@ if(CMAKE_MAKE_PROGRAM)
     set(CMAKE_GENERATOR "Ninja")
 else()
     message(STATUS "ℹ️  Ninja not found, using default generator")
-    # 如果没有 Ninja，尝试使用 Makefiles 作为备选
-    set(CMAKE_GENERATOR "Unix Makefiles")
+    if(NOT WIN32)
+        # 非 Windows 平台回退到 Unix Makefiles
+        set(CMAKE_GENERATOR "Unix Makefiles")
+    endif()
 endif()
 
 
 # vcpkg 配置
-set(CMAKE_TOOLCHAIN_FILE "/opt/vcpkg/scripts/buildsystems/vcpkg.cmake")
+# 工具链文件应通过命令行传入：-DCMAKE_TOOLCHAIN_FILE=<path-to-vcpkg.cmake>
 # 强制使用项目根目录的 vcpkg_installed（可选）
 set(VCPKG_INSTALLED_DIR "${CMAKE_SOURCE_DIR}/../vcpkg_installed")
 
@@ -57,8 +59,31 @@ file(GLOB_RECURSE SOURCES
   "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
 )
 
+# Windows 上不需要排除任何源文件（所有代码都是跨平台的）
+# LongConnectionImpl 使用 Boost.Asio，完全跨平台
+
 # 创建可执行文件
 add_executable(main ${SOURCES})
+
+# MSVC 编译选项（必须在 target 创建后立即设置）
+if(MSVC)
+    target_compile_options(main PRIVATE /bigobj /utf-8)
+    target_compile_definitions(main PRIVATE
+        _WIN32_WINNT=0x0A00
+        _CRT_SECURE_NO_WARNINGS
+        _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+        NOMINMAX
+        WIN32_LEAN_AND_MEAN
+    )
+endif()
+
+# VS 调试设置：指定工作目录到项目根，并将 main 设为启动项目
+if(MSVC)
+    # 让相对路径如 ./db_data 指向项目根目录 D:/Project/roc_im_sdk
+    set_target_properties(main PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/..")
+    # 设定 VS 的启动项目为 main
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT main)
+endif()
 
 #--------------------------------------
 # 依赖包配置
@@ -122,10 +147,14 @@ target_link_libraries(main PRIVATE
 )
 # --------------------------------------------
 
-# WCDB 库 - 从 vcpkg_installed 目录查找
+# WCDB 库 - 跨平台支持
 # --------------------------------------------
-# WCDB 路径配置（vcpkg manifest 模式）
-set(WCDB_ROOT "${VCPKG_INSTALLED_DIR}/x64-linux")
+if(WIN32)
+    set(WCDB_ROOT "${VCPKG_INSTALLED_DIR}/x64-windows")
+else()
+    set(WCDB_ROOT "${VCPKG_INSTALLED_DIR}/x64-linux")
+endif()
+
 set(WCDB_INCLUDE_DIR "${WCDB_ROOT}/include")
 set(WCDB_LIB_DIR "${WCDB_ROOT}/lib")
 
@@ -133,7 +162,7 @@ set(WCDB_LIB_DIR "${WCDB_ROOT}/lib")
 target_include_directories(main SYSTEM PRIVATE ${WCDB_INCLUDE_DIR})
 # 添加库路径
 target_link_directories(main PRIVATE ${WCDB_LIB_DIR})
-# 链接 WCDB 及其子模块（参考原始版本）
+# 链接 WCDB 及其子模块
 target_link_libraries(main PRIVATE 
     WCDB
     sqlcipher
@@ -141,10 +170,8 @@ target_link_libraries(main PRIVATE
 )
 
 message(STATUS "✅ WCDB configured:")
-message(STATUS "  - Library: ${WCDB_LIBRARY}")
 message(STATUS "  - Headers: ${WCDB_INCLUDE_DIR}")
-message(STATUS "  - sqlcipher: ${WCDB_LIB_DIR}/libsqlcipher.a")
-message(STATUS "  - zstd: ${WCDB_LIB_DIR}/libzstd.a")
+message(STATUS "  - Lib dir: ${WCDB_LIB_DIR}")
 # --------------------------------------------
 
 # 构建配置
@@ -158,13 +185,21 @@ endif()
 
 message(STATUS "🔧 Build type: ${CMAKE_BUILD_TYPE}")
 
-# 编译选项
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra")
-    message(STATUS "🔧 Debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
-elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
-    message(STATUS "🔧 Release flags: ${CMAKE_CXX_FLAGS_RELEASE}")
+# 编译选项（区分 MSVC 与 GCC/Clang）
+if(MSVC)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message(STATUS "🔧 Debug flags (MSVC): ${CMAKE_CXX_FLAGS_DEBUG}")
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+        message(STATUS "🔧 Release flags (MSVC): ${CMAKE_CXX_FLAGS_RELEASE}")
+    endif()
+else()
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra")
+        message(STATUS "🔧 Debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+        message(STATUS "🔧 Release flags: ${CMAKE_CXX_FLAGS_RELEASE}")
+    endif()
 endif()
 
 # 链接器配置

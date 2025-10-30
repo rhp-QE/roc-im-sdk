@@ -26,6 +26,10 @@
 #include <test/wcdb_simple_test.h>
 #include <examples/imsdk_demo.h>
 #include <test/spdlog_example.h>
+#ifdef _WIN32
+#include <windows.h>
+#include <clocale>
+#endif
 
 boost::asio::io_context net_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
 boost::asio::io_context main_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
@@ -74,6 +78,12 @@ void test_gcd() {
 }
 
 int main() {
+#ifdef _WIN32
+    // Ensure Windows console uses UTF-8 to avoid garbled Chinese output
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    std::setlocale(LC_ALL, ".UTF-8");
+#endif
 
     // testChannel();;
 
@@ -90,6 +100,7 @@ int main() {
     // test_imsdk();
 
     // test_logger();
+    std::cout << "项目运行"<<std::endl;
     imsdk_demo();
     // test_thread_safe_vector();
 
