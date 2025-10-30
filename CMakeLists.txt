@@ -91,20 +91,20 @@ endif()
 
 # BOOST 库
 # --------------------------------------------
-find_package(boost_asio CONFIG REQUIRED)
-find_package(boost_system CONFIG REQUIRED)
-find_package(boost_json CONFIG REQUIRED)
-find_package(boost_beast CONFIG REQUIRED)
+# 使用 vcpkg 的统一查找方式
+find_package(Boost REQUIRED COMPONENTS system json)
 
 message(STATUS "✅ Found Boost libraries:")
-message(STATUS "  - boost_asio")
+message(STATUS "  - Boost version: ${Boost_VERSION}")
+message(STATUS "  - boost_asio (header-only)")
 message(STATUS "  - boost_system") 
 message(STATUS "  - boost_json")
-message(STATUS "  - boost_beast")
+message(STATUS "  - boost_beast (header-only)")
 
+# 链接 Boost 库
+# Boost::boost 包含所有 header-only 库 (asio, beast 等)
 target_link_libraries(main PRIVATE 
-    Boost::beast
-    Boost::asio
+    Boost::boost      # header-only 库 (asio, beast)
     Boost::system
     Boost::json
 )

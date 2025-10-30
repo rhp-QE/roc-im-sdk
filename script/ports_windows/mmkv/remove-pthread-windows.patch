@@ -1,0 +1,16 @@
+diff --git a/POSIX/src/CMakeLists.txt b/POSIX/src/CMakeLists.txt
+index 1a62d7c..8b3d7e5 100644
+--- a/POSIX/src/CMakeLists.txt
++++ b/POSIX/src/CMakeLists.txt
+@@ -79,5 +79,10 @@ target_link_libraries( # Specifies the target library.
+                        # included in the NDK.
+                        #          ${log-lib}
+                        core
+-        pthread
+         )
++
++# Link pthread only on non-Windows platforms
++if(NOT WIN32)
++    target_link_libraries(mmkv pthread)
++endif()
++

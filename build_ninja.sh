@@ -102,6 +102,18 @@ configure_project() {
     print_info "配置 CMake 项目..."
     print_info "构建类型: ${build_type}"
     
+    # 检查 vcpkg 工具链文件
+    local vcpkg_root="${VCPKG_ROOT:-/opt/vcpkg}"
+    local vcpkg_toolchain="${vcpkg_root}/scripts/buildsystems/vcpkg.cmake"
+    
+    if [ ! -f "$vcpkg_toolchain" ]; then
+        print_error "vcpkg 工具链文件不存在: $vcpkg_toolchain"
+        print_info "请设置 VCPKG_ROOT 环境变量或安装 vcpkg 到 /opt/vcpkg"
+        exit 1
+    fi
+    
+    print_info "vcpkg 工具链: $vcpkg_toolchain"
+    
     # 在上级目录创建 build 文件夹
     if [ ! -d "../build" ]; then
         mkdir -p ../build
@@ -121,6 +133,7 @@ configure_project() {
           -DCMAKE_BUILD_TYPE=${build_type} \
           -DCMAKE_C_COMPILER=clang \
           -DCMAKE_CXX_COMPILER=clang++ \
+          -DCMAKE_TOOLCHAIN_FILE="$vcpkg_toolchain" \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_EXPORT_COMPILE_COMMANDS_OUTPUT_PATH="../" \
           ../roc-im-sdk
@@ -185,6 +198,7 @@ configure_project() {
           -DCMAKE_BUILD_TYPE=${build_type} \
           -DCMAKE_C_COMPILER=gcc-14 \
           -DCMAKE_CXX_COMPILER=g++-14 \
+          -DCMAKE_TOOLCHAIN_FILE="$vcpkg_toolchain" \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF \
           ../roc-im-sdk
     

@@ -1,0 +1,22 @@
+diff --git a/src/google/protobuf/stubs/hash.h b/src/google/protobuf/stubs/hash.h
+index 1a62d7c..8b3d7e5 100644
+--- a/src/google/protobuf/stubs/hash.h
++++ b/src/google/protobuf/stubs/hash.h
+@@ -109,7 +109,9 @@
+ # if _MSC_VER >= 1600  // Since Visual Studio 2010
+ #  define GOOGLE_PROTOBUF_HAS_CXX11_HASH
++#  if _MSC_VER < 1900  // hash_compare only exists before VS 2015
+ #  define GOOGLE_PROTOBUF_HASH_COMPARE std::hash_compare
++#  endif
+ # elif _MSC_VER >= 1500  // Since Visual Studio 2008
+ #  define GOOGLE_PROTOBUF_HASH_NAMESPACE stdext
+ #  include <hash_map>
+@@ -235,7 +237,7 @@ class hash_set : public std::set<Key, HashFcn> {
+   HashFcn hash_function() const { return HashFcn(); }
+ };
+ 
+-#elif defined(_MSC_VER) && !defined(_STLPORT_VERSION)
++#elif defined(_MSC_VER) && !defined(_STLPORT_VERSION) && defined(GOOGLE_PROTOBUF_HASH_COMPARE)
+ 
+ template <typename Key>
+ struct hash : public GOOGLE_PROTOBUF_HASH_COMPARE<Key> {
