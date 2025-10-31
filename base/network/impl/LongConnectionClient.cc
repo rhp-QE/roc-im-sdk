@@ -20,7 +20,6 @@
 #include "base/network/include/Error.h"
 
 namespace asio = boost::asio;
-namespace beast = boost::beast;
 
 namespace roc::base::net {
 

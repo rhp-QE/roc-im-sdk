@@ -41,7 +41,7 @@ show_help() {
     echo "  -c, --clean    清理构建文件后重新构建"
     echo "  -r, --run      构建后运行程序"
     echo "  -f, --full     完整流程（清理 + 构建 + 运行）"
-    echo "  -j, --jobs N   指定并行任务数（默认使用所有核心）"
+    echo "  -j, --jobs N   指定并行任务数（默认: CPU核心数/5，最少2）"
     echo "  -d, --debug    使用 Debug 模式构建"
     echo "  -R, --release  使用 Release 模式构建"
     echo "  --reconfigure  强制重新配置 CMake 项目"
@@ -83,6 +83,19 @@ get_cpu_cores() {
     echo $(nproc)
 }
 
+# 计算合理的并行任务数（1/6 CPU 核心，向下取整，最少 2）
+get_reasonable_jobs() {
+    local total_cores=$(get_cpu_cores)
+    local jobs=$((total_cores / 6))
+    
+    # 确保至少 2 核
+    if [ $jobs -lt 2 ]; then
+        jobs=2
+    fi
+    
+    echo $jobs
+}
+
 # 清理构建文件
 clean_build() {
     print_info "清理构建文件..."
@@ -122,88 +135,21 @@ configure_project() {
     
     cd ../build
     
-    # 第一步：使用 clang/clang++ 生成 compile_commands.json 供 clangd 使用
-    print_info "第一步：使用 clang/clang++ 生成 compile_commands.json..."
-    print_info "CMake 参数: -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-    
-    # 确保 CMake 变量设置正确
-    export CMAKE_EXPORT_COMPILE_COMMANDS=ON
-    
-    cmake -G Ninja \
-          -DCMAKE_BUILD_TYPE=${build_type} \
-          -DCMAKE_C_COMPILER=clang \
-          -DCMAKE_CXX_COMPILER=clang++ \
-          -DCMAKE_TOOLCHAIN_FILE="$vcpkg_toolchain" \
-          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-          -DCMAKE_EXPORT_COMPILE_COMMANDS_OUTPUT_PATH="../" \
-          ../roc-im-sdk
-    
-    if [ $? -eq 0 ]; then
-        print_success "Clang 配置成功！"
-        
-        # 等待一下，确保文件生成完成
-        sleep 1
-        
-        # 显示构建目录中的文件
-        print_info "构建目录内容:"
-        ls -la | head -10
-        
-        # 检查 compile_commands.json 是否生成
-        if [ -f "compile_commands.json" ]; then
-            print_success "✅ compile_commands.json 文件已生成"
-            
-            # 移动到上级目录供 clangd 使用
-            mv compile_commands.json ../
-            print_success "✅ compile_commands.json 已移动到上级目录"
-        else
-            print_warning "⚠️  compile_commands.json 文件未找到，尝试查找..."
-            
-            # 尝试在构建目录中查找
-            if [ -f "CMakeCache.txt" ]; then
-                print_info "CMake 配置成功，但 compile_commands.json 可能未生成"
-                print_info "尝试手动创建 compile_commands.json..."
-                
-                # 尝试从 CMake 缓存中提取编译命令
-                if [ -f "CMakeCache.txt" ]; then
-                    print_info "从 CMake 缓存创建 compile_commands.json..."
-                    # 创建一个基本的 compile_commands.json
-                    echo "[]" > ../compile_commands.json
-                    print_success "✅ 已创建基本的 compile_commands.json"
-                fi
-                
-                print_info "继续执行第二步配置..."
-            else
-                print_error "❌ CMake 配置可能失败"
-                exit 1
-            fi
-        fi
-    else
-        print_error "Clang 配置失败！"
-        exit 1
-    fi
-    
-    # 第二步：使用 gcc-14/g++-14 重新配置用于实际编译
-    print_info "第二步：使用 gcc-14/g++-14 重新配置用于实际编译..."
-    
-    # 强制清理 CMake 缓存，确保编译器设置生效
-    print_info "清理 CMake 缓存..."
-    rm -f CMakeCache.txt
-    rm -rf CMakeFiles/
-    
-    # 还原环境变量，确保不生成 compile_commands.json
-    unset CMAKE_EXPORT_COMPILE_COMMANDS
-    print_info "已还原 CMAKE_EXPORT_COMPILE_COMMANDS 环境变量"
+    # 使用 gcc-14/g++-14 直接配置并生成 compile_commands.json
+    print_info "使用 gcc-14/g++-14 配置项目..."
+    print_info "同时生成 compile_commands.json 供 clangd 使用"
     
     cmake -G Ninja \
           -DCMAKE_BUILD_TYPE=${build_type} \
           -DCMAKE_C_COMPILER=gcc-14 \
           -DCMAKE_CXX_COMPILER=g++-14 \
           -DCMAKE_TOOLCHAIN_FILE="$vcpkg_toolchain" \
-          -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF \
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           ../roc-im-sdk
     
     if [ $? -eq 0 ]; then
-        print_success "GCC-14 配置成功！"
+        print_success "CMake 配置成功！"
+        
         # 验证 build.ninja 文件是否生成
         if [ -f "build.ninja" ]; then
             print_success "✅ build.ninja 文件已生成"
@@ -211,8 +157,19 @@ configure_project() {
             print_error "❌ build.ninja 文件未生成"
             exit 1
         fi
+        
+        # 检查并复制 compile_commands.json
+        if [ -f "compile_commands.json" ]; then
+            print_success "✅ compile_commands.json 文件已生成"
+            
+            # 复制到上级目录供 clangd 使用
+            cp compile_commands.json ../
+            print_success "✅ compile_commands.json 已复制到项目根目录"
+        else
+            print_warning "⚠️  compile_commands.json 文件未生成"
+        fi
     else
-        print_error "GCC-14 配置失败！"
+        print_error "CMake 配置失败！"
         exit 1
     fi
     
@@ -368,7 +325,8 @@ main() {
     local clean_flag=false
     local run_flag=false
     local build_type="Debug"
-    local jobs=${NINJA_JOBS:-$(get_cpu_cores)}
+    # 默认使用 1/6 CPU 核心（向下取整，最少 2），避免吃光所有计算资源
+    local jobs=${NINJA_JOBS:-$(get_reasonable_jobs)}
     local verbose_flag=false
     local silent_flag=false
     

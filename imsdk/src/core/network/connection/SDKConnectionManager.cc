@@ -69,7 +69,7 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     auto res = co_await lc_->connect();
     
-    LOG_INFO("WS","init_and_connected: {}, error_info: {}", res.has_value(), res.has_value() ? "" : "connection failed")
+    LOG_INFO("WS","init_and_connected: {}, error_info: {}", res.has_value(), res.has_value() ? "nil" : res.error().to_string())
 
     co_return;
 }
@@ -177,7 +177,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::b
 
 //--------------- no member private method ----------------------
 base::net::LongConnectionConfig generateNetConfig(roc::imsdk::SDKRoot* root) {
-    roc::base::net::LongConnectionConfig config("127.0.0.1", "10010");
+    roc::base::net::LongConnectionConfig config("localhost", "10010");
     config.set_heartbeat_interval(5000)
     .set_heartbeat_timeout(10000)
     .set_heartbeat_payload("ping")
