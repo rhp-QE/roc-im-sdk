@@ -4,7 +4,7 @@
 // date : 2025-03-23
 //
 
-#include "base/network/include/WSClient.h"
+#include "imsdk/base/include/network/WSClient.h"
 #include <boost/beast.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/use_awaitable.hpp>
@@ -189,3 +189,4 @@ bool WSClient::is_connected_impl() {
 }
 
 } // namespace roc::base::net
+

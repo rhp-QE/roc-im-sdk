@@ -89,6 +89,7 @@ add_executable(main main.cpp ${SHELL_SOURCES})
 target_include_directories(main PRIVATE 
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/imsdk/src
+    ${CMAKE_SOURCE_DIR}/imsdk/base/include
 )
 
 # ============================================================================

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/json.hpp>
-#include "base/network/include/HttpClient.h"
+#include "imsdk/base/include/network/HttpClient.h"
 
 using namespace roc::network;
 namespace net = boost::asio;

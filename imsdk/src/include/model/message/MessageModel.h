@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 #include <shared_mutex>
-#include "base/Uncopyable.h"
+#include "imsdk/base/include/uncopyable.h"
 
 namespace roc::imsdk::core {
     class MessageManager;

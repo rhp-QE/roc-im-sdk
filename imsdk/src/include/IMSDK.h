@@ -5,7 +5,7 @@
 #include <memory>
 #include <boost/asio/awaitable.hpp>
 
-#include "base/Uncopyable.h"
+#include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/include/config.h"
 #include "imsdk/src/include/injection/log/ILogger.h"
 #include "imsdk/src/include/model/message/MessageModel.h"

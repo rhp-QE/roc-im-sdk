@@ -1,6 +1,6 @@
 #include "imsdk/src/core/message/private/cmd/CmdMessageOperator.h"
 
-#include "base/utils/utils.h"
+#include "imsdk/base/include/utils/utils.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/message/MessageModel.h"

@@ -3,34 +3,26 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <memory>
-#include <test/buffertest.h>
-#include <test/corTest.h>
 #include <thread>
 
 #include "BaseConfig.h"
-#include "test/mmkv_test.h"
-#include "test/test_func_.h"
 #include <im/base/coroutine.h>
-#include <test/boostCoroTest.h>
-#include <test/channelTest.h>
-#include <test/coCostTime.h>
-#include <test/httpTest.h>
-#include <test/testwc.h>
 #include <tuple>
 #include <unordered_map>
 #include <utility>
 #include <expected>
-#include <test/wsclientTest.h>
+#include <iostream>
+
+// 保留有用的测试文件
 #include <test/imsdk_test.h>
-#include <test/wcdb_test.h>
-#include <test/wcdb_simple_test.h>
 #include <examples/imsdk_demo.h>
-#include <test/spdlog_example.h>
+
 #ifdef _WIN32
 #include <windows.h>
 #include <clocale>
 #endif
 
+// IO 上下文
 boost::asio::io_context net_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
 boost::asio::io_context main_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
 boost::asio::io_context sdk_io_context{BOOST_ASIO_CONCURRENCY_HINT_UNSAFE_IO};
@@ -50,76 +42,61 @@ template <typename Ty> void print(Ty aa) {
     std::cout << v << std::endl;
 }
 
-template <size_t... I> void print_index(std::index_sequence<I...>) {
-    (..., print(I));
-}
-
-template <typename... Retype> void test_tuple(std::tuple<Retype...> res) {
-    auto index =
-        std::make_index_sequence<std::tuple_size<decltype(res)>::value>{};
-    [&]<size_t... I>(std::index_sequence<I...>) {
-        (..., (std::cout << std::get<I>(res) << std::endl));
-    }(index);
-}
-
-struct Node {
-    ~Node() { std::cout << "faf" << std::endl; }
-};
-
-int gcd(int a, int b) {
-    if (b == 0) {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-void test_gcd() {
-    std::cout << gcd(10, 15) << std::endl;
-}
-
-int main() {
+int main(int argc, char *argv[]) {
 #ifdef _WIN32
-    // Ensure Windows console uses UTF-8 to avoid garbled Chinese output
+    // Windows 平台配置
     SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
-    std::setlocale(LC_ALL, ".UTF-8");
+    std::setlocale(LC_ALL, "zh_CN.UTF-8");
 #endif
 
-    // testChannel();;
+    std::cout << "=== ROCIM SDK Demo ===" << std::endl;
+    std::cout << "SDK 初始化测试..." << std::endl;
 
-    // test_func_();
-
-    // test_mmkv();
-
-    // 运行 WCDB 测试
-    // run_wcdb_tests();
-    
-    // 运行简化的 WCDB 测试（严格按照官方教程）
-    // wcdb_simple_test();
-
-    // test_imsdk();
-
-    // test_logger();
-    std::cout << "项目运行"<<std::endl;
-    imsdk_demo();
-    // test_thread_safe_vector();
-
-    // co_cost_time_test();
-
-    // boostCoroTest();
-    // testWC();
-    // testChannel();
-    // wsclientTestMain();
-    // grpc_client_test();
-
-    auto wark_work = boost::asio::make_work_guard(net_io_context);
-    std::thread net_thread([] { net_io_context.run(); });
-
-    auto wark_work1 = boost::asio::make_work_guard(sdk_io_context);
-    std::thread net_thread1([] { sdk_io_context.run(); });
-
+    // 启动 IO 上下文工作线程
+    auto net_work = boost::asio::make_work_guard(net_io_context);
     auto main_work = boost::asio::make_work_guard(main_io_context);
+    auto sdk_work = boost::asio::make_work_guard(sdk_io_context);
+
+    std::thread net_thread([&]() { 
+        std::cout << "Net IO thread started" << std::endl;
+        net_io_context.run(); 
+        std::cout << "Net IO thread stopped" << std::endl;
+    });
+    
+    std::thread sdk_thread([&]() { 
+        std::cout << "SDK IO thread started" << std::endl;
+        sdk_io_context.run(); 
+        std::cout << "SDK IO thread stopped" << std::endl;
+    });
+
+    // 运行 IM SDK 示例
+    try {
+        std::cout << "\n=== 运行 IM SDK 示例 ===" << std::endl;
+        // imsdk_demo 不返回 awaitable，直接调用
+        imsdk_demo();
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    // main_io_context 在主线程运行，直到程序结束
+    std::cout << "\n主线程开始运行 main_io_context..." << std::endl;
+    std::cout << "按 Ctrl+C 退出程序" << std::endl;
+    
+    // 主线程运行 main_io_context，阻塞直到所有工作完成或收到停止信号
     main_io_context.run();
 
+    // 程序退出时清理
+    std::cout << "\n正在停止其他 IO 上下文..." << std::endl;
+    net_work.reset();
+    sdk_work.reset();
+    
+    net_io_context.stop();
+    sdk_io_context.stop();
+
+    // 等待其他线程结束
+    if (net_thread.joinable()) net_thread.join();
+    if (sdk_thread.joinable()) sdk_thread.join();
+
+    std::cout << "程序正常退出" << std::endl;
     return 0;
 }

@@ -4,7 +4,7 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/strand.hpp>
 #include "imsdk/src/include/IMSDK.h"
-#include "base/containers/ThreadSafeUnorderedMap.h"
+#include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
 

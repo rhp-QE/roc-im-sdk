@@ -71,4 +71,5 @@ inline std::ostream& operator<<(std::ostream& os, const roc::error::Error& error
     return os;
 }
 
-#endif // ROCIM_ERROR_H 
+#endif // ROCIM_ERROR_H
+

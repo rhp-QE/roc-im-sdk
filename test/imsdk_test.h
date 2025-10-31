@@ -13,7 +13,7 @@
 #include "imsdk/src/include/config.h"
 #include "BaseConfig.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
-#include "base/utils/utils.h"
+#include "imsdk/base/include/utils/utils.h"
 
 
 inline roc::imsdk::Config generateConfig();

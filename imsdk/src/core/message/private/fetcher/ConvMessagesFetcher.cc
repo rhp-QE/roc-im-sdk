@@ -9,7 +9,7 @@
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 
-#include "base/utils/utils.h"
+#include "imsdk/base/include/utils/utils.h"
 
 namespace roc::imsdk::core::message {
 

@@ -1,4 +1,4 @@
-#include "base/network/include/HttpClient.h"
+#include "imsdk/base/include/network/HttpClient.h"
 #include <boost/beast.hpp>
 #include <boost/asio/ssl.hpp>
 #include <boost/beast/ssl/ssl_stream.hpp>
@@ -506,4 +506,5 @@ std::string base64_encode(std::string_view str) {
     return encoded;
 }
 
-} // namespace roc::network 
+} // namespace roc::network
+

@@ -7,7 +7,7 @@
 #define ROC_IM_SDK_CORE_SDKROOT_SDKROOT_CC
 
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
-#include "base/network/include/LongConnectionClient.h"
+#include "imsdk/base/include/network/LongConnectionClient.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"

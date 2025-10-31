@@ -1,17 +1,17 @@
 //
-// ICoroLongConnection.h
+// IWSClient.h
 //
 // author: Ruan Huipeng
 // date : 2025-03-23
 // 
 
-#ifndef ROC_NET_ICOROLONGCONNECTION_H
-#define ROC_NET_ICOROLONGCONNECTION_H
+#ifndef ROC_NET_IWSCLIENT_H
+#define ROC_NET_IWSCLIENT_H
 
 #include <boost/asio/awaitable.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <expected>
-#include "base/network/include/Error.h"
+#include "imsdk/base/include/network/Error.h"
 
 namespace roc::base::net {
 
@@ -67,6 +67,7 @@ bool IWSClient<T>::is_connected() {
     return static_cast<T*>(this) -> is_connected_impl();
 }
 
-} // namespace roc::bae::net
+} // namespace roc::base::net
 
-#endif // ROC_NET_ICOROLONGCONNECTION_H
+#endif // ROC_NET_IWSCLIENT_H
+

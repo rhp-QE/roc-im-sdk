@@ -218,4 +218,5 @@ public:
 
 } // namespace roc::base::net
 
-#endif // ROC_NET_WSCLIENTCONFIG_H 
+#endif // ROC_NET_WSCLIENTCONFIG_H
+

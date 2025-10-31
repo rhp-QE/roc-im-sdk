@@ -29,3 +29,4 @@ private:
 };
 
 } // namespace roc::base
+

@@ -8,8 +8,8 @@
 #ifndef ROC_NET_WSCLIENT_H
 #define ROC_NET_WSCLIENT_H
 
-#include "base/network/include/IWSClient.h"
-#include "base/network/include/WSClientConfig.h"
+#include "imsdk/base/include/network/IWSClient.h"
+#include "imsdk/base/include/network/WSClientConfig.h"
 #include <boost/asio/io_context.hpp>
 #include <boost/beast/core/tcp_stream.hpp>
 #include <boost/beast/websocket/stream.hpp>
@@ -129,3 +129,4 @@ private:
 } // namespace roc::base::net
 
 #endif // ROC_NET_WSCLIENT_H
+

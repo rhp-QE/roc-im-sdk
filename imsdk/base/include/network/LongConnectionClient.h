@@ -8,9 +8,9 @@
 #ifndef ROC_NET_LONGCONNECTIONCLIENT_H
 #define ROC_NET_LONGCONNECTIONCLIENT_H
 
-#include "base/network/include/IWSClient.h"
-#include "base/network/include/WSClientConfig.h"
-#include "base/network/include/WSClient.h"
+#include "imsdk/base/include/network/IWSClient.h"
+#include "imsdk/base/include/network/WSClientConfig.h"
+#include "imsdk/base/include/network/WSClient.h"
 #include <boost/asio/experimental/channel.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <functional>
@@ -307,4 +307,5 @@ private:
 
 } // namespace roc::base::net
 
-#endif // ROC_NET_LONGCONNECTIONCLIENT_H 
+#endif // ROC_NET_LONGCONNECTIONCLIENT_H
+

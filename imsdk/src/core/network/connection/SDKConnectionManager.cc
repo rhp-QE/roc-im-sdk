@@ -8,7 +8,7 @@
 //
 
 #include "SDKConnectionManager.h"
-#include "base/network/include/LongConnectionClient.h"
+#include "imsdk/base/include/network/LongConnectionClient.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
@@ -24,7 +24,7 @@
 #include <mutex>
 #include <string>
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
-#include "base/utils/utils.h"
+#include "imsdk/base/include/utils/utils.h"
 
 namespace json = boost::json;
 namespace asio = boost::asio;

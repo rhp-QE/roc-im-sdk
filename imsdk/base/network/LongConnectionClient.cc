@@ -5,7 +5,7 @@
 // date : 2025-03-23
 //
 
-#include "base/network/include/LongConnectionClient.h"
+#include "imsdk/base/include/network/LongConnectionClient.h"
 #include <boost/asio/use_awaitable.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <boost/system/detail/error_code.hpp>
@@ -17,7 +17,7 @@
 #include <boost/beast/core/stream_traits.hpp>
 #include <memory>
 #include <vector>
-#include "base/network/include/Error.h"
+#include "imsdk/base/include/network/Error.h"
 
 namespace asio = boost::asio;
 
@@ -359,4 +359,5 @@ void LongConnectionClient::p_notify_connection_status(bool connected, const std:
     }
 }
 
-} // namespace roc::base::net 
+} // namespace roc::base::net
+

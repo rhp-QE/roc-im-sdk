@@ -11,8 +11,8 @@
 #ifndef ROC_IM_SDK_CONNECTION_MANAGER_H
 #define ROC_IM_SDK_CONNECTION_MANAGER_H
 
-#include "base/network/include/LongConnectionClient.h"
-#include "base/Uncopyable.h"
+#include "imsdk/base/include/network/LongConnectionClient.h"
+#include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include <boost/asio/experimental/channel.hpp>
 #include <boost/asio/io_context.hpp>

@@ -200,4 +200,5 @@ std::string http_method_to_string(HttpMethod method);
 std::string url_encode(std::string_view str);
 std::string base64_encode(std::string_view str);
 
-} // namespace roc::network 
+} // namespace roc::network
+

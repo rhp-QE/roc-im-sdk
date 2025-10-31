@@ -2,7 +2,7 @@
 
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
-#include "base/containers/ThreadSafeUnorderedMap.h"
+#include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"

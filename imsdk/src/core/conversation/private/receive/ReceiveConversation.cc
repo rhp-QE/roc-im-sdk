@@ -1,6 +1,6 @@
 #include "ReceiveConversation.h"
 
-#include "base/utils/utils.h"
+#include "imsdk/base/include/utils/utils.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/save/SaveConversation.h"

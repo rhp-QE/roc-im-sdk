@@ -7,7 +7,7 @@
 
 #include "MMKV/MMKV.h"
 #include "WCDB/Database.hpp"
-#include "base/Uncopyable.h"
+#include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/core/injection/Injection.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/include/config.h"

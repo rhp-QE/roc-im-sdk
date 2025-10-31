@@ -1,6 +1,6 @@
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 
-#include "base/utils/utils.h"
+#include "imsdk/base/include/utils/utils.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/common/sdkwsEnum.h"

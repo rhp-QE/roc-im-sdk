@@ -1,11 +1,11 @@
 #pragma once
 
-#include "base/network/include/LongConnectionClient.h"
-#include "base/Uncopyable.h"
+#include "imsdk/base/include/network/LongConnectionClient.h"
+#include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
-#include "base/network/include/Error.h"
+#include "imsdk/base/include/network/Error.h"
 #include "imsdk/src/core/network/request/SDKRequestEnum.h"
 
 namespace roc::imsdk::network::request {
