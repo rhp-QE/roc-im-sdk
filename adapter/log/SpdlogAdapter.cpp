@@ -29,31 +29,6 @@ void SpdlogAdapter::initialize_default_logger() {
         // 创建日志目录
         create_log_directory();
         
-        // // 创建控制台彩色日志器
-        // auto console_logger = spdlog::stdout_color_mt("console");
-        // console_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [%n] %v");
-        // console_logger->set_level(spdlog::level::debug);
-        
-        // // 创建文件日志器
-        // auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logDir_ + "/roc_im_sdk.log");
-        // auto file_logger = std::make_shared<spdlog::logger>("file_logger", file_sink);
-        // spdlog::register_logger(file_logger);
-        // file_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] [%n] %v");
-        // file_logger->set_level(spdlog::level::trace);
-        
-        // // 创建轮转文件日志器
-        // auto rotating_logger = spdlog::rotating_logger_mt("rotating_logger", 
-        //                                                  logDir_ + "/roc_im_sdk_rotating.log", 
-        //                                                  1024*1024*5, // 5MB
-        //                                                  3);          // 保留3个文件
-        // rotating_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] [%n] %v");
-        // rotating_logger->set_level(spdlog::level::debug);
-        
-        // // 创建每日文件日志器
-        // auto daily_logger = spdlog::daily_logger_mt("daily_logger", logDir_ + "/roc_im_sdk_daily.log");
-        // daily_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] [%n] %v");
-        // daily_logger->set_level(spdlog::level::debug);
-        
         // 创建异步日志器
         auto async_logger = spdlog::create_async<spdlog::sinks::rotating_file_sink_mt>(
             "async_logger", 
@@ -93,9 +68,6 @@ void SpdlogAdapter::create_log_directory() {
 std::shared_ptr<ILogger> SpdlogAdapter::get_logger() const {
     auto logger = std::make_shared<ILogger>();
     
-    // 注入 spdlog 日志函数
-    // 注意：spdlog 使用 fmt 库，支持 {} 占位符格式化，如：
-    // LOG_INFO("Module", "用户 {} 登录，ID: {}", username, userId);
     logger->set_log_function([this](LogLevel level, const std::string& module, const std::string& message) {
         if (!spdlogLogger_) return;
         
@@ -151,7 +123,7 @@ std::shared_ptr<ILogger> SpdlogAdapter::get_logger() const {
         return false;
     });
     
-                // 注入刷新函数
+    // 注入刷新函数
     logger->set_flush_function([this]() {
         if (spdlogLogger_) {
             spdlogLogger_->flush();
@@ -159,25 +131,6 @@ std::shared_ptr<ILogger> SpdlogAdapter::get_logger() const {
     });
     
     return logger;
-}
-
-void SpdlogAdapter::set_level(LogLevel level) {
-    if (spdlogLogger_) {
-        spdlogLogger_->set_level(convert_level(level));
-    }
-}
-
-LogLevel SpdlogAdapter::get_level() const {
-    if (spdlogLogger_) {
-        return convert_level(spdlogLogger_->level());
-    }
-    return LogLevel::Info;
-}
-
-void SpdlogAdapter::flush() {
-    if (spdlogLogger_) {
-        spdlogLogger_->flush();
-    }
 }
 
 spdlog::level::level_enum SpdlogAdapter::convert_level(LogLevel level) {
@@ -213,17 +166,6 @@ std::shared_ptr<SpdlogAdapter> SpdlogAdapter::create(const std::string& logDir) 
 
 std::shared_ptr<SpdlogAdapter> SpdlogAdapter::create(std::shared_ptr<spdlog::logger> logger) {
     return std::make_shared<SpdlogAdapter>(std::move(logger));
-}
-
-// 测试异步日志和 {} 占位符格式化功能
-void SpdlogAdapter::test_async_logging() const {
-    if (!spdlogLogger_) return;
-    
-    // 测试 {} 占位符格式化
-    spdlogLogger_->info("格式化测试: 字符串={}, 数字={}, 浮点数={:.2f}", "测试", 42, 3.14159);
-    
-    // 强制刷新，确保异步日志被写入
-    spdlogLogger_->flush();
 }
 
 // 启动定期日志刷新（使用协程）
