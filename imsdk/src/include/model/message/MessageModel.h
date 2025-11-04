@@ -113,7 +113,7 @@ struct SendMsgContext {
 
 
 struct SendMessageResponse {
-    bool is_success;
+    int32_t error_code;
     std::string error_msg;
     std::shared_ptr<MessageModel> msg;
 };

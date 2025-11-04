@@ -22,7 +22,7 @@ namespace roc::imsdk::core::message {
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage::send_message(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
-    std::shared_ptr<model::SendMessageResponse> response = std::make_shared<model::SendMessageResponse>(false, "", nullptr);
+    std::shared_ptr<model::SendMessageResponse> response = std::make_shared<model::SendMessageResponse>(1, "", nullptr);
 
     /// 检查数据是否合法
     if (!check_send_context(context)) {
@@ -47,6 +47,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
             co_return response;
         }
 
+        response->error_code = 0;
         response->msg = sdk_msgs.front();
     } // 保存db 然后先返回给用户
 

@@ -163,11 +163,15 @@ target_link_libraries(main PRIVATE
     
     # 7. spdlog（日志）
     spdlog::spdlog
-    
-    # 8. 系统库
+)
+
+# 8. 系统库（仅 Linux）
+if(NOT WIN32)
+target_link_libraries(main PRIVATE 
     pthread
     dl
 )
+endif()
 
 # 说明：
 # - Boost::json 内部依赖 Boost::system，CMake 会自动添加
