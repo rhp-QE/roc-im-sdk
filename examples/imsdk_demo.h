@@ -176,7 +176,7 @@ inline void imsdk_demo() {
         }));
     }
 
-    boost::asio::co_spawn(main_io_context, entrance(), boost::asio::detached);
+    boost::asio::co_spawn(demo_sdk_io_context->get_executor(), entrance(), boost::asio::detached);
 }
 
 

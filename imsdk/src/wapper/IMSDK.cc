@@ -104,6 +104,17 @@ boost::asio::awaitable<bool> IMSDK::delete_conv(std::string conv_id) {
     return sdk_root_->conversation_manager()->delete_conv(conv_id);
 }
 
+
+// =============================  net api  ==============================================
+
+imsdk::network::NetworkStatus IMSDK::get_network_status() {
+    return sdk_root_->connection_manager()->get_network_status();
+}
+
+void IMSDK::on_network_status_change(std::function<void(roc::imsdk::network::NetworkStatus)> callback) {
+    sdk_root_->connection_manager()->on_network_status_change(callback);
+}
+
 /// =======================================================================================
 
 } // namespace roc::imsdk

@@ -4,12 +4,14 @@
 #include <cstdint>
 #include <memory>
 #include <boost/asio/awaitable.hpp>
+#include <netdb.h>
 
-#include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/include/config.h"
+#include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/include/injection/log/ILogger.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
 #include "imsdk/src/include/model/conversation/ConversationModel.h"
+#include "imsdk/src/include/model/network.h"
 
 
 /// 进入消息 Tab
@@ -49,8 +51,12 @@ public:
     boost::asio::awaitable<bool> login_out();
 
     /// ========================== injection api ==========================
+
     void inject_logger(std::shared_ptr<ILogger> logger);
+    
     /// ========================== injection api ==========================
+
+
 
     /// =============================  message api  ======================================
 
@@ -127,6 +133,18 @@ public:
         delete_conv(std::string conv_id);
 
     /// =======================================================================================
+
+
+    // =============================  net api  ==============================================
+    
+    /// 获取网络状态
+    roc::imsdk::network::NetworkStatus
+        get_network_status();
+
+    /// 设置网络状态回调
+    void on_network_status_change(std::function<void(roc::imsdk::network::NetworkStatus)> callback);
+
+    // ======================================================================================
 
 private:
     std::shared_ptr<SDKRoot> sdk_root_;

@@ -14,6 +14,8 @@
 #include "imsdk/base/include/network/LongConnectionClient.h"
 #include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
+#include "imsdk/src/include/model/network.h"
+
 #include <boost/asio/experimental/channel.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
@@ -63,7 +65,15 @@ public:
 
     boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> send_request(network::SdkWSReq *req);
 
+    /// 获取网络状态
+    roc::imsdk::network::NetworkStatus get_network_status();
+
+    /// 设置网络状态变更回调
+    void on_network_status_change(std::function<void(roc::imsdk::network::NetworkStatus)> callback);
+
 private:
+    std::function<void(roc::imsdk::network::NetworkStatus)> network_status_change_callback_;
+
     std::unique_ptr<base::net::LongConnectionClient> lc_;
     
     std::atomic_uint64_t request_id = 0;

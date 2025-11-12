@@ -51,7 +51,10 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
     lc_->set_connection_status_callback([root](bool connected, const std::string &detail) {
         CHECK_ROOT_OR_RETURN_VOID(root)
         CONTEXT_NEW_V2
-        LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail)
+        LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail);
+
+        const NetworkStatus status = connected ? NetworkStatus::NETWORK_STATUS_CONNECTED : NetworkStatus::NETWORK_STATUS_DISCONNECTED;
+        base::util::safe_invoke_block(sdk_root->connection_manager()->network_status_change_callback_, status);
     });
 
     // 
@@ -60,8 +63,6 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
         if (!sroot) {
             return;
         }
-
-        // std::cout<<"[rhpmark] sdk receive message"<<std::endl;
 
         auto conn = sroot->connection_manager();
         boost::asio::co_spawn(conn->net_io_context_, conn->handle_data_received(std::move(data)), asio::detached);
@@ -73,6 +74,12 @@ boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_pt
 
     co_return;
 }
+
+/// 网络状态
+roc::imsdk::network::NetworkStatus SDKConnectionManager::get_network_status() {
+    return lc_->is_connected() ? imsdk::network::NetworkStatus::NETWORK_STATUS_CONNECTED : imsdk::network::NetworkStatus::NETWORK_STATUS_DISCONNECTED;
+}
+
 
 boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
     CHECK_ROOT_OR_CO_RETURN_VALUE(root_, false)
