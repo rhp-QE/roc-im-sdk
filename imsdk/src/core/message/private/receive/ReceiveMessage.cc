@@ -9,6 +9,10 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/private/save/SaveMessage.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
+#include "imsdk/src/core/conversation/ConversationManager.h"
+#include "model/conversation/ConversationModel.h"
+#include "model/message/MessageModel.h"
+#include <boost/asio/awaitable.hpp>
 #include <cstdint>
 #include <memory>
 
@@ -72,25 +76,32 @@ boost::asio::awaitable<void> ReceiveMessage::handle_receive_message(CONTEXT_T, s
     LOG_INFO("MsgManager", "handle_receive_message, size: {}", sdk_msgs.size());
 
     // 对消息进行分类
-    auto result = classify_message(CONTEXT_V, net_msgs, sdk_msgs);
+    auto result = co_await classify_message(CONTEXT_V, net_msgs, sdk_msgs);
     
     // 上抛消息
     base::util::safe_invoke_block(msg_manager->on_messages_callback_, result);
 }
 
-model::OnMessageResult ReceiveMessage::classify_message(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
-    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, model::OnMessageResult())
+boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::classify_message(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, model::OnMessageResult())
 
     model::OnMessageResult result;
+    auto conv_manager = sdk_root->conversation_manager();
 
     std::unordered_map<std::string, std::vector<std::shared_ptr<model::MessageModel>>> sdk_msg_map = base::util::group_by_key(sdk_msgs, [](const std::shared_ptr<model::MessageModel> &msg) {
         return msg->server_msg_id();
     });
 
     for (const auto &msg : net_msgs) {
+        std::shared_ptr<model::MessageModel> sdk_msg = sdk_msg_map[msg->servermsgid()].front();
+        std::shared_ptr<model::ConversationModel> sdk_conv = co_await conv_manager->conv_for_id(sdk_msg->conversation_id());
+
+        /// 会话信息
+        result.convs[sdk_conv->conversation_id()] = sdk_conv;
+
         /// 实时消息
         if (msg->dstatus() == static_cast<int32_t>(common::MsgDStatus::RealTime)) {
-            result.real_time_msgs.push_back(sdk_msg_map[msg->servermsgid()].front());
+            result.real_time_msgs.push_back(sdk_msg);
             continue;
         }
 
@@ -98,18 +109,18 @@ model::OnMessageResult ReceiveMessage::classify_message(CONTEXT_T, std::vector<s
 
         /// 离线消息中 被接收过的消息
         if (is_received) {
-            result.offline_received_msgs.push_back(sdk_msg_map[msg->servermsgid()].front());
+            result.offline_received_msgs.push_back(sdk_msg);
             continue;
         }
 
         /// 离线消息中 没有被接收过的消息
         if (!is_received) {
-            result.offline_not_received_msgs.push_back(sdk_msg_map[msg->servermsgid()].front());
+            result.offline_not_received_msgs.push_back(sdk_msg);
             continue;
         }
     }
     
-    return result;
+    co_return std::move(result);
 }
 
 }

@@ -50,6 +50,7 @@ public:
 
     boost::asio::awaitable<bool> login_out();
 
+
     /// ========================== injection api ==========================
 
     void inject_logger(std::shared_ptr<ILogger> logger);
@@ -133,6 +134,7 @@ public:
         delete_conv(std::string conv_id);
 
     /// =======================================================================================
+
 
 
     // =============================  net api  ==============================================

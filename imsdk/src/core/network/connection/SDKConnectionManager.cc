@@ -80,6 +80,10 @@ roc::imsdk::network::NetworkStatus SDKConnectionManager::get_network_status() {
     return lc_->is_connected() ? imsdk::network::NetworkStatus::NETWORK_STATUS_CONNECTED : imsdk::network::NetworkStatus::NETWORK_STATUS_DISCONNECTED;
 }
 
+/// 注入网络状态变更回调
+void SDKConnectionManager::on_network_status_change(std::function<void(roc::imsdk::network::NetworkStatus)> callback) {
+    network_status_change_callback_ = std::move(callback);
+}
 
 boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
     CHECK_ROOT_OR_CO_RETURN_VALUE(root_, false)

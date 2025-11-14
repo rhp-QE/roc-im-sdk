@@ -87,7 +87,6 @@ private:
     std::unordered_map<std::string, std::string>  sync_ext_;
     
     std::unordered_map<std::string, std::string>  local_ext_;
-
 };
 
 
@@ -128,25 +127,25 @@ struct LoadConvMessagesResult {
 
 struct OnMessageResult {
     /// 删除的消息
-    std::vector<std::shared_ptr<const MessageModel>> deleted_msgs;
+    std::vector<std::shared_ptr<MessageModel>> deleted_msgs;
 
     /// 撤回的消息
-    std::vector<std::shared_ptr<const MessageModel>> recalled_msgs;
+    std::vector<std::shared_ptr<MessageModel>> recalled_msgs;
 
     /// 更新的消息
-    std::vector<std::shared_ptr<const MessageModel>> updated_msgs; 
+    std::vector<std::shared_ptr<MessageModel>> updated_msgs; 
 
     /// 实时消息 (在线收到的消息)
-    std::vector<std::shared_ptr<const MessageModel>> real_time_msgs;
+    std::vector<std::shared_ptr<MessageModel>> real_time_msgs;
 
     /// 离线消息 (本设备离线状态下且没有被别的设备接收过的消息)
-    std::vector<std::shared_ptr<const MessageModel>> offline_not_received_msgs;
+    std::vector<std::shared_ptr<MessageModel>> offline_not_received_msgs;
 
     /// 空洞消息 (本设备离线状态下被别的设备接收过的消息 或 因本地数据库损坏而补齐的消息)
-    std::vector<std::shared_ptr<const MessageModel>> offline_received_msgs;
+    std::vector<std::shared_ptr<MessageModel>> offline_received_msgs;
     
     // 会话id -> 会话信息
-    std::unordered_map<std::string, std::shared_ptr<const ConversationModel>> convs;
+    std::unordered_map<std::string, std::shared_ptr<ConversationModel>> convs;
 };
 
 

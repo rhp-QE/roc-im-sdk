@@ -17,7 +17,7 @@ public:
     static boost::asio::awaitable<void> handle_receive_message(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);
 
     /// 对消息进行分类
-    static model::OnMessageResult classify_message(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs);
+    static boost::asio::awaitable<model::OnMessageResult> classify_message(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs);
 };
 
 }
