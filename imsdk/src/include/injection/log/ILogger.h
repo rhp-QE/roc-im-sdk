@@ -85,81 +85,41 @@ std::string format_message_fmt(const char* format, Args&&... args) {
 
 class ILogger {
 public:
-    /**
-     * 日志输出函数类型定义
-     * 参数：级别、模块名、消息
-     */
     using LogFunction = std::function<void(LogLevel, const std::string&, const std::string&)>;
     
-    /**
-     * 日志级别设置函数类型定义
-     */
     using LevelSetter = std::function<void(LogLevel)>;
     
-    /**
-     * 日志级别获取函数类型定义
-     */
     using LevelGetter = std::function<LogLevel()>;
     
-    /**
-     * 日志级别检查函数类型定义
-     */
     using LevelChecker = std::function<bool(LogLevel)>;
     
-    /**
-     * 刷新日志缓冲区函数类型定义
-     */
     using FlushHandler = std::function<void()>;
 
     ILogger() = default;
     virtual ~ILogger() = default;
 
-    /**
-     * 设置日志输出函数
-     */
     void set_log_function(LogFunction log_func) { log_func_ = std::move(log_func); }
     
-    /**
-     * 设置日志级别函数
-     */
     void set_level_function(LevelSetter func) { set_level_func_ = std::move(func); }
     
-    /**
-     * 设置日志级别获取函数
-     */
     void set_get_level_function(LevelGetter func) { get_level_func_ = std::move(func); }
     
-    /**
-     * 设置日志级别检查函数
-     */
     void set_should_log_function(LevelChecker func) { should_log_func_ = std::move(func); }
     
-    /**
-     * 设置刷新函数
-     */
     void set_flush_function(FlushHandler func) { flush_func_ = std::move(func); }
 
-    /**
-     * 输出日志
-     */
     void log(LogLevel level, const std::string& module, const std::string& message) {
         if (log_func_) {
             log_func_(level, module, message);
         }
     }
     
-    /**
-     * 设置日志级别
-     */
     void set_level(LogLevel level) {
         if (set_level_func_) {
             set_level_func_(level);
         }
     }
     
-    /**
-     * 获取当前日志级别
-     */
     LogLevel get_level() const {
         if (get_level_func_) {
             return get_level_func_();
@@ -167,9 +127,6 @@ public:
         return LogLevel::Info;
     }
     
-    /**
-     * 检查指定级别是否应该输出
-     */
     bool should_log(LogLevel level) const {
         if (should_log_func_) {
             return should_log_func_(level);
@@ -177,9 +134,6 @@ public:
         return level >= get_level();
     }
     
-    /**
-     * 刷新日志缓冲区
-     */
     void flush() {
         if (flush_func_) {
             flush_func_();
