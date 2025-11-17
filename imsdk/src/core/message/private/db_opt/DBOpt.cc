@@ -2,6 +2,8 @@
 
 #include "WCDB/CPPORMMacro.h"
 #include "WCDB/Field.hpp"
+#include "WCDB/StatementInsert.hpp"
+#include "WCDB/Upsert.hpp"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
@@ -64,29 +66,76 @@ bool DBOpt::insert_or_replace_message(CONTEXT_T, std::vector<std::shared_ptr<cor
     });
 }
 
-bool DBOpt::insert_or_replace_message_when_net(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> messages) {
+bool DBOpt::insert_or_update_message(
+    CONTEXT_T, 
+    std::vector<std::shared_ptr<core::message::MessageORM>> messages,
+    const WCDB::Fields& fields,
+    int type
+) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
 
     auto database = sdk_root->database();
     CHECK_POINTER_OR_RETURN_VALUE(database, false);
 
-    const std::unordered_set<std::string> not_update_field {"client_msg_id", "client_order_index", "client_send_time", "local_ext"};
+    // 获取所有字段（用于插入）
+    auto all_fields = MessageORM::allFields();
 
-
-    std::vector<WCDB::Field> update_fields;
-    for (const auto& field : MessageORM::allFields()) {
-        if (not_update_field.find(field.getDescription()) != not_update_field.end()) {
-            continue; // 过滤掉不需要更新的元素
-        }
-        update_fields.push_back(field);
+    // 构建需要更新的字段列表
+    WCDB::Fields update_fields;
+    if (type == 0) { // 白名单模式
+        update_fields = fields;
+    } else { // 黑名单模式
+        update_fields = all_fields.fieldsByRemovingFields(fields);
     }
+    
+    // 获取主键字段（用于冲突检测）
+    WCDB::Field primary_key = WCDB_FIELD(MessageORM::client_msg_id);
 
     return database->runTransaction([&](WCDB::Handle &handle) {
-        bool ret = true;
         for (auto &message : messages) {
-            ret &= database->insertOrReplaceObject<core::message::MessageORM>(*message, tabel_name(CONTEXT_V), update_fields);
+            // 构建 UPSERT 子句：冲突时只更新部分字段
+            WCDB::Upsert upsert = WCDB::Upsert()
+                .onConflict()
+                .indexed(primary_key)
+                .doUpdate();
+            
+            // 为每个需要更新的字段设置 set().to()，使用绑定参数
+            int param_index = all_fields.size() + 1; // 从所有字段之后开始
+            for (const auto& field : update_fields) {
+                upsert.set(field).to(WCDB::BindParameter(param_index++));
+            }
+            
+            // 构建 INSERT 语句：插入所有字段
+            WCDB::StatementInsert statement = WCDB::StatementInsert()
+                .insertIntoTable(tabel_name(CONTEXT_V))
+                .columns(all_fields)
+                .values(WCDB::BindParameter::bindParameters(all_fields.size()))
+                .upsert(upsert);
+
+            // 准备语句，失败则立即返回 false（事务回滚）
+            if (!handle.prepare(statement)) {
+                return false;
+            }
+
+            // 绑定所有字段的值（用于 INSERT）
+            int index = 1;
+            for (const auto& field : all_fields) {
+                handle.bindObject(*message, field, index++);
+            }
+
+            // 绑定更新字段的值（用于 UPSERT 的 SET 子句）
+            for (const auto& field : update_fields) {
+                handle.bindObject(*message, field, index++);
+            }
+
+            // 执行语句，失败则立即返回 false（事务回滚）
+            if (!handle.step()) {
+                handle.finalize();
+                return false;
+            }
+            handle.finalize();
         }
-        return ret;
+        return true;
     });
 }
 
@@ -155,7 +204,7 @@ std::shared_ptr<model::MessageModel> DBOpt::message_for_id(CONTEXT_T, std::strin
     );
 
     if (result.hasValue() && !result.value().empty()) {
-        return core::message::Convert::convert_db_msg_to_sdk_msg(CONTEXT_V, &(result.value().front()));
+        return core::message::Convert::convert_db_msg_to_sdk_msg_tmp(CONTEXT_V, &(result.value().front()));
     }
 
     return nullptr;
@@ -190,7 +239,7 @@ std::vector<std::shared_ptr<model::MessageModel>> DBOpt::query_messages_for_conv
 
     std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs;
     for (auto &msg : result.value()) {
-        sdk_msgs.push_back(core::message::Convert::convert_db_msg_to_sdk_msg(CONTEXT_V, &msg));
+        sdk_msgs.push_back(core::message::Convert::convert_db_msg_to_sdk_msg_tmp(CONTEXT_V, &msg));
     }
 
     return sdk_msgs;

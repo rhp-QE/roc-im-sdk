@@ -53,6 +53,8 @@ public:
     std::unordered_map<std::string, std::string> sync_ext();
     std::unordered_map<std::string, std::string> local_ext();
 
+    std::vector<std::string> members();
+
     friend class roc::imsdk::core::ConversationManager;
     friend class roc::imsdk::core::conversation::Convert;
     friend class roc::imsdk::core::conversation::SaveConversation;
@@ -84,6 +86,8 @@ private:
     std::string last_message_server_id_;
     
     std::shared_ptr<MessageModel> last_message_;
+
+    std::vector<std::string> members_;
 
     bool is_top_;
     

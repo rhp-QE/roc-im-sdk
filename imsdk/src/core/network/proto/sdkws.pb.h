@@ -5246,6 +5246,20 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_syncext();
   void set_allocated_syncext(::std::string* syncext);
 
+  // string members = 14;
+  void clear_members();
+  static const int kMembersFieldNumber = 14;
+  const ::std::string& members() const;
+  void set_members(const ::std::string& value);
+  #if LANG_CXX11
+  void set_members(::std::string&& value);
+  #endif
+  void set_members(const char* value);
+  void set_members(const char* value, size_t size);
+  ::std::string* mutable_members();
+  ::std::string* release_members();
+  void set_allocated_members(::std::string* members);
+
   // .roc.imsdk.network.MsgData lastMsg = 7;
   bool has_lastmsg() const;
   void clear_lastmsg();
@@ -5301,6 +5315,7 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::internal::ArenaStringPtr convname_;
   ::google::protobuf::internal::ArenaStringPtr convavatar_;
   ::google::protobuf::internal::ArenaStringPtr syncext_;
+  ::google::protobuf::internal::ArenaStringPtr members_;
   ::roc::imsdk::network::MsgData* lastmsg_;
   ::google::protobuf::int64 convunreadcount_;
   ::google::protobuf::int32 convtype_;
@@ -19912,6 +19927,59 @@ inline void ConversationInfo::set_allocated_syncext(::std::string* syncext) {
   }
   syncext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), syncext);
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ConversationInfo.syncExt)
+}
+
+// string members = 14;
+inline void ConversationInfo::clear_members() {
+  members_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ConversationInfo::members() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfo.members)
+  return members_.GetNoArena();
+}
+inline void ConversationInfo::set_members(const ::std::string& value) {
+  
+  members_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.members)
+}
+#if LANG_CXX11
+inline void ConversationInfo::set_members(::std::string&& value) {
+  
+  members_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.ConversationInfo.members)
+}
+#endif
+inline void ConversationInfo::set_members(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  members_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.ConversationInfo.members)
+}
+inline void ConversationInfo::set_members(const char* value, size_t size) {
+  
+  members_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.ConversationInfo.members)
+}
+inline ::std::string* ConversationInfo::mutable_members() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ConversationInfo.members)
+  return members_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ConversationInfo::release_members() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ConversationInfo.members)
+  
+  return members_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ConversationInfo::set_allocated_members(::std::string* members) {
+  if (members != NULL) {
+    
+  } else {
+    
+  }
+  members_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), members);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ConversationInfo.members)
 }
 
 // -------------------------------------------------------------------

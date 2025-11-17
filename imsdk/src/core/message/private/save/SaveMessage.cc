@@ -58,7 +58,7 @@ SaveMessage::save_db_msgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::
 
     // 转换为 sdk 消息
     auto sdk_msgs = base::util::transform(db_msgs, [=](const std::shared_ptr<core::message::MessageORM> &msg) {
-        return core::message::Convert::convert_db_msg_to_sdk_msg(CONTEXT_V, msg.get());
+        return core::message::Convert::convert_db_msg_to_sdk_msg_tmp(CONTEXT_V, msg.get());
     });
 
     /// 在同一个线程内执行 确保 db 和 缓存的一致性

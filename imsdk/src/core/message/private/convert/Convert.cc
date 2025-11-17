@@ -63,7 +63,7 @@ std::shared_ptr<core::message::MessageORM> Convert::convert_net_msg_to_db_msg(CO
 
 /// 消息转换 db 消息 -> sdk 消息
 /// sdk 消息需要确保全局实例唯一性， 要从 cache 内查， 没有再构造
-std::shared_ptr<model::MessageModel> Convert::convert_db_msg_to_sdk_msg(CONTEXT_T, const core::message::MessageORM *db_msg) {
+std::shared_ptr<model::MessageModel> Convert::convert_db_msg_to_sdk_msg_tmp(CONTEXT_T, const core::message::MessageORM *db_msg) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     if (!db_msg || db_msg->client_msg_id.empty()) {

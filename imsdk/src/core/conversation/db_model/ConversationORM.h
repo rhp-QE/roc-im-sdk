@@ -28,6 +28,8 @@ public:
     std::string last_message_client_id;
     
     std::string last_message_server_id;
+
+    std::string members_json;
     
     // Conversation settings
     bool is_top;

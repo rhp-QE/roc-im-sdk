@@ -12,9 +12,9 @@ namespace roc::imsdk::core::message {
 void CmdMessageOperator::start(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
-    auto conn = sdk_root->connection_manager();
+    auto conn_manager= sdk_root->connection_manager();
 
-    conn->add_on_push_message_callback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+    conn_manager->add_on_push_message_callback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
         uint32_t call_track_id = resp->trackid();
         message::CmdMessageOperator::handle_push_message(CONTEXT_V, resp);
     });
@@ -70,7 +70,6 @@ boost::asio::awaitable<void> CmdMessageOperator::handle_update_message(CONTEXT_T
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->message_manager();
-    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
 
     std::shared_ptr<network::MsgData> msg_data(cmd_msg->release_msg());
 
@@ -93,5 +92,46 @@ boost::asio::awaitable<void> CmdMessageOperator::handle_update_message(CONTEXT_T
     // 更新上抛
     base::util::safe_invoke_block(msg_manager->on_messages_callback_, result);
 }
+
+// 处理消息状态发生变化
+boost::asio::awaitable<void> CmdMessageOperator::handle_message_status_changed(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+    auto msg_manager = sdk_root->message_manager();
+
+    
+}
+
+// 处理消息已读状态发生变化
+boost::asio::awaitable<void> CmdMessageOperator::handle_message_read_changed(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+    auto msg_manager = sdk_root->message_manager();
+
+    
+}
+
+// 处理消息置顶状态发生变化
+boost::asio::awaitable<void> CmdMessageOperator::handle_message_top_changed(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
+}
+
+// 处理消息property发生变化
+boost::asio::awaitable<void> CmdMessageOperator::handle_message_property_changed(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
+}
+
+// 处理消息syncExt发生变化
+boost::asio::awaitable<void> CmdMessageOperator::handle_message_sync_ext_changed(CONTEXT_T, std::shared_ptr<network::CmdMessage> cmd_msg) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    auto msg_manager = sdk_root->message_manager();
+    CHECK_POINTER_OR_CO_RETURN_VOID(msg_manager);
+}
+
 
 } // namespace roc::imsdk::core::message

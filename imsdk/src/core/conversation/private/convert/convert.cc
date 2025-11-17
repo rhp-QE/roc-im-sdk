@@ -1,8 +1,68 @@
 #include "convert.h"
 
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include <boost/json.hpp>
+#include <unordered_map>
+#include <vector>
 
 namespace roc::imsdk::core::conversation {
+
+namespace {
+
+std::vector<std::string> parse_members_json(const std::string& members_json) {
+    std::vector<std::string> members;
+    if (members_json.empty()) {
+        return members;
+    }
+
+    try {
+        auto json_value = boost::json::parse(members_json);
+        if (!json_value.is_array()) {
+            return members;
+        }
+
+        const auto& arr = json_value.as_array();
+        members.reserve(arr.size());
+        for (const auto& item : arr) {
+            if (item.is_string()) {
+                members.emplace_back(std::string(item.as_string()));
+            }
+        }
+    } catch (const std::exception&) {
+        // ignore malformed json
+    }
+
+    return members;
+}
+
+std::unordered_map<std::string, std::string> parse_ext_string(const std::string& ext) {
+    std::unordered_map<std::string, std::string> result;
+    if (ext.empty()) {
+        return result;
+    }
+
+    try {
+        auto json_value = boost::json::parse(ext);
+        if (!json_value.is_object()) {
+            return result;
+        }
+
+        const auto& obj = json_value.as_object();
+        for (const auto& item : obj) {
+            if (item.value().is_string()) {
+                result.emplace(item.key_c_str(), std::string(item.value().as_string()));
+            } else {
+                result.emplace(item.key_c_str(), boost::json::serialize(item.value()));
+            }
+        }
+    } catch (const std::exception&) {
+        // ignore malformed json, return what we've parsed so far (likely empty)
+    }
+
+    return result;
+}
+
+} // namespace
 
 /// 会话转换 网络会话 -> db 会话
 std::shared_ptr<core::conversation::ConversationORM> Convert::convert_net_conv_to_db_conv(const network::ConversationInfo *conv) {
@@ -27,6 +87,8 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::convert_net_conv_t
     db_conv->last_message_client_id = conv->has_lastmsg() ? conv->lastmsg().clientmsgid() : "";
     
     db_conv->last_message_server_id = conv->has_lastmsg() ? conv->lastmsg().servermsgid() : "";
+
+    db_conv->members_json = conv->members();
     
     // Conversation settings
     db_conv->is_top = conv->istop();
@@ -78,6 +140,9 @@ std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(C
     
     // Note: last_message_ needs to be set from elsewhere, setting to nullptr for now
     sdk_conv->last_message_ = nullptr;
+
+    /// 会话成员
+    sdk_conv->members_ = parse_members_json(db_conv->members_json);
     
     // Set fields that don't exist in ConversationORM with default values
     sdk_conv->last_update_time_ = db_conv->last_message_time; // Use last_message_time as fallback
@@ -97,9 +162,9 @@ std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(C
     
     sdk_conv->draft_ = db_conv->draft;
     
-    // Extensions - TODO: Convert string to unordered_map
-    // sdk_conv->sync_ext_ = parse_ext_string(db_conv->sync_ext);
-    // sdk_conv->local_ext_ = parse_ext_string(db_conv->local_ext);
+    // Extensions
+    sdk_conv->sync_ext_ = parse_ext_string(db_conv->sync_ext);
+    sdk_conv->local_ext_ = parse_ext_string(db_conv->local_ext);
     
     return sdk_conv;
 }

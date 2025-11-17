@@ -105,6 +105,11 @@ std::unordered_map<std::string, std::string> ConversationModel::local_ext() {
     return local_ext_;
 }
 
+std::vector<std::string> ConversationModel::members() {
+    std::shared_lock<std::shared_mutex> read_lock(mutex_);
+    return members_;
+}
+
 void ConversationModel::move_from(ConversationModel&& other) noexcept {
     if (this == &other) {
         return;
@@ -134,7 +139,7 @@ void ConversationModel::move_from(ConversationModel&& other) noexcept {
     last_message_client_id_ = std::move(other.last_message_client_id_);
     last_message_server_id_ = std::move(other.last_message_server_id_);
     draft_ = std::move(other.draft_);
-    
+    members_ = std::move(other.members_);
     // 移动智能指针成员
     last_message_ = std::move(other.last_message_);
     

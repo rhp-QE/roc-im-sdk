@@ -16,10 +16,23 @@ enum class MsgDStatus : int32_t {
     Received  = 2,
 };
 
+/// 命令消息操作类型
 enum class CmdMessageOp : int32_t {
     Recall  = 1,  // 撤回
     Delete  = 2,  // 删除
     Update  = 3,  // 更新
+
+    MSG_STATUS_CHANGED      = 1001, // 消息状态发生变化 (发送成功、发送失败、删除、撤回)
+    MSG_READ_CHANGED        = 1002, // 已读状态发生变化
+    MSG_TOP_CHANGED         = 1003, // 置顶状态发生变化
+    MSG_PROPERTY_CHANGED    = 1004, // property 发生改变
+    MSG_SYNC_EXT_CHANGED    = 1005, // syncExt 发生改变
+
+    CONV_STATUS_CHANGED     = 2001, // 会话删除状态发生变化
+    CONV_READ_CHANGED       = 2002, // 会话已读状态发生变化
+    CONV_TOP_CHANGED        = 2003, // 会话置顶状态发生变化
+    // CONV_PROPERTY_CHANGED   = 2004, // 会话property 发生改变
+    CONV_SYNC_EXT_CHANGED   = 2005, // 会话syncExt 发生改变
 };
 
 enum class CmdConvOp : int32_t {

@@ -162,7 +162,7 @@ main() {
     create_target_dirs
     
     # 备份现有文件
-    backup_existing_files
+    # backup_existing_files
     
     # 生成 C++ 代码
     generate_cpp_code
