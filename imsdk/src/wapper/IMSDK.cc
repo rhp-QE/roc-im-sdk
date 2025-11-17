@@ -26,6 +26,10 @@ boost::asio::awaitable<bool> IMSDK::init_sdk(const Config config) {
     return sdk_root_->init_sdk(config);
 }
 
+boost::asio::awaitable<bool> IMSDK::run() {
+    return sdk_root_->run();
+}
+
 boost::asio::awaitable<bool> IMSDK::login_out() {
     return sdk_root_->login_out();
 }

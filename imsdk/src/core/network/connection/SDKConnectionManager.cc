@@ -37,42 +37,37 @@ base::net::LongConnectionConfig generateNetConfig(roc::imsdk::SDKRoot* root);
 
 SDKConnectionManager::SDKConnectionManager(boost::asio::io_context &io_context) : net_io_context_(io_context) {}
 
-boost::asio::awaitable<void> SDKConnectionManager::init_and_connect(std::weak_ptr<SDKRoot> root) {
+boost::asio::awaitable<bool> SDKConnectionManager::init_and_connect(std::weak_ptr<SDKRoot> root) {
 
     root_ = root;
 
-    CHECK_ROOT_OR_CO_RETURN_VOID(root)
+    CHECK_ROOT_OR_CO_RETURN_VALUE(root, false)
 
     CONTEXT_NEW_V2
 
     lc_ = std::make_unique<base::net::LongConnectionClient>(generateNetConfig(root.lock().get()), net_io_context_);
 
     // 观察网络状态变更
-    lc_->set_connection_status_callback([root](bool connected, const std::string &detail) {
+    lc_->set_connection_status_callback([=, this](bool connected, const std::string &detail) {
         CHECK_ROOT_OR_RETURN_VOID(root)
         CONTEXT_NEW_V2
         LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail);
 
         const NetworkStatus status = connected ? NetworkStatus::NETWORK_STATUS_CONNECTED : NetworkStatus::NETWORK_STATUS_DISCONNECTED;
-        base::util::safe_invoke_block(sdk_root->connection_manager()->network_status_change_callback_, status);
+        base::util::safe_invoke_block(this->network_status_change_callback_, status);
     });
 
-    // 
-    lc_->set_data_received_callback([wroot = root_](boost::beast::flat_buffer data) {
-        std::shared_ptr<SDKRoot> sroot = wroot.lock();
-        if (!sroot) {
-            return;
-        }
-
-        auto conn = sroot->connection_manager();
-        boost::asio::co_spawn(conn->net_io_context_, conn->handle_data_received(std::move(data)), asio::detached);
+    // 数据接收回调 
+    lc_->set_data_received_callback([=, this](boost::beast::flat_buffer data) {
+        CHECK_ROOT_OR_RETURN_VOID(root)
+        boost::asio::co_spawn(net_io_context_, this->handle_data_received(std::move(data)), asio::detached);
     });
 
     auto res = co_await lc_->connect();
     
     LOG_INFO("WS","init_and_connected: {}, error_info: {}", res.has_value(), res.has_value() ? "nil" : res.error().to_string())
 
-    co_return;
+    co_return res.has_value() ? true : false;
 }
 
 /// 网络状态

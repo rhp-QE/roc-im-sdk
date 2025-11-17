@@ -54,7 +54,7 @@ public:
 
     SDKConnectionManager(boost::asio::io_context &io_context);
 
-    boost::asio::awaitable<void> init_and_connect(std::weak_ptr<SDKRoot> root);
+    boost::asio::awaitable<bool> init_and_connect(std::weak_ptr<SDKRoot> root);
 
     boost::asio::awaitable<bool> disconnect();
 

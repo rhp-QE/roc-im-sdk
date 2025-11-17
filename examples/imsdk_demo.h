@@ -68,6 +68,12 @@ inline boost::asio::awaitable<bool> p_login() {
     // 初始化sdk
     co_await imsdk->init_sdk(config);
 
+    // 监听长链状态
+    imsdk->on_network_status_change([](roc::imsdk::network::NetworkStatus status) {
+        std::cout << "长链状态: " << (status == roc::imsdk::network::NetworkStatus::NETWORK_STATUS_CONNECTED ? "连接" : "断开") << std::endl;
+    });
+
+    // 监听消息更新
     imsdk->on_messagee([](roc::imsdk::model::OnMessageResult result) {
         std::cout << "\n ==============消息更新 (begin) =============" << std::endl;
         std::cout << " 实时消息: " << result.real_time_msgs.size() << std::endl;
@@ -85,7 +91,15 @@ inline boost::asio::awaitable<bool> p_login() {
         std::cout << " ==============消息更新 (end) =============\n" << std::endl;
     });
 
-    co_return true;
+    // 运行sdk
+    bool res = co_await imsdk->run();
+    if (res) {
+        std::cout << "登录成功" << std::endl;
+    } else {
+        std::cout << "登录失败" << std::endl;
+        co_await imsdk->login_out();
+    }
+    co_return res;
 }
 
 inline boost::asio::awaitable<void> chat_first_page() {

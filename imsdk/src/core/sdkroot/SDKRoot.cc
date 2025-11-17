@@ -67,9 +67,6 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
         connection_manager_ = std::make_unique<network::SDKConnectionManager>(net_io_context());
     }
 
-    // 初始化长连接管理器
-    co_await connection_manager_->init_and_connect(weak_from_this());
-    
     {
         group_manager_->all_component_did_load();
         message_manager_->all_component_did_load();
@@ -85,6 +82,11 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     LOG_DEBUG("SDKRoot", "init_sdk {}", "over")
     
     co_return true;
+}
+
+/// todo: 运行SDK
+boost::asio::awaitable<bool> SDKRoot::run() {
+    return connection_manager_->init_and_connect(weak_from_this());
 }
 
 boost::asio::awaitable<bool> SDKRoot::login_out() {

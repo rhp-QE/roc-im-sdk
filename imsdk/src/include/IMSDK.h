@@ -48,6 +48,9 @@ public:
     // 初始化SDK
     boost::asio::awaitable<bool> init_sdk(const Config config);
 
+    // 运行SDK
+    boost::asio::awaitable<bool> run();
+
     boost::asio::awaitable<bool> login_out();
 
 
