@@ -37,7 +37,7 @@ inline roc::imsdk::model::SendMsgContext generateSendMessageContext(std::string 
 
 std::shared_ptr<roc::imsdk::IMSDK> imsdk;
 
-inline void print_msg(std::shared_ptr<const roc::imsdk::model::MessageModel> msg) {
+inline void print_msg(std::shared_ptr<roc::imsdk::model::MessageModel> msg) {
     std::cout << "      ----------------------------------------" << std::endl;
     std::cout << "      [message_id:   ] " << msg->client_msg_id() << std::endl;
     std::cout << "      [message_order:] " << msg->client_order_index() << std::endl;
