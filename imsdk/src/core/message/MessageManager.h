@@ -59,7 +59,7 @@ public:
     /// 查询会话消息
     boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit);
 
-    /// 当进入会话时，获取首屏消息。 后续加载更多消息时使用 messages_for_conv
+    /// 当进入会话时，获取首屏消息。 后续加载更多消息时使用 messages_for_conv_id
     boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> messages_when_enter_chat(std::string conv_id);
 
     /// ==================================================================================

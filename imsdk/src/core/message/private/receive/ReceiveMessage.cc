@@ -94,10 +94,14 @@ boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::classify_message(
 
     for (const auto &msg : net_msgs) {
         std::shared_ptr<model::MessageModel> sdk_msg = sdk_msg_map[msg->servermsgid()].front();
-        std::shared_ptr<model::ConversationModel> sdk_conv = co_await conv_manager->conv_for_id(sdk_msg->conversation_id());
+        // std::shared_ptr<model::ConversationModel> sdk_conv = co_await conv_manager->conv_for_id(sdk_msg->conversation_id());
 
-        /// 会话信息
-        result.convs[sdk_conv->conversation_id()] = sdk_conv;
+        // if (!sdk_conv || !sdk_msg) {
+        //     continue;
+        // }
+
+        // /// 会话信息
+        // result.convs[sdk_conv->conversation_id()] = sdk_conv;
 
         /// 实时消息
         if (msg->dstatus() == static_cast<int32_t>(common::MsgDStatus::RealTime)) {

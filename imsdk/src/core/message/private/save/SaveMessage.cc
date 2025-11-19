@@ -25,7 +25,7 @@ void log_save_messags(CONTEXT_T, std::vector<std::shared_ptr<core::message::Mess
 
     std::string info = "[";
     for (auto ptr : db_msgs) {
-        info += ", message_id = " + ptr->client_msg_id + " conv_id = " + ptr->conversation_id;
+        info += ", message_id = " + ptr->client_msg_id + " conv_id = " + ptr->conversation_id + " order = " + std::to_string(ptr->client_order_index);
     }
     info += "]";
     
@@ -65,6 +65,13 @@ SaveMessage::save_db_msgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::
     auto saved_msgs = co_await boost::asio::co_spawn(msg_manager->msg_strand(), [sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), CONTEXT_V]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         // 保存到数据库
         bool ret = message::DBOpt::insert_or_replace_message(CONTEXT_V, db_msgs);
+
+        // // 排除 local_ext 和 client_order_index 字段（黑名单模式）
+        // WCDB::Fields not_update_when_exit({
+        //     WCDB_FIELD(core::message::MessageORM::local_ext),
+        //     WCDB_FIELD(core::message::MessageORM::client_order_index)
+        // });
+        // bool ret = message::DBOpt::insert_or_update_message(CONTEXT_V, db_msgs, not_update_when_exit, 1);
         if (!ret) {
             co_return std::vector<std::shared_ptr<model::MessageModel>>();
         }
