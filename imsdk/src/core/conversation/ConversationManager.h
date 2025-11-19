@@ -17,7 +17,7 @@ namespace roc::imsdk::core {
 
 class ConversationManager : public roc::base::uncopyable {
 public:
-    ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor);
+    ConversationManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor);
     ~ConversationManager();
 
     // 组件加载完成后的初始化
@@ -56,6 +56,10 @@ public:
     boost::asio::awaitable<bool>
         set_conv_mute(std::string conv_id, bool is_mute);
 
+    /// 设置会话已读
+    boost::asio::awaitable<bool>
+        set_conv_read(std::string conv_id);
+
     /// 删除会话
     boost::asio::awaitable<bool>
         delete_conv(std::string conv_id);
@@ -63,7 +67,7 @@ public:
     /// =======================================================================================
 
 private:
-    std::weak_ptr<SDKRoot> w_sdk_root_;
+    std::weak_ptr<SDKRoot> w_sdk_root;
     std::atomic<int64_t> cursor_ = -1;
     
     /// 会话缓存

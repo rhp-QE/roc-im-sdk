@@ -37,20 +37,18 @@ base::net::LongConnectionConfig generateNetConfig(roc::imsdk::SDKRoot* root);
 
 SDKConnectionManager::SDKConnectionManager(boost::asio::io_context &io_context) : net_io_context_(io_context) {}
 
-boost::asio::awaitable<bool> SDKConnectionManager::init_and_connect(std::weak_ptr<SDKRoot> root) {
+boost::asio::awaitable<bool> SDKConnectionManager::init_and_connect(std::shared_ptr<SDKRoot> sdk_root) {
 
-    root_ = root;
+    w_sdk_root = sdk_root;
 
-    CHECK_ROOT_OR_CO_RETURN_VALUE(root, false)
-
-    CONTEXT_NEW_V2
-
-    lc_ = std::make_unique<base::net::LongConnectionClient>(generateNetConfig(root.lock().get()), net_io_context_);
+    START_TRACK;
+    lc_ = std::make_unique<base::net::LongConnectionClient>(generateNetConfig(sdk_root.get()), net_io_context_);
 
     // 观察网络状态变更
     lc_->set_connection_status_callback([=, this](bool connected, const std::string &detail) {
-        CHECK_ROOT_OR_RETURN_VOID(root)
-        CONTEXT_NEW_V2
+        CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+        START_TRACK;
+
         LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail);
 
         const NetworkStatus status = connected ? NetworkStatus::NETWORK_STATUS_CONNECTED : NetworkStatus::NETWORK_STATUS_DISCONNECTED;
@@ -59,7 +57,7 @@ boost::asio::awaitable<bool> SDKConnectionManager::init_and_connect(std::weak_pt
 
     // 数据接收回调 
     lc_->set_data_received_callback([=, this](boost::beast::flat_buffer data) {
-        CHECK_ROOT_OR_RETURN_VOID(root)
+        CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
         boost::asio::co_spawn(net_io_context_, this->handle_data_received(std::move(data)), asio::detached);
     });
 
@@ -81,9 +79,8 @@ void SDKConnectionManager::on_network_status_change(std::function<void(roc::imsd
 }
 
 boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
-    CHECK_ROOT_OR_CO_RETURN_VALUE(root_, false)
-
-    CONTEXT_NEW_V2
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false)
+    START_TRACK;
 
     auto res = co_await lc_->disconnect();
 
@@ -103,7 +100,7 @@ void SDKConnectionManager::all_component_did_load() {
 
 
 boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> SDKConnectionManager::send_request(network::SdkWSReq *req) {
-    std::shared_ptr<SDKRoot> root = root_.lock();
+    std::shared_ptr<SDKRoot> root = w_sdk_root.lock();
     if (!root) {
         co_return std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request"));
     }
@@ -134,7 +131,7 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
 
 boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::beast::flat_buffer data) {
     try {
-        CHECK_ROOT_OR_CO_RETURN_VOID(root_)
+        CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
         std::unique_ptr<network::SdkWSResp> resp = std::make_unique<network::SdkWSResp>();
         resp->ParseFromArray(data.data().data(), data.size());

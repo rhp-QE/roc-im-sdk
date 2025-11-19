@@ -11,17 +11,16 @@
 
 namespace roc::imsdk::core {
 
-ConversationManager::ConversationManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor) 
-    : w_sdk_root_(w_sdk_root), 
+ConversationManager::ConversationManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor) 
+    : w_sdk_root(sdk_root), 
       conv_strand_(boost::asio::make_strand(executor))
 {}
 
 ConversationManager::~ConversationManager() = default;
 
 void ConversationManager::all_component_did_load() {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root_)
-
-    CONTEXT_NEW_V1
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+    START_TRACK;
 
     /// 创建数据库表
     conversation::DBOpt::create_conversation_table_if_need(CONTEXT_V);
@@ -42,18 +41,18 @@ void ConversationManager::on_conv_update(model::OnConvUpdateCallbackType callbac
 }
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::conv_for_id(std::string conv_id) {
-    CONTEXT_NEW_V1
+    START_TRACK;
     co_return co_await conversation::SaveConversation::sdk_conv_for_id(CONTEXT_V, conv_id);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
-    CONTEXT_NEW_V1
+    START_TRACK;
     co_return co_await conversation::SaveConversation::load_convs_from_db(CONTEXT_V, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::convs_when_login() {
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root_, nullptr)
-    CONTEXT_NEW_V1
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr)
+    START_TRACK;
 
     /// 触发混链拉取
     asio::co_spawn(sdk_root->net_io_context(), conversation::UserMessageFetcher::fetch_user_messages(CONTEXT_V), asio::detached);
@@ -73,13 +72,19 @@ boost::asio::awaitable<bool> ConversationManager::set_conv_mute(std::string conv
     co_return false;
 }
 
+// 设置会话已读
+boost::asio::awaitable<bool> ConversationManager::set_conv_read(std::string conv_id) {
+    // TODO: Implement set conversation read
+    co_return false;
+}
+
 boost::asio::awaitable<bool> ConversationManager::delete_conv(std::string conv_id) {
     // TODO: Implement delete conversation
     co_return false;
 }
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::create_conv(std::vector<std::string> member_user_ids, std::string conv_name) {
-    CONTEXT_NEW_V1
+    START_TRACK;
     co_return co_await conversation::CreateConversation::create_conv(CONTEXT_V, member_user_ids, conv_name);
 }
 

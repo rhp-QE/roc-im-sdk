@@ -6,14 +6,14 @@ namespace roc::imsdk::core {
 
 class GroupManager : public roc::base::uncopyable {
 public:
-    GroupManager(std::weak_ptr<SDKRoot> w_sdk_root);
+    GroupManager(std::shared_ptr<SDKRoot> sdk_root);
     ~GroupManager();
 
     // 组件加载完成后的初始化
     void all_component_did_load();
 
 private:
-    std::weak_ptr<SDKRoot> w_sdk_root_;
+    std::weak_ptr<SDKRoot> w_sdk_root;
 };
 
 } // namespace roc::imsdk::core

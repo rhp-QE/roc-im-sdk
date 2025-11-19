@@ -15,15 +15,15 @@
 
 namespace roc::imsdk::core {
 
-MessageManager::MessageManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor) 
-    : w_sdk_root_(w_sdk_root), 
+MessageManager::MessageManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor) 
+    : w_sdk_root(sdk_root), 
       msg_strand_(boost::asio::make_strand(executor))
 {}
 
 MessageManager::~MessageManager() = default;
 
 void MessageManager::all_component_did_load() {
-    CONTEXT_NEW_V1
+    START_TRACK;
 
     /// 创建BD 如果必要
     message::DBOpt::create_message_table_if_need(CONTEXT_V);
@@ -34,9 +34,9 @@ void MessageManager::all_component_did_load() {
 }
 
 void MessageManager::handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
-    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root_)
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+    START_TRACK;
 
-    CONTEXT_NEW_V1
     boost::asio::co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(CONTEXT_V, net_msgs), boost::asio::detached);
 }
 
@@ -66,26 +66,25 @@ boost::asio::awaitable<bool> MessageManager::update_message_sync_ext(std::string
 }
 
 boost::asio::awaitable<bool> MessageManager::mark_messages_as_read(const std::vector<std::string> &msg_ids) {
-    CONTEXT_NEW_V1
+    START_TRACK;
     bool result = message::SaveMessage::mark_messages_as_read(CONTEXT_V, msg_ids);
     co_return result;
 }
 
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageManager::message_for_id(std::string msg_id) {
-    CONTEXT_NEW_V1
+    START_TRACK;
     co_return co_await message::SaveMessage::sdk_msg_for_id(CONTEXT_V, msg_id);
 }
 
 // 查询DB
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
-    CONTEXT_NEW_V1
+    START_TRACK;
     co_return co_await message::SaveMessage::load_message_from_db(CONTEXT_V, conv_id, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::messages_when_enter_chat(std::string conv_id) {
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root_, nullptr)
-
-    CONTEXT_NEW_V1
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr)
+    START_TRACK;
 
     boost::asio::co_spawn(sdk_root->sdk_io_context(), [=]() -> boost::asio::awaitable<void> {
         CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
@@ -111,7 +110,7 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
 }
 
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::send_message(model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
-    CONTEXT_NEW_V1
+    START_TRACK;
     return message::SendMessage::send_message(CONTEXT_V, context, callback);
 }
 

@@ -2,7 +2,7 @@
 
 namespace roc::imsdk::core {
 
-GroupManager::GroupManager(std::weak_ptr<SDKRoot> w_sdk_root) : w_sdk_root_(w_sdk_root) {}
+GroupManager::GroupManager(std::shared_ptr<SDKRoot> sdk_root) : w_sdk_root(sdk_root) {}
 
 GroupManager::~GroupManager() = default;
 

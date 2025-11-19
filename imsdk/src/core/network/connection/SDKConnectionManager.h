@@ -54,7 +54,7 @@ public:
 
     SDKConnectionManager(boost::asio::io_context &io_context);
 
-    boost::asio::awaitable<bool> init_and_connect(std::weak_ptr<SDKRoot> root);
+    boost::asio::awaitable<bool> init_and_connect(std::shared_ptr<SDKRoot> sdk_root);
 
     boost::asio::awaitable<bool> disconnect();
 
@@ -84,7 +84,7 @@ private:
 
     std::vector<OnPushMesageCallbackType> on_push_message_callbacks;
 
-    std::weak_ptr<SDKRoot> root_;
+    std::weak_ptr<SDKRoot> w_sdk_root;
 
     boost::asio::awaitable<void> handle_data_received(boost::beast::flat_buffer data);
 };

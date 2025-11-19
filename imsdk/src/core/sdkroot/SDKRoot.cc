@@ -61,9 +61,9 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     }
 
     {
-        group_manager_ = std::make_unique<core::GroupManager>(weak_from_this());
-        message_manager_ = std::make_unique<core::MessageManager>(weak_from_this(), sdk_io_context().get_executor());
-        conversation_manager_ = std::make_unique<core::ConversationManager>(weak_from_this(), sdk_io_context().get_executor());
+        group_manager_ = std::make_unique<core::GroupManager>(shared_from_this());
+        message_manager_ = std::make_unique<core::MessageManager>(shared_from_this(), sdk_io_context().get_executor());
+        conversation_manager_ = std::make_unique<core::ConversationManager>(shared_from_this(), sdk_io_context().get_executor());
         connection_manager_ = std::make_unique<network::SDKConnectionManager>(net_io_context());
     }
 
@@ -77,8 +77,7 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     auto sdk_root = shared_from_this();
     auto w_sdk_root = weak_from_this();
 
-    CONTEXT_NEW_V2
-
+    START_TRACK;
     LOG_DEBUG("SDKRoot", "init_sdk {}", "over")
     
     co_return true;
@@ -86,7 +85,7 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
 
 /// todo: 运行SDK
 boost::asio::awaitable<bool> SDKRoot::run() {
-    return connection_manager_->init_and_connect(weak_from_this());
+    return connection_manager_->init_and_connect(shared_from_this());
 }
 
 boost::asio::awaitable<bool> SDKRoot::login_out() {

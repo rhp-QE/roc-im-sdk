@@ -96,14 +96,22 @@ boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::create_
     return sdk_root_->conversation_manager()->create_conv(std::move(member_user_ids), std::move(conv_name));
 }
 
+// 设置会话置顶
 boost::asio::awaitable<bool> IMSDK::set_conv_top(std::string conv_id, bool is_top) {
     return sdk_root_->conversation_manager()->set_conv_top(conv_id, is_top);
 }
 
+// 设置会话免打扰
 boost::asio::awaitable<bool> IMSDK::set_conv_mute(std::string conv_id, bool is_mute) {
     return sdk_root_->conversation_manager()->set_conv_mute(conv_id, is_mute);
 }
 
+// 设置会话已读
+boost::asio::awaitable<bool> IMSDK::set_conv_read(std::string conv_id) {
+    return sdk_root_->conversation_manager()->set_conv_read(conv_id);
+}
+
+// 删除会话
 boost::asio::awaitable<bool> IMSDK::delete_conv(std::string conv_id) {
     return sdk_root_->conversation_manager()->delete_conv(conv_id);
 }

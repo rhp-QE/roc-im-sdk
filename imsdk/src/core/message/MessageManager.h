@@ -18,7 +18,7 @@ namespace roc::imsdk::core {
 
 class MessageManager : public roc::base::uncopyable {
 public:
-    MessageManager(std::weak_ptr<SDKRoot> w_sdk_root, boost::asio::io_context::executor_type executor);
+    MessageManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor);
     ~MessageManager();
 
     // 组件加载完成后的初始化
@@ -65,7 +65,7 @@ public:
     /// ==================================================================================
 
 private:
-    std::weak_ptr<SDKRoot> w_sdk_root_;
+    std::weak_ptr<SDKRoot> w_sdk_root;
 
     /// 消息顺序锁
     std::mutex msg_order_mutex_;

@@ -64,8 +64,5 @@
 #define TRACK_ID \
     call_track_id
 
-#define CONTEXT_NEW_V1 \
-    std::weak_ptr<roc::imsdk::SDKRoot> w_sdk_root = w_sdk_root_; uint32_t call_track_id = roc::base::util::generate_uint32_random();
-
-#define CONTEXT_NEW_V2 \
+#define START_TRACK \
     uint32_t call_track_id = roc::base::util::generate_uint32_random();

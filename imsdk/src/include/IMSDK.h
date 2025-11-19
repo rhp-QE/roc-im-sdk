@@ -132,6 +132,10 @@ public:
     boost::asio::awaitable<bool>
         set_conv_mute(std::string conv_id, bool is_mute);
 
+    /// 设置会话已读
+    boost::asio::awaitable<bool>
+        set_conv_read(std::string conv_id);
+
     /// 删除会话
     boost::asio::awaitable<bool>
         delete_conv(std::string conv_id);
