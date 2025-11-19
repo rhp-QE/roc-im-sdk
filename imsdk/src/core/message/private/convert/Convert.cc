@@ -38,6 +38,7 @@ std::shared_ptr<core::message::MessageORM> Convert::convert_net_msg_to_db_msg(CO
     
     db_msg->from_user_id = msg->sendid();
     
+    // 一条消息只会出自一个客户端， 即使一个客户 多端登录 也不会出现 同一条消息 clent_msg_id 覆盖或者不一致的情况
     db_msg->client_msg_id = send_from_me ? msg->clientmsgid() : msg->servermsgid();
     
     db_msg->server_msg_id = msg->servermsgid();
