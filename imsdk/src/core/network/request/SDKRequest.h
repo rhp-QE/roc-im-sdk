@@ -14,15 +14,15 @@ namespace roc::imsdk::network::request {
 
 // 发送消息
 asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
-    send_message(CONTEXT_T, network::SendMessageReq *request);
+    sendMessage(CONTEXT_T, network::SendMessageReq *request);
 
 // 拉取混链列表
 asio::awaitable<std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error>> 
-    fetch_user_message_list(CONTEXT_T, network::FetchUserMessageListReq *request);
+    fetchUserMessageList(CONTEXT_T, network::FetchUserMessageListReq *request);
 
 // 拉取单链
 asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
-    fetch_conv_message_list(CONTEXT_T, network::FetchConvMessageListReq *request);
+    fetchConvMessageList(CONTEXT_T, network::FetchConvMessageListReq *request);
 
 // ------------------------------------------------------------------------------------------
 

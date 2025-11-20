@@ -22,20 +22,20 @@ class SaveConversation {
 public:
     /// 保存网络会话
     static boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
-        save_net_conversations(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> convs);
+        SaveNetConversations(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> convs);
     
     /// 根据 ID 获取 SDK 会话
     static boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> 
-        sdk_conv_for_id(CONTEXT_T, const std::string &conv_id);
+        SdkConvForId(CONTEXT_T, const std::string &conv_id);
 
     /// 查询会话
     static boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
-        load_convs_from_db(CONTEXT_T, int64_t cursor, int64_t limit, bool forward);
+        LoadConvsFromDb(CONTEXT_T, int64_t cursor, int64_t limit, bool forward);
     
 private:
     /// 更新会话缓存 (非线程安全， )
     static boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
-        update_conv_cache(CONTEXT_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs);
+        p_UpdateConvCache(CONTEXT_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs);
 };
 
 } // namespace roc::imsdk::core::conversation

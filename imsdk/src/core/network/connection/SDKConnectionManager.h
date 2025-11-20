@@ -54,39 +54,39 @@ public:
 
     SDKConnectionManager(boost::asio::io_context &io_context);
 
-    boost::asio::awaitable<bool> init_and_connect(std::shared_ptr<SDKRoot> sdk_root);
+    boost::asio::awaitable<bool> InitAndConnect(std::shared_ptr<SDKRoot> sdk_root);
 
     boost::asio::awaitable<bool> disconnect();
 
     // 组件加载完成后的初始化
-    void all_component_did_load();
+    void AllComponentDidLoad();
 
-    void add_on_push_message_callback(OnPushMesageCallbackType callback);
+    void AddOnPushMessageCallback(OnPushMesageCallbackType callback);
 
-    boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> send_request(network::SdkWSReq *req);
+    boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> SendRequest(network::SdkWSReq *req);
 
     /// 获取网络状态
-    roc::imsdk::network::NetworkStatus get_network_status();
+    roc::imsdk::network::NetworkStatus GetNetworkStatus();
 
     /// 设置网络状态变更回调
-    void on_network_status_change(std::function<void(roc::imsdk::network::NetworkStatus)> callback);
+    void OnNetworkStatusChange(std::function<void(roc::imsdk::network::NetworkStatus)> callback);
 
 private:
     std::function<void(roc::imsdk::network::NetworkStatus)> network_status_change_callback_;
 
     std::unique_ptr<base::net::LongConnectionClient> lc_;
     
-    std::atomic_uint64_t request_id = 0;
+    std::atomic_uint64_t request_id_ = 0;
     using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::unique_ptr<network::SdkWSResp>)>;
-    std::unordered_map<std::string, std::shared_ptr<channel_type>> channel_map;
+    std::unordered_map<std::string, std::shared_ptr<channel_type>> channel_map_;
     boost::asio::io_context &net_io_context_;
     std::mutex mutex_;
 
-    std::vector<OnPushMesageCallbackType> on_push_message_callbacks;
+    std::vector<OnPushMesageCallbackType> on_push_message_callbacks_;
 
     std::weak_ptr<SDKRoot> w_sdk_root;
 
-    boost::asio::awaitable<void> handle_data_received(boost::beast::flat_buffer data);
+    boost::asio::awaitable<void> handleDataReceived(boost::beast::flat_buffer data);
 };
 }
 #endif // ROC_IM_SDK_CONNECTION_MANAGER_H 

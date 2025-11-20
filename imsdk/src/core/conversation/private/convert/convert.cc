@@ -9,7 +9,7 @@ namespace roc::imsdk::core::conversation {
 
 namespace {
 
-std::vector<std::string> parse_members_json(const std::string& members_json) {
+std::vector<std::string> parseMembersJson(const std::string& members_json) {
     std::vector<std::string> members;
     if (members_json.empty()) {
         return members;
@@ -35,7 +35,7 @@ std::vector<std::string> parse_members_json(const std::string& members_json) {
     return members;
 }
 
-std::unordered_map<std::string, std::string> parse_ext_string(const std::string& ext) {
+std::unordered_map<std::string, std::string> parseExtString(const std::string& ext) {
     std::unordered_map<std::string, std::string> result;
     if (ext.empty()) {
         return result;
@@ -65,7 +65,7 @@ std::unordered_map<std::string, std::string> parse_ext_string(const std::string&
 } // namespace
 
 /// 会话转换 网络会话 -> db 会话
-std::shared_ptr<core::conversation::ConversationORM> Convert::convert_net_conv_to_db_conv(const network::ConversationInfo *conv) {
+std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDbConv(const network::ConversationInfo *conv) {
     if (!conv) {
         return nullptr;
     }
@@ -112,7 +112,7 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::convert_net_conv_t
 }
 
 /// 会话转换 db 会话 -> sdk 会话
-std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(CONTEXT_T, const core::conversation::ConversationORM *db_conv) {
+std::shared_ptr<model::ConversationModel> Convert::ConvertDbConvToSdkConv(CONTEXT_T, const core::conversation::ConversationORM *db_conv) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     if (!db_conv) {
@@ -142,7 +142,7 @@ std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(C
     sdk_conv->last_message_ = nullptr;
 
     /// 会话成员
-    sdk_conv->members_ = parse_members_json(db_conv->members_json);
+    sdk_conv->members_ = parseMembersJson(db_conv->members_json);
     
     // Set fields that don't exist in ConversationORM with default values
     sdk_conv->last_update_time_ = db_conv->last_message_time; // Use last_message_time as fallback
@@ -163,8 +163,8 @@ std::shared_ptr<model::ConversationModel> Convert::convert_db_conv_to_sdk_conv(C
     sdk_conv->draft_ = db_conv->draft;
     
     // Extensions
-    sdk_conv->sync_ext_ = parse_ext_string(db_conv->sync_ext);
-    sdk_conv->local_ext_ = parse_ext_string(db_conv->local_ext);
+    sdk_conv->sync_ext_ = parseExtString(db_conv->sync_ext);
+    sdk_conv->local_ext_ = parseExtString(db_conv->local_ext);
     
     return sdk_conv;
 }

@@ -49,16 +49,16 @@ public:
     ~SDKRoot();
 
     // 设置日志器
-    void inject_logger(std::shared_ptr<ILogger> logger);
+    void InjectLogger(std::shared_ptr<ILogger> logger);
     std::shared_ptr<ILogger> logger();
 
     // 初始化sdk
-    asio::awaitable<bool> init_sdk(const Config config);
+    asio::awaitable<bool> InitSdk(const Config config);
 
     // 运行SDK
-    asio::awaitable<bool> run();
+    asio::awaitable<bool> Run();
 
-    boost::asio::awaitable<bool> login_out();
+    boost::asio::awaitable<bool> LoginOut();
 
     // -------------------------------------------------
     MMKV* mmkv();
@@ -66,10 +66,11 @@ public:
     WCDB::Database* database();
     asio::io_context& net_io_context();
     asio::io_context& sdk_io_context();
-    core::GroupManager* group_manager();
-    core::MessageManager* message_manager();
-    core::ConversationManager* conversation_manager();
-    network::SDKConnectionManager* connection_manager();
+
+    core::GroupManager* GroupManager();
+    core::MessageManager* MessageManager();
+    core::ConversationManager* ConversationManager();
+    network::SDKConnectionManager* ConnectionManager();
     // -------------------------------------------------
 
 private:

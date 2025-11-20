@@ -18,7 +18,7 @@ struct FetchUserMessageResult {
 
 };
 
-asio::awaitable<void> UserMessageFetcher::fetch_user_messages(CONTEXT_T) {
+asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CONTEXT_T) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     // auto conv_manager = sdk_root->conversation_manager();
@@ -27,24 +27,24 @@ asio::awaitable<void> UserMessageFetcher::fetch_user_messages(CONTEXT_T) {
     // int64_t cursor = conv_manager->cursor();
 
     // 构造请求
-    std::unique_ptr<network::FetchUserMessageListReq> req = make_fetch_user_message_list_req(CONTEXT_V, -1);
+    std::unique_ptr<network::FetchUserMessageListReq> req = p_MakeFetchUserMessageListReq(CONTEXT_V, -1);
 
     // 发送请求
-    std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await network::request::fetch_user_message_list(CONTEXT_V, req.get());
+    std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await network::request::fetchUserMessageList(CONTEXT_V, req.get());
     if (!resp || !resp.has_value()) {
         co_return;
     }
 
     // std::cout<<"fetch user message success"<<std::endl;
 
-    co_await handle_fetched_user_message(CONTEXT_V, std::move(resp.value()));
+    co_await p_HandleFetchedUserMessage(CONTEXT_V, std::move(resp.value()));
 
     co_return;
 }
 
 // private static methods ------------------------------------------------------------
 
-std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::make_fetch_user_message_list_req(CONTEXT_T, int64_t cursor) {
+std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::p_MakeFetchUserMessageListReq(CONTEXT_T, int64_t cursor) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto req = std::make_unique<network::FetchUserMessageListReq>();
@@ -63,7 +63,7 @@ std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::make_fetch
     return req;
 }
 
-boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(CONTEXT_T, std::unique_ptr<network::FetchUserMessageListResp> resp) {
+boost::asio::awaitable<void> UserMessageFetcher::p_HandleFetchedUserMessage(CONTEXT_T, std::unique_ptr<network::FetchUserMessageListResp> resp) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     std::vector<std::shared_ptr<network::ConversationInfo>> net_convs;
@@ -89,10 +89,10 @@ boost::asio::awaitable<void> UserMessageFetcher::handle_fetched_user_message(CON
     LOG_INFO("ConvManager", "finish_fetch_user_message, net_msgs: {}, net_convs: {}", net_msgs.size(), net_convs.size());
 
     // 处理接收到的消息
-    co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::handle_receive_message(CONTEXT_V, net_msgs), asio::detached);
+    co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::HandleReceiveMessage(CONTEXT_V, net_msgs), asio::detached);
 
     // 处理接收到的会话
-    co_spawn(sdk_root->sdk_io_context(), conversation::ReceiveConversation::handle_receive_conversation(CONTEXT_V, std::move(net_convs)), asio::detached);
+    co_spawn(sdk_root->sdk_io_context(), conversation::ReceiveConversation::HandleReceiveConversation(CONTEXT_V, std::move(net_convs)), asio::detached);
 
     // // 更新游标
     // conv_manager->set_cursor(resp->stop());

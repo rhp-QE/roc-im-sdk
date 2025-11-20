@@ -25,21 +25,21 @@ inline boost::asio::awaitable<void> p_test_imsdk() {
 
     imsdk_t = std::make_shared<roc::imsdk::IMSDK>();
 
-    co_await imsdk_t->init_sdk(generateConfig());
+    co_await imsdk_t->InitSdk(generateConfig());
 
     for (int i = 0; i < 3; ++i) {
         auto context = generateSendMessageContext();
         context.content = context.content + std::to_string(i);
-        auto response = co_await imsdk_t->send_message(context, [](std::shared_ptr<roc::imsdk::model::SendMessageResponse> response) {
+        auto response = co_await imsdk_t->SendMessage(context, [](std::shared_ptr<roc::imsdk::model::SendMessageResponse> response) {
             std::cout << "send message response2: " << response->msg->content() << std::endl;
             std::cout << "send message response address2: " << response->msg.get() << std::endl;
             std::cout << "send message response order2: " << response->msg->server_order_index() << std::endl;
         });
     }
 
-    auto convs = co_await imsdk_t->convs_when_login();
+    auto convs = co_await imsdk_t->ConvsWhenLogin();
 
-    auto messages = co_await imsdk_t->messages_when_enter_chat("0:1:12345:24680");
+    auto messages = co_await imsdk_t->MessagesWhenEnterChat("0:1:12345:24680");
 
     // auto executor = co_await boost::asio::this_coro::executor;
     // co_await roc::base::util::switch_if_needed(net_io_context.get_executor());

@@ -10,7 +10,7 @@ public:
     ~GroupManager();
 
     // 组件加载完成后的初始化
-    void all_component_did_load();
+    void AllComponentDidLoad();
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;

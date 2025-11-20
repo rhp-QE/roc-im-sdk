@@ -32,17 +32,17 @@ namespace asio = boost::asio;
 namespace roc::imsdk::network {
 
 //--------------------
-base::net::LongConnectionConfig generateNetConfig(roc::imsdk::SDKRoot* root);
+base::net::LongConnectionConfig GenerateNetConfig(roc::imsdk::SDKRoot* root);
 //--------------------
 
 SDKConnectionManager::SDKConnectionManager(boost::asio::io_context &io_context) : net_io_context_(io_context) {}
 
-boost::asio::awaitable<bool> SDKConnectionManager::init_and_connect(std::shared_ptr<SDKRoot> sdk_root) {
+boost::asio::awaitable<bool> SDKConnectionManager::InitAndConnect(std::shared_ptr<SDKRoot> sdk_root) {
 
     w_sdk_root = sdk_root;
 
     START_TRACK;
-    lc_ = std::make_unique<base::net::LongConnectionClient>(generateNetConfig(sdk_root.get()), net_io_context_);
+    lc_ = std::make_unique<base::net::LongConnectionClient>(GenerateNetConfig(sdk_root.get()), net_io_context_);
 
     // 观察网络状态变更
     lc_->set_connection_status_callback([=, this](bool connected, const std::string &detail) {
@@ -58,7 +58,7 @@ boost::asio::awaitable<bool> SDKConnectionManager::init_and_connect(std::shared_
     // 数据接收回调 
     lc_->set_data_received_callback([=, this](boost::beast::flat_buffer data) {
         CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
-        boost::asio::co_spawn(net_io_context_, this->handle_data_received(std::move(data)), asio::detached);
+        boost::asio::co_spawn(net_io_context_, this->handleDataReceived(std::move(data)), asio::detached);
     });
 
     auto res = co_await lc_->connect();
@@ -69,12 +69,12 @@ boost::asio::awaitable<bool> SDKConnectionManager::init_and_connect(std::shared_
 }
 
 /// 网络状态
-roc::imsdk::network::NetworkStatus SDKConnectionManager::get_network_status() {
+roc::imsdk::network::NetworkStatus SDKConnectionManager::GetNetworkStatus() {
     return lc_->is_connected() ? imsdk::network::NetworkStatus::NETWORK_STATUS_CONNECTED : imsdk::network::NetworkStatus::NETWORK_STATUS_DISCONNECTED;
 }
 
 /// 注入网络状态变更回调
-void SDKConnectionManager::on_network_status_change(std::function<void(roc::imsdk::network::NetworkStatus)> callback) {
+void SDKConnectionManager::OnNetworkStatusChange(std::function<void(roc::imsdk::network::NetworkStatus)> callback) {
     network_status_change_callback_ = std::move(callback);
 }
 
@@ -89,17 +89,17 @@ boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
     co_return res.has_value();
 }
 
-void SDKConnectionManager::add_on_push_message_callback(OnPushMesageCallbackType callback) {
+void SDKConnectionManager::AddOnPushMessageCallback(OnPushMesageCallbackType callback) {
     std::lock_guard<std::mutex> lock(mutex_);
-    on_push_message_callbacks.push_back(callback);
+    on_push_message_callbacks_.push_back(callback);
 }
 
-void SDKConnectionManager::all_component_did_load() {
+void SDKConnectionManager::AllComponentDidLoad() {
     // 组件加载完成后的初始化逻辑
 }
 
 
-boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> SDKConnectionManager::send_request(network::SdkWSReq *req) {
+boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> SDKConnectionManager::SendRequest(network::SdkWSReq *req) {
     std::shared_ptr<SDKRoot> root = w_sdk_root.lock();
     if (!root) {
         co_return std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request"));
@@ -113,7 +113,7 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
     std::string request_id_str = req->requestid();
     {
         std::lock_guard<std::mutex> lock(mutex_);
-        channel_map[request_id_str] = channel;
+        channel_map_[request_id_str] = channel;
     }
 
     std::vector<char> buffer(req->ByteSizeLong());
@@ -123,13 +123,13 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
     std::unique_ptr<network::SdkWSResp> resp = co_await channel->async_receive(boost::asio::use_awaitable);
     {
         std::lock_guard<std::mutex> lock(mutex_);
-        channel_map.erase(request_id_str);
+        channel_map_.erase(request_id_str);
     }
 
     co_return std::move(resp);
 }
 
-boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::beast::flat_buffer data) {
+boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::beast::flat_buffer data) {
     try {
         CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
@@ -142,10 +142,10 @@ boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::b
         std::shared_ptr<channel_type> channel;
         {
             std::lock_guard<std::mutex> lock(mutex_);
-            auto iter = channel_map.find(request_id);
-            if (iter != channel_map.end()) {
+            auto iter = channel_map_.find(request_id);
+            if (iter != channel_map_.end()) {
                 channel = iter->second;
-                channel_map.erase(iter);
+                channel_map_.erase(iter);
             }
         }
 
@@ -156,7 +156,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::b
             std::vector<OnPushMesageCallbackType> callbacks;
             {
                 std::lock_guard<std::mutex> lock(mutex_);
-                callbacks = on_push_message_callbacks;
+                callbacks = on_push_message_callbacks_;
             } // lock
             std::shared_ptr<network::SdkWSResp> s_resp = std::move(resp);
             for (const auto &callback : callbacks) {
@@ -179,7 +179,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handle_data_received(boost::b
 
 
 //--------------- no member private method ----------------------
-base::net::LongConnectionConfig generateNetConfig(roc::imsdk::SDKRoot* root) {
+base::net::LongConnectionConfig GenerateNetConfig(roc::imsdk::SDKRoot* root) {
     roc::base::net::LongConnectionConfig config("localhost", "10010");
     config.set_heartbeat_interval(5000)
     .set_heartbeat_timeout(10000)

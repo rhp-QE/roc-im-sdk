@@ -17,7 +17,7 @@ static inline std::string next_request_id(SDKRoot *root) {
 
 // 发送消息
 asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
-send_message(CONTEXT_T, network::SendMessageReq *request) {
+sendMessage(CONTEXT_T, network::SendMessageReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
@@ -26,7 +26,7 @@ send_message(CONTEXT_T, network::SendMessageReq *request) {
     req->set_requestid(next_request_id(sdk_root.get()));
     req->set_trackid(TRACK_ID);
 
-    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->connection_manager()->send_request(req.get());
+    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
     if (!response || !response.has_value()) {
         co_return std::unexpected(roc::error::make_error(40201, "SDKRequest send_message response is empty"));
     }
@@ -42,7 +42,7 @@ send_message(CONTEXT_T, network::SendMessageReq *request) {
 
 // 拉取混链列表
 asio::awaitable<std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error>> 
-fetch_user_message_list(CONTEXT_T, network::FetchUserMessageListReq *request) {
+fetchUserMessageList(CONTEXT_T, network::FetchUserMessageListReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
@@ -51,7 +51,7 @@ fetch_user_message_list(CONTEXT_T, network::FetchUserMessageListReq *request) {
     req->set_requestid(next_request_id(sdk_root.get()));
     req->set_trackid(TRACK_ID);
 
-    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->connection_manager()->send_request(req.get());
+    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
     if (!response || !response.has_value()) {
         co_return std::unexpected(roc::error::make_error(40203, "SDKRequest fetch_user_message_list response is empty"));
     }
@@ -67,7 +67,7 @@ fetch_user_message_list(CONTEXT_T, network::FetchUserMessageListReq *request) {
 
 // 拉取单链
 asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
-fetch_conv_message_list(CONTEXT_T, network::FetchConvMessageListReq *request) {
+fetchConvMessageList(CONTEXT_T, network::FetchConvMessageListReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
@@ -76,7 +76,7 @@ fetch_conv_message_list(CONTEXT_T, network::FetchConvMessageListReq *request) {
     req->set_requestid(next_request_id(sdk_root.get()));
     req->set_trackid(TRACK_ID);
 
-    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->connection_manager()->send_request(req.get());
+    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
     if (!response || !response.has_value()) {
         co_return std::unexpected(roc::error::make_error(40202, "SDKRequest fetch_conv_message_list response is empty"));
     }

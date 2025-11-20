@@ -22,45 +22,45 @@ public:
     ~MessageManager();
 
     // 组件加载完成后的初始化
-    void all_component_did_load();
+    void AllComponentDidLoad();
     
     // 收到消息回调
-    model::OnMessagesCallbackType on_receive_message_callback();
+    model::OnMessagesCallbackType OnReceiveMessageCallback();
 
-    void handle_receive_message(std::vector<std::shared_ptr<network::MsgData>> net_msgs);
+    void HandleReceiveMessage(std::vector<std::shared_ptr<network::MsgData>> net_msgs);
 
     // 消息操作串行队列
-    boost::asio::strand<boost::asio::io_context::executor_type> msg_strand();
+    boost::asio::strand<boost::asio::io_context::executor_type> MsgStrand();
 
  
     // =============================  message api  ======================================
 
     /// 发送消息
-    boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> send_message(model::SendMsgContext contexts, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
+    boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage(model::SendMsgContext contexts, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
 
     /// 接收消息回调
-    void on_messages(model::OnMessagesCallbackType callback);
+    void OnMessages(model::OnMessagesCallbackType callback);
 
     /// 删除消息
-    boost::asio::awaitable<bool> delete_message(const std::vector<std::string> &msg_ids);
+    boost::asio::awaitable<bool> DeleteMessage(const std::vector<std::string> &msg_ids);
 
     /// 撤回消息
-    boost::asio::awaitable<bool> recall_message(std::string msg_id);
+    boost::asio::awaitable<bool> RecallMessage(std::string msg_id);
 
     /// 修改消息 sync_ext
-    boost::asio::awaitable<bool> update_message_sync_ext(std::string msg_id, std::string key, std::string value);
+    boost::asio::awaitable<bool> UpdateMessageSyncExt(std::string msg_id, std::string key, std::string value);
 
     /// 设置消息为已读
-    boost::asio::awaitable<bool> mark_messages_as_read(const std::vector<std::string> &msg_ids);
+    boost::asio::awaitable<bool> MarkMessagesAsRead(const std::vector<std::string> &msg_ids);
 
     /// 查询消息
-    boost::asio::awaitable<std::shared_ptr<model::MessageModel>> message_for_id(std::string msg_id);
+    boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageForId(std::string msg_id);
 
     /// 查询会话消息
-    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit);
+    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessagesForConvId(std::string conv_id, int64_t cursor, int64_t limit);
 
     /// 当进入会话时，获取首屏消息。 后续加载更多消息时使用 messages_for_conv_id
-    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> messages_when_enter_chat(std::string conv_id);
+    boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessagesWhenEnterChat(std::string conv_id);
 
     /// ==================================================================================
 

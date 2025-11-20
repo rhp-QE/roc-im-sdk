@@ -37,7 +37,7 @@ SDKRoot::~SDKRoot() {
     }
 }
 
-asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
+asio::awaitable<bool> SDKRoot::InitSdk(const Config config) {
     config_ = config;
  
     {
@@ -68,10 +68,10 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
     }
 
     {
-        group_manager_->all_component_did_load();
-        message_manager_->all_component_did_load();
-        conversation_manager_->all_component_did_load();
-        connection_manager_->all_component_did_load();
+        GroupManager()->AllComponentDidLoad();
+        MessageManager()->AllComponentDidLoad();
+        ConversationManager()->AllComponentDidLoad();
+        ConnectionManager()->AllComponentDidLoad();
     }
 
     auto sdk_root = shared_from_this();
@@ -84,15 +84,15 @@ asio::awaitable<bool> SDKRoot::init_sdk(const Config config) {
 }
 
 /// todo: 运行SDK
-boost::asio::awaitable<bool> SDKRoot::run() {
-    return connection_manager_->init_and_connect(shared_from_this());
+boost::asio::awaitable<bool> SDKRoot::Run() {
+    return ConnectionManager()->InitAndConnect(shared_from_this());
 }
 
-boost::asio::awaitable<bool> SDKRoot::login_out() {
-    return connection_manager_->disconnect();
+boost::asio::awaitable<bool> SDKRoot::LoginOut() {
+    return ConnectionManager()->disconnect();
 }
 
-void SDKRoot::inject_logger(std::shared_ptr<ILogger> logger) {
+void SDKRoot::InjectLogger(std::shared_ptr<ILogger> logger) {
     logger_ = logger;
 }
 
@@ -100,7 +100,7 @@ std::shared_ptr<ILogger> SDKRoot::logger() {
     return logger_;
 }
 
-network::SDKConnectionManager* SDKRoot::connection_manager() {
+network::SDKConnectionManager* SDKRoot::ConnectionManager() {
     return connection_manager_.get();
 }
 
@@ -124,15 +124,15 @@ MMKV* SDKRoot::mmkv() {
     return mmkv_;
 }
 
-core::GroupManager* SDKRoot::group_manager() {
+core::GroupManager* SDKRoot::GroupManager() {
     return group_manager_.get();
 }
 
-core::MessageManager* SDKRoot::message_manager() {
+core::MessageManager* SDKRoot::MessageManager() {
     return message_manager_.get();
 }
 
-core::ConversationManager* SDKRoot::conversation_manager() {
+core::ConversationManager* SDKRoot::ConversationManager() {
     return conversation_manager_.get();
 }
 

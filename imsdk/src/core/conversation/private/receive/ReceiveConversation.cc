@@ -7,25 +7,25 @@
 
 namespace roc::imsdk::core::conversation {
 
-void ReceiveConversation::start(CONTEXT_T) {
+void ReceiveConversation::Start(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 }
 
-boost::asio::awaitable<void> ReceiveConversation::handle_receive_conversation(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations) {
+boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    auto conv_manager = sdk_root->conversation_manager();
+    auto conv_manager = sdk_root->ConversationManager();
 
     // 保存会话
-    auto sdk_convs = co_await conversation::SaveConversation::save_net_conversations(CONTEXT_V, std::move(conversations));
+    auto sdk_convs = co_await conversation::SaveConversation::SaveNetConversations(CONTEXT_V, std::move(conversations));
 
-    LOG_INFO("ConvManager", "handle_receive_conversation, sdk_convs: {}", sdk_convs.size());
+    LOG_INFO("ConvManager", "handleReceiveConversation, sdk_convs: {}", sdk_convs.size());
 
     auto on_conversation_result = std::make_shared<model::OnConversationResult>();
     on_conversation_result->updated_convs = sdk_convs;
 
     // 上抛
-    base::util::safe_invoke_block(conv_manager->on_conv_update_callback(), on_conversation_result);
+    base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
 }
 
 } // namespace roc::imsdk::core::conversation

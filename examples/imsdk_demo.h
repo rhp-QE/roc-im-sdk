@@ -63,18 +63,18 @@ inline boost::asio::awaitable<bool> p_login() {
     imsdk = std::make_shared<roc::imsdk::IMSDK>();
 
     // 注入日志器
-    imsdk->inject_logger(spdlog_adapter->get_logger());
+    imsdk->InjectLogger(spdlog_adapter->get_logger());
 
     // 初始化sdk
-    co_await imsdk->init_sdk(config);
+    co_await imsdk->InitSdk(config);
 
     // 监听长链状态
-    imsdk->on_network_status_change([](roc::imsdk::network::NetworkStatus status) {
+    imsdk->OnNetworkStatusChange([](roc::imsdk::network::NetworkStatus status) {
         std::cout << "长链状态: " << (status == roc::imsdk::network::NetworkStatus::NETWORK_STATUS_CONNECTED ? "连接" : "断开") << std::endl;
     });
 
     // 监听消息更新
-    imsdk->on_messagee([](roc::imsdk::model::OnMessageResult result) {
+    imsdk->OnMessagee([](roc::imsdk::model::OnMessageResult result) {
         std::cout << "\n ==============消息更新 (begin) =============" << std::endl;
         std::cout << " 实时消息: " << result.real_time_msgs.size() << std::endl;
         for (auto msg : result.real_time_msgs) {
@@ -97,14 +97,14 @@ inline boost::asio::awaitable<bool> p_login() {
         std::cout << "登录成功" << std::endl;
     } else {
         std::cout << "登录失败" << std::endl;
-        co_await imsdk->login_out();
+        co_await imsdk->LoginOut();
     }
     co_return res;
 }
 
 inline boost::asio::awaitable<void> chat_first_page() {
     std::cout << "登录成功 正在拉取会话列表...." << std::endl;
-    auto convs = co_await imsdk->convs_when_login();
+    auto convs = co_await imsdk->ConvsWhenLogin();
     conv_cursor = convs->cursor;
 
     std::cout<<"\n========首屏会话 (begin) ========"<<std::endl;
@@ -116,7 +116,7 @@ inline boost::asio::awaitable<void> chat_first_page() {
 }
 
 inline boost::asio::awaitable<void> p_login_out() {
-    co_await imsdk->login_out();
+    co_await imsdk->LoginOut();
 }
 
 inline boost::asio::awaitable<void> p_enter_chat() {
@@ -124,7 +124,7 @@ inline boost::asio::awaitable<void> p_enter_chat() {
     std::string conv_id;
     std::cin >> conv_id;
 
-    auto messages = co_await imsdk->messages_when_enter_chat(conv_id);
+    auto messages = co_await imsdk->MessagesWhenEnterChat(conv_id);
     message_cursor = messages->cursor;
 
     std::cout<<"\n========进入会话 (begin) ========"<<std::endl;
@@ -142,13 +142,13 @@ inline boost::asio::awaitable<void> p_send_message() {
     std::string content;
     std::cin >> content;
     auto context = generateSendMessageContext(to_user_id, content);
-    auto response = co_await imsdk->send_message(context, [](std::shared_ptr<roc::imsdk::model::SendMessageResponse> response) {
+    auto response = co_await imsdk->SendMessage(context, [](std::shared_ptr<roc::imsdk::model::SendMessageResponse> response) {
         std::cout << "\n[message send success] id = " << response->msg->client_msg_id() << std::endl;
     });
 }
 
 inline boost::asio::awaitable<void> p_logout() {
-    co_await imsdk->login_out();
+    co_await imsdk->LoginOut();
 }
 
 

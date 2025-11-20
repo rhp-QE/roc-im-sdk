@@ -20,21 +20,21 @@ static int PUSH_USER_MESSAGE_TYPE = 4001;
 
 namespace roc::imsdk::core::message {
 
-void ReceiveMessage::start(CONTEXT_T) {
+void ReceiveMessage::Start(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
-    auto conn = sdk_root->connection_manager();
+    auto conn = sdk_root->ConnectionManager();
 
-    conn->add_on_push_message_callback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+    conn->AddOnPushMessageCallback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
         uint32_t call_track_id = resp->trackid();
-        message::ReceiveMessage::handle_push_message(CONTEXT_V, resp);
+        message::ReceiveMessage::HandlePushMessage(CONTEXT_V, resp);
     });
 }
 
-void ReceiveMessage::handle_push_message(CONTEXT_T, std::shared_ptr<network::SdkWSResp> resp) {
+void ReceiveMessage::HandlePushMessage(CONTEXT_T, std::shared_ptr<network::SdkWSResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
-    auto msg_manager = sdk_root->message_manager();
+    auto msg_manager = sdk_root->MessageManager();
     CHECK_POINTER_OR_RETURN_VOID(msg_manager);
 
     // 处理下推的用户消息
@@ -53,17 +53,17 @@ void ReceiveMessage::handle_push_message(CONTEXT_T, std::shared_ptr<network::Sdk
 
     LOG_INFO("MsgManager", "receive_message, from: {}", net_msg->sendid());
 
-    boost::asio::co_spawn(sdk_root->net_io_context(), handle_receive_message(CONTEXT_V, {net_msg}), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->net_io_context(), HandleReceiveMessage(CONTEXT_V, {net_msg}), boost::asio::detached);
 }
 
-boost::asio::awaitable<void> ReceiveMessage::handle_receive_message(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
+boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
     if (net_msgs.empty()) {
         co_return;
     }
 
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
-    auto msg_manager = sdk_root->message_manager();
+    auto msg_manager = sdk_root->MessageManager();
 
     std::vector<const network::MsgData *> net_msgs_ptr;
     for (const auto &msg : net_msgs) {
@@ -71,22 +71,22 @@ boost::asio::awaitable<void> ReceiveMessage::handle_receive_message(CONTEXT_T, s
     }
 
     /// 数据保存
-    auto sdk_msgs = co_await message::SaveMessage::save_net_messages(CONTEXT_V, net_msgs_ptr);
+    auto sdk_msgs = co_await message::SaveMessage::SaveNetMessages(CONTEXT_V, net_msgs_ptr);
     
     LOG_INFO("MsgManager", "handle_receive_message, size: {}", sdk_msgs.size());
 
     // 对消息进行分类
-    auto result = co_await classify_message(CONTEXT_V, net_msgs, sdk_msgs);
+    auto result = co_await ClassifyMessage(CONTEXT_V, net_msgs, sdk_msgs);
     
     // 上抛消息
     base::util::safe_invoke_block(msg_manager->on_messages_callback_, result);
 }
 
-boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::classify_message(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
+boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, model::OnMessageResult())
 
     model::OnMessageResult result;
-    auto conv_manager = sdk_root->conversation_manager();
+    auto conv_manager = sdk_root->ConversationManager();
 
     std::unordered_map<std::string, std::vector<std::shared_ptr<model::MessageModel>>> sdk_msg_map = base::util::group_by_key(sdk_msgs, [](const std::shared_ptr<model::MessageModel> &msg) {
         return msg->server_msg_id();

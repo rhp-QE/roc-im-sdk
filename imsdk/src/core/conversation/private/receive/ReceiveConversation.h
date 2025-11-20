@@ -5,9 +5,9 @@ namespace roc::imsdk::core::conversation {
 
 class ReceiveConversation {
 public:
-    static void start(CONTEXT_T);
+    static void Start(CONTEXT_T);
 
-    static boost::asio::awaitable<void> handle_receive_conversation(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations);
+    static boost::asio::awaitable<void> HandleReceiveConversation(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations);
 };
 
 } // namespace roc::imsdk::core::conversation

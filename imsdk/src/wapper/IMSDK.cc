@@ -16,115 +16,115 @@ IMSDK::~IMSDK() {
 
 /// ========================== injection api ==========================
 
-void IMSDK::inject_logger(std::shared_ptr<ILogger> logger) {
-    sdk_root_->inject_logger(logger);
+void IMSDK::InjectLogger(std::shared_ptr<ILogger> logger) {
+    sdk_root_->InjectLogger(logger);
 }
 
 /// ========================== sdk api ==========================
 
-boost::asio::awaitable<bool> IMSDK::init_sdk(const Config config) {
-    return sdk_root_->init_sdk(config);
+boost::asio::awaitable<bool> IMSDK::InitSdk(const Config config) {
+    return sdk_root_->InitSdk(config);
 }
 
 boost::asio::awaitable<bool> IMSDK::run() {
-    return sdk_root_->run();
+    return sdk_root_->Run();
 }
 
-boost::asio::awaitable<bool> IMSDK::login_out() {
-    return sdk_root_->login_out();
+boost::asio::awaitable<bool> IMSDK::LoginOut() {
+    return sdk_root_->LoginOut();
 }
 
 // =============================  message api  ======================================
 
-boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> IMSDK::send_message(const model::SendMsgContext &context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
-    return sdk_root_->message_manager()->send_message(context, callback);
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> IMSDK::SendMessage(const model::SendMsgContext &context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+    return sdk_root_->MessageManager()->SendMessage(context, callback);
 }
 
-void IMSDK::on_messagee(model::OnMessagesCallbackType callback) {
-    sdk_root_->message_manager()->on_messages(callback);
+void IMSDK::OnMessagee(model::OnMessagesCallbackType callback) {
+    sdk_root_->MessageManager()->OnMessages(callback);
 }
 
-boost::asio::awaitable<bool> IMSDK::delete_message(const std::vector<std::string> &msg_ids) {
-    return sdk_root_->message_manager()->delete_message(msg_ids);
+boost::asio::awaitable<bool> IMSDK::DeleteMessage(const std::vector<std::string> &msg_ids) {
+    return sdk_root_->MessageManager()->DeleteMessage(msg_ids);
 }
 
-boost::asio::awaitable<bool> IMSDK::recall_message(std::string msg_id) {
-    return sdk_root_->message_manager()->recall_message(msg_id);
+boost::asio::awaitable<bool> IMSDK::RecallMessage(std::string msg_id) {
+    return sdk_root_->MessageManager()->RecallMessage(msg_id);
 }
 
-boost::asio::awaitable<bool> IMSDK::update_message_sync_ext(std::string msg_id, std::string key, std::string value) {
-    return sdk_root_->message_manager()->update_message_sync_ext(msg_id, key, value);
+boost::asio::awaitable<bool> IMSDK::UpdateMessageSyncExt(std::string msg_id, std::string key, std::string value) {
+    return sdk_root_->MessageManager()->UpdateMessageSyncExt(msg_id, key, value);
 }
 
-boost::asio::awaitable<bool> IMSDK::mark_messages_as_read(const std::vector<std::string> &msg_ids) {
-    return sdk_root_->message_manager()->mark_messages_as_read(msg_ids);
+boost::asio::awaitable<bool> IMSDK::MarkMessagesAsRead(const std::vector<std::string> &msg_ids) {
+    return sdk_root_->MessageManager()->MarkMessagesAsRead(msg_ids);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::MessageModel>> IMSDK::message_for_id(std::string msg_id) {
-    return sdk_root_->message_manager()->message_for_id(msg_id);
+boost::asio::awaitable<std::shared_ptr<model::MessageModel>> IMSDK::MessageForId(std::string msg_id) {
+    return sdk_root_->MessageManager()->MessageForId(msg_id);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> IMSDK::messages_for_conv_id(std::string conv_id, int64_t cursor, int64_t limit) {
-    return sdk_root_->message_manager()->messages_for_conv_id(conv_id, cursor, limit);
+boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> IMSDK::MessagesForConvId(std::string conv_id, int64_t cursor, int64_t limit) {
+    return sdk_root_->MessageManager()->MessagesForConvId(conv_id, cursor, limit);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> IMSDK::messages_when_enter_chat(std::string conv_id) {
-    return sdk_root_->message_manager()->messages_when_enter_chat(conv_id);
+boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> IMSDK::MessagesWhenEnterChat(std::string conv_id) {
+    return sdk_root_->MessageManager()->MessagesWhenEnterChat(conv_id);
 }
 
 /// ==================================================================================
 
 // =============================  conversation api  ======================================
 
-void IMSDK::on_conv_update(model::OnConvUpdateCallbackType callback) {
-    sdk_root_->conversation_manager()->on_conv_update(callback);
+void IMSDK::OnConvUpdate(model::OnConvUpdateCallbackType callback) {
+    sdk_root_->ConversationManager()->OnConvUpdate(callback);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::conv_for_id(std::string conv_id) {
-    return sdk_root_->conversation_manager()->conv_for_id(conv_id);
+boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::ConvForId(std::string conv_id) {
+    return sdk_root_->ConversationManager()->ConvForId(conv_id);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::convs_for_user_id(std::string user_id, int64_t cursor, int64_t limit) {
-    return sdk_root_->conversation_manager()->convs_for_user_id(user_id, cursor, limit);
+boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::ConvsForUserId(std::string user_id, int64_t cursor, int64_t limit) {
+    return sdk_root_->ConversationManager()->ConvsForUserId(user_id, cursor, limit);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::convs_when_login() {
-    return sdk_root_->conversation_manager()->convs_when_login();
+boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::ConvsWhenLogin() {
+    return sdk_root_->ConversationManager()->ConvsWhenLogin();
 }
 
-boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::create_conv(std::vector<std::string> member_user_ids, std::string conv_name) {
-    return sdk_root_->conversation_manager()->create_conv(std::move(member_user_ids), std::move(conv_name));
+boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::CreateConv(std::vector<std::string> member_user_ids, std::string conv_name) {
+    return sdk_root_->ConversationManager()->CreateConv(std::move(member_user_ids), std::move(conv_name));
 }
 
 // 设置会话置顶
-boost::asio::awaitable<bool> IMSDK::set_conv_top(std::string conv_id, bool is_top) {
-    return sdk_root_->conversation_manager()->set_conv_top(conv_id, is_top);
+boost::asio::awaitable<bool> IMSDK::SetConvTop(std::string conv_id, bool is_top) {
+    return sdk_root_->ConversationManager()->SetConvTop(conv_id, is_top);
 }
 
 // 设置会话免打扰
-boost::asio::awaitable<bool> IMSDK::set_conv_mute(std::string conv_id, bool is_mute) {
-    return sdk_root_->conversation_manager()->set_conv_mute(conv_id, is_mute);
+boost::asio::awaitable<bool> IMSDK::SetConvMute(std::string conv_id, bool is_mute) {
+    return sdk_root_->ConversationManager()->SetConvMute(conv_id, is_mute);
 }
 
 // 设置会话已读
-boost::asio::awaitable<bool> IMSDK::set_conv_read(std::string conv_id) {
-    return sdk_root_->conversation_manager()->set_conv_read(conv_id);
+boost::asio::awaitable<bool> IMSDK::SetConvRead(std::string conv_id) {
+    return sdk_root_->ConversationManager()->SetConvRead(conv_id);
 }
 
 // 删除会话
-boost::asio::awaitable<bool> IMSDK::delete_conv(std::string conv_id) {
-    return sdk_root_->conversation_manager()->delete_conv(conv_id);
+boost::asio::awaitable<bool> IMSDK::DeleteConv(std::string conv_id) {
+    return sdk_root_->ConversationManager()->DeleteConv(conv_id);
 }
 
 
 // =============================  net api  ==============================================
 
-imsdk::network::NetworkStatus IMSDK::get_network_status() {
-    return sdk_root_->connection_manager()->get_network_status();
+imsdk::network::NetworkStatus IMSDK::GetNetworkStatus() {
+    return sdk_root_->ConnectionManager()->GetNetworkStatus();
 }
 
-void IMSDK::on_network_status_change(std::function<void(roc::imsdk::network::NetworkStatus)> callback) {
-    sdk_root_->connection_manager()->on_network_status_change(callback);
+void IMSDK::OnNetworkStatusChange(std::function<void(roc::imsdk::network::NetworkStatus)> callback) {
+    sdk_root_->ConnectionManager()->OnNetworkStatusChange(callback);
 }
 
 /// =======================================================================================
