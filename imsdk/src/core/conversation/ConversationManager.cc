@@ -3,6 +3,8 @@
 #include "imsdk/src/core/conversation/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/conversation/private/operator/CreateConversation.h"
 #include "imsdk/src/core/conversation/private/save/SaveConversation.h"
+#include "imsdk/src/core/conversation/private/receive/ReceiveConversation.h"
+#include "imsdk/src/core/conversation/private/convert/convert.h"
 #include "imsdk/src/core/conversation/private/fetcher/UserMessageFetcher.h"
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
@@ -14,7 +16,9 @@ namespace roc::imsdk::core {
 ConversationManager::ConversationManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor) 
     : w_sdk_root(sdk_root), 
       conv_strand_(boost::asio::make_strand(executor))
-{}
+{
+    p_InitSubComponents();
+}
 
 ConversationManager::~ConversationManager() = default;
 
@@ -23,7 +27,7 @@ void ConversationManager::AllComponentDidLoad() {
     START_TRACK;
 
     /// 创建数据库表
-    conversation::DBOpt::CreateConversationTableIfNeed(CONTEXT_V);
+    db_opt->CreateConversationTableIfNeed(CONTEXT_V);
 }
 
 boost::asio::strand<boost::asio::io_context::executor_type> ConversationManager::ConvStrand() {
@@ -42,12 +46,12 @@ void ConversationManager::OnConvUpdate(model::OnConvUpdateCallbackType callback)
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::ConvForId(std::string conv_id) {
     START_TRACK;
-    co_return co_await conversation::SaveConversation::SdkConvForId(CONTEXT_V, conv_id);
+    co_return co_await save_conversation->SdkConvForId(CONTEXT_V, conv_id);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::ConvsForUserId(std::string user_id, int64_t cursor, int64_t limit) {
     START_TRACK;
-    co_return co_await conversation::SaveConversation::LoadConvsFromDb(CONTEXT_V, cursor, limit, true);
+    co_return co_await save_conversation->LoadConvsFromDb(CONTEXT_V, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::ConvsWhenLogin() {
@@ -55,10 +59,10 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> Conversation
     START_TRACK;
 
     /// 触发混链拉取
-    asio::co_spawn(sdk_root->net_io_context(), conversation::UserMessageFetcher::FetchUserMessages(CONTEXT_V), asio::detached);
+    asio::co_spawn(sdk_root->net_io_context(), user_message_fetcher->FetchUserMessages(CONTEXT_V), asio::detached);
 
     /// 从DB 中加载会话
-    auto convs = co_await conversation::SaveConversation::LoadConvsFromDb(CONTEXT_V, -1, 100, true);
+    auto convs = co_await save_conversation->LoadConvsFromDb(CONTEXT_V, -1, 100, true);
     co_return convs;
 }
 
@@ -85,9 +89,20 @@ boost::asio::awaitable<bool> ConversationManager::DeleteConv(std::string conv_id
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::CreateConv(std::vector<std::string> member_user_ids, std::string conv_name) {
     START_TRACK;
-    co_return co_await conversation::CreateConversation::CreateConv(CONTEXT_V, member_user_ids, conv_name);
+    co_return co_await create_conversation->CreateConv(CONTEXT_V, member_user_ids, conv_name);
 }
 
 /// =======================================================================================
+
+/// ================================ private methods ======================================
+
+void ConversationManager::p_InitSubComponents() {
+    user_message_fetcher = std::make_unique<conversation::UserMessageFetcher>(w_sdk_root);
+    save_conversation = std::make_unique<conversation::SaveConversation>(w_sdk_root);
+    receive_conversation = std::make_unique<conversation::ReceiveConversation>(w_sdk_root);
+    create_conversation = std::make_unique<conversation::CreateConversation>(w_sdk_root);
+    db_opt = std::make_unique<conversation::DBOpt>(w_sdk_root);
+    convert = std::make_unique<conversation::Convert>(w_sdk_root);
+}
 
 } // namespace roc::imsdk::core

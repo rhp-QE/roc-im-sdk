@@ -10,11 +10,16 @@ namespace roc::imsdk::core::conversation {
 
 class Convert {
 public:
+    explicit Convert(std::weak_ptr<SDKRoot> sdk_root);
+
     /// 会话转换 网络会话 -> db 会话
-    static std::shared_ptr<core::conversation::ConversationORM> ConvertNetConvToDbConv(const network::ConversationInfo *conv);
+    std::shared_ptr<core::conversation::ConversationORM> ConvertNetConvToDbConv(const network::ConversationInfo *conv);
 
     /// 会话转换 db 会话 -> sdk 会话
-    static std::shared_ptr<model::ConversationModel> ConvertDbConvToSdkConv(CONTEXT_T, const core::conversation::ConversationORM *conv);
+    std::shared_ptr<model::ConversationModel> ConvertDbConvToSdkConv(CONTEXT_T, const core::conversation::ConversationORM *conv);
+
+private:
+    std::weak_ptr<SDKRoot> w_sdk_root;
 };
 
 } // namespace roc::imsdk::core::conversation

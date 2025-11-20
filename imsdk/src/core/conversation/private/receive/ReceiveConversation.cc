@@ -7,6 +7,10 @@
 
 namespace roc::imsdk::core::conversation {
 
+ReceiveConversation::ReceiveConversation(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 void ReceiveConversation::Start(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 }
@@ -17,7 +21,7 @@ boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CONT
     auto conv_manager = sdk_root->ConversationManager();
 
     // 保存会话
-    auto sdk_convs = co_await conversation::SaveConversation::SaveNetConversations(CONTEXT_V, std::move(conversations));
+    auto sdk_convs = co_await conv_manager->save_conversation->SaveNetConversations(CONTEXT_V, std::move(conversations));
 
     LOG_INFO("ConvManager", "handleReceiveConversation, sdk_convs: {}", sdk_convs.size());
 

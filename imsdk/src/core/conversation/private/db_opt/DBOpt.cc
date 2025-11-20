@@ -3,15 +3,20 @@
 #include "WCDB/Expression.hpp"
 #include "WCDB/Field.hpp"
 #include "imsdk/src/core/common/util.h"
+#include "imsdk/src/core/sdkroot/SDKRoot.h"
+#include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/convert/convert.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
-#include "imsdk/src/core/sdkroot/SDKRoot.h"
 
 #include "WCDB/WCDBCpp.h"
 
 namespace roc::imsdk::core::conversation {
 
 static const std::string ConversationTableName = "conversation_table";
+
+DBOpt::DBOpt(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
 
 std::string DBOpt::p_TableName(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, "default_conversation_table");
@@ -70,9 +75,10 @@ std::vector<std::shared_ptr<model::ConversationModel>> DBOpt::QueryConversations
         return {};
     }
 
+    auto conv_manager = sdk_root->ConversationManager();
     std::vector<std::shared_ptr<model::ConversationModel>> convs;
     for (auto &item : result.value()) {
-        convs.push_back(core::conversation::Convert::ConvertDbConvToSdkConv(CONTEXT_V, &item));
+        convs.push_back(conv_manager->convert->ConvertDbConvToSdkConv(CONTEXT_V, &item));
     }
 
     return convs;
@@ -101,7 +107,8 @@ std::shared_ptr<model::ConversationModel> DBOpt::ConversationForId(CONTEXT_T, co
         return nullptr;
     }
 
-    return core::conversation::Convert::ConvertDbConvToSdkConv(CONTEXT_V, &result.value()[0]);
+    auto conv_manager = sdk_root->ConversationManager();
+    return conv_manager->convert->ConvertDbConvToSdkConv(CONTEXT_V, &result.value()[0]);
 }
 
 std::vector<std::shared_ptr<core::conversation::ConversationORM>> DBOpt::QueryConversationsForUser(CONTEXT_T, int64_t cursor, int64_t limit) {

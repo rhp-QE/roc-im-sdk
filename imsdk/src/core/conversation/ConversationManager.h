@@ -4,13 +4,19 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/strand.hpp>
 #include "imsdk/src/include/IMSDK.h"
-#include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
+#include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
+
 
 // Forward declaration
 namespace roc::imsdk::core::conversation {
+    class UserMessageFetcher;
     class SaveConversation;
+    class ReceiveConversation;
+    class CreateConversation;
+    class DBOpt;
+    class Convert;
 }
 
 namespace roc::imsdk::core {
@@ -67,6 +73,9 @@ public:
     /// =======================================================================================
 
 private:
+    /// 初始化子组件
+    void p_InitSubComponents();
+
     std::weak_ptr<SDKRoot> w_sdk_root;
     std::atomic<int64_t> cursor_ = -1;
     
@@ -79,9 +88,21 @@ private:
     /// 会话操作串行队列
     boost::asio::strand<boost::asio::io_context::executor_type> conv_strand_;
 
-    // 友元类，允许SaveConversation访问私有成员
-    friend class roc::imsdk::core::conversation::SaveConversation;
+    // 友元类，允许子组件访问私有成员
     friend class roc::imsdk::core::conversation::Convert;
+    friend class roc::imsdk::core::conversation::SaveConversation;
+    friend class roc::imsdk::core::conversation::UserMessageFetcher;
+    friend class roc::imsdk::core::conversation::DBOpt;
+    friend class roc::imsdk::core::conversation::ReceiveConversation;
+    friend class roc::imsdk::core::conversation::CreateConversation;
+
+    /// 子组件
+    std::unique_ptr<conversation::UserMessageFetcher> user_message_fetcher;
+    std::unique_ptr<conversation::SaveConversation> save_conversation;
+    std::unique_ptr<conversation::ReceiveConversation> receive_conversation;
+    std::unique_ptr<conversation::CreateConversation> create_conversation;
+    std::unique_ptr<conversation::DBOpt> db_opt;
+    std::unique_ptr<conversation::Convert> convert;
 };
 
 } // namespace roc::imsdk::core

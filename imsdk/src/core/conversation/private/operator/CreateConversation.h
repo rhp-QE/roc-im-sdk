@@ -13,9 +13,14 @@ namespace roc::imsdk::core::conversation {
 
 class CreateConversation {
 public:
+    explicit CreateConversation(std::weak_ptr<SDKRoot> sdk_root);
+
     /// 创建会话
-    static boost::asio::awaitable<std::shared_ptr<model::ConversationModel>>
+    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>>
         CreateConv(CONTEXT_T, std::vector<std::string> member_user_ids, std::string conv_name);
+
+private:
+    std::weak_ptr<SDKRoot> w_sdk_root;
 };
 
 } // namespace roc::imsdk::core::conversation

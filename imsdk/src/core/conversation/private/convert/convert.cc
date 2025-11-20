@@ -64,6 +64,10 @@ std::unordered_map<std::string, std::string> parseExtString(const std::string& e
 
 } // namespace
 
+Convert::Convert(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 /// 会话转换 网络会话 -> db 会话
 std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDbConv(const network::ConversationInfo *conv) {
     if (!conv) {

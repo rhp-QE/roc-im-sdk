@@ -25,6 +25,10 @@ static const std::string MessageTableName = "messgae_table";
 static const std::string MessageRangeKey = "messageRange";
 static const std::string OrderIndexKey = "order_index";
 
+DBOpt::DBOpt(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 //-----------------------
 std::string DBOpt::p_TableName(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, "defaule_message_table");
@@ -204,7 +208,8 @@ std::shared_ptr<model::MessageModel> DBOpt::MessageForId(CONTEXT_T, std::string 
     );
 
     if (result.hasValue() && !result.value().empty()) {
-        return core::message::Convert::ConvertDbMsgToSdkMsgTmp(CONTEXT_V, &(result.value().front()));
+        auto msg_manager = sdk_root->MessageManager();
+        return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CONTEXT_V, &(result.value().front()));
     }
 
     return nullptr;
@@ -237,9 +242,10 @@ std::vector<std::shared_ptr<model::MessageModel>> DBOpt::QueryMessagesForConvId(
         return {};
     }
 
+    auto msg_manager = sdk_root->MessageManager();
     std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs;
     for (auto &msg : result.value()) {
-        sdk_msgs.push_back(core::message::Convert::ConvertDbMsgToSdkMsgTmp(CONTEXT_V, &msg));
+        sdk_msgs.push_back(msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CONTEXT_V, &msg));
     }
 
     return sdk_msgs;

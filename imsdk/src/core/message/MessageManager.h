@@ -1,17 +1,23 @@
 #pragma once
 
+#include "core/common/macro.h"
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
-#include "imsdk/src/core/message/private/db_opt/DBOpt.h"
-#include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
-#include "imsdk/src/core/message/private/cmd/CmdMessageOperator.h"
+#include <boost/asio/io_context.hpp>
+#include <boost/asio/strand.hpp>
 #include <mutex>
 
 // Forward declaration
 namespace roc::imsdk::core::message {
     class SaveMessage;
+    class ReceiveMessage;
+    class CmdMessageOperator;
+    class SendMessage;
+    class DBOpt;
+    class Convert;
+    class ConvMessagesFetcher;
 }
 
 namespace roc::imsdk::core {
@@ -27,7 +33,7 @@ public:
     // 收到消息回调
     model::OnMessagesCallbackType OnReceiveMessageCallback();
 
-    void HandleReceiveMessage(std::vector<std::shared_ptr<network::MsgData>> net_msgs);
+    void HandleReceiveMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);
 
     // 消息操作串行队列
     boost::asio::strand<boost::asio::io_context::executor_type> MsgStrand();
@@ -83,14 +89,26 @@ private:
     /// 消息区间
     base::containers::ThreadSafeUnorderedMap<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> msg_range_cache_;
 
-    // 友元类，允许SaveMessage访问私有成员
+    // 友元类，允许子组件访问私有成员
     friend class roc::imsdk::core::message::DBOpt;
     friend class roc::imsdk::core::message::Convert;
     friend class roc::imsdk::core::message::SaveMessage;
     friend class roc::imsdk::core::message::ReceiveMessage;
     friend class roc::imsdk::core::message::CmdMessageOperator;
+    friend class roc::imsdk::core::message::SendMessage;
+    friend class roc::imsdk::core::message::ConvMessagesFetcher;
 
+    /// 初始化子组件
+    void p_InitSubComponents();
 
+    /// 子组件
+    std::unique_ptr<message::SaveMessage> save_message;
+    std::unique_ptr<message::ReceiveMessage> receive_message;
+    std::unique_ptr<message::CmdMessageOperator> cmd_message_operator;
+    std::unique_ptr<message::SendMessage> send_message;
+    std::unique_ptr<message::DBOpt> db_opt;
+    std::unique_ptr<message::Convert> convert;
+    std::unique_ptr<message::ConvMessagesFetcher> conv_messages_fetcher;
 };
 
 } // namespace roc::imsdk::core

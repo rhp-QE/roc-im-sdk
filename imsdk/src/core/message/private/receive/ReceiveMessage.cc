@@ -20,14 +20,19 @@ static int PUSH_USER_MESSAGE_TYPE = 4001;
 
 namespace roc::imsdk::core::message {
 
+ReceiveMessage::ReceiveMessage(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 void ReceiveMessage::Start(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto conn = sdk_root->ConnectionManager();
 
-    conn->AddOnPushMessageCallback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+    auto msg_manager = sdk_root->MessageManager();
+    conn->AddOnPushMessageCallback([msg_manager, w_sdk_root = w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
         uint32_t call_track_id = resp->trackid();
-        message::ReceiveMessage::HandlePushMessage(CONTEXT_V, resp);
+        msg_manager->receive_message->HandlePushMessage(w_sdk_root, call_track_id, resp);
     });
 }
 
@@ -71,7 +76,7 @@ boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CONTEXT_T, std
     }
 
     /// 数据保存
-    auto sdk_msgs = co_await message::SaveMessage::SaveNetMessages(CONTEXT_V, net_msgs_ptr);
+    auto sdk_msgs = co_await msg_manager->save_message->SaveNetMessages(CONTEXT_V, net_msgs_ptr);
     
     LOG_INFO("MsgManager", "handle_receive_message, size: {}", sdk_msgs.size());
 

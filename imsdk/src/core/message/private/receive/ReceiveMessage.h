@@ -8,16 +8,21 @@ namespace roc::imsdk::core::message {
 
 class ReceiveMessage {
 public:
-    static void Start(CONTEXT_T);
+    explicit ReceiveMessage(std::weak_ptr<SDKRoot> sdk_root);
+
+    void Start(CONTEXT_T);
 
     /// 处理下推消息
-    static void HandlePushMessage(CONTEXT_T, std::shared_ptr<network::SdkWSResp> resp);
+    void HandlePushMessage(CONTEXT_T, std::shared_ptr<network::SdkWSResp> resp);
 
     /// 处理接收到的消息 (混链、单链拉到的消息， 长链下推的消息)
-    static boost::asio::awaitable<void> HandleReceiveMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);
+    boost::asio::awaitable<void> HandleReceiveMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);
 
     /// 对消息进行分类
-    static boost::asio::awaitable<model::OnMessageResult> ClassifyMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs);
+    boost::asio::awaitable<model::OnMessageResult> ClassifyMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs);
+
+private:
+    std::weak_ptr<SDKRoot> w_sdk_root;
 };
 
 }

@@ -14,9 +14,10 @@
 
 namespace roc::imsdk::core::conversation {
 
-struct FetchUserMessageResult {
+struct FetchUserMessageResult {};
 
-};
+UserMessageFetcher::UserMessageFetcher(std::weak_ptr<SDKRoot> sdk_root)
+    : w_sdk_root(sdk_root) {}
 
 asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CONTEXT_T) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
@@ -89,10 +90,11 @@ boost::asio::awaitable<void> UserMessageFetcher::p_HandleFetchedUserMessage(CONT
     LOG_INFO("ConvManager", "finish_fetch_user_message, net_msgs: {}, net_convs: {}", net_msgs.size(), net_convs.size());
 
     // 处理接收到的消息
-    co_spawn(sdk_root->sdk_io_context(), message::ReceiveMessage::HandleReceiveMessage(CONTEXT_V, net_msgs), asio::detached);
+    sdk_root->MessageManager()->HandleReceiveMessage(CONTEXT_V, net_msgs);
 
     // 处理接收到的会话
-    co_spawn(sdk_root->sdk_io_context(), conversation::ReceiveConversation::HandleReceiveConversation(CONTEXT_V, std::move(net_convs)), asio::detached);
+    auto conv_manager = sdk_root->ConversationManager();
+    co_spawn(sdk_root->sdk_io_context(), conv_manager->receive_conversation->HandleReceiveConversation(CONTEXT_V, std::move(net_convs)), asio::detached);
 
     // // 更新游标
     // conv_manager->set_cursor(resp->stop());

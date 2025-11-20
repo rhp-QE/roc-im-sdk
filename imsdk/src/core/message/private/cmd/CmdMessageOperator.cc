@@ -9,14 +9,19 @@
 
 namespace roc::imsdk::core::message {
 
+CmdMessageOperator::CmdMessageOperator(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 void CmdMessageOperator::Start(CONTEXT_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto conn_manager= sdk_root->ConnectionManager();
 
-    conn_manager->AddOnPushMessageCallback([w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+    auto msg_manager = sdk_root->MessageManager();
+    conn_manager->AddOnPushMessageCallback([msg_manager, w_sdk_root = w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
         uint32_t call_track_id = resp->trackid();
-        message::CmdMessageOperator::p_HandlePushMessage(CONTEXT_V, resp);
+        msg_manager->cmd_message_operator->p_HandlePushMessage(w_sdk_root, call_track_id, resp);
     });
 }
 
@@ -74,7 +79,7 @@ boost::asio::awaitable<void> CmdMessageOperator::p_HandleUpdateMessage(CONTEXT_T
     std::shared_ptr<network::MsgData> msg_data(cmd_msg->release_msg());
 
     // 保存消息
-    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = co_await message::SaveMessage::SaveNetMessages(CONTEXT_V, {msg_data.get()});
+    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = co_await sdk_root->MessageManager()->save_message->SaveNetMessages(CONTEXT_V, {msg_data.get()});
     if (sdk_msgs.empty()) {
         co_return;
     }

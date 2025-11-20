@@ -19,6 +19,10 @@
 
 namespace roc::imsdk::core::message {
 
+SendMessage::SendMessage(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage::sendMessage(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
@@ -30,6 +34,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
         co_return response;
     } 
 
+    auto msg_manager = sdk_root->MessageManager();
     double send_time = util::current_time_since1970();
     std::string client_msg_id = message::SaveMessage::GenerateClientMsgId(); 
 
@@ -41,7 +46,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage:
 
     {
         auto db_msg = convertSendContextToMessageOrm(CONTEXT_V, context, client_msg_id, send_time);
-        auto sdk_msgs = co_await core::message::SaveMessage::SaveDbMsgs(CONTEXT_V, {db_msg});
+        auto sdk_msgs = co_await msg_manager->save_message->SaveDbMsgs(CONTEXT_V, {db_msg});
         if (sdk_msgs.empty()) {
             response->error_msg = "save message failed";
             co_return response;
@@ -69,7 +74,8 @@ boost::asio::awaitable<void> SendMessage::asyncSendMessage(CONTEXT_T, std::uniqu
         co_return;
     }
 
-    auto sdk_msgs = co_await core::message::SaveMessage::SaveNetMessages(CONTEXT_V, {&(resp.value()->infos()[0].msg())});
+    auto msg_manager = sdk_root->MessageManager();
+    auto sdk_msgs = co_await msg_manager->save_message->SaveNetMessages(CONTEXT_V, {&(resp.value()->infos()[0].msg())});
 
     LOG_INFO("MsgManager", "asyncSendMessage, result: {}", sdk_msgs.empty() ? "failed" : "success");
 
@@ -169,7 +175,7 @@ std::shared_ptr<MessageORM> SendMessage::convertSendContextToMessageOrm(CONTEXT_
     message_orm->send_time = send_time;
     
     // 设置顺序索引
-    message_orm->client_order_index = message::DBOpt::NextMsgOrderInConv(CONTEXT_V, context.conv_id);
+    message_orm->client_order_index = msg_manager->db_opt->NextMsgOrderInConv(CONTEXT_V, context.conv_id);
     
     return message_orm;
 }

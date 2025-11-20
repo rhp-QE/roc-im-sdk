@@ -13,8 +13,12 @@
 
 namespace roc::imsdk::core::message {
 
+ConvMessagesFetcher::ConvMessagesFetcher(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 // 生成请求
-std::unique_ptr<network::FetchConvMessageListReq> pMakeFetchConvMessageListReq(CONTEXT_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
+std::unique_ptr<network::FetchConvMessageListReq> ConvMessagesFetcher::p_MakeFetchConvMessageListReq(CONTEXT_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto req = std::make_unique<network::FetchConvMessageListReq>();
@@ -28,7 +32,7 @@ std::unique_ptr<network::FetchConvMessageListReq> pMakeFetchConvMessageListReq(C
 }
 
 // 处理返回数据
-void pHandleFetchConvMessgaeListResp(CONTEXT_T, std::unique_ptr<network::FetchConvMessageListResp> resp) {
+void ConvMessagesFetcher::p_HandleFetchConvMessgaeListResp(CONTEXT_T, std::unique_ptr<network::FetchConvMessageListResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     std::vector<std::shared_ptr<network::MsgData>> net_msgs;
@@ -41,7 +45,8 @@ void pHandleFetchConvMessgaeListResp(CONTEXT_T, std::unique_ptr<network::FetchCo
     LOG_INFO("MsgManager", "call_track_id: {}, handle_fetchConvMessageList_resp, size: {}", TRACK_ID, net_msgs.size());
 
     // 保存消息
-    boost::asio::co_spawn(sdk_root->net_io_context(), message::ReceiveMessage::HandleReceiveMessage(CONTEXT_V, net_msgs), boost::asio::detached);
+    auto msg_manager = sdk_root->MessageManager();
+    boost::asio::co_spawn(sdk_root->net_io_context(), msg_manager->receive_message->HandleReceiveMessage(CONTEXT_V, net_msgs), boost::asio::detached);
 }
 
 asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageListForRange(CONTEXT_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
@@ -51,7 +56,7 @@ asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageListForRange(CONTEXT_
     int cnt = 10;
     bool has_more = true;
     do {
-        std::unique_ptr<network::FetchConvMessageListReq> req = pMakeFetchConvMessageListReq(CONTEXT_V, conv_id, range);
+        std::unique_ptr<network::FetchConvMessageListReq> req = p_MakeFetchConvMessageListReq(CONTEXT_V, conv_id, range);
         if (!req) {
             break;
         }
@@ -65,7 +70,7 @@ asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageListForRange(CONTEXT_
         has_more = resp.value()->havemore();
         
         // 处理数据
-        pHandleFetchConvMessgaeListResp(CONTEXT_V, std::move(resp.value()));
+        p_HandleFetchConvMessgaeListResp(CONTEXT_V, std::move(resp.value()));
 
     } while(cnt-- > 0 && has_more);
 }
@@ -75,7 +80,8 @@ asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageListForRange(CONTEXT_
 boost::asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageList(CONTEXT_T, std::string conv_id) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    auto msg_empty_ranges = message::SaveMessage::EmptyMessageRangeForConvId(CONTEXT_V, conv_id);
+    auto msg_manager = sdk_root->MessageManager();
+    auto msg_empty_ranges = msg_manager->save_message->EmptyMessageRangeForConvId(CONTEXT_V, conv_id);
 
     for (const auto &range : msg_empty_ranges) {
 

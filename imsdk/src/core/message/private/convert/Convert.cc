@@ -12,6 +12,10 @@
 
 namespace roc::imsdk::core::message {
 
+Convert::Convert(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 /// 消息转换 网络消息 -> db 消息
 std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CONTEXT_T, const network::MsgData *msg) {
     CHECK_POINTER_OR_RETURN_VALUE(msg, nullptr)
@@ -55,8 +59,8 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CONTEXT
 
     db_msg->local_ext = "";
 
-
-    DBOpt::MessageMergeWithLocal(CONTEXT_V, db_msg->client_msg_id, db_msg.get());
+    auto msg_manager = sdk_root->MessageManager();
+    msg_manager->db_opt->MessageMergeWithLocal(CONTEXT_V, db_msg->client_msg_id, db_msg.get());
     // -----------------------------------------------------------------------------------------------
     
     return db_msg;

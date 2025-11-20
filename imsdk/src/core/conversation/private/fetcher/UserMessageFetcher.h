@@ -11,15 +11,19 @@ namespace roc::imsdk::core::conversation {
 
 class UserMessageFetcher {
 public:
+    explicit UserMessageFetcher(std::weak_ptr<SDKRoot> sdk_root);
+
     /// 获取用户消息
-    static boost::asio::awaitable<void> FetchUserMessages(CONTEXT_T);
+    boost::asio::awaitable<void> FetchUserMessages(CONTEXT_T);
     
 private:
     /// 构造获取用户消息列表请求
-    static std::unique_ptr<network::FetchUserMessageListReq> p_MakeFetchUserMessageListReq(CONTEXT_T, int64_t cursor);
+    std::unique_ptr<network::FetchUserMessageListReq> p_MakeFetchUserMessageListReq(CONTEXT_T, int64_t cursor);
     
     /// 处理获取到的用户消息
-    static boost::asio::awaitable<void> p_HandleFetchedUserMessage(CONTEXT_T, std::unique_ptr<network::FetchUserMessageListResp> resp);
+    boost::asio::awaitable<void> p_HandleFetchedUserMessage(CONTEXT_T, std::unique_ptr<network::FetchUserMessageListResp> resp);
+
+    std::weak_ptr<SDKRoot> w_sdk_root;
 };
 
 } // namespace roc::imsdk::core::conversation

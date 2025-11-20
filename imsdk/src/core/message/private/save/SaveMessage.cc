@@ -17,6 +17,10 @@
 
 namespace roc::imsdk::core::message {
 
+SaveMessage::SaveMessage(std::weak_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root) {
+}
+
 // 私有方法 =======================
 
 /// 保存消息日志
@@ -40,9 +44,10 @@ boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>>
 SaveMessage::SaveNetMessages(CONTEXT_T, std::vector<const network::MsgData *> msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
     
+    auto msg_manager = sdk_root->MessageManager();
     // 转换为 db 消息
-    auto db_msgs = base::util::transform(msgs, [=](const network::MsgData *msg) {
-        return core::message::Convert::ConvertNetMsgToDbMsg(CONTEXT_V, msg);
+    auto db_msgs = base::util::transform(msgs, [msg_manager, w_sdk_root = w_sdk_root, call_track_id](const network::MsgData *msg) {
+        return msg_manager->convert->ConvertNetMsgToDbMsg(w_sdk_root, call_track_id, msg);
     }); 
 
     co_return co_await SaveDbMsgs(CONTEXT_V, std::move(db_msgs));
@@ -57,14 +62,14 @@ SaveMessage::SaveDbMsgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::Me
     auto msg_manager = sdk_root->MessageManager();
 
     // 转换为 sdk 消息
-    auto sdk_msgs = base::util::transform(db_msgs, [=](const std::shared_ptr<core::message::MessageORM> &msg) {
-        return core::message::Convert::ConvertDbMsgToSdkMsgTmp(CONTEXT_V, msg.get());
+    auto sdk_msgs = base::util::transform(db_msgs, [msg_manager, w_sdk_root = w_sdk_root, call_track_id](const std::shared_ptr<core::message::MessageORM> &msg) {
+        return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(w_sdk_root, call_track_id, msg.get());
     });
 
     /// 在同一个线程内执行 确保 db 和 缓存的一致性
-    auto saved_msgs = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), CONTEXT_V]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+    auto saved_msgs = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [this, msg_manager, sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root = w_sdk_root, call_track_id]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         // 保存到数据库
-        bool ret = message::DBOpt::InsertOrReplaceMessage(CONTEXT_V, db_msgs);
+        bool ret = msg_manager->db_opt->InsertOrReplaceMessage(w_sdk_root, call_track_id, db_msgs);
 
         // // 排除 local_ext 和 client_order_index 字段（黑名单模式）
         // WCDB::Fields not_update_when_exit({
@@ -93,8 +98,9 @@ SaveMessage::SaveDbMsgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::Me
 void SaveMessage::UpdateMsgOrderInConv(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
+    auto msg_manager = sdk_root->MessageManager();
     for (const auto &msg : sdk_msgs) {
-        message::DBOpt::SetMsgOrderInConv(CONTEXT_V, msg->conversation_id(), msg->client_order_index());
+        msg_manager->db_opt->SetMsgOrderInConv(CONTEXT_V, msg->conversation_id(), msg->client_order_index());
     }
 }
 
@@ -125,7 +131,8 @@ SaveMessage::SdkMsgForId(CONTEXT_T, const std::string &msg_id) {
         }
 
         /// 从DB中获取
-        auto sdk_msg_copy = message::DBOpt::MessageForId(CONTEXT_V, msg_id);
+        auto msg_manager = sdk_root->MessageManager();
+        auto sdk_msg_copy = msg_manager->db_opt->MessageForId(CONTEXT_V, msg_id);
         if (!sdk_msg_copy) {
             co_return nullptr;
         }
@@ -175,14 +182,14 @@ void SaveMessage::p_UpdateMessageRangeForMessage(CONTEXT_T, const std::vector<st
         auto old_ranges = msg_manager->msg_range_cache_.at(conv_id);
         if (!old_ranges) {
             LOG_INFO("MsgManager", "no range in cahce, get from db. conv_id: {}", conv_id);
-            input_ranges = p_MergeRanges(input_ranges, DBOpt::MessageRange(CONTEXT_V, conv_id));
+            input_ranges = p_MergeRanges(input_ranges, msg_manager->db_opt->MessageRange(CONTEXT_V, conv_id));
         }
 
         auto new_ranges = msg_manager->msg_range_cache_.modify_or_create(conv_id, [input_ranges](std::vector<std::pair<int64_t, int64_t>> &current_ranges) {
             current_ranges = p_MergeRanges(input_ranges, current_ranges);
         });
 
-        message::DBOpt::SaveMessageRange(CONTEXT_V, new_ranges, conv_id);
+        msg_manager->db_opt->SaveMessageRange(CONTEXT_V, new_ranges, conv_id);
     }
 }
 
@@ -194,7 +201,7 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::EmptyMessageRangeForConvId
     CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
 
     // 获取会话的现有消息区间
-    auto msg_ranges = message::SaveMessage::p_MessageRangeForConvId(CONTEXT_V, conv_id);
+    auto msg_ranges = p_MessageRangeForConvId(CONTEXT_V, conv_id);
     
     // 计算空缺区间
     if (msg_ranges.empty()) {
@@ -221,14 +228,14 @@ SaveMessage::LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cursor, i
 
     auto msg_manager = sdk_root->MessageManager();
 
-    auto sdk_msgs = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+    auto sdk_msgs = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [this, msg_manager, w_sdk_root = w_sdk_root, call_track_id, conv_id, cursor, limit, forward]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
         /// 从DB 中获取消息
-        auto sdk_msgs_copy = message::DBOpt::QueryMessagesForConvId(CONTEXT_V, conv_id, cursor, limit, forward);
+        auto sdk_msgs_copy = msg_manager->db_opt->QueryMessagesForConvId(w_sdk_root, call_track_id, conv_id, cursor, limit, forward);
 
         /// 更新消息缓存
-        co_return UpdateMsgCache(CONTEXT_V, sdk_msgs_copy);
+        co_return UpdateMsgCache(w_sdk_root, call_track_id, sdk_msgs_copy);
 
     }, boost::asio::use_awaitable);
     
@@ -243,7 +250,8 @@ SaveMessage::LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cursor, i
 std::vector<std::pair<int64_t, int64_t>> SaveMessage::LoadMessageRangeFromDb(CONTEXT_T, const std::string &conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
-    return message::DBOpt::MessageRange(CONTEXT_V, conv_id);
+    auto msg_manager = sdk_root->MessageManager();
+    return msg_manager->db_opt->MessageRange(CONTEXT_V, conv_id);
 }
 
 /// 生成客户端消息 ID
