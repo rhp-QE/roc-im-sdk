@@ -21,19 +21,19 @@ public:
 private: 
     /// 发送消息请求
     boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
-        p_Request(CONTEXT_T, network::SendMessageReq *request);
+        p_request(CONTEXT_T, network::SendMessageReq *request);
     
     /// 异步发送消息
-    boost::asio::awaitable<void> asyncSendMessage(CONTEXT_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
+    boost::asio::awaitable<void> p_asyncSendMessage(CONTEXT_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
 
     /// 检查发送上下文
-    bool checkSendContext(const model::SendMsgContext &contexts);
+    bool p_checkSendContext(const model::SendMsgContext &contexts);
 
     /// 将发送上下文转换为网络消息
-    void convertSendContextToSdkwsMessage(CONTEXT_T, model::SendMsgContext &contexts, std::string client_msg_id, double send_time, network::MsgData *req);
+    void p_convertSendContextToSdkwsMessage(CONTEXT_T, model::SendMsgContext &contexts, std::string client_msg_id, double send_time, network::MsgData *req);
     
     /// 将发送上下文转换为MessageORM对象
-    std::shared_ptr<MessageORM> convertSendContextToMessageOrm(CONTEXT_T, const model::SendMsgContext &context, std::string client_msg_id, double send_time);
+    std::shared_ptr<MessageORM> p_convertSendContextToMessageOrm(CONTEXT_T, const model::SendMsgContext &context, std::string client_msg_id, double send_time);
 
     std::weak_ptr<SDKRoot> w_sdk_root;
 };
