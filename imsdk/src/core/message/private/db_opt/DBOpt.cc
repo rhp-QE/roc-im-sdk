@@ -289,16 +289,15 @@ void DBOpt::SetMsgOrderInConv(CONTEXT_T, std::string conv_id, int64_t order) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     auto *mmkv = sdk_root->mmkv();
-    CHECK_POINTER_OR_RETURN_VOID(mmkv);
-
     auto msg_manager = sdk_root->MessageManager();
 
     // lock
+    // TODO 移出去
     std::lock_guard<std::mutex> lock(msg_manager->msg_order_mutex_);
 
     int64_t old_max_order = mmkv->getInt64(p_OrderIndexKey(CONTEXT_V, conv_id), 0);
     if (order > old_max_order) {
-        // std::cout<<"setMsgOrderInConv: "<<conv_id<<" : "<<order<<std::endl;
+        LOG_INFO("MessageDBOpt", "update max message order index = {}, in cid ={}", order, conv_id)
         mmkv->set(order, p_OrderIndexKey(CONTEXT_V, conv_id));
     }
 }
@@ -316,7 +315,8 @@ int64_t DBOpt::NextMsgOrderInConv(CONTEXT_T, std::string conv_id) {
 
     int64_t max_order = mmkv->getInt64(p_OrderIndexKey(CONTEXT_V, conv_id), 0);
     mmkv->set(max_order + 1, p_OrderIndexKey(CONTEXT_V, conv_id));
-    // std::cout<<"max_msg_order_in_conv: "<<conv_id<<" : "<<max_order<<std::endl;
+    LOG_INFO("MessageDBOpt", "get next message order index = {}, in cid = {}", max_order + 1, conv_id)
+    
     return max_order + 1;
 }
 
