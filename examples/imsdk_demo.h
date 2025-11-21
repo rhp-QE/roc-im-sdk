@@ -143,6 +143,10 @@ inline boost::asio::awaitable<void> p_send_message() {
     std::cin >> content;
     auto context = generateSendMessageContext(to_user_id, content);
     auto response = co_await imsdk->SendMessage(context, [](std::shared_ptr<roc::imsdk::model::SendMessageResponse> response) {
+        if (response->error_code) {
+            std::cout<<"\n消息发送失败"<<std::endl;
+            return;
+        }
         std::cout << "\n[message send success] id = " << response->msg->client_msg_id() << std::endl;
     });
 }

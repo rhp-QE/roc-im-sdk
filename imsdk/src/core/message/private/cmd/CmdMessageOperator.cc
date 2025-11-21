@@ -4,7 +4,7 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
-#include "imsdk/src/core/message/private/save/SaveMessage.h"
+#include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
 #include <memory>
 
 namespace roc::imsdk::core::message {
@@ -81,7 +81,7 @@ boost::asio::awaitable<void> CmdMessageOperator::p_HandleUpdateMessage(CONTEXT_T
     std::shared_ptr<network::MsgData> msg_data(cmd_msg->release_msg());
 
     // 保存消息
-    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = co_await sdk_root->MessageManager()->save_message->SaveNetMessages(CONTEXT_V, {msg_data.get()});
+    std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs = co_await sdk_root->MessageManager()->message_data_source->SaveNetMessages(CONTEXT_V, {msg_data.get()});
     if (sdk_msgs.empty()) {
         co_return;
     }

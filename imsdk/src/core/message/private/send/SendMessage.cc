@@ -10,10 +10,11 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
-#include "imsdk/src/core/message/private/save/SaveMessage.h"
+#include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/common/sdkwsEnum.h"
 #include <algorithm>
+#include <expected>
 #include <memory>
 #include <utility>
 
@@ -23,7 +24,31 @@ SendMessageController::SendMessageController(std::weak_ptr<SDKRoot> sdk_root)
     : w_sdk_root(sdk_root) {
 }
 
-// =================================== public methods ================================================
+boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
+SendMessageController::p_request(CONTEXT_T, network::SendMessageReq *request) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
+
+    std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
+    req->set_type(static_cast<int32_t>(imsdk::network::SDKRequestType::SEND_MESSAGE));
+    req->set_data(request->SerializeAsString());
+    req->set_trackid(TRACK_ID);
+
+    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
+    if (!response) {
+        co_return std::unexpected(roc::error::make_error(40201, "SDKRequest send_message response is empty"));
+    }
+    if (!response.has_value()) {
+        co_return std::unexpected(response.error());
+    }
+
+    auto resp = std::make_unique<network::SendMessageResp>();
+    bool ok = resp->ParseFromArray(response.value()->data().data(), response.value()->data().size());
+    if (!ok) {
+        co_return std::unexpected(roc::error::make_error(40201, "SDKRequest send_message parse response failed"));
+    }
+
+    co_return resp;
+}
 
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageController::SendMessage(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
@@ -38,7 +63,8 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageC
 
     auto msg_manager = sdk_root->MessageManager();
     double send_time = util::current_time_since1970();
-    std::string client_msg_id = message::SaveMessage::GenerateClientMsgId(); 
+    std::string client_msg_id = p_generateClientMsgId(); 
+
 
     std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
     p_convertSendContextToSdkwsMessage(CONTEXT_V, context, client_msg_id, send_time, req->add_msgs());
@@ -47,7 +73,7 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageC
 
     {
         auto db_msg = p_convertSendContextToMessageOrm(CONTEXT_V, context, client_msg_id, send_time);
-        auto sdk_msgs = co_await msg_manager->save_message->SaveDbMsgs(CONTEXT_V, {db_msg});
+        auto sdk_msgs = co_await msg_manager->message_data_source->SaveDbMsgs(CONTEXT_V, {db_msg});
         if (sdk_msgs.empty()) {
             response->error_msg = "save message failed";
             co_return response;
@@ -65,8 +91,6 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageC
     co_return response;
 }
 
-// =================================== private methods ================================================
-
 boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CONTEXT_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
@@ -78,7 +102,7 @@ boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CONTEXT_T
     }
 
     auto msg_manager = sdk_root->MessageManager();
-    auto sdk_msgs = co_await msg_manager->save_message->SaveNetMessages(CONTEXT_V, {&(resp.value()->infos()[0].msg())});
+    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CONTEXT_V, {&(resp.value()->infos()[0].msg())});
 
     LOG_INFO("MsgManager", "asyncSendMessage, result: {}", sdk_msgs.empty() ? "failed" : "success");
 
@@ -91,30 +115,11 @@ boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CONTEXT_T
     co_return;
 }
 
+// ----------------------------- private static methods -----------------------------
 
-boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
-SendMessageController::p_request(CONTEXT_T, network::SendMessageReq *request) {
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
-
-    std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
-    req->set_type(static_cast<int32_t>(imsdk::network::SDKRequestType::SEND_MESSAGE));
-    req->set_data(request->SerializeAsString());
-    req->set_trackid(TRACK_ID);
-
-    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
-    if (!response || !response.has_value()) {
-        co_return std::unexpected(roc::error::make_error(40201, "SDKRequest send_message response is empty"));
-    }
-
-    auto resp = std::make_unique<network::SendMessageResp>();
-    bool ok = resp->ParseFromArray(response.value()->data().data(), response.value()->data().size());
-    if (!ok) {
-        co_return std::unexpected(roc::error::make_error(40201, "SDKRequest send_message parse response failed"));
-    }
-
-    co_return resp;
+std::string SendMessageController::p_generateClientMsgId() {
+    return base::util::uuid();
 }
-
 
 bool SendMessageController::p_checkSendContext(const model::SendMsgContext &context) {
     if (context.content.empty()) {

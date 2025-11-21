@@ -11,7 +11,7 @@
 
 // Forward declaration
 namespace roc::imsdk::core::message {
-    class SaveMessage;
+    class MessageDataSource;
     class ReceiveMessage;
     class CmdMessageOperator;
     class SendMessageController;
@@ -83,16 +83,10 @@ private:
     /// 所有的消息操作 都在这个串行队列中串行执行，确保 db 和 缓存的一致性。
     boost::asio::strand<boost::asio::io_context::executor_type> msg_strand_;
 
-    /// 消息缓存
-    base::containers::ThreadSafeUnorderedMap<std::string, std::shared_ptr<model::MessageModel>> msg_cache_;
-
-    /// 消息区间
-    base::containers::ThreadSafeUnorderedMap<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> msg_range_cache_;
-
     // 友元类，允许子组件访问私有成员
     friend class roc::imsdk::core::message::DBOpt;
     friend class roc::imsdk::core::message::Convert;
-    friend class roc::imsdk::core::message::SaveMessage;
+    friend class roc::imsdk::core::message::MessageDataSource;
     friend class roc::imsdk::core::message::ReceiveMessage;
     friend class roc::imsdk::core::message::CmdMessageOperator;
     friend class roc::imsdk::core::message::SendMessageController;
@@ -104,7 +98,7 @@ private:
     /// 子组件
     std::unique_ptr<message::DBOpt> db_opt;
     std::unique_ptr<message::Convert> convert;
-    std::unique_ptr<message::SaveMessage> save_message;
+    std::unique_ptr<message::MessageDataSource> message_data_source;
     std::unique_ptr<message::ReceiveMessage> receive_message;
     std::unique_ptr<message::CmdMessageOperator> cmd_message_operator;
     std::unique_ptr<message::ConvMessagesFetcher> conv_messages_fetcher;

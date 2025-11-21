@@ -1,4 +1,4 @@
-#include "SaveMessage.h"
+#include "MessageDataSource.h"
 
 #include "imsdk/base/include/utils/utils.h"
 #include "imsdk/src/core/common/logger_macro.h"
@@ -17,14 +17,14 @@
 
 namespace roc::imsdk::core::message {
 
-SaveMessage::SaveMessage(std::weak_ptr<SDKRoot> sdk_root) 
+MessageDataSource::MessageDataSource(std::weak_ptr<SDKRoot> sdk_root) 
     : w_sdk_root(sdk_root) {
 }
 
 // 私有方法 =======================
 
 /// 保存消息日志
-void SaveMessage::p_LogSaveMessages(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
+void MessageDataSource::p_LogSaveMessages(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     std::string info = "[";
@@ -41,7 +41,7 @@ void SaveMessage::p_LogSaveMessages(CONTEXT_T, std::vector<std::shared_ptr<core:
 
 /// 保存网络消息
 boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
-SaveMessage::SaveNetMessages(CONTEXT_T, std::vector<const network::MsgData *> msgs) {
+MessageDataSource::SaveNetMessages(CONTEXT_T, std::vector<const network::MsgData *> msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
     
     auto msg_manager = sdk_root->MessageManager();
@@ -54,7 +54,7 @@ SaveMessage::SaveNetMessages(CONTEXT_T, std::vector<const network::MsgData *> ms
 }
 
 boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
-SaveMessage::SaveDbMsgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
+MessageDataSource::SaveDbMsgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
     p_LogSaveMessages(CONTEXT_V, db_msgs);
@@ -95,7 +95,7 @@ SaveMessage::SaveDbMsgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::Me
 }
 
 /// 更新会话的最大 order_index
-void SaveMessage::UpdateMsgOrderInConv(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
+void MessageDataSource::UpdateMsgOrderInConv(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     auto msg_manager = sdk_root->MessageManager();
@@ -106,7 +106,7 @@ void SaveMessage::UpdateMsgOrderInConv(CONTEXT_T, const std::vector<std::shared_
 
 /// 根据 ID 获取 SDK 消息
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>>
-SaveMessage::SdkMsgForId(CONTEXT_T, const std::string &msg_id) {
+MessageDataSource::SdkMsgForId(CONTEXT_T, const std::string &msg_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto msg_manager = sdk_root->MessageManager();
@@ -116,29 +116,29 @@ SaveMessage::SdkMsgForId(CONTEXT_T, const std::string &msg_id) {
     }
 
     /// 从缓存中获取
-    auto sdk_msg_opt = msg_manager->msg_cache_.at(msg_id);
+    auto sdk_msg_opt = message_cache_.at(msg_id);
     if (sdk_msg_opt) {
         co_return sdk_msg_opt.value();
     }
 
-    auto sdk_msg = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=]() -> boost::asio::awaitable<std::shared_ptr<model::MessageModel>> {
+    auto sdk_msg = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<std::shared_ptr<model::MessageModel>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
+        auto msg_manager = sdk_root->MessageManager();
 
         // 二次检查
-        auto result = sdk_root->MessageManager()->msg_cache_.at(msg_id);
+        auto result = sdk_root->MessageManager()->message_data_source->message_cache_.at(msg_id);
         if (result) {
             co_return result.value();
         }
 
         /// 从DB中获取
-        auto msg_manager = sdk_root->MessageManager();
         auto sdk_msg_copy = msg_manager->db_opt->MessageForId(CONTEXT_V, msg_id);
         if (!sdk_msg_copy) {
             co_return nullptr;
         }
 
         /// 更新缓存
-        auto sdk_msgs = UpdateMsgCache(CONTEXT_V, {std::move(sdk_msg_copy)});
+        auto sdk_msgs = msg_manager->message_data_source->UpdateMsgCache(CONTEXT_V, {std::move(sdk_msg_copy)});
         co_return sdk_msgs.size() > 0 ? sdk_msgs.front() : nullptr;
 
     }, boost::asio::use_awaitable);
@@ -147,7 +147,7 @@ SaveMessage::SdkMsgForId(CONTEXT_T, const std::string &msg_id) {
 }
 
 /// 更新消息区间
-void SaveMessage::p_UpdateMessageRangeForMessage(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
+void MessageDataSource::p_UpdateMessageRangeForMessage(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
     
     if (sdk_msgs.empty()) {
@@ -179,26 +179,25 @@ void SaveMessage::p_UpdateMessageRangeForMessage(CONTEXT_T, const std::vector<st
         auto input_ranges = p_GenerateRange(seqs);
 
         /// 如果缓存中没有区间，则从DB中获取
-        auto old_ranges = msg_manager->msg_range_cache_.at(conv_id);
+        auto old_ranges = message_range_cache_.at(conv_id);
         if (!old_ranges) {
             LOG_INFO("MsgManager", "no range in cahce, get from db. conv_id: {}", conv_id);
             input_ranges = p_MergeRanges(input_ranges, msg_manager->db_opt->MessageRange(CONTEXT_V, conv_id));
         }
 
-        auto new_ranges = msg_manager->msg_range_cache_.modify_or_create(conv_id, [input_ranges](std::vector<std::pair<int64_t, int64_t>> &current_ranges) {
+        /// 更新缓存
+        auto new_ranges = message_range_cache_.modify_or_create(conv_id, [input_ranges](std::vector<std::pair<int64_t, int64_t>> &current_ranges) {
             current_ranges = p_MergeRanges(input_ranges, current_ranges);
         });
 
+        /// 保存到数据库
         msg_manager->db_opt->SaveMessageRange(CONTEXT_V, new_ranges, conv_id);
     }
 }
 
 /// 获取会话的缺失消息区间
-std::vector<std::pair<int64_t, int64_t>> SaveMessage::EmptyMessageRangeForConvId(CONTEXT_T, const std::string &conv_id) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::EmptyMessageRangeForConvId(CONTEXT_T, const std::string &conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
-
-    auto msg_manager = sdk_root->MessageManager();
-    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
 
     // 获取会话的现有消息区间
     auto msg_ranges = p_MessageRangeForConvId(CONTEXT_V, conv_id);
@@ -223,7 +222,7 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::EmptyMessageRangeForConvId
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> 
-SaveMessage::LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
+MessageDataSource::LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto msg_manager = sdk_root->MessageManager();
@@ -247,26 +246,21 @@ SaveMessage::LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cursor, i
     co_return result;
 }
 
-std::vector<std::pair<int64_t, int64_t>> SaveMessage::LoadMessageRangeFromDb(CONTEXT_T, const std::string &conv_id) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::LoadMessageRangeFromDb(CONTEXT_T, const std::string &conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
     auto msg_manager = sdk_root->MessageManager();
     return msg_manager->db_opt->MessageRange(CONTEXT_V, conv_id);
 }
 
-/// 生成客户端消息 ID
-std::string SaveMessage::GenerateClientMsgId() {
-    return base::util::uuid();
-}
-
 /// 设置消息为已读
-bool SaveMessage::MarkMessagesAsRead(CONTEXT_T, const std::vector<std::string> &msg_ids) {
+bool MessageDataSource::MarkMessagesAsRead(CONTEXT_T, const std::vector<std::string> &msg_ids) {
     // TODO: 实现具体的消息已读逻辑
     return false;
 }
 
 /// 给定一个数字序列，生成若干区间。一个区间内的所有数字都在给定的数组序列内。区间内数字是连续的，左右都闭合。
-std::vector<std::pair<int64_t, int64_t>> SaveMessage::p_GenerateRange(std::vector<int64_t> seqs) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_GenerateRange(std::vector<int64_t> seqs) {
     if (seqs.empty()) {
         return {};
     }
@@ -297,7 +291,7 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::p_GenerateRange(std::vecto
 }
 
 /// 给定两个区间数组，合并两个数组，返回一个新的区间数组。合并后的区间数组内的区间是连续的，左右都闭合。
-std::vector<std::pair<int64_t, int64_t>> SaveMessage::p_MergeRanges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_MergeRanges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second) {
     if (first.empty()) {
         return second;
     }
@@ -338,23 +332,21 @@ std::vector<std::pair<int64_t, int64_t>> SaveMessage::p_MergeRanges(std::vector<
 }
 
 /// 获取会话的消息区间
-std::vector<std::pair<int64_t, int64_t>> SaveMessage::p_MessageRangeForConvId(CONTEXT_T, const std::string &conv_id) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_MessageRangeForConvId(CONTEXT_T, const std::string &conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
-    auto msg_manager = sdk_root->MessageManager();
-    CHECK_POINTER_OR_RETURN_VALUE(msg_manager, {});
-
-    // 从消息管理器的缓存中获取会话的消息区间
-    auto it = msg_manager->msg_range_cache_.at(conv_id);
+    auto it = message_range_cache_.at(conv_id);
     if (it) {
         return it.value();
+    } else { // 从数据库中兜底获取
+        auto msg_ranges = sdk_root->MessageManager()->db_opt->MessageRange(CONTEXT_V, conv_id);
+        message_range_cache_.insert_or_assign(conv_id, msg_ranges);
+        return msg_ranges;
     }
-
-    return {};
 }
 
 /// 更新消息缓存
-std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> SaveMessage::UpdateMsgCache(CONTEXT_T, std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> sdk_msgs) {
+std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> MessageDataSource::UpdateMsgCache(CONTEXT_T, std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> sdk_msgs) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
     
     auto msg_manager = sdk_root->MessageManager();
@@ -367,7 +359,7 @@ std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> SaveMessage::Updat
             continue;
         }
 
-        auto cache_sdk_msg = msg_manager->msg_cache_.at(sdk_msg->client_msg_id(), std::make_shared<model::MessageModel>());
+        auto cache_sdk_msg = message_cache_.at(sdk_msg->client_msg_id(), std::make_shared<model::MessageModel>());
 
         cache_sdk_msg->move_from(std::move(*sdk_msg));
         updated_msgs.push_back(cache_sdk_msg);

@@ -7,7 +7,7 @@
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
-#include "imsdk/src/core/message/private/save/SaveMessage.h"
+#include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "model/conversation/ConversationModel.h"
@@ -76,7 +76,7 @@ boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CONTEXT_T, std
     }
 
     /// 数据保存
-    auto sdk_msgs = co_await msg_manager->save_message->SaveNetMessages(CONTEXT_V, net_msgs_ptr);
+    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CONTEXT_V, net_msgs_ptr);
     
     LOG_INFO("MsgManager", "handle_receive_message, size: {}", sdk_msgs.size());
 

@@ -19,6 +19,9 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
  
 private: 
+    /// 生成客户端消息 ID
+    std::string p_generateClientMsgId();
+
     /// 发送消息请求
     boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
         p_request(CONTEXT_T, network::SendMessageReq *request);

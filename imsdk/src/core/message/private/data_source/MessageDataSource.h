@@ -6,10 +6,11 @@
 #include "imsdk/src/core/message/db_model/MessageORM.h"
 #include "imsdk/src/core/message/private/common/model.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
+#include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 
 #include <memory>
-#include <unordered_map>
 #include <vector>
+#include <unordered_map>
 
 // Forward declaration
 namespace roc::imsdk::core {
@@ -18,9 +19,9 @@ namespace roc::imsdk::core {
 
 namespace roc::imsdk::core::message {
 
-class SaveMessage {
+class MessageDataSource {
 public:
-    explicit SaveMessage(std::weak_ptr<SDKRoot> sdk_root);
+    explicit MessageDataSource(std::weak_ptr<SDKRoot> sdk_root);
 
     /// 保存网络消息
     boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
@@ -36,9 +37,6 @@ public:
     
     /// 获取会话的缺失消息区间
     std::vector<std::pair<int64_t, int64_t>> EmptyMessageRangeForConvId(CONTEXT_T, const std::string &conv_id);
-    
-    /// 生成客户端消息 ID
-    static std::string GenerateClientMsgId();
     
     /// 设置消息为已读
     bool MarkMessagesAsRead(CONTEXT_T, const std::vector<std::string> &msg_ids);
@@ -56,7 +54,8 @@ public:
     /// 更新会话的最大 order_index
     void UpdateMsgOrderInConv(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
-private:
+private: 
+
     /// 保存消息日志
     void p_LogSaveMessages(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
    
@@ -71,6 +70,12 @@ private:
 
     // 给定两个区间数组，合并两个数组，返回一个新的区间数组。 合并后的区间数组内的区间是连续的，左右都闭合。
     static std::vector<std::pair<int64_t, int64_t>> p_MergeRanges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second);
+
+    /// 消息缓存
+    base::containers::ThreadSafeUnorderedMap<std::string, std::shared_ptr<model::MessageModel>> message_cache_;
+
+    /// 消息区间缓存
+    base::containers::ThreadSafeUnorderedMap<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> message_range_cache_;
 
     std::weak_ptr<SDKRoot> w_sdk_root;
 };

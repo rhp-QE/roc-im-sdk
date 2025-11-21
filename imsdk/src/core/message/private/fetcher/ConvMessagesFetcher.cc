@@ -4,7 +4,7 @@
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
-#include "imsdk/src/core/message/private/save/SaveMessage.h"
+#include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/common/sdkwsEnum.h"
@@ -109,7 +109,7 @@ boost::asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageList(CONTEXT_T
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     auto msg_manager = sdk_root->MessageManager();
-    auto msg_empty_ranges = msg_manager->save_message->EmptyMessageRangeForConvId(CONTEXT_V, conv_id);
+    auto msg_empty_ranges = msg_manager->message_data_source->EmptyMessageRangeForConvId(CONTEXT_V, conv_id);
 
     for (const auto &range : msg_empty_ranges) {
 

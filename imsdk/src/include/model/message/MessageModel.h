@@ -13,7 +13,7 @@ namespace roc::imsdk::core {
 
 namespace roc::imsdk::core::message {
     class Convert;
-    class SaveMessage;
+    class MessageDataSource;
 }
 
 namespace roc::imsdk::model {
@@ -45,7 +45,7 @@ public:
     std::unordered_map<std::string, std::string> local_ext() const;
 
     friend class roc::imsdk::core::message::Convert;
-    friend class roc::imsdk::core::message::SaveMessage;
+    friend class roc::imsdk::core::message::MessageDataSource;
 
 private:
     // 私有移动操作 - 绕过系统移动赋值，手动实现数据移动
