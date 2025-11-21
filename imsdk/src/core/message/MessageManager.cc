@@ -114,7 +114,7 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
 
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::SendMessage(model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     START_TRACK;
-    return send_message->sendMessage(CONTEXT_V, context, callback);
+    return send_message_controller->SendMessage(CONTEXT_V, context, callback);
 }
 
 /// ==================================================================================
@@ -125,7 +125,7 @@ void MessageManager::p_InitSubComponents() {
     save_message = std::make_unique<message::SaveMessage>(w_sdk_root);
     receive_message = std::make_unique<message::ReceiveMessage>(w_sdk_root);
     cmd_message_operator = std::make_unique<message::CmdMessageOperator>(w_sdk_root);
-    send_message = std::make_unique<message::SendMessage>(w_sdk_root);
+    send_message_controller = std::make_unique<message::SendMessageController>(w_sdk_root);
     db_opt = std::make_unique<message::DBOpt>(w_sdk_root);
     convert = std::make_unique<message::Convert>(w_sdk_root);
     conv_messages_fetcher = std::make_unique<message::ConvMessagesFetcher>(w_sdk_root);

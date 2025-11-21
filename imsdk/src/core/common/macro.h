@@ -56,10 +56,10 @@
     std::weak_ptr<roc::imsdk::SDKRoot> w_sdk_root 
 
 #define CONTEXT_T \
-    std::weak_ptr<roc::imsdk::SDKRoot> w_sdk_root, uint32_t call_track_id
+    uint32_t call_track_id
 
 #define CONTEXT_V \
-    w_sdk_root, call_track_id
+    call_track_id
 
 #define TRACK_ID \
     call_track_id

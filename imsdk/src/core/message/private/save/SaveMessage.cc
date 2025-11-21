@@ -24,7 +24,7 @@ SaveMessage::SaveMessage(std::weak_ptr<SDKRoot> sdk_root)
 // 私有方法 =======================
 
 /// 保存消息日志
-void log_save_messags(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
+void SaveMessage::p_LogSaveMessages(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     std::string info = "[";
@@ -47,7 +47,7 @@ SaveMessage::SaveNetMessages(CONTEXT_T, std::vector<const network::MsgData *> ms
     auto msg_manager = sdk_root->MessageManager();
     // 转换为 db 消息
     auto db_msgs = base::util::transform(msgs, [msg_manager, w_sdk_root = w_sdk_root, call_track_id](const network::MsgData *msg) {
-        return msg_manager->convert->ConvertNetMsgToDbMsg(w_sdk_root, call_track_id, msg);
+        return msg_manager->convert->ConvertNetMsgToDbMsg(CONTEXT_V, msg);
     }); 
 
     co_return co_await SaveDbMsgs(CONTEXT_V, std::move(db_msgs));
@@ -57,19 +57,19 @@ boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>>
 SaveMessage::SaveDbMsgs(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
-    log_save_messags(CONTEXT_V, db_msgs);
+    p_LogSaveMessages(CONTEXT_V, db_msgs);
 
     auto msg_manager = sdk_root->MessageManager();
 
     // 转换为 sdk 消息
     auto sdk_msgs = base::util::transform(db_msgs, [msg_manager, w_sdk_root = w_sdk_root, call_track_id](const std::shared_ptr<core::message::MessageORM> &msg) {
-        return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(w_sdk_root, call_track_id, msg.get());
+        return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CONTEXT_V, msg.get());
     });
 
     /// 在同一个线程内执行 确保 db 和 缓存的一致性
     auto saved_msgs = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [this, msg_manager, sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root = w_sdk_root, call_track_id]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         // 保存到数据库
-        bool ret = msg_manager->db_opt->InsertOrReplaceMessage(w_sdk_root, call_track_id, db_msgs);
+        bool ret = msg_manager->db_opt->InsertOrReplaceMessage(CONTEXT_V, db_msgs);
 
         // // 排除 local_ext 和 client_order_index 字段（黑名单模式）
         // WCDB::Fields not_update_when_exit({
@@ -232,10 +232,10 @@ SaveMessage::LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cursor, i
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
         /// 从DB 中获取消息
-        auto sdk_msgs_copy = msg_manager->db_opt->QueryMessagesForConvId(w_sdk_root, call_track_id, conv_id, cursor, limit, forward);
+        auto sdk_msgs_copy = msg_manager->db_opt->QueryMessagesForConvId(CONTEXT_V, conv_id, cursor, limit, forward);
 
         /// 更新消息缓存
-        co_return UpdateMsgCache(w_sdk_root, call_track_id, sdk_msgs_copy);
+        co_return UpdateMsgCache(CONTEXT_V, sdk_msgs_copy);
 
     }, boost::asio::use_awaitable);
     

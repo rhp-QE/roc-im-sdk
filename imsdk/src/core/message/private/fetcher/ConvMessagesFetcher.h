@@ -2,8 +2,12 @@
 
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
+#include "imsdk/src/core/network/proto/sdkws.pb.h"
+#include "imsdk/base/include/network/Error.h"
 
+#include <boost/asio/awaitable.hpp>
 #include <memory>
+#include <expected>
 
 namespace roc::imsdk::core::message {
 
@@ -23,6 +27,10 @@ private:
     
     /// 处理返回数据
     void p_HandleFetchConvMessgaeListResp(CONTEXT_T, std::unique_ptr<network::FetchConvMessageListResp> resp);
+    
+    /// 发送获取会话消息列表请求
+    boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
+        p_Request(CONTEXT_T, network::FetchConvMessageListReq *request);
     
     std::weak_ptr<SDKRoot> w_sdk_root;
 };

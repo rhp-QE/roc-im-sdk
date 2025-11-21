@@ -20,8 +20,10 @@ void CmdMessageOperator::Start(CONTEXT_T) {
 
     auto msg_manager = sdk_root->MessageManager();
     conn_manager->AddOnPushMessageCallback([msg_manager, w_sdk_root = w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+        CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
         uint32_t call_track_id = resp->trackid();
-        msg_manager->cmd_message_operator->p_HandlePushMessage(w_sdk_root, call_track_id, resp);
+
+        msg_manager->cmd_message_operator->p_HandlePushMessage(CONTEXT_V, resp);
     });
 }
 

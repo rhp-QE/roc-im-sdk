@@ -5,12 +5,15 @@
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/message/MessageManager.h"
-#include "imsdk/src/core/network/request/SDKRequest.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/save/SaveConversation.h"
 #include "imsdk/src/core/conversation/private/receive/ReceiveConversation.h"
+#include "imsdk/src/core/common/sdkwsEnum.h"
+#include "imsdk/base/include/network/Error.h"
 
 #include <memory>
+#include <atomic>
+#include <expected>
 
 namespace roc::imsdk::core::conversation {
 
@@ -31,7 +34,7 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CONTEXT_T) {
     std::unique_ptr<network::FetchUserMessageListReq> req = p_MakeFetchUserMessageListReq(CONTEXT_V, -1);
 
     // 发送请求
-    std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await network::request::fetchUserMessageList(CONTEXT_V, req.get());
+    std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await p_Request(CONTEXT_V, req.get());
     if (!resp || !resp.has_value()) {
         co_return;
     }
@@ -43,7 +46,30 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CONTEXT_T) {
     co_return;
 }
 
-// private static methods ------------------------------------------------------------
+// =================================== private ===========================================================
+
+boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error>> 
+UserMessageFetcher::p_Request(CONTEXT_T, network::FetchUserMessageListReq *request) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
+
+    std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
+    req->set_type(static_cast<int32_t>(network::SDKRequestType::FETCH_USER_MESSAGE_LIST));
+    req->set_data(request->SerializeAsString());
+    req->set_trackid(TRACK_ID);
+
+    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
+    if (!response || !response.has_value()) {
+        co_return std::unexpected(roc::error::make_error(40203, "SDKRequest fetch_user_message_list response is empty"));
+    }
+
+    auto resp = std::make_unique<network::FetchUserMessageListResp>();
+    bool ok = resp->ParseFromArray(response.value()->data().data(), response.value()->data().size());
+    if (!ok) {
+        co_return std::unexpected(roc::error::make_error(40203, "SDKRequest fetch_user_message_list parse response failed"));
+    }
+
+    co_return resp;
+}
 
 std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::p_MakeFetchUserMessageListReq(CONTEXT_T, int64_t cursor) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);

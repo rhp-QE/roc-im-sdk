@@ -5,18 +5,24 @@
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
+#include "imsdk/base/include/network/Error.h"
 #include <boost/asio/awaitable.hpp>
+#include <expected>
 
 namespace roc::imsdk::core::message {
 
-class SendMessage {
+class SendMessageController {
 public:
-    explicit SendMessage(std::weak_ptr<SDKRoot> sdk_root);
+    explicit SendMessageController(std::weak_ptr<SDKRoot> sdk_root);
 
     /// 发送消息
-    boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> sendMessage(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
+    boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessage(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
  
 private: 
+    /// 发送消息请求
+    boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
+        p_Request(CONTEXT_T, network::SendMessageReq *request);
+    
     /// 异步发送消息
     boost::asio::awaitable<void> asyncSendMessage(CONTEXT_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback);
 

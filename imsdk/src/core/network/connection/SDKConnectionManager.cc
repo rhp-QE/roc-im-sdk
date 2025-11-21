@@ -26,14 +26,19 @@
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/base/include/utils/utils.h"
 
-namespace json = boost::json;
-namespace asio = boost::asio;
+
+namespace {
+
+// 生成请求唯一 ID（内部工具方法）
+static std::atomic<int64_t> request_id_generator{0};
+static inline std::string next_request_id(roc::imsdk::SDKRoot *root) {
+    return std::to_string(request_id_generator++) + "_" + root->config().user_id + "_" + root->config().user_device_id;
+}
+
+}; // namespace
+
 
 namespace roc::imsdk::network {
-
-//--------------------
-base::net::LongConnectionConfig GenerateNetConfig(roc::imsdk::SDKRoot* root);
-//--------------------
 
 SDKConnectionManager::SDKConnectionManager(boost::asio::io_context &io_context) : net_io_context_(io_context) {}
 
@@ -42,7 +47,7 @@ boost::asio::awaitable<bool> SDKConnectionManager::InitAndConnect(std::shared_pt
     w_sdk_root = sdk_root;
 
     START_TRACK;
-    lc_ = std::make_unique<base::net::LongConnectionClient>(GenerateNetConfig(sdk_root.get()), net_io_context_);
+    lc_ = std::make_unique<base::net::LongConnectionClient>(p_GenerateNetConfig(sdk_root.get()), net_io_context_);
 
     // 观察网络状态变更
     lc_->set_connection_status_callback([=, this](bool connected, const std::string &detail) {
@@ -176,12 +181,13 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
     co_return;
 }
 
+// =================================== private ===========================================================
 
-
-//--------------- no member private method ----------------------
-base::net::LongConnectionConfig GenerateNetConfig(roc::imsdk::SDKRoot* root) {
+base::net::LongConnectionConfig SDKConnectionManager::p_GenerateNetConfig(roc::imsdk::SDKRoot* root) {
     roc::base::net::LongConnectionConfig config("localhost", "10010");
-    config.set_heartbeat_interval(5000)
+
+    config
+    .set_heartbeat_interval(5000)
     .set_heartbeat_timeout(10000)
     .set_heartbeat_payload("ping")
     .set_auto_reconnect(true)
@@ -193,6 +199,6 @@ base::net::LongConnectionConfig GenerateNetConfig(roc::imsdk::SDKRoot* root) {
 
     return config;
 }
-//---------------------------------------------------------------
+
 
 } // namespace roc::imsdk::network 

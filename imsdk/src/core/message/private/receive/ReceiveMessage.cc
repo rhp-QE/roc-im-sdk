@@ -30,9 +30,9 @@ void ReceiveMessage::Start(CONTEXT_T) {
     auto conn = sdk_root->ConnectionManager();
 
     auto msg_manager = sdk_root->MessageManager();
-    conn->AddOnPushMessageCallback([msg_manager, w_sdk_root = w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+    conn->AddOnPushMessageCallback([msg_manager](std::shared_ptr<network::SdkWSResp> resp) {
         uint32_t call_track_id = resp->trackid();
-        msg_manager->receive_message->HandlePushMessage(w_sdk_root, call_track_id, resp);
+        msg_manager->receive_message->HandlePushMessage(call_track_id, resp);
     });
 }
 

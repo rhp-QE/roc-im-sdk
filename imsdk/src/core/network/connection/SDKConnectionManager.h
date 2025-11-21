@@ -87,6 +87,9 @@ private:
     std::weak_ptr<SDKRoot> w_sdk_root;
 
     boost::asio::awaitable<void> handleDataReceived(boost::beast::flat_buffer data);
+
+    base::net::LongConnectionConfig p_GenerateNetConfig(roc::imsdk::SDKRoot* root);
+
 };
 }
 #endif // ROC_IM_SDK_CONNECTION_MANAGER_H 

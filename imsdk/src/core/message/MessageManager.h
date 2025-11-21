@@ -14,7 +14,7 @@ namespace roc::imsdk::core::message {
     class SaveMessage;
     class ReceiveMessage;
     class CmdMessageOperator;
-    class SendMessage;
+    class SendMessageController;
     class DBOpt;
     class Convert;
     class ConvMessagesFetcher;
@@ -95,20 +95,20 @@ private:
     friend class roc::imsdk::core::message::SaveMessage;
     friend class roc::imsdk::core::message::ReceiveMessage;
     friend class roc::imsdk::core::message::CmdMessageOperator;
-    friend class roc::imsdk::core::message::SendMessage;
+    friend class roc::imsdk::core::message::SendMessageController;
     friend class roc::imsdk::core::message::ConvMessagesFetcher;
 
     /// 初始化子组件
     void p_InitSubComponents();
 
     /// 子组件
+    std::unique_ptr<message::DBOpt> db_opt;
+    std::unique_ptr<message::Convert> convert;
     std::unique_ptr<message::SaveMessage> save_message;
     std::unique_ptr<message::ReceiveMessage> receive_message;
     std::unique_ptr<message::CmdMessageOperator> cmd_message_operator;
-    std::unique_ptr<message::SendMessage> send_message;
-    std::unique_ptr<message::DBOpt> db_opt;
-    std::unique_ptr<message::Convert> convert;
     std::unique_ptr<message::ConvMessagesFetcher> conv_messages_fetcher;
+    std::unique_ptr<message::SendMessageController> send_message_controller;
 };
 
 } // namespace roc::imsdk::core

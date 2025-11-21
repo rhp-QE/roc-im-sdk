@@ -57,6 +57,8 @@ public:
     void UpdateMsgOrderInConv(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
 private:
+    /// 保存消息日志
+    void p_LogSaveMessages(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
    
     /// 更新消息区间
     void p_UpdateMessageRangeForMessage(CONTEXT_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
