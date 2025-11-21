@@ -45,9 +45,6 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> 
         LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cursor, int64_t limit, bool forward);
 
-    /// 从数据库中加载缓存区间
-    std::vector<std::pair<int64_t, int64_t>> LoadMessageRangeFromDb(CONTEXT_T, const std::string &conv_id);
-
     /// 更新消息缓存
     std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> UpdateMsgCache(CONTEXT_T, std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> sdk_msgs);
 

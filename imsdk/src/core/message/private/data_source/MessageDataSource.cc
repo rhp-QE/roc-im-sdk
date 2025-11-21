@@ -246,13 +246,6 @@ MessageDataSource::LoadMessageFromDb(CONTEXT_T, std::string conv_id, int64_t cur
     co_return result;
 }
 
-std::vector<std::pair<int64_t, int64_t>> MessageDataSource::LoadMessageRangeFromDb(CONTEXT_T, const std::string &conv_id) {
-    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
-
-    auto msg_manager = sdk_root->MessageManager();
-    return msg_manager->db_opt->MessageRange(CONTEXT_V, conv_id);
-}
-
 /// 设置消息为已读
 bool MessageDataSource::MarkMessagesAsRead(CONTEXT_T, const std::vector<std::string> &msg_ids) {
     // TODO: 实现具体的消息已读逻辑
@@ -339,6 +332,7 @@ std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_MessageRangeForCon
     if (it) {
         return it.value();
     } else { // 从数据库中兜底获取
+        LOG_INFO("MessageDataSource", "no message range in cache, need load from db, cid = {}", conv_id)
         auto msg_ranges = sdk_root->MessageManager()->db_opt->MessageRange(CONTEXT_V, conv_id);
         message_range_cache_.insert_or_assign(conv_id, msg_ranges);
         return msg_ranges;

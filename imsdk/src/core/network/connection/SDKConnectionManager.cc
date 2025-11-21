@@ -110,9 +110,7 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
         co_return std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request"));
     }
 
-    if (req->requestid().empty()) {
-        co_return std::unexpected(roc::error::make_error(1000, "requestid is empty", "SDKConnectionManager:send_request"));
-    }
+    req->set_requestid(next_request_id(root.get()));
 
     auto channel = std::make_shared<channel_type>(net_io_context_, 1);
     std::string request_id_str = req->requestid();

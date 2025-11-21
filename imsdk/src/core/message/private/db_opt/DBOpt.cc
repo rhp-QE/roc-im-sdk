@@ -160,7 +160,7 @@ bool DBOpt::SaveMessageRange(CONTEXT_T, std::vector<std::pair<int64_t, int64_t>>
 
     std::string json_str = boost::json::serialize(json_ranges);
 
-    LOG_INFO("MsgManager", "saveMessageRange, conv_id: {}, ranges: {}", conv_id, json_str);
+    LOG_INFO("MesageDBOpt", "save message range to db, cid: {}, ranges: {}", conv_id, json_str);
 
     return mmkv->set(json_str, p_MessageRangeKey(CONTEXT_V, conv_id));
 }
@@ -190,7 +190,7 @@ std::vector<std::pair<int64_t, int64_t>> DBOpt::MessageRange(CONTEXT_T, std::str
         ranges.emplace_back(first, second);
     }
 
-    LOG_INFO("DBOpt", "load messages range from db, cid = {}, ranges = {}", conv_id, json_str);
+    LOG_INFO("MessageDBOpt", "load messages range from db, cid = {}, ranges = {}", conv_id, json_str);
 
     return ranges;
 }
