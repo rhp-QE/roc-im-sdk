@@ -343,9 +343,23 @@ message ConversationInfo {
 
 message FetchUserMessageListResp {
   repeated ConversationInfo convsInfo = 1;
-  int64 start = 2; // 左右闭合
-  int64 stop = 3;
+  int64 left = 2; // 左右闭合
+  int64 right = 3;
   bool hasMore = 4;
+}
+
+message UserMessageIntegrityCheckReq {
+  string userID           = 1; // 用户ID
+  int64 left              = 2; // 左区间
+  int64 right             = 3; // 右区间
+  repeated string convIDs = 4; // 会话ID列表
+}
+
+message UserMessageIntegrityCheckResp {
+  bool isIntegrity                    = 1; // 是否完整
+  int64 left                          = 2; // 左右闭合
+  int64 right                         = 3; // 右区间
+  repeated ConversationInfo convsInfo = 4; // 补齐的会话信息
 }
 // --------------------------------------------
 

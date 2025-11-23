@@ -51,9 +51,10 @@ enum class CmdConvOp : int32_t {
 namespace roc::imsdk::network {
     
 enum class SDKRequestType : int32_t {
-    SEND_MESSAGE            = 101, // 发送消息
-    FETCH_CONV_MESSAGE_LIST = 102, // 拉取单链
-    FETCH_USER_MESSAGE_LIST = 103, // 拉取混链
+    SEND_MESSAGE                 = 101, // 发送消息
+    FETCH_CONV_MESSAGE_LIST      = 102, // 拉取单链
+    FETCH_USER_MESSAGE_LIST      = 103, // 拉取混链
+    USER_MESSAGE_INTEGRITY_CHECK = 104, // 混链消息 check
 };
     
 };

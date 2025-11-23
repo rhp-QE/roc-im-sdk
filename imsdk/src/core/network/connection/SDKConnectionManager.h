@@ -42,7 +42,7 @@ namespace error {
 
 
 // call back
-using OnPushMesageCallbackType = std::function<void(std::shared_ptr<network::SdkWSResp>)> ;
+using OnPushMesageCallbackType = std::function<void(std::shared_ptr<network::SdkWSResp>)>;
 
 // ------------------------------------------------------------------------------------------
 // 职责：1、长连接的初始化，链接的管理

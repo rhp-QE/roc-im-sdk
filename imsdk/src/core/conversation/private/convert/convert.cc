@@ -116,7 +116,7 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDb
 }
 
 /// 会话转换 db 会话 -> sdk 会话
-std::shared_ptr<model::ConversationModel> Convert::ConvertDbConvToSdkConv(CONTEXT_T, const core::conversation::ConversationORM *db_conv) {
+std::shared_ptr<model::ConversationModel> Convert::ConvertDbConvToSdkConv(CTX_T, const core::conversation::ConversationORM *db_conv) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     if (!db_conv) {

@@ -11,17 +11,17 @@ ReceiveConversation::ReceiveConversation(std::weak_ptr<SDKRoot> sdk_root)
     : w_sdk_root(sdk_root) {
 }
 
-void ReceiveConversation::Start(CONTEXT_T) {
+void ReceiveConversation::Start(CTX_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 }
 
-boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations) {
+boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     auto conv_manager = sdk_root->ConversationManager();
 
     // 保存会话
-    auto sdk_convs = co_await conv_manager->save_conversation->SaveNetConversations(CONTEXT_V, std::move(conversations));
+    auto sdk_convs = co_await conv_manager->save_conversation->SaveNetConversations(CTX_V, std::move(conversations));
 
     LOG_INFO("ConvManager", "handleReceiveConversation, sdk_convs: {}", sdk_convs.size());
 

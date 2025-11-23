@@ -40,7 +40,7 @@ namespace protobuf_sdkws_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[94];
+  static const ::google::protobuf::internal::ParseTable schema[96];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -110,6 +110,10 @@ void InitDefaultsFetchUserMessageListReqImpl();
 void InitDefaultsFetchUserMessageListReq();
 void InitDefaultsFetchUserMessageListRespImpl();
 void InitDefaultsFetchUserMessageListResp();
+void InitDefaultsUserMessageIntegrityCheckReqImpl();
+void InitDefaultsUserMessageIntegrityCheckReq();
+void InitDefaultsUserMessageIntegrityCheckRespImpl();
+void InitDefaultsUserMessageIntegrityCheckResp();
 void InitDefaultsSdkWSReqImpl();
 void InitDefaultsSdkWSReq();
 void InitDefaultsSdkWSRespImpl();
@@ -263,6 +267,8 @@ inline void InitDefaults() {
   InitDefaultsFetchConvMessageListResp();
   InitDefaultsFetchUserMessageListReq();
   InitDefaultsFetchUserMessageListResp();
+  InitDefaultsUserMessageIntegrityCheckReq();
+  InitDefaultsUserMessageIntegrityCheckResp();
   InitDefaultsSdkWSReq();
   InitDefaultsSdkWSResp();
   InitDefaultsOfflinePushInfo();
@@ -604,6 +610,12 @@ extern UserInfoUpdatedTipsDefaultTypeInternal _UserInfoUpdatedTips_default_insta
 class UserInfoWithEx;
 class UserInfoWithExDefaultTypeInternal;
 extern UserInfoWithExDefaultTypeInternal _UserInfoWithEx_default_instance_;
+class UserMessageIntegrityCheckReq;
+class UserMessageIntegrityCheckReqDefaultTypeInternal;
+extern UserMessageIntegrityCheckReqDefaultTypeInternal _UserMessageIntegrityCheckReq_default_instance_;
+class UserMessageIntegrityCheckResp;
+class UserMessageIntegrityCheckRespDefaultTypeInternal;
+extern UserMessageIntegrityCheckRespDefaultTypeInternal _UserMessageIntegrityCheckResp_default_instance_;
 class UserSendMsgResp;
 class UserSendMsgRespDefaultTypeInternal;
 extern UserSendMsgRespDefaultTypeInternal _UserSendMsgResp_default_instance_;
@@ -5423,17 +5435,17 @@ class FetchUserMessageListResp : public ::google::protobuf::Message /* @@protoc_
   const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >&
       convsinfo() const;
 
-  // int64 start = 2;
-  void clear_start();
-  static const int kStartFieldNumber = 2;
-  ::google::protobuf::int64 start() const;
-  void set_start(::google::protobuf::int64 value);
+  // int64 left = 2;
+  void clear_left();
+  static const int kLeftFieldNumber = 2;
+  ::google::protobuf::int64 left() const;
+  void set_left(::google::protobuf::int64 value);
 
-  // int64 stop = 3;
-  void clear_stop();
-  static const int kStopFieldNumber = 3;
-  ::google::protobuf::int64 stop() const;
-  void set_stop(::google::protobuf::int64 value);
+  // int64 right = 3;
+  void clear_right();
+  static const int kRightFieldNumber = 3;
+  ::google::protobuf::int64 right() const;
+  void set_right(::google::protobuf::int64 value);
 
   // bool hasMore = 4;
   void clear_hasmore();
@@ -5446,12 +5458,282 @@ class FetchUserMessageListResp : public ::google::protobuf::Message /* @@protoc_
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo > convsinfo_;
-  ::google::protobuf::int64 start_;
-  ::google::protobuf::int64 stop_;
+  ::google::protobuf::int64 left_;
+  ::google::protobuf::int64 right_;
   bool hasmore_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsFetchUserMessageListRespImpl();
+};
+// -------------------------------------------------------------------
+
+class UserMessageIntegrityCheckReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.UserMessageIntegrityCheckReq) */ {
+ public:
+  UserMessageIntegrityCheckReq();
+  virtual ~UserMessageIntegrityCheckReq();
+
+  UserMessageIntegrityCheckReq(const UserMessageIntegrityCheckReq& from);
+
+  inline UserMessageIntegrityCheckReq& operator=(const UserMessageIntegrityCheckReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  UserMessageIntegrityCheckReq(UserMessageIntegrityCheckReq&& from) noexcept
+    : UserMessageIntegrityCheckReq() {
+    *this = ::std::move(from);
+  }
+
+  inline UserMessageIntegrityCheckReq& operator=(UserMessageIntegrityCheckReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UserMessageIntegrityCheckReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UserMessageIntegrityCheckReq* internal_default_instance() {
+    return reinterpret_cast<const UserMessageIntegrityCheckReq*>(
+               &_UserMessageIntegrityCheckReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    34;
+
+  void Swap(UserMessageIntegrityCheckReq* other);
+  friend void swap(UserMessageIntegrityCheckReq& a, UserMessageIntegrityCheckReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UserMessageIntegrityCheckReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UserMessageIntegrityCheckReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UserMessageIntegrityCheckReq& from);
+  void MergeFrom(const UserMessageIntegrityCheckReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UserMessageIntegrityCheckReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string convIDs = 4;
+  int convids_size() const;
+  void clear_convids();
+  static const int kConvIDsFieldNumber = 4;
+  const ::std::string& convids(int index) const;
+  ::std::string* mutable_convids(int index);
+  void set_convids(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_convids(int index, ::std::string&& value);
+  #endif
+  void set_convids(int index, const char* value);
+  void set_convids(int index, const char* value, size_t size);
+  ::std::string* add_convids();
+  void add_convids(const ::std::string& value);
+  #if LANG_CXX11
+  void add_convids(::std::string&& value);
+  #endif
+  void add_convids(const char* value);
+  void add_convids(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& convids() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_convids();
+
+  // string userID = 1;
+  void clear_userid();
+  static const int kUserIDFieldNumber = 1;
+  const ::std::string& userid() const;
+  void set_userid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_userid(::std::string&& value);
+  #endif
+  void set_userid(const char* value);
+  void set_userid(const char* value, size_t size);
+  ::std::string* mutable_userid();
+  ::std::string* release_userid();
+  void set_allocated_userid(::std::string* userid);
+
+  // int64 left = 2;
+  void clear_left();
+  static const int kLeftFieldNumber = 2;
+  ::google::protobuf::int64 left() const;
+  void set_left(::google::protobuf::int64 value);
+
+  // int64 right = 3;
+  void clear_right();
+  static const int kRightFieldNumber = 3;
+  ::google::protobuf::int64 right() const;
+  void set_right(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.UserMessageIntegrityCheckReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> convids_;
+  ::google::protobuf::internal::ArenaStringPtr userid_;
+  ::google::protobuf::int64 left_;
+  ::google::protobuf::int64 right_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsUserMessageIntegrityCheckReqImpl();
+};
+// -------------------------------------------------------------------
+
+class UserMessageIntegrityCheckResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.UserMessageIntegrityCheckResp) */ {
+ public:
+  UserMessageIntegrityCheckResp();
+  virtual ~UserMessageIntegrityCheckResp();
+
+  UserMessageIntegrityCheckResp(const UserMessageIntegrityCheckResp& from);
+
+  inline UserMessageIntegrityCheckResp& operator=(const UserMessageIntegrityCheckResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  UserMessageIntegrityCheckResp(UserMessageIntegrityCheckResp&& from) noexcept
+    : UserMessageIntegrityCheckResp() {
+    *this = ::std::move(from);
+  }
+
+  inline UserMessageIntegrityCheckResp& operator=(UserMessageIntegrityCheckResp&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UserMessageIntegrityCheckResp& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UserMessageIntegrityCheckResp* internal_default_instance() {
+    return reinterpret_cast<const UserMessageIntegrityCheckResp*>(
+               &_UserMessageIntegrityCheckResp_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    35;
+
+  void Swap(UserMessageIntegrityCheckResp* other);
+  friend void swap(UserMessageIntegrityCheckResp& a, UserMessageIntegrityCheckResp& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UserMessageIntegrityCheckResp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UserMessageIntegrityCheckResp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UserMessageIntegrityCheckResp& from);
+  void MergeFrom(const UserMessageIntegrityCheckResp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UserMessageIntegrityCheckResp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .roc.imsdk.network.ConversationInfo convsInfo = 4;
+  int convsinfo_size() const;
+  void clear_convsinfo();
+  static const int kConvsInfoFieldNumber = 4;
+  const ::roc::imsdk::network::ConversationInfo& convsinfo(int index) const;
+  ::roc::imsdk::network::ConversationInfo* mutable_convsinfo(int index);
+  ::roc::imsdk::network::ConversationInfo* add_convsinfo();
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >*
+      mutable_convsinfo();
+  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >&
+      convsinfo() const;
+
+  // int64 left = 2;
+  void clear_left();
+  static const int kLeftFieldNumber = 2;
+  ::google::protobuf::int64 left() const;
+  void set_left(::google::protobuf::int64 value);
+
+  // int64 right = 3;
+  void clear_right();
+  static const int kRightFieldNumber = 3;
+  ::google::protobuf::int64 right() const;
+  void set_right(::google::protobuf::int64 value);
+
+  // bool isIntegrity = 1;
+  void clear_isintegrity();
+  static const int kIsIntegrityFieldNumber = 1;
+  bool isintegrity() const;
+  void set_isintegrity(bool value);
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.UserMessageIntegrityCheckResp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo > convsinfo_;
+  ::google::protobuf::int64 left_;
+  ::google::protobuf::int64 right_;
+  bool isintegrity_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsUserMessageIntegrityCheckRespImpl();
 };
 // -------------------------------------------------------------------
 
@@ -5490,7 +5772,7 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_SdkWSReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    34;
+    36;
 
   void Swap(SdkWSReq* other);
   friend void swap(SdkWSReq& a, SdkWSReq& b) {
@@ -5671,7 +5953,7 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_SdkWSResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    35;
+    37;
 
   void Swap(SdkWSResp* other);
   friend void swap(SdkWSResp& a, SdkWSResp& b) {
@@ -5897,7 +6179,7 @@ class OfflinePushInfo : public ::google::protobuf::Message /* @@protoc_insertion
                &_OfflinePushInfo_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    36;
+    38;
 
   void Swap(OfflinePushInfo* other);
   friend void swap(OfflinePushInfo& a, OfflinePushInfo& b) {
@@ -6071,7 +6353,7 @@ class TipsComm : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_TipsComm_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    37;
+    39;
 
   void Swap(TipsComm* other);
   friend void swap(TipsComm& a, TipsComm& b) {
@@ -6208,7 +6490,7 @@ class PullMixListReq : public ::google::protobuf::Message /* @@protoc_insertion_
                &_PullMixListReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    38;
+    40;
 
   void Swap(PullMixListReq* other);
   friend void swap(PullMixListReq& a, PullMixListReq& b) {
@@ -6328,7 +6610,7 @@ class PullMixListResp : public ::google::protobuf::Message /* @@protoc_insertion
                &_PullMixListResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    39;
+    41;
 
   void Swap(PullMixListResp* other);
   friend void swap(PullMixListResp& a, PullMixListResp& b) {
@@ -6433,7 +6715,7 @@ class PullSingleListReq : public ::google::protobuf::Message /* @@protoc_inserti
                &_PullSingleListReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    40;
+    42;
 
   void Swap(PullSingleListReq* other);
   friend void swap(PullSingleListReq& a, PullSingleListReq& b) {
@@ -6561,7 +6843,7 @@ class PullSingleListResp : public ::google::protobuf::Message /* @@protoc_insert
                &_PullSingleListResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    41;
+    43;
 
   void Swap(PullSingleListResp* other);
   friend void swap(PullSingleListResp& a, PullSingleListResp& b) {
@@ -6666,7 +6948,7 @@ class GroupCreatedTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_GroupCreatedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    42;
+    44;
 
   void Swap(GroupCreatedTips* other);
   friend void swap(GroupCreatedTips& a, GroupCreatedTips& b) {
@@ -6830,7 +7112,7 @@ class GroupInfoSetTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_GroupInfoSetTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    43;
+    45;
 
   void Swap(GroupInfoSetTips* other);
   friend void swap(GroupInfoSetTips& a, GroupInfoSetTips& b) {
@@ -6971,7 +7253,7 @@ class GroupInfoSetNameTips : public ::google::protobuf::Message /* @@protoc_inse
                &_GroupInfoSetNameTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
+    46;
 
   void Swap(GroupInfoSetNameTips* other);
   friend void swap(GroupInfoSetNameTips& a, GroupInfoSetNameTips& b) {
@@ -7105,7 +7387,7 @@ class GroupInfoSetAnnouncementTips : public ::google::protobuf::Message /* @@pro
                &_GroupInfoSetAnnouncementTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    47;
 
   void Swap(GroupInfoSetAnnouncementTips* other);
   friend void swap(GroupInfoSetAnnouncementTips& a, GroupInfoSetAnnouncementTips& b) {
@@ -7239,7 +7521,7 @@ class JoinGroupApplicationTips : public ::google::protobuf::Message /* @@protoc_
                &_JoinGroupApplicationTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    48;
 
   void Swap(JoinGroupApplicationTips* other);
   friend void swap(JoinGroupApplicationTips& a, JoinGroupApplicationTips& b) {
@@ -7366,7 +7648,7 @@ class MemberQuitTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_MemberQuitTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    49;
 
   void Swap(MemberQuitTips* other);
   friend void swap(MemberQuitTips& a, MemberQuitTips& b) {
@@ -7507,7 +7789,7 @@ class GroupApplicationAcceptedTips : public ::google::protobuf::Message /* @@pro
                &_GroupApplicationAcceptedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    50;
 
   void Swap(GroupApplicationAcceptedTips* other);
   friend void swap(GroupApplicationAcceptedTips& a, GroupApplicationAcceptedTips& b) {
@@ -7641,7 +7923,7 @@ class GroupApplicationRejectedTips : public ::google::protobuf::Message /* @@pro
                &_GroupApplicationRejectedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    51;
 
   void Swap(GroupApplicationRejectedTips* other);
   friend void swap(GroupApplicationRejectedTips& a, GroupApplicationRejectedTips& b) {
@@ -7775,7 +8057,7 @@ class GroupOwnerTransferredTips : public ::google::protobuf::Message /* @@protoc
                &_GroupOwnerTransferredTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    52;
 
   void Swap(GroupOwnerTransferredTips* other);
   friend void swap(GroupOwnerTransferredTips& a, GroupOwnerTransferredTips& b) {
@@ -7951,7 +8233,7 @@ class MemberKickedTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_MemberKickedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    53;
 
   void Swap(MemberKickedTips* other);
   friend void swap(MemberKickedTips& a, MemberKickedTips& b) {
@@ -8105,7 +8387,7 @@ class MemberInvitedTips : public ::google::protobuf::Message /* @@protoc_inserti
                &_MemberInvitedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    52;
+    54;
 
   void Swap(MemberInvitedTips* other);
   friend void swap(MemberInvitedTips& a, MemberInvitedTips& b) {
@@ -8269,7 +8551,7 @@ class MemberEnterTips : public ::google::protobuf::Message /* @@protoc_insertion
                &_MemberEnterTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    53;
+    55;
 
   void Swap(MemberEnterTips* other);
   friend void swap(MemberEnterTips& a, MemberEnterTips& b) {
@@ -8410,7 +8692,7 @@ class GroupDismissedTips : public ::google::protobuf::Message /* @@protoc_insert
                &_GroupDismissedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    54;
+    56;
 
   void Swap(GroupDismissedTips* other);
   friend void swap(GroupDismissedTips& a, GroupDismissedTips& b) {
@@ -8529,7 +8811,7 @@ class GroupMemberMutedTips : public ::google::protobuf::Message /* @@protoc_inse
                &_GroupMemberMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    55;
+    57;
 
   void Swap(GroupMemberMutedTips* other);
   friend void swap(GroupMemberMutedTips& a, GroupMemberMutedTips& b) {
@@ -8687,7 +8969,7 @@ class GroupMemberCancelMutedTips : public ::google::protobuf::Message /* @@proto
                &_GroupMemberCancelMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    56;
+    58;
 
   void Swap(GroupMemberCancelMutedTips* other);
   friend void swap(GroupMemberCancelMutedTips& a, GroupMemberCancelMutedTips& b) {
@@ -8838,7 +9120,7 @@ class GroupMutedTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_GroupMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    57;
+    59;
 
   void Swap(GroupMutedTips* other);
   friend void swap(GroupMutedTips& a, GroupMutedTips& b) {
@@ -8979,7 +9261,7 @@ class GroupCancelMutedTips : public ::google::protobuf::Message /* @@protoc_inse
                &_GroupCancelMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    58;
+    60;
 
   void Swap(GroupCancelMutedTips* other);
   friend void swap(GroupCancelMutedTips& a, GroupCancelMutedTips& b) {
@@ -9120,7 +9402,7 @@ class GroupMemberInfoSetTips : public ::google::protobuf::Message /* @@protoc_in
                &_GroupMemberInfoSetTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    59;
+    61;
 
   void Swap(GroupMemberInfoSetTips* other);
   friend void swap(GroupMemberInfoSetTips& a, GroupMemberInfoSetTips& b) {
@@ -9278,7 +9560,7 @@ class FriendApplication : public ::google::protobuf::Message /* @@protoc_inserti
                &_FriendApplication_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    60;
+    62;
 
   void Swap(FriendApplication* other);
   friend void swap(FriendApplication& a, FriendApplication& b) {
@@ -9407,7 +9689,7 @@ class FromToUserID : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_FromToUserID_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    61;
+    63;
 
   void Swap(FromToUserID* other);
   friend void swap(FromToUserID& a, FromToUserID& b) {
@@ -9529,7 +9811,7 @@ class FriendApplicationTips : public ::google::protobuf::Message /* @@protoc_ins
                &_FriendApplicationTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    62;
+    64;
 
   void Swap(FriendApplicationTips* other);
   friend void swap(FriendApplicationTips& a, FriendApplicationTips& b) {
@@ -9631,7 +9913,7 @@ class FriendApplicationApprovedTips : public ::google::protobuf::Message /* @@pr
                &_FriendApplicationApprovedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    63;
+    65;
 
   void Swap(FriendApplicationApprovedTips* other);
   friend void swap(FriendApplicationApprovedTips& a, FriendApplicationApprovedTips& b) {
@@ -9770,7 +10052,7 @@ class FriendApplicationRejectedTips : public ::google::protobuf::Message /* @@pr
                &_FriendApplicationRejectedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    64;
+    66;
 
   void Swap(FriendApplicationRejectedTips* other);
   friend void swap(FriendApplicationRejectedTips& a, FriendApplicationRejectedTips& b) {
@@ -9887,7 +10169,7 @@ class FriendAddedTips : public ::google::protobuf::Message /* @@protoc_insertion
                &_FriendAddedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    65;
+    67;
 
   void Swap(FriendAddedTips* other);
   friend void swap(FriendAddedTips& a, FriendAddedTips& b) {
@@ -10028,7 +10310,7 @@ class FriendDeletedTips : public ::google::protobuf::Message /* @@protoc_inserti
                &_FriendDeletedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    66;
+    68;
 
   void Swap(FriendDeletedTips* other);
   friend void swap(FriendDeletedTips& a, FriendDeletedTips& b) {
@@ -10152,7 +10434,7 @@ class BlackAddedTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_BlackAddedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    67;
+    69;
 
   void Swap(BlackAddedTips* other);
   friend void swap(BlackAddedTips& a, BlackAddedTips& b) {
@@ -10254,7 +10536,7 @@ class BlackDeletedTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_BlackDeletedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    68;
+    70;
 
   void Swap(BlackDeletedTips* other);
   friend void swap(BlackDeletedTips& a, BlackDeletedTips& b) {
@@ -10356,7 +10638,7 @@ class FriendInfoChangedTips : public ::google::protobuf::Message /* @@protoc_ins
                &_FriendInfoChangedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    69;
+    71;
 
   void Swap(FriendInfoChangedTips* other);
   friend void swap(FriendInfoChangedTips& a, FriendInfoChangedTips& b) {
@@ -10487,7 +10769,7 @@ class UserInfoUpdatedTips : public ::google::protobuf::Message /* @@protoc_inser
                &_UserInfoUpdatedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    70;
+    72;
 
   void Swap(UserInfoUpdatedTips* other);
   friend void swap(UserInfoUpdatedTips& a, UserInfoUpdatedTips& b) {
@@ -10594,7 +10876,7 @@ class UserStatusChangeTips : public ::google::protobuf::Message /* @@protoc_inse
                &_UserStatusChangeTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    71;
+    73;
 
   void Swap(UserStatusChangeTips* other);
   friend void swap(UserStatusChangeTips& a, UserStatusChangeTips& b) {
@@ -10730,7 +11012,7 @@ class UserCommandAddTips : public ::google::protobuf::Message /* @@protoc_insert
                &_UserCommandAddTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    72;
+    74;
 
   void Swap(UserCommandAddTips* other);
   friend void swap(UserCommandAddTips& a, UserCommandAddTips& b) {
@@ -10852,7 +11134,7 @@ class UserCommandUpdateTips : public ::google::protobuf::Message /* @@protoc_ins
                &_UserCommandUpdateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    73;
+    75;
 
   void Swap(UserCommandUpdateTips* other);
   friend void swap(UserCommandUpdateTips& a, UserCommandUpdateTips& b) {
@@ -10974,7 +11256,7 @@ class UserCommandDeleteTips : public ::google::protobuf::Message /* @@protoc_ins
                &_UserCommandDeleteTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    74;
+    76;
 
   void Swap(UserCommandDeleteTips* other);
   friend void swap(UserCommandDeleteTips& a, UserCommandDeleteTips& b) {
@@ -11096,7 +11378,7 @@ class ConversationUpdateTips : public ::google::protobuf::Message /* @@protoc_in
                &_ConversationUpdateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    75;
+    77;
 
   void Swap(ConversationUpdateTips* other);
   friend void swap(ConversationUpdateTips& a, ConversationUpdateTips& b) {
@@ -11226,7 +11508,7 @@ class ConversationSetPrivateTips : public ::google::protobuf::Message /* @@proto
                &_ConversationSetPrivateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    76;
+    78;
 
   void Swap(ConversationSetPrivateTips* other);
   friend void swap(ConversationSetPrivateTips& a, ConversationSetPrivateTips& b) {
@@ -11370,7 +11652,7 @@ class ConversationHasReadTips : public ::google::protobuf::Message /* @@protoc_i
                &_ConversationHasReadTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    77;
+    79;
 
   void Swap(ConversationHasReadTips* other);
   friend void swap(ConversationHasReadTips& a, ConversationHasReadTips& b) {
@@ -11506,7 +11788,7 @@ class NotificationElem : public ::google::protobuf::Message /* @@protoc_insertio
                &_NotificationElem_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    78;
+    80;
 
   void Swap(NotificationElem* other);
   friend void swap(NotificationElem& a, NotificationElem& b) {
@@ -11613,7 +11895,7 @@ class DeleteMessageTips : public ::google::protobuf::Message /* @@protoc_inserti
                &_DeleteMessageTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    79;
+    81;
 
   void Swap(DeleteMessageTips* other);
   friend void swap(DeleteMessageTips& a, DeleteMessageTips& b) {
@@ -11749,7 +12031,7 @@ class RevokeMsgTips : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_RevokeMsgTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    80;
+    82;
 
   void Swap(RevokeMsgTips* other);
   friend void swap(RevokeMsgTips& a, RevokeMsgTips& b) {
@@ -11914,7 +12196,7 @@ class MessageRevokedContent : public ::google::protobuf::Message /* @@protoc_ins
                &_MessageRevokedContent_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    81;
+    83;
 
   void Swap(MessageRevokedContent* other);
   friend void swap(MessageRevokedContent& a, MessageRevokedContent& b) {
@@ -12131,7 +12413,7 @@ class ClearConversationTips : public ::google::protobuf::Message /* @@protoc_ins
                &_ClearConversationTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    82;
+    84;
 
   void Swap(ClearConversationTips* other);
   friend void swap(ClearConversationTips& a, ClearConversationTips& b) {
@@ -12261,7 +12543,7 @@ class DeleteMsgsTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_DeleteMsgsTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    83;
+    85;
 
   void Swap(DeleteMsgsTips* other);
   friend void swap(DeleteMsgsTips& a, DeleteMsgsTips& b) {
@@ -12397,7 +12679,7 @@ class MarkAsReadTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_MarkAsReadTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    84;
+    86;
 
   void Swap(MarkAsReadTips* other);
   friend void swap(MarkAsReadTips& a, MarkAsReadTips& b) {
@@ -12540,7 +12822,7 @@ class SetAppBackgroundStatusReq : public ::google::protobuf::Message /* @@protoc
                &_SetAppBackgroundStatusReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    85;
+    87;
 
   void Swap(SetAppBackgroundStatusReq* other);
   friend void swap(SetAppBackgroundStatusReq& a, SetAppBackgroundStatusReq& b) {
@@ -12654,7 +12936,7 @@ class SetAppBackgroundStatusResp : public ::google::protobuf::Message /* @@proto
                &_SetAppBackgroundStatusResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    86;
+    88;
 
   void Swap(SetAppBackgroundStatusResp* other);
   friend void swap(SetAppBackgroundStatusResp& a, SetAppBackgroundStatusResp& b) {
@@ -12746,7 +13028,7 @@ class ProcessUserCommand : public ::google::protobuf::Message /* @@protoc_insert
                &_ProcessUserCommand_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    87;
+    89;
 
   void Swap(ProcessUserCommand* other);
   friend void swap(ProcessUserCommand& a, ProcessUserCommand& b) {
@@ -12897,7 +13179,7 @@ class RequestPagination : public ::google::protobuf::Message /* @@protoc_inserti
                &_RequestPagination_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    88;
+    90;
 
   void Swap(RequestPagination* other);
   friend void swap(RequestPagination& a, RequestPagination& b) {
@@ -13003,7 +13285,7 @@ class FriendsInfoUpdateTips : public ::google::protobuf::Message /* @@protoc_ins
                &_FriendsInfoUpdateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    89;
+    91;
 
   void Swap(FriendsInfoUpdateTips* other);
   friend void swap(FriendsInfoUpdateTips& a, FriendsInfoUpdateTips& b) {
@@ -13150,7 +13432,7 @@ class SubUserOnlineStatusElem : public ::google::protobuf::Message /* @@protoc_i
                &_SubUserOnlineStatusElem_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    90;
+    92;
 
   void Swap(SubUserOnlineStatusElem* other);
   friend void swap(SubUserOnlineStatusElem& a, SubUserOnlineStatusElem& b) {
@@ -13271,7 +13553,7 @@ class SubUserOnlineStatusTips : public ::google::protobuf::Message /* @@protoc_i
                &_SubUserOnlineStatusTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    91;
+    93;
 
   void Swap(SubUserOnlineStatusTips* other);
   friend void swap(SubUserOnlineStatusTips& a, SubUserOnlineStatusTips& b) {
@@ -13376,7 +13658,7 @@ class SubUserOnlineStatus : public ::google::protobuf::Message /* @@protoc_inser
                &_SubUserOnlineStatus_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    92;
+    94;
 
   void Swap(SubUserOnlineStatus* other);
   friend void swap(SubUserOnlineStatus& a, SubUserOnlineStatus& b) {
@@ -13514,7 +13796,7 @@ class StreamMsgTips : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_StreamMsgTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    93;
+    95;
 
   void Swap(StreamMsgTips* other);
   friend void swap(StreamMsgTips& a, StreamMsgTips& b) {
@@ -20016,32 +20298,32 @@ FetchUserMessageListResp::convsinfo() const {
   return convsinfo_;
 }
 
-// int64 start = 2;
-inline void FetchUserMessageListResp::clear_start() {
-  start_ = GOOGLE_LONGLONG(0);
+// int64 left = 2;
+inline void FetchUserMessageListResp::clear_left() {
+  left_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 FetchUserMessageListResp::start() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserMessageListResp.start)
-  return start_;
+inline ::google::protobuf::int64 FetchUserMessageListResp::left() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserMessageListResp.left)
+  return left_;
 }
-inline void FetchUserMessageListResp::set_start(::google::protobuf::int64 value) {
+inline void FetchUserMessageListResp::set_left(::google::protobuf::int64 value) {
   
-  start_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.start)
+  left_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.left)
 }
 
-// int64 stop = 3;
-inline void FetchUserMessageListResp::clear_stop() {
-  stop_ = GOOGLE_LONGLONG(0);
+// int64 right = 3;
+inline void FetchUserMessageListResp::clear_right() {
+  right_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 FetchUserMessageListResp::stop() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserMessageListResp.stop)
-  return stop_;
+inline ::google::protobuf::int64 FetchUserMessageListResp::right() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserMessageListResp.right)
+  return right_;
 }
-inline void FetchUserMessageListResp::set_stop(::google::protobuf::int64 value) {
+inline void FetchUserMessageListResp::set_right(::google::protobuf::int64 value) {
   
-  stop_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.stop)
+  right_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.right)
 }
 
 // bool hasMore = 4;
@@ -20056,6 +20338,236 @@ inline void FetchUserMessageListResp::set_hasmore(bool value) {
   
   hasmore_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserMessageListResp.hasMore)
+}
+
+// -------------------------------------------------------------------
+
+// UserMessageIntegrityCheckReq
+
+// string userID = 1;
+inline void UserMessageIntegrityCheckReq::clear_userid() {
+  userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserMessageIntegrityCheckReq::userid() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+  return userid_.GetNoArena();
+}
+inline void UserMessageIntegrityCheckReq::set_userid(const ::std::string& value) {
+  
+  userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+}
+#if LANG_CXX11
+inline void UserMessageIntegrityCheckReq::set_userid(::std::string&& value) {
+  
+  userid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+}
+#endif
+inline void UserMessageIntegrityCheckReq::set_userid(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+}
+inline void UserMessageIntegrityCheckReq::set_userid(const char* value, size_t size) {
+  
+  userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+}
+inline ::std::string* UserMessageIntegrityCheckReq::mutable_userid() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+  return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserMessageIntegrityCheckReq::release_userid() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+  
+  return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserMessageIntegrityCheckReq::set_allocated_userid(::std::string* userid) {
+  if (userid != NULL) {
+    
+  } else {
+    
+  }
+  userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.UserMessageIntegrityCheckReq.userID)
+}
+
+// int64 left = 2;
+inline void UserMessageIntegrityCheckReq::clear_left() {
+  left_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 UserMessageIntegrityCheckReq::left() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckReq.left)
+  return left_;
+}
+inline void UserMessageIntegrityCheckReq::set_left(::google::protobuf::int64 value) {
+  
+  left_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckReq.left)
+}
+
+// int64 right = 3;
+inline void UserMessageIntegrityCheckReq::clear_right() {
+  right_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 UserMessageIntegrityCheckReq::right() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckReq.right)
+  return right_;
+}
+inline void UserMessageIntegrityCheckReq::set_right(::google::protobuf::int64 value) {
+  
+  right_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckReq.right)
+}
+
+// repeated string convIDs = 4;
+inline int UserMessageIntegrityCheckReq::convids_size() const {
+  return convids_.size();
+}
+inline void UserMessageIntegrityCheckReq::clear_convids() {
+  convids_.Clear();
+}
+inline const ::std::string& UserMessageIntegrityCheckReq::convids(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+  return convids_.Get(index);
+}
+inline ::std::string* UserMessageIntegrityCheckReq::mutable_convids(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+  return convids_.Mutable(index);
+}
+inline void UserMessageIntegrityCheckReq::set_convids(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+  convids_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void UserMessageIntegrityCheckReq::set_convids(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+  convids_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void UserMessageIntegrityCheckReq::set_convids(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  convids_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+}
+inline void UserMessageIntegrityCheckReq::set_convids(int index, const char* value, size_t size) {
+  convids_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+}
+inline ::std::string* UserMessageIntegrityCheckReq::add_convids() {
+  // @@protoc_insertion_point(field_add_mutable:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+  return convids_.Add();
+}
+inline void UserMessageIntegrityCheckReq::add_convids(const ::std::string& value) {
+  convids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+}
+#if LANG_CXX11
+inline void UserMessageIntegrityCheckReq::add_convids(::std::string&& value) {
+  convids_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+}
+#endif
+inline void UserMessageIntegrityCheckReq::add_convids(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  convids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+}
+inline void UserMessageIntegrityCheckReq::add_convids(const char* value, size_t size) {
+  convids_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+UserMessageIntegrityCheckReq::convids() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+  return convids_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+UserMessageIntegrityCheckReq::mutable_convids() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.UserMessageIntegrityCheckReq.convIDs)
+  return &convids_;
+}
+
+// -------------------------------------------------------------------
+
+// UserMessageIntegrityCheckResp
+
+// bool isIntegrity = 1;
+inline void UserMessageIntegrityCheckResp::clear_isintegrity() {
+  isintegrity_ = false;
+}
+inline bool UserMessageIntegrityCheckResp::isintegrity() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckResp.isIntegrity)
+  return isintegrity_;
+}
+inline void UserMessageIntegrityCheckResp::set_isintegrity(bool value) {
+  
+  isintegrity_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckResp.isIntegrity)
+}
+
+// int64 left = 2;
+inline void UserMessageIntegrityCheckResp::clear_left() {
+  left_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 UserMessageIntegrityCheckResp::left() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckResp.left)
+  return left_;
+}
+inline void UserMessageIntegrityCheckResp::set_left(::google::protobuf::int64 value) {
+  
+  left_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckResp.left)
+}
+
+// int64 right = 3;
+inline void UserMessageIntegrityCheckResp::clear_right() {
+  right_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 UserMessageIntegrityCheckResp::right() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckResp.right)
+  return right_;
+}
+inline void UserMessageIntegrityCheckResp::set_right(::google::protobuf::int64 value) {
+  
+  right_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.UserMessageIntegrityCheckResp.right)
+}
+
+// repeated .roc.imsdk.network.ConversationInfo convsInfo = 4;
+inline int UserMessageIntegrityCheckResp::convsinfo_size() const {
+  return convsinfo_.size();
+}
+inline void UserMessageIntegrityCheckResp::clear_convsinfo() {
+  convsinfo_.Clear();
+}
+inline const ::roc::imsdk::network::ConversationInfo& UserMessageIntegrityCheckResp::convsinfo(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.UserMessageIntegrityCheckResp.convsInfo)
+  return convsinfo_.Get(index);
+}
+inline ::roc::imsdk::network::ConversationInfo* UserMessageIntegrityCheckResp::mutable_convsinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.UserMessageIntegrityCheckResp.convsInfo)
+  return convsinfo_.Mutable(index);
+}
+inline ::roc::imsdk::network::ConversationInfo* UserMessageIntegrityCheckResp::add_convsinfo() {
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.UserMessageIntegrityCheckResp.convsInfo)
+  return convsinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >*
+UserMessageIntegrityCheckResp::mutable_convsinfo() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.UserMessageIntegrityCheckResp.convsInfo)
+  return &convsinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >&
+UserMessageIntegrityCheckResp::convsinfo() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.UserMessageIntegrityCheckResp.convsInfo)
+  return convsinfo_;
 }
 
 // -------------------------------------------------------------------
@@ -29457,6 +29969,10 @@ inline void StreamMsgTips::set_end(bool value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

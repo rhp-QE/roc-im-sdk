@@ -25,7 +25,7 @@ SendMessageController::SendMessageController(std::weak_ptr<SDKRoot> sdk_root)
 }
 
 boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
-SendMessageController::p_request(CONTEXT_T, network::SendMessageReq *request) {
+SendMessageController::p_request(CTX_T, network::SendMessageReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
@@ -50,7 +50,7 @@ SendMessageController::p_request(CONTEXT_T, network::SendMessageReq *request) {
     co_return resp;
 }
 
-boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageController::SendMessage(CONTEXT_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageController::SendMessage(CTX_T, model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     std::shared_ptr<model::SendMessageResponse> response = std::make_shared<model::SendMessageResponse>(1, "", nullptr);
@@ -67,13 +67,13 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageC
 
 
     std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
-    p_convertSendContextToSdkwsMessage(CONTEXT_V, context, client_msg_id, send_time, req->add_msgs());
+    p_convertSendContextToSdkwsMessage(CTX_V, context, client_msg_id, send_time, req->add_msgs());
 
     LOG_INFO("MsgManager", "call_asyncSendMessage, is_group_msg: {}, conv_id: {}, from: {}, to: {}", context.is_group_msg, context.conv_id, context.from_user_id, context.to_user_id);
 
     {
-        auto db_msg = p_convertSendContextToMessageOrm(CONTEXT_V, context, client_msg_id, send_time);
-        auto sdk_msgs = co_await msg_manager->message_data_source->SaveDbMsgs(CONTEXT_V, {db_msg});
+        auto db_msg = p_convertSendContextToMessageOrm(CTX_V, context, client_msg_id, send_time);
+        auto sdk_msgs = co_await msg_manager->message_data_source->SaveDbMsgs(CTX_V, {db_msg});
         if (sdk_msgs.empty()) {
             response->error_msg = "save message failed";
             co_return response;
@@ -84,17 +84,17 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageC
     } // 保存db 然后先返回给用户
 
     { 
-        boost::asio::co_spawn(sdk_root->net_io_context(), p_asyncSendMessage(CONTEXT_V, std::move(req), std::move(callback)), boost::asio::detached);
+        boost::asio::co_spawn(sdk_root->net_io_context(), p_asyncSendMessage(CTX_V, std::move(req), std::move(callback)), boost::asio::detached);
     } // 构造请求 异步发送数据
 
 
     co_return response;
 }
 
-boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CONTEXT_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CTX_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error> resp = co_await p_request(CONTEXT_V, req.get());
+    std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error> resp = co_await p_request(CTX_V, req.get());
 
     if (!resp || !resp.has_value() || resp.value()->infos().size() != 1) {
         base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, resp.error().message(), nullptr));
@@ -102,7 +102,7 @@ boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CONTEXT_T
     }
 
     auto msg_manager = sdk_root->MessageManager();
-    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CONTEXT_V, {&(resp.value()->infos()[0].msg())});
+    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CTX_V, {&(resp.value()->infos()[0].msg())});
 
     LOG_INFO("MsgManager", "asyncSendMessage, result: {}", sdk_msgs.empty() ? "failed" : "success");
 
@@ -137,7 +137,7 @@ bool SendMessageController::p_checkSendContext(const model::SendMsgContext &cont
     return true;
 }
 
-void SendMessageController::p_convertSendContextToSdkwsMessage(CONTEXT_T, model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MsgData *net_msg) {
+void SendMessageController::p_convertSendContextToSdkwsMessage(CTX_T, model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MsgData *net_msg) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     if (!net_msg) {
@@ -173,7 +173,7 @@ void SendMessageController::p_convertSendContextToSdkwsMessage(CONTEXT_T, model:
     }
 }   
 
-std::shared_ptr<MessageORM> SendMessageController::p_convertSendContextToMessageOrm(CONTEXT_T, const model::SendMsgContext &context, std::string client_msg_id, double send_time) {
+std::shared_ptr<MessageORM> SendMessageController::p_convertSendContextToMessageOrm(CTX_T, const model::SendMsgContext &context, std::string client_msg_id, double send_time) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto msg_manager = sdk_root->MessageManager();
@@ -206,7 +206,7 @@ std::shared_ptr<MessageORM> SendMessageController::p_convertSendContextToMessage
     message_orm->send_time = send_time;
     
     // 设置顺序索引
-    message_orm->client_order_index = msg_manager->db_opt->NextMsgOrderInConv(CONTEXT_V, context.conv_id);
+    message_orm->client_order_index = msg_manager->db_opt->NextMsgOrderInConv(CTX_V, context.conv_id);
     
     return message_orm;
 }

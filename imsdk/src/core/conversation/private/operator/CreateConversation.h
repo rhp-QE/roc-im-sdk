@@ -17,7 +17,7 @@ public:
 
     /// 创建会话
     boost::asio::awaitable<std::shared_ptr<model::ConversationModel>>
-        CreateConv(CONTEXT_T, std::vector<std::string> member_user_ids, std::string conv_name);
+        CreateConv(CTX_T, std::vector<std::string> member_user_ids, std::string conv_name);
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;

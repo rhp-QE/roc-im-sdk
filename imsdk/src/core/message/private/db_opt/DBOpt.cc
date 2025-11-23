@@ -30,32 +30,32 @@ DBOpt::DBOpt(std::weak_ptr<SDKRoot> sdk_root)
 }
 
 //-----------------------
-std::string DBOpt::p_TableName(CONTEXT_T) {
+std::string DBOpt::p_TableName(CTX_T) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, "defaule_message_table");
     return core::util::key_for_user(sdk_root->config().user_id, MessageTableName);
 }
 
-std::string DBOpt::p_MessageRangeKey(CONTEXT_T, std::string conv_id) {
+std::string DBOpt::p_MessageRangeKey(CTX_T, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, MessageRangeKey);
     return core::util::key_for_user(sdk_root->config().user_id, MessageRangeKey + "_" + conv_id);
 }
 
-std::string DBOpt::p_OrderIndexKey(CONTEXT_T, std::string conv_id) {
+std::string DBOpt::p_OrderIndexKey(CTX_T, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, OrderIndexKey);
     return core::util::key_for_user(sdk_root->config().user_id, OrderIndexKey + "_" + conv_id);
 }
 //-----------------------
 
-bool DBOpt::CreateMessageTableIfNeed(CONTEXT_T) {
+bool DBOpt::CreateMessageTableIfNeed(CTX_T) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
 
     auto database = sdk_root->database();
     CHECK_POINTER_OR_RETURN_VALUE(database, false);
 
-    return database->createTable<core::message::MessageORM>(p_TableName(CONTEXT_V));
+    return database->createTable<core::message::MessageORM>(p_TableName(CTX_V));
 }
 
-bool DBOpt::InsertOrReplaceMessage(CONTEXT_T, std::vector<std::shared_ptr<core::message::MessageORM>> messages) {
+bool DBOpt::InsertOrReplaceMessage(CTX_T, std::vector<std::shared_ptr<core::message::MessageORM>> messages) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
 
     auto database = sdk_root->database();
@@ -64,14 +64,14 @@ bool DBOpt::InsertOrReplaceMessage(CONTEXT_T, std::vector<std::shared_ptr<core::
     return database->runTransaction([&](WCDB::Handle &handle) {
         bool ret = true;
         for (auto &message : messages) {
-            ret &= database->insertOrReplaceObject<core::message::MessageORM>(*message, p_TableName(CONTEXT_V));
+            ret &= database->insertOrReplaceObject<core::message::MessageORM>(*message, p_TableName(CTX_V));
         }
         return ret;
     });
 }
 
 bool DBOpt::InsertOrUpdateMessage(
-    CONTEXT_T, 
+    CTX_T, 
     std::vector<std::shared_ptr<core::message::MessageORM>> messages,
     const WCDB::Fields& fields,
     int type
@@ -111,7 +111,7 @@ bool DBOpt::InsertOrUpdateMessage(
             
             // 构建 INSERT 语句：插入所有字段
             WCDB::StatementInsert statement = WCDB::StatementInsert()
-                .insertIntoTable(p_TableName(CONTEXT_V))
+                .insertIntoTable(p_TableName(CTX_V))
                 .columns(all_fields)
                 .values(WCDB::BindParameter::bindParameters(all_fields.size()))
                 .upsert(upsert);
@@ -143,7 +143,7 @@ bool DBOpt::InsertOrUpdateMessage(
     });
 }
 
-bool DBOpt::SaveMessageRange(CONTEXT_T, std::vector<std::pair<int64_t, int64_t>> ranges, std::string conv_id) {
+bool DBOpt::SaveMessageRange(CTX_T, std::vector<std::pair<int64_t, int64_t>> ranges, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
 
     auto *mmkv = sdk_root->mmkv();
@@ -162,18 +162,18 @@ bool DBOpt::SaveMessageRange(CONTEXT_T, std::vector<std::pair<int64_t, int64_t>>
 
     LOG_INFO("MesageDBOpt", "save message range to db, cid: {}, ranges: {}", conv_id, json_str);
 
-    return mmkv->set(json_str, p_MessageRangeKey(CONTEXT_V, conv_id));
+    return mmkv->set(json_str, p_MessageRangeKey(CTX_V, conv_id));
 }
 
 
-std::vector<std::pair<int64_t, int64_t>> DBOpt::MessageRange(CONTEXT_T, std::string conv_id) {
+std::vector<std::pair<int64_t, int64_t>> DBOpt::MessageRange(CTX_T, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
     auto *mmkv = sdk_root->mmkv();
     CHECK_POINTER_OR_RETURN_VALUE(mmkv, {});
 
     std::string json_str;
-    bool res = mmkv->getString(p_MessageRangeKey(CONTEXT_V, conv_id), json_str);
+    bool res = mmkv->getString(p_MessageRangeKey(CTX_V, conv_id), json_str);
     if (!res) {
         return {};
     }
@@ -196,26 +196,26 @@ std::vector<std::pair<int64_t, int64_t>> DBOpt::MessageRange(CONTEXT_T, std::str
 }
 
 /// 获取消息 (直接从DB 中取)
-std::shared_ptr<model::MessageModel> DBOpt::MessageForId(CONTEXT_T, std::string msg_id) {
+std::shared_ptr<model::MessageModel> DBOpt::MessageForId(CTX_T, std::string msg_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto database = sdk_root->database();
     CHECK_POINTER_OR_RETURN_VALUE(database, nullptr);
 
     auto result = database->getAllObjects<core::message::MessageORM>(
-        p_TableName(CONTEXT_V), 
+        p_TableName(CTX_V), 
         WCDB::Field(&core::message::MessageORM::client_msg_id) == msg_id
     );
 
     if (result.hasValue() && !result.value().empty()) {
         auto msg_manager = sdk_root->MessageManager();
-        return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CONTEXT_V, &(result.value().front()));
+        return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CTX_V, &(result.value().front()));
     }
 
     return nullptr;
 }
 
-std::vector<std::shared_ptr<model::MessageModel>> DBOpt::QueryMessagesForConvId(CONTEXT_T, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
+std::vector<std::shared_ptr<model::MessageModel>> DBOpt::QueryMessagesForConvId(CTX_T, std::string conv_id, int64_t cursor, int64_t limit, bool forward) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
     auto database = sdk_root->database();
@@ -231,7 +231,7 @@ std::vector<std::shared_ptr<model::MessageModel>> DBOpt::QueryMessagesForConvId(
     }
 
     auto result = database->getAllObjects<core::message::MessageORM>(
-        p_TableName(CONTEXT_V), 
+        p_TableName(CTX_V), 
         condition,
         WCDB_FIELD(core::message::MessageORM::client_order_index).asOrder(WCDB::Order::DESC),
         WCDB::Expression(limit),
@@ -245,7 +245,7 @@ std::vector<std::shared_ptr<model::MessageModel>> DBOpt::QueryMessagesForConvId(
     auto msg_manager = sdk_root->MessageManager();
     std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs;
     for (auto &msg : result.value()) {
-        sdk_msgs.push_back(msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CONTEXT_V, &msg));
+        sdk_msgs.push_back(msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CTX_V, &msg));
     }
 
     return sdk_msgs;
@@ -253,7 +253,7 @@ std::vector<std::shared_ptr<model::MessageModel>> DBOpt::QueryMessagesForConvId(
 
 
 /// 查询消息并设置优选使用的本地字段
-void DBOpt::MessageMergeWithLocal(CONTEXT_T, std::string msg_id, message::MessageORM *db_msg_new) {
+void DBOpt::MessageMergeWithLocal(CTX_T, std::string msg_id, message::MessageORM *db_msg_new) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     auto database = sdk_root->database();
@@ -265,7 +265,7 @@ void DBOpt::MessageMergeWithLocal(CONTEXT_T, std::string msg_id, message::Messag
     });
 
     auto result = database->getFirstObjectWithFields<core::message::MessageORM>(
-        p_TableName(CONTEXT_V), 
+        p_TableName(CTX_V), 
         resultFields,
         WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
     );
@@ -285,7 +285,7 @@ void DBOpt::MessageMergeWithLocal(CONTEXT_T, std::string msg_id, message::Messag
     // --------------------------------------------------
 }
 
-void DBOpt::SetMsgOrderInConv(CONTEXT_T, std::string conv_id, int64_t order) {
+void DBOpt::SetMsgOrderInConv(CTX_T, std::string conv_id, int64_t order) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     auto *mmkv = sdk_root->mmkv();
@@ -295,14 +295,14 @@ void DBOpt::SetMsgOrderInConv(CONTEXT_T, std::string conv_id, int64_t order) {
     // TODO 移出去
     std::lock_guard<std::mutex> lock(msg_manager->msg_order_mutex_);
 
-    int64_t old_max_order = mmkv->getInt64(p_OrderIndexKey(CONTEXT_V, conv_id), 0);
+    int64_t old_max_order = mmkv->getInt64(p_OrderIndexKey(CTX_V, conv_id), 0);
     if (order > old_max_order) {
         LOG_INFO("MessageDBOpt", "update max message order index = {}, in cid ={}", order, conv_id)
-        mmkv->set(order, p_OrderIndexKey(CONTEXT_V, conv_id));
+        mmkv->set(order, p_OrderIndexKey(CTX_V, conv_id));
     }
 }
 
-int64_t DBOpt::NextMsgOrderInConv(CONTEXT_T, std::string conv_id) {
+int64_t DBOpt::NextMsgOrderInConv(CTX_T, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, 1);
 
     auto *mmkv = sdk_root->mmkv();
@@ -313,8 +313,8 @@ int64_t DBOpt::NextMsgOrderInConv(CONTEXT_T, std::string conv_id) {
     // lock
     std::lock_guard<std::mutex> lock(msg_manager->msg_order_mutex_);
 
-    int64_t max_order = mmkv->getInt64(p_OrderIndexKey(CONTEXT_V, conv_id), 0);
-    mmkv->set(max_order + 1, p_OrderIndexKey(CONTEXT_V, conv_id));
+    int64_t max_order = mmkv->getInt64(p_OrderIndexKey(CTX_V, conv_id), 0);
+    mmkv->set(max_order + 1, p_OrderIndexKey(CTX_V, conv_id));
     LOG_INFO("MessageDBOpt", "get next message order index = {}, in cid = {}", max_order + 1, conv_id)
     
     return max_order + 1;

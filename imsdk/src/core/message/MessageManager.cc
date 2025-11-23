@@ -29,17 +29,17 @@ void MessageManager::AllComponentDidLoad() {
     START_TRACK;
 
     /// 创建BD 如果必要
-    db_opt->CreateMessageTableIfNeed(CONTEXT_V);
+    db_opt->CreateMessageTableIfNeed(CTX_V);
     /// 开启消息接收处理逻辑
-    receive_message->Start(CONTEXT_V);
+    receive_message->Start(CTX_V);
     /// 开启命令消息处理逻辑
-    cmd_message_operator->Start(CONTEXT_V);
+    cmd_message_operator->Start(CTX_V);
 }
 
-void MessageManager::HandleReceiveMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
+void MessageManager::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
-    boost::asio::co_spawn(sdk_root->sdk_io_context(), receive_message->HandleReceiveMessage(CONTEXT_V, net_msgs), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->sdk_io_context(), receive_message->HandleReceiveMessage(CTX_V, net_msgs), boost::asio::detached);
 }
 
 boost::asio::strand<boost::asio::io_context::executor_type> MessageManager::MsgStrand() {
@@ -69,19 +69,19 @@ boost::asio::awaitable<bool> MessageManager::UpdateMessageSyncExt(std::string ms
 
 boost::asio::awaitable<bool> MessageManager::MarkMessagesAsRead(const std::vector<std::string> &msg_ids) {
     START_TRACK;
-    bool result = message_data_source->MarkMessagesAsRead(CONTEXT_V, msg_ids);
+    bool result = message_data_source->MarkMessagesAsRead(CTX_V, msg_ids);
     co_return result;
 }
 
 boost::asio::awaitable<std::shared_ptr<model::MessageModel>> MessageManager::MessageForId(std::string msg_id) {
     START_TRACK;
-    co_return co_await message_data_source->SdkMsgForId(CONTEXT_V, msg_id);
+    co_return co_await message_data_source->SdkMsgForId(CTX_V, msg_id);
 }
 
 // 查询DB
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::MessagesForConvId(std::string conv_id, int64_t cursor, int64_t limit) {
     START_TRACK;
-    co_return co_await message_data_source->LoadMessageFromDb(CONTEXT_V, conv_id, cursor, limit, true);
+    co_return co_await message_data_source->LoadMessageFromDb(CTX_V, conv_id, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageManager::MessagesWhenEnterChat(std::string conv_id) {
@@ -93,18 +93,18 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> MessageMa
 
         /// 触发单链拉取
         boost::asio::co_spawn(sdk_root->net_io_context(),
-         sdk_root->MessageManager()->conv_messages_fetcher->FetchConvMessageList(CONTEXT_V, conv_id),
+         sdk_root->MessageManager()->conv_messages_fetcher->FetchConvMessageList(CTX_V, conv_id),
          boost::asio::detached);
 
     }, boost::asio::detached);
 
     // 从DB 中加载消息
-    co_return co_await message_data_source->LoadMessageFromDb(CONTEXT_V, conv_id, -1, 100, true);
+    co_return co_await message_data_source->LoadMessageFromDb(CTX_V, conv_id, -1, 100, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManager::SendMessage(model::SendMsgContext context, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     START_TRACK;
-    return send_message_controller->SendMessage(CONTEXT_V, context, callback);
+    return send_message_controller->SendMessage(CTX_V, context, callback);
 }
 
 /// ==================================================================================

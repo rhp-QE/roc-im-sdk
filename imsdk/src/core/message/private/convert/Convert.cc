@@ -17,7 +17,7 @@ Convert::Convert(std::weak_ptr<SDKRoot> sdk_root)
 }
 
 /// 消息转换 网络消息 -> db 消息
-std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CONTEXT_T, const network::MsgData *msg) {
+std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, const network::MsgData *msg) {
     CHECK_POINTER_OR_RETURN_VALUE(msg, nullptr)
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr)
     
@@ -60,7 +60,7 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CONTEXT
     db_msg->local_ext = "";
 
     auto msg_manager = sdk_root->MessageManager();
-    msg_manager->db_opt->MessageMergeWithLocal(CONTEXT_V, db_msg->client_msg_id, db_msg.get());
+    msg_manager->db_opt->MessageMergeWithLocal(CTX_V, db_msg->client_msg_id, db_msg.get());
     // -----------------------------------------------------------------------------------------------
     
     return db_msg;
@@ -68,7 +68,7 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CONTEXT
 
 /// 消息转换 db 消息 -> sdk 消息
 /// sdk 消息需要确保全局实例唯一性， 要从 cache 内查， 没有再构造
-std::shared_ptr<model::MessageModel> Convert::ConvertDbMsgToSdkMsgTmp(CONTEXT_T, const core::message::MessageORM *db_msg) {
+std::shared_ptr<model::MessageModel> Convert::ConvertDbMsgToSdkMsgTmp(CTX_T, const core::message::MessageORM *db_msg) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     if (!db_msg || db_msg->client_msg_id.empty()) {

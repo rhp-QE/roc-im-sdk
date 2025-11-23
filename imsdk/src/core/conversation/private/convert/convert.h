@@ -16,7 +16,7 @@ public:
     std::shared_ptr<core::conversation::ConversationORM> ConvertNetConvToDbConv(const network::ConversationInfo *conv);
 
     /// 会话转换 db 会话 -> sdk 会话
-    std::shared_ptr<model::ConversationModel> ConvertDbConvToSdkConv(CONTEXT_T, const core::conversation::ConversationORM *conv);
+    std::shared_ptr<model::ConversationModel> ConvertDbConvToSdkConv(CTX_T, const core::conversation::ConversationORM *conv);
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;

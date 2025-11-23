@@ -16,7 +16,7 @@ SaveConversation::SaveConversation(std::weak_ptr<SDKRoot> sdk_root)
 
 /// 保存网络会话
 boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
-SaveConversation::SaveNetConversations(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> convs) {
+SaveConversation::SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> convs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
     
     auto conv_manager = sdk_root->ConversationManager();
@@ -28,17 +28,17 @@ SaveConversation::SaveNetConversations(CONTEXT_T, std::vector<std::shared_ptr<ne
 
     // 转换为 sdk 会话
     auto sdk_convs_copy = base::util::transform(db_convs, [conv_manager, call_track_id](const std::shared_ptr<core::conversation::ConversationORM> &conv) {
-        return conv_manager->convert->ConvertDbConvToSdkConv(CONTEXT_V, conv.get());
+        return conv_manager->convert->ConvertDbConvToSdkConv(CTX_V, conv.get());
     });
 
     auto sdk_convs = co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [this, conv_manager, db_convs, sdk_convs_copy = std::move(sdk_convs_copy), w_sdk_root = w_sdk_root, call_track_id]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
 
         /// 保存到数据库
-        conv_manager->db_opt->InsertConversation(CONTEXT_V, db_convs);
+        conv_manager->db_opt->InsertConversation(CTX_V, db_convs);
 
         /// 更新会话缓存
-        co_return co_await this->p_UpdateConvCache(CONTEXT_V, std::move(sdk_convs_copy));
+        co_return co_await this->p_UpdateConvCache(CTX_V, std::move(sdk_convs_copy));
 
     }, boost::asio::use_awaitable);
 
@@ -47,7 +47,7 @@ SaveConversation::SaveNetConversations(CONTEXT_T, std::vector<std::shared_ptr<ne
 
 /// 从db 加载会话
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
-    SaveConversation::LoadConvsFromDb(CONTEXT_T, int64_t cursor, int64_t limit, bool forward) {
+    SaveConversation::LoadConvsFromDb(CTX_T, int64_t cursor, int64_t limit, bool forward) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto conv_manager = sdk_root->ConversationManager();
@@ -56,10 +56,10 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>>
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
 
         /// 从DB 中获取会话
-        auto sdk_convs_copy = conv_manager->db_opt->QueryConversations(CONTEXT_V, cursor, limit, forward);
+        auto sdk_convs_copy = conv_manager->db_opt->QueryConversations(CTX_V, cursor, limit, forward);
 
         /// 更新会话缓存
-        auto sdk_convs = co_await this->p_UpdateConvCache(CONTEXT_V, std::move(sdk_convs_copy));
+        auto sdk_convs = co_await this->p_UpdateConvCache(CTX_V, std::move(sdk_convs_copy));
 
         co_return sdk_convs;
     }, boost::asio::use_awaitable);
@@ -72,7 +72,7 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>>
 }
 
 /// 根据 ID 获取 SDK 会话
-boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> SaveConversation::SdkConvForId(CONTEXT_T, const std::string &conv_id) {
+boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> SaveConversation::SdkConvForId(CTX_T, const std::string &conv_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto conv_manager = sdk_root->ConversationManager();
@@ -97,10 +97,10 @@ boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> SaveConversati
         }
 
         /// 从DB 中获取会话
-        auto sdk_conv_copy = conv_manager->db_opt->ConversationForId(CONTEXT_V, conv_id);
+        auto sdk_conv_copy = conv_manager->db_opt->ConversationForId(CTX_V, conv_id);
 
         /// 更新缓存
-        auto sdk_convs = co_await this->p_UpdateConvCache(CONTEXT_V, {std::move(sdk_conv_copy)});
+        auto sdk_convs = co_await this->p_UpdateConvCache(CTX_V, {std::move(sdk_conv_copy)});
 
         co_return sdk_convs.size() > 0 ? sdk_convs.at(0) : nullptr;
 
@@ -111,7 +111,7 @@ boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> SaveConversati
 
 /// 更新会话缓存
 boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
-SaveConversation::p_UpdateConvCache(CONTEXT_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs) {
+SaveConversation::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
     
     if (sdk_convs.empty()) {

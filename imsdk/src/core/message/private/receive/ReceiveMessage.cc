@@ -24,7 +24,7 @@ ReceiveMessage::ReceiveMessage(std::weak_ptr<SDKRoot> sdk_root)
     : w_sdk_root(sdk_root) {
 }
 
-void ReceiveMessage::Start(CONTEXT_T) {
+void ReceiveMessage::Start(CTX_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto conn = sdk_root->ConnectionManager();
@@ -36,7 +36,7 @@ void ReceiveMessage::Start(CONTEXT_T) {
     });
 }
 
-void ReceiveMessage::HandlePushMessage(CONTEXT_T, std::shared_ptr<network::SdkWSResp> resp) {
+void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<network::SdkWSResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->MessageManager();
@@ -58,10 +58,10 @@ void ReceiveMessage::HandlePushMessage(CONTEXT_T, std::shared_ptr<network::SdkWS
 
     LOG_INFO("MsgManager", "receive_message, from: {}", net_msg->sendid());
 
-    boost::asio::co_spawn(sdk_root->net_io_context(), HandleReceiveMessage(CONTEXT_V, {net_msg}), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->net_io_context(), HandleReceiveMessage(CTX_V, {net_msg}), boost::asio::detached);
 }
 
-boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
+boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
     if (net_msgs.empty()) {
         co_return;
     }
@@ -76,18 +76,18 @@ boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CONTEXT_T, std
     }
 
     /// 数据保存
-    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CONTEXT_V, net_msgs_ptr);
+    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CTX_V, net_msgs_ptr);
     
     LOG_INFO("MsgManager", "handle_receive_message, size: {}", sdk_msgs.size());
 
     // 对消息进行分类
-    auto result = co_await ClassifyMessage(CONTEXT_V, net_msgs, sdk_msgs);
+    auto result = co_await ClassifyMessage(CTX_V, net_msgs, sdk_msgs);
     
     // 上抛消息
     base::util::safe_invoke_block(msg_manager->on_messages_callback_, result);
 }
 
-boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CONTEXT_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
+boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, model::OnMessageResult())
 
     model::OnMessageResult result;

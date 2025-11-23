@@ -9,9 +9,9 @@ class ReceiveConversation {
 public:
     explicit ReceiveConversation(std::weak_ptr<SDKRoot> sdk_root);
 
-    void Start(CONTEXT_T);
+    void Start(CTX_T);
 
-    boost::asio::awaitable<void> HandleReceiveConversation(CONTEXT_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations);
+    boost::asio::awaitable<void> HandleReceiveConversation(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations);
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;

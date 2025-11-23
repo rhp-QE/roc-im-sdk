@@ -27,7 +27,7 @@ void ConversationManager::AllComponentDidLoad() {
     START_TRACK;
 
     /// 创建数据库表
-    db_opt->CreateConversationTableIfNeed(CONTEXT_V);
+    db_opt->CreateConversationTableIfNeed(CTX_V);
 }
 
 boost::asio::strand<boost::asio::io_context::executor_type> ConversationManager::ConvStrand() {
@@ -46,12 +46,12 @@ void ConversationManager::OnConvUpdate(model::OnConvUpdateCallbackType callback)
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::ConvForId(std::string conv_id) {
     START_TRACK;
-    co_return co_await save_conversation->SdkConvForId(CONTEXT_V, conv_id);
+    co_return co_await save_conversation->SdkConvForId(CTX_V, conv_id);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::ConvsForUserId(std::string user_id, int64_t cursor, int64_t limit) {
     START_TRACK;
-    co_return co_await save_conversation->LoadConvsFromDb(CONTEXT_V, cursor, limit, true);
+    co_return co_await save_conversation->LoadConvsFromDb(CTX_V, cursor, limit, true);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> ConversationManager::ConvsWhenLogin() {
@@ -59,10 +59,10 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> Conversation
     START_TRACK;
 
     /// 触发混链拉取
-    asio::co_spawn(sdk_root->net_io_context(), user_message_fetcher->FetchUserMessages(CONTEXT_V), asio::detached);
+    asio::co_spawn(sdk_root->net_io_context(), user_message_fetcher->FetchUserMessages(CTX_V), asio::detached);
 
     /// 从DB 中加载会话
-    auto convs = co_await save_conversation->LoadConvsFromDb(CONTEXT_V, -1, 100, true);
+    auto convs = co_await save_conversation->LoadConvsFromDb(CTX_V, -1, 100, true);
     co_return convs;
 }
 
@@ -89,7 +89,7 @@ boost::asio::awaitable<bool> ConversationManager::DeleteConv(std::string conv_id
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::CreateConv(std::vector<std::string> member_user_ids, std::string conv_name) {
     START_TRACK;
-    co_return co_await create_conversation->CreateConv(CONTEXT_V, member_user_ids, conv_name);
+    co_return co_await create_conversation->CreateConv(CTX_V, member_user_ids, conv_name);
 }
 
 /// =======================================================================================

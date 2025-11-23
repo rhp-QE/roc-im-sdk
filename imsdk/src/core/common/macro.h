@@ -55,10 +55,10 @@
 #define W_SDK_ROOT \
     std::weak_ptr<roc::imsdk::SDKRoot> w_sdk_root 
 
-#define CONTEXT_T \
+#define CTX_T \
     uint32_t call_track_id
 
-#define CONTEXT_V \
+#define CTX_V \
     call_track_id
 
 #define TRACK_ID \
