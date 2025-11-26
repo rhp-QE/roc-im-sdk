@@ -19,7 +19,7 @@ void CmdMessageOperator::Start(CTX_T) {
     auto conn_manager= sdk_root->ConnectionManager();
 
     auto msg_manager = sdk_root->MessageManager();
-    conn_manager->AddOnPushMessageCallback([msg_manager, w_sdk_root = w_sdk_root](std::shared_ptr<network::SdkWSResp> resp) {
+    conn_manager->AddOnPushMessageCallback([msg_manager, w_sdk_root = w_sdk_root](std::shared_ptr<const network::SdkWSResp> resp) {
         CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
         uint32_t call_track_id = resp->trackid();
 
@@ -27,7 +27,7 @@ void CmdMessageOperator::Start(CTX_T) {
     });
 }
 
-void CmdMessageOperator::p_HandlePushMessage(CTX_T, std::shared_ptr<network::SdkWSResp> resp) {
+void CmdMessageOperator::p_HandlePushMessage(CTX_T, std::shared_ptr<const network::SdkWSResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     // 必须是命令消息

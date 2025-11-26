@@ -42,7 +42,8 @@ namespace error {
 
 
 // call back
-using OnPushMesageCallbackType = std::function<void(std::shared_ptr<network::SdkWSResp>)>;
+using OnPushMesageCallbackType = std::function<void(std::shared_ptr<const network::SdkWSResp>)>;
+using OnConnectionStatusChangeCallbackType = std::function<void(roc::imsdk::network::NetworkStatus)>;
 
 // ------------------------------------------------------------------------------------------
 // 职责：1、长连接的初始化，链接的管理
@@ -69,10 +70,10 @@ public:
     roc::imsdk::network::NetworkStatus GetNetworkStatus();
 
     /// 设置网络状态变更回调
-    void OnNetworkStatusChange(std::function<void(roc::imsdk::network::NetworkStatus)> callback);
+    void OnNetworkStatusChange(OnConnectionStatusChangeCallbackType callback);
 
 private:
-    std::function<void(roc::imsdk::network::NetworkStatus)> network_status_change_callback_;
+    std::vector<OnConnectionStatusChangeCallbackType> network_status_change_callback_;
 
     std::unique_ptr<base::net::LongConnectionClient> lc_;
     

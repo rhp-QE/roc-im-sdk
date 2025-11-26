@@ -30,13 +30,13 @@ void ReceiveMessage::Start(CTX_T) {
     auto conn = sdk_root->ConnectionManager();
 
     auto msg_manager = sdk_root->MessageManager();
-    conn->AddOnPushMessageCallback([msg_manager](std::shared_ptr<network::SdkWSResp> resp) {
+    conn->AddOnPushMessageCallback([msg_manager](std::shared_ptr<const network::SdkWSResp> resp) {
         uint32_t call_track_id = resp->trackid();
         msg_manager->receive_message->HandlePushMessage(call_track_id, resp);
     });
 }
 
-void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<network::SdkWSResp> resp) {
+void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<const network::SdkWSResp> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->MessageManager();

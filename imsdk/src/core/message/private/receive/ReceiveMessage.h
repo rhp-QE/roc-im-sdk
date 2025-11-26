@@ -13,7 +13,7 @@ public:
     void Start(CTX_T);
 
     /// 处理下推消息
-    void HandlePushMessage(CTX_T, std::shared_ptr<network::SdkWSResp> resp);
+    void HandlePushMessage(CTX_T, std::shared_ptr<const network::SdkWSResp> resp);
 
     /// 处理接收到的消息 (混链、单链拉到的消息， 长链下推的消息)
     boost::asio::awaitable<void> HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);

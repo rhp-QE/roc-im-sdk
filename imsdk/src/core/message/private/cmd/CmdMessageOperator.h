@@ -13,7 +13,7 @@ public:
     void Start(CTX_T);
 
 private:
-    void p_HandlePushMessage(CTX_T, std::shared_ptr<network::SdkWSResp> resp);
+    void p_HandlePushMessage(CTX_T, std::shared_ptr<const network::SdkWSResp> resp);
     
     // 处理删除消息
     boost::asio::awaitable<void> p_HandleDeleteMessage(CTX_T, std::shared_ptr<network::CmdMessage> cmd_msg);

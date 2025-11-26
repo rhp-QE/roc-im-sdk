@@ -12,6 +12,7 @@
 #include "imsdk/base/include/network/WSClientConfig.h"
 #include "imsdk/base/include/network/WSClient.h"
 #include <boost/asio/experimental/channel.hpp>
+#include <boost/asio/experimental/concurrent_channel.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <functional>
 #include <memory>
@@ -301,7 +302,7 @@ private:
     std::atomic<bool> connected_{false}; ///< 连接状态
 
     // 数据缓冲区
-    using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::shared_ptr<std::vector<char>>)>;
+    using channel_type = boost::asio::experimental::concurrent_channel<void(boost::system::error_code, std::shared_ptr<std::vector<char>>)>;
     std::unique_ptr<channel_type> ch;
 };
 

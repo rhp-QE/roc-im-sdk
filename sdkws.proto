@@ -339,6 +339,7 @@ message ConversationInfo {
   bool isBlocked = 12;
   string syncExt = 13;
   string members = 14;
+  int64 convStatus = 15; // 会话状态
 }
 
 message FetchUserMessageListResp {

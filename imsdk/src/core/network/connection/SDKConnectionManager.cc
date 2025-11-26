@@ -57,7 +57,19 @@ boost::asio::awaitable<bool> SDKConnectionManager::InitAndConnect(std::shared_pt
         LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail);
 
         const NetworkStatus status = connected ? NetworkStatus::NETWORK_STATUS_CONNECTED : NetworkStatus::NETWORK_STATUS_DISCONNECTED;
-        base::util::safe_invoke_block(this->network_status_change_callback_, status);
+
+        std::vector<OnConnectionStatusChangeCallbackType> callback_tmp;
+        {
+            std::lock_guard<std::mutex> lock(this->mutex_);
+            callback_tmp = this->network_status_change_callback_;
+        }
+
+        boost::asio::co_spawn(sdk_root->sdk_io_context(), [callback_tmp = std::move(callback_tmp), status]->boost::asio::awaitable<void>{
+            for(const auto& callback : callback_tmp) {
+                base::util::safe_invoke_block(callback, status);
+            }
+            co_return;
+        }, boost::asio::detached);
     });
 
     // 数据接收回调 
@@ -80,7 +92,8 @@ roc::imsdk::network::NetworkStatus SDKConnectionManager::GetNetworkStatus() {
 
 /// 注入网络状态变更回调
 void SDKConnectionManager::OnNetworkStatusChange(std::function<void(roc::imsdk::network::NetworkStatus)> callback) {
-    network_status_change_callback_ = std::move(callback);
+    std::lock_guard<std::mutex> lock(mutex_);
+    network_status_change_callback_.push_back(std::move(callback));
 }
 
 boost::asio::awaitable<bool> SDKConnectionManager::disconnect() {
@@ -129,6 +142,9 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
         channel_map_.erase(request_id_str);
     }
 
+    // 切换到 sdk_io_context 执行后续代码
+    co_await boost::asio::dispatch(root->sdk_io_context().get_executor(), boost::asio::use_awaitable);
+
     co_return std::move(resp);
 }
 
@@ -156,16 +172,20 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
             LOG_INFO("WS", "handle_long_connection_push_data, request_id: {}", request_id);
 
             /// 直接转发给所有消息者消费， 自己进行数据解析
-            std::vector<OnPushMesageCallbackType> callbacks;
+            std::vector<OnPushMesageCallbackType> callbacks_tmp;
             {
                 std::lock_guard<std::mutex> lock(mutex_);
-                callbacks = on_push_message_callbacks_;
+                callbacks_tmp = on_push_message_callbacks_;
             } // lock
-            std::shared_ptr<network::SdkWSResp> s_resp = std::move(resp);
-            for (const auto &callback : callbacks) {
-                base::util::safe_invoke_block(callback, s_resp);
-            }
-
+            std::shared_ptr<const network::SdkWSResp> s_resp = std::move(resp);
+            
+            // 转发到 sdk 线程处理 避免卡死主线程
+            boost::asio::co_spawn(sdk_root->sdk_io_context(), [callbacks_tmp = std::move(callbacks_tmp), s_resp]->boost::asio::awaitable<void> {
+                for (const auto &callback : callbacks_tmp) {
+                    base::util::safe_invoke_block(callback, s_resp);
+                }
+                co_return;
+            }, boost::asio::detached);
         } else {
             LOG_INFO("WS", "handle_request_response, request_id: {}, request_type: {}", request_id, resp->type());
 
