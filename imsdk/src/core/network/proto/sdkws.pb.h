@@ -5317,6 +5317,12 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   bool isblocked() const;
   void set_isblocked(bool value);
 
+  // int64 convStatus = 15;
+  void clear_convstatus();
+  static const int kConvStatusFieldNumber = 15;
+  ::google::protobuf::int64 convstatus() const;
+  void set_convstatus(::google::protobuf::int64 value);
+
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.ConversationInfo)
  private:
 
@@ -5335,6 +5341,7 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
   bool istop_;
   bool isdelete_;
   bool isblocked_;
+  ::google::protobuf::int64 convstatus_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageImpl();
@@ -20262,6 +20269,20 @@ inline void ConversationInfo::set_allocated_members(::std::string* members) {
   }
   members_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), members);
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ConversationInfo.members)
+}
+
+// int64 convStatus = 15;
+inline void ConversationInfo::clear_convstatus() {
+  convstatus_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 ConversationInfo::convstatus() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfo.convStatus)
+  return convstatus_;
+}
+inline void ConversationInfo::set_convstatus(::google::protobuf::int64 value) {
+  
+  convstatus_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ConversationInfo.convStatus)
 }
 
 // -------------------------------------------------------------------
