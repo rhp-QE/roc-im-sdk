@@ -43,7 +43,7 @@ void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<const network::Sdk
     CHECK_POINTER_OR_RETURN_VOID(msg_manager);
 
     // 处理下推的用户消息
-    if (resp->type() != static_cast<int>(common::SDKWSMethod::PUSH_USER_MESSAGE)) {
+    if (resp->method() != static_cast<int32_t>(common::SDKWSMethod::PUSH_USER_MESSAGE)) {
         return;
     }
     

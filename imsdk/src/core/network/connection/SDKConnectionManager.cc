@@ -187,7 +187,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
                 co_return;
             }, boost::asio::detached);
         } else {
-            LOG_INFO("WS", "handle_request_response, request_id: {}, request_type: {}", request_id, resp->type());
+            LOG_INFO("WS", "handle_request_response, request_id: {}, service: {}, method: {}", request_id, resp->service(), resp->method());
 
             // 唤醒请求携程
             co_await channel->async_send(boost::system::error_code{}, std::move(resp), boost::asio::use_awaitable);

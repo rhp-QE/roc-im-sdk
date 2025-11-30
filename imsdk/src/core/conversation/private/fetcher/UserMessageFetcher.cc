@@ -100,7 +100,8 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserMessageListReq *request) 
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
-    req->set_type(static_cast<int32_t>(common::SDKWSMethod::PULL_MIX_LIST));
+    req->set_service(common::SDKWSService);
+    req->set_method(static_cast<int32_t>(common::SDKWSMethod::PULL_MIX_LIST));
     req->set_data(request->SerializeAsString());
     req->set_trackid(TRACK_ID);
 

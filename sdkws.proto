@@ -420,39 +420,27 @@ message ConversationInfoArray {
 // sdkRequest ---------------------------------
 message SdkWSReq {
   string requestId = 1; // 请求ID
-  string token = 2; // 令牌
-  string userID = 3; // 用户ID
-  string deviceID = 4; // 设备ID
-  bytes data = 5; // 数据
-  int32 type = 6; // 请求类型
-  int32 trackID = 7; // 客户端追踪ID
-  int32 service = 8; // 服务类型  
-  int32 method  = 9; // 命令类型
-  // 101: 发送消息 
-  // 102：拉取单链 
-  // 103：拉取混链
-  // 104: 混链消息检查 
-  // 301: 会话置顶
-  // 302：会话拉黑
-  // 303：会话禁言
-  // 304: 会话ext变更
+  string token     = 2; // 令牌
+  string userID    = 3; // 用户ID
+  string deviceID  = 4; // 设备ID
+  bytes data       = 5; // 数据
+  uint32 trackID   = 6; // 客户端追踪ID
+  int32 service    = 7; // 服务类型  
+  int32 method     = 8; // 命令类型
 }
 
 message SdkWSResp {
   string requestId = 1; // 请求ID
-  string token = 2; // 令牌
-  string userID = 3; // 用户ID
-  string deviceID = 4; // 设备ID
+  string token     = 2; // 令牌
+  string userID    = 3; // 用户ID
+  string deviceID  = 4; // 设备ID
   string errorCode = 5; // 错误码
-  string errorMsg = 6; // 错误信息
-  bytes data = 7; // 数据
-  int32 type = 8; // 类型
-  int32 service = 9; // 服务类型
-  int32 method = 10; // 命令类型
-  //105 下推命令消息
-
-  int32 trackID = 11; // 客户端追踪ID
-  string logID = 12; // 服务端 logid
+  string errorMsg  = 6; // 错误信息
+  bytes data       = 7; // 数据
+  int32 service    = 8; // 服务类型
+  int32 method     = 9; // 命令类型
+  uint32 trackID    = 10; // 客户端追踪ID
+  string logID     = 11; // 服务端 logid
 }
 // --------------------------------------------
 

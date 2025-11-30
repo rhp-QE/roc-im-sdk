@@ -7078,27 +7078,21 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::std::string* release_data();
   void set_allocated_data(::std::string* data);
 
-  // int32 type = 6;
-  void clear_type();
-  static const int kTypeFieldNumber = 6;
-  ::google::protobuf::int32 type() const;
-  void set_type(::google::protobuf::int32 value);
-
-  // int32 trackID = 7;
+  // uint32 trackID = 6;
   void clear_trackid();
-  static const int kTrackIDFieldNumber = 7;
-  ::google::protobuf::int32 trackid() const;
-  void set_trackid(::google::protobuf::int32 value);
+  static const int kTrackIDFieldNumber = 6;
+  ::google::protobuf::uint32 trackid() const;
+  void set_trackid(::google::protobuf::uint32 value);
 
-  // int32 service = 8;
+  // int32 service = 7;
   void clear_service();
-  static const int kServiceFieldNumber = 8;
+  static const int kServiceFieldNumber = 7;
   ::google::protobuf::int32 service() const;
   void set_service(::google::protobuf::int32 value);
 
-  // int32 method = 9;
+  // int32 method = 8;
   void clear_method();
-  static const int kMethodFieldNumber = 9;
+  static const int kMethodFieldNumber = 8;
   ::google::protobuf::int32 method() const;
   void set_method(::google::protobuf::int32 value);
 
@@ -7111,8 +7105,7 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::ArenaStringPtr userid_;
   ::google::protobuf::internal::ArenaStringPtr deviceid_;
   ::google::protobuf::internal::ArenaStringPtr data_;
-  ::google::protobuf::int32 type_;
-  ::google::protobuf::int32 trackid_;
+  ::google::protobuf::uint32 trackid_;
   ::google::protobuf::int32 service_;
   ::google::protobuf::int32 method_;
   mutable int _cached_size_;
@@ -7301,9 +7294,9 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_data();
   void set_allocated_data(::std::string* data);
 
-  // string logID = 12;
+  // string logID = 11;
   void clear_logid();
-  static const int kLogIDFieldNumber = 12;
+  static const int kLogIDFieldNumber = 11;
   const ::std::string& logid() const;
   void set_logid(const ::std::string& value);
   #if LANG_CXX11
@@ -7315,29 +7308,23 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_logid();
   void set_allocated_logid(::std::string* logid);
 
-  // int32 type = 8;
-  void clear_type();
-  static const int kTypeFieldNumber = 8;
-  ::google::protobuf::int32 type() const;
-  void set_type(::google::protobuf::int32 value);
-
-  // int32 service = 9;
+  // int32 service = 8;
   void clear_service();
-  static const int kServiceFieldNumber = 9;
+  static const int kServiceFieldNumber = 8;
   ::google::protobuf::int32 service() const;
   void set_service(::google::protobuf::int32 value);
 
-  // int32 method = 10;
+  // int32 method = 9;
   void clear_method();
-  static const int kMethodFieldNumber = 10;
+  static const int kMethodFieldNumber = 9;
   ::google::protobuf::int32 method() const;
   void set_method(::google::protobuf::int32 value);
 
-  // int32 trackID = 11;
+  // uint32 trackID = 10;
   void clear_trackid();
-  static const int kTrackIDFieldNumber = 11;
-  ::google::protobuf::int32 trackid() const;
-  void set_trackid(::google::protobuf::int32 value);
+  static const int kTrackIDFieldNumber = 10;
+  ::google::protobuf::uint32 trackid() const;
+  void set_trackid(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.SdkWSResp)
  private:
@@ -7351,10 +7338,9 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::ArenaStringPtr errormsg_;
   ::google::protobuf::internal::ArenaStringPtr data_;
   ::google::protobuf::internal::ArenaStringPtr logid_;
-  ::google::protobuf::int32 type_;
   ::google::protobuf::int32 service_;
   ::google::protobuf::int32 method_;
-  ::google::protobuf::int32 trackid_;
+  ::google::protobuf::uint32 trackid_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsSdkWSRespImpl();
@@ -22697,35 +22683,21 @@ inline void SdkWSReq::set_allocated_data(::std::string* data) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SdkWSReq.data)
 }
 
-// int32 type = 6;
-inline void SdkWSReq::clear_type() {
-  type_ = 0;
-}
-inline ::google::protobuf::int32 SdkWSReq::type() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSReq.type)
-  return type_;
-}
-inline void SdkWSReq::set_type(::google::protobuf::int32 value) {
-  
-  type_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.type)
-}
-
-// int32 trackID = 7;
+// uint32 trackID = 6;
 inline void SdkWSReq::clear_trackid() {
-  trackid_ = 0;
+  trackid_ = 0u;
 }
-inline ::google::protobuf::int32 SdkWSReq::trackid() const {
+inline ::google::protobuf::uint32 SdkWSReq::trackid() const {
   // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSReq.trackID)
   return trackid_;
 }
-inline void SdkWSReq::set_trackid(::google::protobuf::int32 value) {
+inline void SdkWSReq::set_trackid(::google::protobuf::uint32 value) {
   
   trackid_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.trackID)
 }
 
-// int32 service = 8;
+// int32 service = 7;
 inline void SdkWSReq::clear_service() {
   service_ = 0;
 }
@@ -22739,7 +22711,7 @@ inline void SdkWSReq::set_service(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.service)
 }
 
-// int32 method = 9;
+// int32 method = 8;
 inline void SdkWSReq::clear_method() {
   method_ = 0;
 }
@@ -23128,21 +23100,7 @@ inline void SdkWSResp::set_allocated_data(::std::string* data) {
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.SdkWSResp.data)
 }
 
-// int32 type = 8;
-inline void SdkWSResp::clear_type() {
-  type_ = 0;
-}
-inline ::google::protobuf::int32 SdkWSResp::type() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSResp.type)
-  return type_;
-}
-inline void SdkWSResp::set_type(::google::protobuf::int32 value) {
-  
-  type_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.type)
-}
-
-// int32 service = 9;
+// int32 service = 8;
 inline void SdkWSResp::clear_service() {
   service_ = 0;
 }
@@ -23156,7 +23114,7 @@ inline void SdkWSResp::set_service(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.service)
 }
 
-// int32 method = 10;
+// int32 method = 9;
 inline void SdkWSResp::clear_method() {
   method_ = 0;
 }
@@ -23170,21 +23128,21 @@ inline void SdkWSResp::set_method(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.method)
 }
 
-// int32 trackID = 11;
+// uint32 trackID = 10;
 inline void SdkWSResp::clear_trackid() {
-  trackid_ = 0;
+  trackid_ = 0u;
 }
-inline ::google::protobuf::int32 SdkWSResp::trackid() const {
+inline ::google::protobuf::uint32 SdkWSResp::trackid() const {
   // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSResp.trackID)
   return trackid_;
 }
-inline void SdkWSResp::set_trackid(::google::protobuf::int32 value) {
+inline void SdkWSResp::set_trackid(::google::protobuf::uint32 value) {
   
   trackid_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.trackID)
 }
 
-// string logID = 12;
+// string logID = 11;
 inline void SdkWSResp::clear_logid() {
   logid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
