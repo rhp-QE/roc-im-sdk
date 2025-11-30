@@ -17,7 +17,7 @@
 #include "imsdk/base/include/utils/utils.h"
 #include "imsdk/src/include/model/conversation/ConversationModel.h"
 #include "imsdk/src/core/common/util.h"
-#include <boost/json.hpp>
+#include "imsdk/src/core/common/json_util.h"
 
 #include "imsdk/src/core/cmd/CmdCenter.h"
 
@@ -144,7 +144,7 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
     // 序列化 map 到 JSON string
-    auto sync_ext_str_result = util::MapSerializeAsString(sync_ext);
+    auto sync_ext_str_result = json_util::MapSerializeAsString(sync_ext);
     if (!sync_ext_str_result) {
         co_return std::unexpected(sync_ext_str_result.error());
     }
@@ -278,7 +278,7 @@ void ConversationStatusHandler::p_registSyncExtHandler() {
 
             // 解析 sync_ext string 到 map
             std::string sync_ext_str = cmd->convinfo().syncext();
-            auto parse_result = util::MapParseFromString(sync_ext_str);
+            auto parse_result = json_util::MapParseFromString(sync_ext_str);
             if (!parse_result) {
                 LOG_INFO("ConvStatusHandler", "Failed to parse sync_ext: {}", parse_result.error().to_string());
                 co_return;

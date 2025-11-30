@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 #include <shared_mutex>
+#include <unordered_map>
+#include <cstdint>
 #include "imsdk/base/include/uncopyable.h"
 
 namespace roc::imsdk::core {
@@ -43,6 +45,7 @@ public:
     double send_time() const;
     std::unordered_map<std::string, std::string> sync_ext() const;
     std::unordered_map<std::string, std::string> local_ext() const;
+    std::vector<int32_t> propertys() const;
 
     friend class roc::imsdk::core::message::Convert;
     friend class roc::imsdk::core::message::MessageDataSource;
@@ -87,6 +90,8 @@ private:
     std::unordered_map<std::string, std::string>  sync_ext_;
     
     std::unordered_map<std::string, std::string>  local_ext_;
+    
+    std::vector<int32_t> propertys_;
 };
 
 

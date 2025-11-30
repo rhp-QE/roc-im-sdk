@@ -2,6 +2,7 @@
 
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/common/util.h"
+#include "imsdk/src/core/common/json_util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/message/MessageManager.h"
@@ -17,6 +18,7 @@ Convert::Convert(std::weak_ptr<SDKRoot> sdk_root)
 }
 
 /// 消息转换 网络消息 -> db 消息
+/// 本地独有字段会差一次本地数据库进行合并
 std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, const network::MsgData *msg) {
     CHECK_POINTER_OR_RETURN_VALUE(msg, nullptr)
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr)
@@ -55,8 +57,9 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, 
     
     db_msg->send_time = msg->sendtime();
     
+    // Extensions: 网络消息中的 sync_ext 和 propertys 都是 JSON string，直接赋值
     db_msg->sync_ext = msg->syncext();
-
+    db_msg->propertys = msg->propertys();
     db_msg->local_ext = "";
 
     auto msg_manager = sdk_root->MessageManager();
@@ -91,8 +94,22 @@ std::shared_ptr<model::MessageModel> Convert::ConvertDbMsgToSdkMsgTmp(CTX_T, con
     sdk_msg->client_order_index_ = db_msg->client_order_index;
     sdk_msg->server_order_index_ = db_msg->server_order_index;
     sdk_msg->send_time_ = db_msg->send_time;
-    // sdk_msg->sync_ext_ = db_msg->sync_ext;
-    // sdk_msg->local_ext_ = db_msg->local_ext;
+    
+    // Extensions: 将 JSON string 转换为相应的数据结构
+    auto sync_ext_result = json_util::MapParseFromString(db_msg->sync_ext);
+    if (sync_ext_result) {
+        sdk_msg->sync_ext_ = sync_ext_result.value();
+    }
+    
+    auto local_ext_result = json_util::MapParseFromString(db_msg->local_ext);
+    if (local_ext_result) {
+        sdk_msg->local_ext_ = local_ext_result.value();
+    }
+    
+    auto propertys_result = json_util::Int32VectorParseFromString(db_msg->propertys);
+    if (propertys_result) {
+        sdk_msg->propertys_ = propertys_result.value();
+    }
     
     return sdk_msg;
 }

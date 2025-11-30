@@ -253,6 +253,7 @@ message MsgData {
   bool isGroupMsg                  = 25; // 是否是群消息
   string syncExt                   = 26; // 同步扩展字段
   int32 dStatus                    = 27; // 状态， 二进制掩码  0：实时消息 1：离线消息（没有被接收过） 2：消息更新
+  string propertys                 = 28; // 消息属性
 }
 
 // 发送消息 --------------------------------

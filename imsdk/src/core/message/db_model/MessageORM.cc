@@ -25,6 +25,7 @@ WCDB_CPP_SYNTHESIZE(server_order_index)
 WCDB_CPP_SYNTHESIZE(send_time)
 WCDB_CPP_SYNTHESIZE(sync_ext)
 WCDB_CPP_SYNTHESIZE(local_ext)
+WCDB_CPP_SYNTHESIZE(propertys)
 
 // 字段约束
 WCDB_CPP_PRIMARY(client_msg_id)

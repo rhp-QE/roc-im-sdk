@@ -2,14 +2,9 @@
 
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
-#include "imsdk/base/include/network/Error.h"
-#include <boost/json.hpp>
-#include <expected>
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <utility>
-#include <stdexcept>
 #include <chrono>
 namespace roc::imsdk::core::util {
 
@@ -69,44 +64,6 @@ inline double current_time_since1970() {
     
     // 转换为秒（double 类型，包含小数微秒/纳秒）
     return std::chrono::duration<double>(duration).count();
-}
-
-inline std::expected<std::unordered_map<std::string, std::string>, roc::error::Error> MapParseFromString(const std::string& ext) {
-    std::unordered_map<std::string, std::string> result;
-    if (ext.empty()) {
-        return result;
-    }
-
-    try {
-        auto json_value = boost::json::parse(ext);
-        if (!json_value.is_object()) {
-            return std::unexpected(roc::error::make_error(3006, "JSON is not an object"));
-        }
-
-        const auto& obj = json_value.as_object();
-        for (const auto& item : obj) {
-            if (item.value().is_string()) {
-                result.emplace(item.key_c_str(), std::string(item.value().as_string()));
-            } else {
-                result.emplace(item.key_c_str(), boost::json::serialize(item.value()));
-            }
-        }
-        return result;
-    } catch (const std::exception& e) {
-        return std::unexpected(roc::error::make_error(3006, "Failed to parse ext string", e.what()));
-    }
-}
-
-inline std::expected<std::string, roc::error::Error> MapSerializeAsString(const std::unordered_map<std::string, std::string>& ext_map) {
-    try {
-        boost::json::object json_obj;
-        for (const auto& [key, value] : ext_map) {
-            json_obj[key] = value;
-        }
-        return boost::json::serialize(json_obj);
-    } catch (const std::exception& e) {
-        return std::unexpected(roc::error::make_error(3005, "Failed to serialize ext map", e.what()));
-    }
 }
 
 } // namespace roc::imsdk::core::util

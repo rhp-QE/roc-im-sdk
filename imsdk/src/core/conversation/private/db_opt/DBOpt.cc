@@ -5,11 +5,11 @@
 #include "core/common/logger_macro.h"
 #include "core/common/macro.h"
 #include "imsdk/src/core/common/util.h"
+#include "imsdk/src/core/common/json_util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/convert/convert.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
-#include <boost/json.hpp>
 
 #include "WCDB/WCDBCpp.h"
 #include <string>
@@ -202,7 +202,7 @@ bool DBOpt::SetConversationSyncExt(CTX_T, const std::string &conv_id, const std:
     std::unordered_map<std::string, std::string> existing_sync_ext;
     if (result.hasValue() && !result.value().empty()) {
         std::string existing_sync_ext_str = result.value()[0].sync_ext;
-        auto parse_result = util::MapParseFromString(existing_sync_ext_str);
+        auto parse_result = json_util::MapParseFromString(existing_sync_ext_str);
         if (parse_result) {
             existing_sync_ext = parse_result.value();
         } else {
@@ -218,7 +218,7 @@ bool DBOpt::SetConversationSyncExt(CTX_T, const std::string &conv_id, const std:
     }
 
     // 4. 序列化合并后的 map 为 string
-    auto sync_ext_str_result = util::MapSerializeAsString(merged_sync_ext);
+    auto sync_ext_str_result = json_util::MapSerializeAsString(merged_sync_ext);
     if (!sync_ext_str_result) {
         LOG_INFO("ConvDBOpt", "Failed to serialize sync_ext: {}", sync_ext_str_result.error().to_string());
         return false;
@@ -260,7 +260,7 @@ bool DBOpt::SetConversationLocalExt(CTX_T, const std::string &conv_id, const std
     std::unordered_map<std::string, std::string> existing_local_ext;
     if (result.hasValue() && !result.value().empty()) {
         std::string existing_local_ext_str = result.value()[0].local_ext;
-        auto parse_result = util::MapParseFromString(existing_local_ext_str);
+        auto parse_result = json_util::MapParseFromString(existing_local_ext_str);
         if (parse_result) {
             existing_local_ext = parse_result.value();
         } else {
@@ -276,7 +276,7 @@ bool DBOpt::SetConversationLocalExt(CTX_T, const std::string &conv_id, const std
     }
 
     // 4. 序列化合并后的 map 为 string
-    auto local_ext_str_result = util::MapSerializeAsString(merged_local_ext);
+    auto local_ext_str_result = json_util::MapSerializeAsString(merged_local_ext);
     if (!local_ext_str_result) {
         LOG_INFO("ConvDBOpt", "Failed to serialize local_ext: {}", local_ext_str_result.error().to_string());
         return false;

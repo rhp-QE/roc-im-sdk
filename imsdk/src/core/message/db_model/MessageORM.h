@@ -44,6 +44,8 @@ public:
     
     std::string local_ext;
 
+    std::string propertys;
+
     WCDB_CPP_ORM_DECLARATION(MessageORM)
 };
 

@@ -80,6 +80,11 @@ std::unordered_map<std::string, std::string> MessageModel::local_ext() const {
     return local_ext_;
 }
 
+std::vector<int32_t> MessageModel::propertys() const {
+    std::shared_lock<std::shared_mutex> read_lock(mutex_);
+    return propertys_;
+}
+
 bool MessageModel::isGroupMessage() const {
     std::shared_lock<std::shared_mutex> read_lock(mutex_);
     return is_group_msg_;
@@ -116,6 +121,7 @@ void MessageModel::move_from(MessageModel&& other) noexcept {
     // 移动容器成员
     sync_ext_ = std::move(other.sync_ext_);
     local_ext_ = std::move(other.local_ext_);
+    propertys_ = std::move(other.propertys_);
     
     // 重置源对象（可选，确保源对象处于有效但未定义的状态）
     other.status_ = 0;

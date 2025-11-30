@@ -2,47 +2,18 @@
 
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/common/util.h"
-#include <boost/json.hpp>
+#include "imsdk/src/core/common/json_util.h"
 #include <unordered_map>
 #include <vector>
 
 namespace roc::imsdk::core::conversation {
-
-namespace {
-
-std::vector<std::string> parseMembersJson(const std::string& members_json) {
-    std::vector<std::string> members;
-    if (members_json.empty()) {
-        return members;
-    }
-
-    try {
-        auto json_value = boost::json::parse(members_json);
-        if (!json_value.is_array()) {
-            return members;
-        }
-
-        const auto& arr = json_value.as_array();
-        members.reserve(arr.size());
-        for (const auto& item : arr) {
-            if (item.is_string()) {
-                members.emplace_back(std::string(item.as_string()));
-            }
-        }
-    } catch (const std::exception&) {
-        // ignore malformed json
-    }
-
-    return members;
-}
-
-} // namespace
 
 Convert::Convert(std::weak_ptr<SDKRoot> sdk_root) 
     : w_sdk_root(sdk_root) {
 }
 
 /// 会话转换 网络会话 -> db 会话
+/// 本地独有字段 会查一次本地数据库进行合并
 std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDbConv(const network::ConversationInfo *conv) {
     if (!conv) {
         return nullptr;
@@ -120,7 +91,10 @@ std::shared_ptr<model::ConversationModel> Convert::ConvertDbConvToSdkConv(CTX_T,
     sdk_conv->last_message_ = nullptr;
 
     /// 会话成员
-    sdk_conv->members_ = parseMembersJson(db_conv->members_json);
+    auto members_result = json_util::StringVectorParseFromString(db_conv->members_json);
+    if (members_result) {
+        sdk_conv->members_ = members_result.value();
+    }
     
     // Set fields that don't exist in ConversationORM with default values
     sdk_conv->last_update_time_ = db_conv->last_message_time; // Use last_message_time as fallback
@@ -141,11 +115,11 @@ std::shared_ptr<model::ConversationModel> Convert::ConvertDbConvToSdkConv(CTX_T,
     sdk_conv->draft_ = db_conv->draft;
     
     // Extensions
-    auto sync_ext_result = util::MapParseFromString(db_conv->sync_ext);
+    auto sync_ext_result = json_util::MapParseFromString(db_conv->sync_ext);
     if (sync_ext_result) {
         sdk_conv->sync_ext_ = sync_ext_result.value();
     }
-    auto local_ext_result = util::MapParseFromString(db_conv->local_ext);
+    auto local_ext_result = json_util::MapParseFromString(db_conv->local_ext);
     if (local_ext_result) {
         sdk_conv->local_ext_ = local_ext_result.value();
     }

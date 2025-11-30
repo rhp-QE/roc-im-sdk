@@ -3965,6 +3965,20 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_syncext();
   void set_allocated_syncext(::std::string* syncext);
 
+  // string propertys = 28;
+  void clear_propertys();
+  static const int kPropertysFieldNumber = 28;
+  const ::std::string& propertys() const;
+  void set_propertys(const ::std::string& value);
+  #if LANG_CXX11
+  void set_propertys(::std::string&& value);
+  #endif
+  void set_propertys(const char* value);
+  void set_propertys(const char* value, size_t size);
+  ::std::string* mutable_propertys();
+  ::std::string* release_propertys();
+  void set_allocated_propertys(::std::string* propertys);
+
   // .roc.imsdk.network.OfflinePushInfo offlinePushInfo = 18;
   bool has_offlinepushinfo() const;
   void clear_offlinepushinfo();
@@ -4074,6 +4088,7 @@ class MsgData : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::internal::ArenaStringPtr attachedinfo_;
   ::google::protobuf::internal::ArenaStringPtr ext_;
   ::google::protobuf::internal::ArenaStringPtr syncext_;
+  ::google::protobuf::internal::ArenaStringPtr propertys_;
   ::roc::imsdk::network::OfflinePushInfo* offlinepushinfo_;
   ::google::protobuf::int32 senderplatformid_;
   ::google::protobuf::int32 sessiontype_;
@@ -20210,6 +20225,59 @@ inline void MsgData::set_dstatus(::google::protobuf::int32 value) {
   
   dstatus_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.dStatus)
+}
+
+// string propertys = 28;
+inline void MsgData::clear_propertys() {
+  propertys_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MsgData::propertys() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.MsgData.propertys)
+  return propertys_.GetNoArena();
+}
+inline void MsgData::set_propertys(const ::std::string& value) {
+  
+  propertys_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.MsgData.propertys)
+}
+#if LANG_CXX11
+inline void MsgData::set_propertys(::std::string&& value) {
+  
+  propertys_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.MsgData.propertys)
+}
+#endif
+inline void MsgData::set_propertys(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  propertys_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.MsgData.propertys)
+}
+inline void MsgData::set_propertys(const char* value, size_t size) {
+  
+  propertys_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.MsgData.propertys)
+}
+inline ::std::string* MsgData::mutable_propertys() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.MsgData.propertys)
+  return propertys_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MsgData::release_propertys() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.MsgData.propertys)
+  
+  return propertys_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MsgData::set_allocated_propertys(::std::string* propertys) {
+  if (propertys != NULL) {
+    
+  } else {
+    
+  }
+  propertys_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), propertys);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MsgData.propertys)
 }
 
 // -------------------------------------------------------------------
