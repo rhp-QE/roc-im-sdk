@@ -41,6 +41,10 @@ public:
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>
         Delete(CTX_T, std::string cid);
 
+    /// 创建群聊
+    boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
+        CreateGroup(CTX_T, const model::CreateGroupContext &context);
+
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;
@@ -50,12 +54,14 @@ private:
     boost::asio::awaitable<void> p_onBlockChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
     boost::asio::awaitable<void> p_onSyncExtChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
     boost::asio::awaitable<void> p_onDeleteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
+    boost::asio::awaitable<void> p_onGroupInviteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
 
     void p_registTopOnHandler();
     void p_registMuteHandler();
     void p_registBlockHandler();
     void p_registSyncExtHandler();
     void p_registDeleteHandler();
+    void p_registGroupInviteHandler();
 
     boost::asio::awaitable<std::unique_ptr<network::ChangeConversationItemResp>> p_request(CTX_T, std::unique_ptr<network::ChangeConversationItemReq>);
      

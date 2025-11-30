@@ -134,9 +134,9 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
         ConvsWhenLogin();
 
-    /// 创建会话
-    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>>
-        CreateConv(std::vector<std::string> member_user_ids, std::string conv_name);
+    /// 创建群聊
+    boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
+        CreateGroup(const model::CreateGroupContext &context);
 
     /// 设置会话置顶
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>

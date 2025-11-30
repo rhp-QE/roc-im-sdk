@@ -107,8 +107,8 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::Convs
     return sdk_root_->ConversationManager()->ConvsWhenLogin();
 }
 
-boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::CreateConv(std::vector<std::string> member_user_ids, std::string conv_name) {
-    return sdk_root_->ConversationManager()->CreateConv(std::move(member_user_ids), std::move(conv_name));
+boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>> IMSDK::CreateGroup(const model::CreateGroupContext &context) {
+    co_return co_await sdk_root_->ConversationManager()->CreateGroup(context);
 }
 
 // 设置会话置顶

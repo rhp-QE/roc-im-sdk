@@ -172,6 +172,12 @@ struct LoadUserConvsResult {
     bool has_more;
 };
 
+struct CreateGroupContext {
+    std::string owner_user_id;       // 群主 ID
+    std::vector<std::string> member_user_ids;  // 群成员 ID 列表
+    std::string group_name;          // 群名称
+};
+
 
 // callback -------------
 using OnConvUpdateCallbackType = std::function<void(std::shared_ptr<OnConversationResult> result)>;

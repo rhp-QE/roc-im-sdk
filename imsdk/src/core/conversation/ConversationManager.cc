@@ -1,7 +1,6 @@
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/conversation/private/db_opt/DBOpt.h"
-#include "imsdk/src/core/conversation/private/operator/CreateConversation.h"
 #include "imsdk/src/core/conversation/private/datasource/ConvDatasource.h"
 #include "imsdk/src/core/conversation/private/receive/ReceiveConversation.h"
 #include "imsdk/src/core/conversation/private/convert/convert.h"
@@ -116,9 +115,10 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManag
     co_return co_await conversation_status_handler->Delete(CTX_V, conv_id);
 }
 
-boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::CreateConv(std::vector<std::string> member_user_ids, std::string conv_name) {
+boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>> ConversationManager::CreateGroup(const model::CreateGroupContext &context) {
     START_TRACK;
-    co_return co_await create_conversation->CreateConv(CTX_V, member_user_ids, conv_name);
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await conversation_status_handler->CreateGroup(CTX_V, context);
 }
 
 /// =======================================================================================
@@ -129,7 +129,6 @@ void ConversationManager::p_InitSubComponents() {
     user_message_fetcher = std::make_unique<conversation::UserMessageFetcher>(w_sdk_root);
     conv_datasource = std::make_unique<conversation::ConvDatasource>(w_sdk_root);
     receive_conversation = std::make_unique<conversation::ReceiveConversation>(w_sdk_root);
-    create_conversation = std::make_unique<conversation::CreateConversation>(w_sdk_root);
     db_opt = std::make_unique<conversation::DBOpt>(w_sdk_root);
     convert = std::make_unique<conversation::Convert>(w_sdk_root);
     conversation_status_handler = std::make_unique<conversation::ConversationStatusHandler>(w_sdk_root);

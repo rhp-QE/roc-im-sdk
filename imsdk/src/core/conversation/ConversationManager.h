@@ -17,7 +17,6 @@ namespace roc::imsdk::core::conversation {
     class UserMessageFetcher;
     class ConvDatasource;
     class ReceiveConversation;
-    class CreateConversation;
     class DBOpt;
     class Convert;
     class ConversationStatusHandler;
@@ -54,9 +53,9 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>>
         ConvsWhenLogin();
 
-    /// 创建会话
-    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> 
-        CreateConv(std::vector<std::string> member_user_ids, std::string conv_name);
+    /// 创建群聊
+    boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
+        CreateGroup(const model::CreateGroupContext &context);
 
     /// 设置会话置顶
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>
@@ -110,14 +109,12 @@ private:
     friend class roc::imsdk::core::conversation::ConvDatasource;
     friend class roc::imsdk::core::conversation::UserMessageFetcher;
     friend class roc::imsdk::core::conversation::ReceiveConversation;
-    friend class roc::imsdk::core::conversation::CreateConversation;
     friend class roc::imsdk::core::conversation::ConversationStatusHandler;
 
     /// 子组件
     std::unique_ptr<conversation::DBOpt> db_opt;
     std::unique_ptr<conversation::Convert> convert;
     std::unique_ptr<conversation::ConvDatasource> conv_datasource;
-    std::unique_ptr<conversation::CreateConversation> create_conversation;
     std::unique_ptr<conversation::UserMessageFetcher> user_message_fetcher;
     std::unique_ptr<conversation::ReceiveConversation> receive_conversation;
     std::unique_ptr<conversation::ConversationStatusHandler> conversation_status_handler;
