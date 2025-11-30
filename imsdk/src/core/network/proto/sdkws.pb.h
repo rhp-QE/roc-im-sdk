@@ -5551,6 +5551,15 @@ class ChangeConversationItemResp : public ::google::protobuf::Message /* @@proto
   ::std::string* release_errormsg();
   void set_allocated_errormsg(::std::string* errormsg);
 
+  // .roc.imsdk.network.ConversationInfo convInfo = 4;
+  bool has_convinfo() const;
+  void clear_convinfo();
+  static const int kConvInfoFieldNumber = 4;
+  const ::roc::imsdk::network::ConversationInfo& convinfo() const;
+  ::roc::imsdk::network::ConversationInfo* release_convinfo();
+  ::roc::imsdk::network::ConversationInfo* mutable_convinfo();
+  void set_allocated_convinfo(::roc::imsdk::network::ConversationInfo* convinfo);
+
   // uint64 errorCode = 2;
   void clear_errorcode();
   static const int kErrorCodeFieldNumber = 2;
@@ -5568,6 +5577,7 @@ class ChangeConversationItemResp : public ::google::protobuf::Message /* @@proto
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr errormsg_;
+  ::roc::imsdk::network::ConversationInfo* convinfo_;
   ::google::protobuf::uint64 errorcode_;
   ::google::protobuf::int32 cmd_;
   mutable int _cached_size_;
@@ -21198,6 +21208,56 @@ inline void ChangeConversationItemResp::set_allocated_errormsg(::std::string* er
   }
   errormsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), errormsg);
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+}
+
+// .roc.imsdk.network.ConversationInfo convInfo = 4;
+inline bool ChangeConversationItemResp::has_convinfo() const {
+  return this != internal_default_instance() && convinfo_ != NULL;
+}
+inline void ChangeConversationItemResp::clear_convinfo() {
+  if (GetArenaNoVirtual() == NULL && convinfo_ != NULL) {
+    delete convinfo_;
+  }
+  convinfo_ = NULL;
+}
+inline const ::roc::imsdk::network::ConversationInfo& ChangeConversationItemResp::convinfo() const {
+  const ::roc::imsdk::network::ConversationInfo* p = convinfo_;
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationItemResp.convInfo)
+  return p != NULL ? *p : *reinterpret_cast<const ::roc::imsdk::network::ConversationInfo*>(
+      &::roc::imsdk::network::_ConversationInfo_default_instance_);
+}
+inline ::roc::imsdk::network::ConversationInfo* ChangeConversationItemResp::release_convinfo() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ChangeConversationItemResp.convInfo)
+  
+  ::roc::imsdk::network::ConversationInfo* temp = convinfo_;
+  convinfo_ = NULL;
+  return temp;
+}
+inline ::roc::imsdk::network::ConversationInfo* ChangeConversationItemResp::mutable_convinfo() {
+  
+  if (convinfo_ == NULL) {
+    convinfo_ = new ::roc::imsdk::network::ConversationInfo;
+  }
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeConversationItemResp.convInfo)
+  return convinfo_;
+}
+inline void ChangeConversationItemResp::set_allocated_convinfo(::roc::imsdk::network::ConversationInfo* convinfo) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete convinfo_;
+  }
+  if (convinfo) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      convinfo = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, convinfo, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  convinfo_ = convinfo;
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ChangeConversationItemResp.convInfo)
 }
 
 // -------------------------------------------------------------------

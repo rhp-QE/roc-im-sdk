@@ -18,13 +18,18 @@
 namespace roc::imsdk::core::message {
 
 MessageDataSource::MessageDataSource(std::weak_ptr<SDKRoot> sdk_root) 
-    : w_sdk_root(sdk_root) {
+    : w_sdk_root(sdk_root),
+      msg_strand_(boost::asio::make_strand(sdk_root.lock()->config().sdk_io_context->get_executor())) {
+}
+
+boost::asio::strand<boost::asio::io_context::executor_type> MessageDataSource::msg_strand() {
+    return msg_strand_;
 }
 
 // 私有方法 =======================
 
 /// 保存消息日志
-void MessageDataSource::p_LogSaveMessages(CTX_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
+void MessageDataSource::p_logSaveMessages(CTX_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     std::string info = "[";
@@ -57,7 +62,7 @@ boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>>
 MessageDataSource::SaveDbMsgs(CTX_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
-    p_LogSaveMessages(CTX_V, db_msgs);
+    p_logSaveMessages(CTX_V, db_msgs);
 
     auto msg_manager = sdk_root->MessageManager();
 
@@ -67,7 +72,7 @@ MessageDataSource::SaveDbMsgs(CTX_T, std::vector<std::shared_ptr<core::message::
     });
 
     /// 在同一个线程内执行 确保 db 和 缓存的一致性
-    auto saved_msgs = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [this, msg_manager, sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root = w_sdk_root, call_track_id]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+    auto saved_msgs = co_await boost::asio::co_spawn(msg_strand(), [this, msg_manager, sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root = w_sdk_root, call_track_id]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         // 保存到数据库
         bool ret = msg_manager->db_opt->InsertOrReplaceMessage(CTX_V, db_msgs);
 
@@ -86,7 +91,7 @@ MessageDataSource::SaveDbMsgs(CTX_T, std::vector<std::shared_ptr<core::message::
     }, boost::asio::use_awaitable);
 
     // 自动更新消息区间
-    p_UpdateMessageRangeForMessage(CTX_V, saved_msgs);
+    p_updateMessageRangeForMessage(CTX_V, saved_msgs);
 
     // 更新会话的最大 order_index
     UpdateMsgOrderInConv(CTX_V, saved_msgs);
@@ -121,7 +126,7 @@ MessageDataSource::SdkMsgForId(CTX_T, const std::string &msg_id) {
         co_return sdk_msg_opt.value();
     }
 
-    auto sdk_msg = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<std::shared_ptr<model::MessageModel>> {
+    auto sdk_msg = co_await boost::asio::co_spawn(msg_strand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<std::shared_ptr<model::MessageModel>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
         auto msg_manager = sdk_root->MessageManager();
 
@@ -147,7 +152,7 @@ MessageDataSource::SdkMsgForId(CTX_T, const std::string &msg_id) {
 }
 
 /// 更新消息区间
-void MessageDataSource::p_UpdateMessageRangeForMessage(CTX_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
+void MessageDataSource::p_updateMessageRangeForMessage(CTX_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
     
     if (sdk_msgs.empty()) {
@@ -176,18 +181,18 @@ void MessageDataSource::p_UpdateMessageRangeForMessage(CTX_T, const std::vector<
             return msg->server_order_index();
         });
 
-        auto input_ranges = p_GenerateRange(seqs);
+        auto input_ranges = p_generateRange(seqs);
 
         /// 如果缓存中没有区间，则从DB中获取
         auto old_ranges = message_range_cache_.at(conv_id);
         if (!old_ranges) {
             LOG_INFO("MsgManager", "no range in cahce, get from db. conv_id: {}", conv_id);
-            input_ranges = p_MergeRanges(input_ranges, msg_manager->db_opt->MessageRange(CTX_V, conv_id));
+            input_ranges = p_mergeRanges(input_ranges, msg_manager->db_opt->MessageRange(CTX_V, conv_id));
         }
 
         /// 更新缓存
         auto new_ranges = message_range_cache_.modify_or_create(conv_id, [input_ranges](std::vector<std::pair<int64_t, int64_t>> &current_ranges) {
-            current_ranges = p_MergeRanges(input_ranges, current_ranges);
+            current_ranges = p_mergeRanges(input_ranges, current_ranges);
         });
 
         /// 保存到数据库
@@ -200,7 +205,7 @@ std::vector<std::pair<int64_t, int64_t>> MessageDataSource::EmptyMessageRangeFor
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
     // 获取会话的现有消息区间
-    auto msg_ranges = p_MessageRangeForConvId(CTX_V, conv_id);
+    auto msg_ranges = p_messageRangeForConvId(CTX_V, conv_id);
     
     // 计算空缺区间
     if (msg_ranges.empty()) {
@@ -227,7 +232,7 @@ MessageDataSource::LoadMessageFromDb(CTX_T, std::string conv_id, int64_t cursor,
 
     auto msg_manager = sdk_root->MessageManager();
 
-    auto sdk_msgs = co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [this, msg_manager, w_sdk_root = w_sdk_root, call_track_id, conv_id, cursor, limit, forward]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+    auto sdk_msgs = co_await boost::asio::co_spawn(msg_strand(), [this, msg_manager, w_sdk_root = w_sdk_root, call_track_id, conv_id, cursor, limit, forward]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
 
         /// 从DB 中获取消息
@@ -253,7 +258,7 @@ bool MessageDataSource::MarkMessagesAsRead(CTX_T, const std::vector<std::string>
 }
 
 /// 给定一个数字序列，生成若干区间。一个区间内的所有数字都在给定的数组序列内。区间内数字是连续的，左右都闭合。
-std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_GenerateRange(std::vector<int64_t> seqs) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_generateRange(std::vector<int64_t> seqs) {
     if (seqs.empty()) {
         return {};
     }
@@ -284,7 +289,7 @@ std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_GenerateRange(std:
 }
 
 /// 给定两个区间数组，合并两个数组，返回一个新的区间数组。合并后的区间数组内的区间是连续的，左右都闭合。
-std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_MergeRanges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_mergeRanges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second) {
     if (first.empty()) {
         return second;
     }
@@ -325,7 +330,7 @@ std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_MergeRanges(std::v
 }
 
 /// 获取会话的消息区间
-std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_MessageRangeForConvId(CTX_T, const std::string &conv_id) {
+std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_messageRangeForConvId(CTX_T, const std::string &conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
 
     auto it = message_range_cache_.at(conv_id);
@@ -366,7 +371,7 @@ boost::asio::awaitable<bool> MessageDataSource::UpdateMessagePinStatus(CTX_T, co
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto msg_manager = sdk_root->MessageManager();
     
-    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(msg_strand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // 存储到DB
@@ -389,7 +394,7 @@ boost::asio::awaitable<bool> MessageDataSource::UpdateMessageSyncExtStatus(CTX_T
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto msg_manager = sdk_root->MessageManager();
     
-    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, &sync_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(msg_strand(), [=, &sync_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // DBOpt 层内部会查询数据库、合并、序列化、写入
@@ -418,7 +423,7 @@ boost::asio::awaitable<bool> MessageDataSource::UpdateMessagePropertysStatus(CTX
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto msg_manager = sdk_root->MessageManager();
     
-    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, &propertys, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(msg_strand(), [=, &propertys, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // DBOpt 层内部会序列化、写入（整体替换，不合并）
@@ -441,7 +446,7 @@ boost::asio::awaitable<bool> MessageDataSource::UpdateMessageLocalExtStatus(CTX_
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto msg_manager = sdk_root->MessageManager();
     
-    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, &local_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(msg_strand(), [=, &local_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // DBOpt 层内部会查询数据库、合并、序列化、写入
@@ -470,7 +475,7 @@ boost::asio::awaitable<bool> MessageDataSource::UpdateMessageDeletedStatus(CTX_T
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto msg_manager = sdk_root->MessageManager();
     
-    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(msg_strand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // 更新数据库
@@ -493,7 +498,7 @@ boost::asio::awaitable<bool> MessageDataSource::UpdateMessageRecalledStatus(CTX_
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto msg_manager = sdk_root->MessageManager();
     
-    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(msg_strand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // 更新数据库

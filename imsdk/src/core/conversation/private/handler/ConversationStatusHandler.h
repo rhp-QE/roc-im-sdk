@@ -5,6 +5,7 @@
 #include "core/sdkroot/SDKRoot.h"
 #include "imsdk/base/include/uncopyable.h"
 #include "network/Error.h"
+#include "imsdk/src/include/model/conversation/ConversationModel.h"
 #include <boost/asio/awaitable.hpp>
 #include <expected>
 #include <memory>
@@ -45,6 +46,10 @@ public:
     boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
         CreateGroup(CTX_T, const model::CreateGroupContext &context);
 
+    /// 邀请群成员
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
+        InviteGroupMembers(CTX_T, const model::InviteGroupMembersContext &context);
+
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;
@@ -53,8 +58,8 @@ private:
     boost::asio::awaitable<void> p_onMuteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
     boost::asio::awaitable<void> p_onBlockChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
     boost::asio::awaitable<void> p_onSyncExtChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
-    boost::asio::awaitable<void> p_onDeleteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
-    boost::asio::awaitable<void> p_onGroupInviteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
+    boost::asio::awaitable<void> p_onDelete(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
+    boost::asio::awaitable<void> p_onGroupInvite(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
 
     void p_registTopOnHandler();
     void p_registMuteHandler();
@@ -67,4 +72,4 @@ private:
      
 };
 
-}
+} // namespace roc::imsdk::core::conversation

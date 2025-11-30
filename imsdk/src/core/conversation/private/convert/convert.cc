@@ -57,7 +57,7 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDb
     db_conv->sync_ext = conv->syncext();
     db_conv->local_ext = "";
     db_conv->draft = "";
-
+    
     // 合并本地独有字段（draft, local_ext）
     auto conv_manager = sdk_root->ConversationManager();
     conv_manager->db_opt->ConversationMergeWithLocal(CTX_V, db_conv->conversation_id, db_conv.get());

@@ -53,7 +53,7 @@ class SDKConnectionManager : public std::enable_shared_from_this<SDKConnectionMa
                              public roc::base::uncopyable {
 public:
 
-    SDKConnectionManager(boost::asio::io_context &io_context);
+    SDKConnectionManager(std::shared_ptr<SDKRoot> sdk_root);
 
     boost::asio::awaitable<bool> InitAndConnect(std::shared_ptr<SDKRoot> sdk_root);
 
@@ -80,7 +80,6 @@ private:
     std::atomic_uint64_t request_id_ = 0;
     using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::unique_ptr<network::SdkWSResp>)>;
     std::unordered_map<std::string, std::shared_ptr<channel_type>> channel_map_;
-    boost::asio::io_context &net_io_context_;
     std::mutex mutex_;
 
     std::vector<OnPushMesageCallbackType> on_push_message_callbacks_;

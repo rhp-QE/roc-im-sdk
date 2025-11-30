@@ -67,9 +67,9 @@ asio::awaitable<bool> SDKRoot::InitSdk(const Config config) {
     {
         cmd_center_ = std::make_unique<core::CmdCenter>(sdk_root);
         group_manager_ = std::make_unique<core::GroupManager>(sdk_root);
-        connection_manager_ = std::make_unique<network::SDKConnectionManager>(net_io_context());
-        message_manager_ = std::make_unique<core::MessageManager>(sdk_root, sdk_io_context().get_executor());
-        conversation_manager_ = std::make_unique<core::ConversationManager>(sdk_root, sdk_io_context().get_executor());
+        message_manager_ = std::make_unique<core::MessageManager>(sdk_root);
+        conversation_manager_ = std::make_unique<core::ConversationManager>(sdk_root);
+        connection_manager_ = std::make_unique<network::SDKConnectionManager>(sdk_root);
     }
 
     {

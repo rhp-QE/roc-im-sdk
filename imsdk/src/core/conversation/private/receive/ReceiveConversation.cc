@@ -25,11 +25,11 @@ boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CTX_
 
     LOG_INFO("ConvManager", "handleReceiveConversation, sdk_convs: {}", sdk_convs.size());
 
-    auto on_conversation_result = std::make_shared<model::OnConversationResult>();
-    on_conversation_result->updated_convs = sdk_convs;
-
     // 上抛
-    base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
+    auto on_conversation_result = std::make_shared<model::OnConversationResult>();
+    on_conversation_result->fetched_convs = sdk_convs;
+    base::util::safe_invoke_block(conv_manager->OnConversationsCallback(), on_conversation_result);
+    co_return;
 }
 
 } // namespace roc::imsdk::core::conversation

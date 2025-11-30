@@ -91,7 +91,7 @@ boost::asio::awaitable<std::shared_ptr<model::LoadConvMessagesResult>> IMSDK::Me
 
 // =============================  conversation api  ======================================
 
-void IMSDK::OnConvUpdate(model::OnConvUpdateCallbackType callback) {
+void IMSDK::OnConvUpdate(model::OnConversationsCallbackTy callback) {
     sdk_root_->ConversationManager()->OnConvUpdate(callback);
 }
 
@@ -109,6 +109,10 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::Convs
 
 boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>> IMSDK::CreateGroup(const model::CreateGroupContext &context) {
     co_return co_await sdk_root_->ConversationManager()->CreateGroup(context);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::InviteGroupMembers(const model::InviteGroupMembersContext &context) {
+    co_return co_await sdk_root_->ConversationManager()->InviteGroupMembers(context);
 }
 
 // 设置会话置顶

@@ -14,9 +14,8 @@
 
 namespace roc::imsdk::core {
 
-ConversationManager::ConversationManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor) 
-    : w_sdk_root(sdk_root), 
-      conv_strand_(boost::asio::make_strand(executor))
+ConversationManager::ConversationManager(std::shared_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root)
 {
     p_InitSubComponents();
 }
@@ -33,18 +32,14 @@ void ConversationManager::AllComponentDidLoad() {
     conversation_status_handler->AllComponentDidLoad();
 }
 
-boost::asio::strand<boost::asio::io_context::executor_type> ConversationManager::ConvStrand() {
-    return conv_strand_;
-}
-
-model::OnConvUpdateCallbackType& ConversationManager::OnConvUpdateCallback() {
-    return on_conv_update_callback_;
+model::OnConversationsCallbackTy& ConversationManager::OnConversationsCallback() {
+    return on_convs_callback_;
 }
 
 // =============================  conversation api implementations  ======================================
 
-void ConversationManager::OnConvUpdate(model::OnConvUpdateCallbackType callback) {
-    on_conv_update_callback_ = callback;
+void ConversationManager::OnConvUpdate(model::OnConversationsCallbackTy callback) {
+    on_convs_callback_ = callback;
 }
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::ConvForId(std::string conv_id) {
@@ -119,6 +114,12 @@ boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, 
     START_TRACK;
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     co_return co_await conversation_status_handler->CreateGroup(CTX_V, context);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::InviteGroupMembers(const model::InviteGroupMembersContext &context) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await conversation_status_handler->InviteGroupMembers(CTX_V, context);
 }
 
 /// =======================================================================================

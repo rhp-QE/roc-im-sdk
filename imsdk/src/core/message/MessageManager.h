@@ -6,8 +6,6 @@
 #include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
 #include "imsdk/base/include/network/Error.h"
-#include <boost/asio/io_context.hpp>
-#include <boost/asio/strand.hpp>
 #include <mutex>
 #include <expected>
 #include <unordered_map>
@@ -28,7 +26,7 @@ namespace roc::imsdk::core {
 
 class MessageManager : public roc::base::uncopyable {
 public:
-    MessageManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor);
+    MessageManager(std::shared_ptr<SDKRoot> sdk_root);
     ~MessageManager();
 
     // 组件加载完成后的初始化
@@ -38,9 +36,6 @@ public:
     model::OnMessagesCallbackType OnMessagesCallback();
 
     void HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);
-
-    // 消息操作串行队列
-    boost::asio::strand<boost::asio::io_context::executor_type> MsgStrand();
 
  
     // =============================  message api  ======================================
@@ -91,10 +86,6 @@ private:
 
     /// 收到消息回调
     model::OnMessagesCallbackType on_messages_callback_;
-
-    /// 消息操作串行队列
-    /// 所有的消息操作 都在这个串行队列中串行执行，确保 db 和 缓存的一致性。
-    boost::asio::strand<boost::asio::io_context::executor_type> msg_strand_;
 
     // 友元类，允许子组件访问私有成员
     friend class roc::imsdk::core::message::DBOpt;

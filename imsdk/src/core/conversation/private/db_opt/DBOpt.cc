@@ -234,8 +234,8 @@ bool DBOpt::SetConversationSyncExt(CTX_T, const std::string &conv_id, const std:
     auto sync_ext_str_result = json_util::MapSerializeAsString(merged_sync_ext);
     if (!sync_ext_str_result) {
         LOG_INFO("ConvDBOpt", "Failed to serialize sync_ext: {}", sync_ext_str_result.error().to_string());
-        return false;
-    }
+    return false;
+}
     std::string sync_ext_str = sync_ext_str_result.value();
 
     // 5. 写回数据库
@@ -292,7 +292,7 @@ bool DBOpt::SetConversationLocalExt(CTX_T, const std::string &conv_id, const std
     auto local_ext_str_result = json_util::MapSerializeAsString(merged_local_ext);
     if (!local_ext_str_result) {
         LOG_INFO("ConvDBOpt", "Failed to serialize local_ext: {}", local_ext_str_result.error().to_string());
-        return false;
+    return false;
     }
     std::string local_ext_str = local_ext_str_result.value();
 

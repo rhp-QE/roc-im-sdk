@@ -12,7 +12,12 @@
 namespace roc::imsdk::core::conversation {
 
 ConvDatasource::ConvDatasource(std::weak_ptr<SDKRoot> sdk_root) 
-    : w_sdk_root(sdk_root) {
+    : w_sdk_root(sdk_root),
+      conv_strand_(boost::asio::make_strand(sdk_root.lock()->sdk_io_context().get_executor())) {
+}
+
+boost::asio::strand<boost::asio::io_context::executor_type> ConvDatasource::ConvStrand() {
+    return conv_strand_;
 }
 
 /// 保存网络会话
@@ -32,7 +37,7 @@ ConvDatasource::SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network:
         return conv_manager->convert->ConvertDbConvToSdkConv(CTX_V, conv.get());
     });
 
-    auto sdk_convs = co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, sdk_convs_copy = std::move(sdk_convs_copy), w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> {
+    auto sdk_convs = co_await boost::asio::co_spawn(ConvStrand(), [=, sdk_convs_copy = std::move(sdk_convs_copy), w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
 
         /// 保存到数据库
@@ -53,7 +58,7 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>>
 
     auto conv_manager = sdk_root->ConversationManager();
 
-    auto sdk_convs = co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> {
+    auto sdk_convs = co_await boost::asio::co_spawn(ConvStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
 
         /// 从DB 中获取会话
@@ -83,16 +88,16 @@ boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConvDatasource
     }
 
     /// 从缓存中获取会话
-    auto it = conv_manager->conv_cache_.at(conv_id);
+    auto it = conv_cache_.at(conv_id);
     if (it) {
         co_return it.value();
     }
 
-    auto sdk_conv = co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> {
+    auto sdk_conv = co_await boost::asio::co_spawn(ConvStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr);
 
         /// 二次检查
-        auto result = conv_manager->conv_cache_.at(conv_id);
+        auto result = conv_cache_.at(conv_id);
         if (result) {
             co_return result.value();
         }
@@ -121,7 +126,7 @@ boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConvDatasource
     }
 
     /// 从缓存中获取会话
-    auto it = conv_manager->conv_cache_.at(conv_id);
+    auto it = conv_cache_.at(conv_id);
     if (it) {
         co_return it.value();
     }
@@ -135,7 +140,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationTopStatus(CTX_T, 
 
     auto conv_manager = sdk_root->ConversationManager();
 
-    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(ConvStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
 
         // 存储到DB
@@ -145,7 +150,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationTopStatus(CTX_T, 
         }
 
         // 如果有则更新缓存
-        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        auto cache_conv = conv_cache_.at(conv_id);
         if (cache_conv) {
             cache_conv.value()->set_top(is_top);
         }
@@ -160,7 +165,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationMuteStatus(CTX_T,
 
     auto conv_manager = sdk_root->ConversationManager();
 
-    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(ConvStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
 
         // 存储到DB
@@ -170,7 +175,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationMuteStatus(CTX_T,
         }
 
         // 如果有则更新缓存
-        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        auto cache_conv = conv_cache_.at(conv_id);
         if (cache_conv) {
             cache_conv.value()->set_mute(is_mute);
         }
@@ -185,7 +190,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationBlockStatus(CTX_T
 
     auto conv_manager = sdk_root->ConversationManager();
 
-    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(ConvStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
 
         // 存储到DB
@@ -195,7 +200,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationBlockStatus(CTX_T
         }
 
         // 如果有则更新缓存
-        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        auto cache_conv = conv_cache_.at(conv_id);
         if (cache_conv) {
             cache_conv.value()->set_block(is_block);
         }
@@ -208,7 +213,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationSyncExtStatus(CTX
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto conv_manager = sdk_root->ConversationManager();
     
-    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, &sync_ext, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(ConvStrand(), [=, &sync_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // DBOpt 层内部会查询数据库、合并、序列化、写入
@@ -218,7 +223,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationSyncExtStatus(CTX
         }
         
         // 如果有则更新缓存
-        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        auto cache_conv = conv_cache_.at(conv_id);
         if (cache_conv) {
             // 获取当前缓存的 sync_ext，合并传入的 sync_ext
             auto current_sync_ext = cache_conv.value()->sync_ext();
@@ -237,7 +242,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationLocalExtStatus(CT
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto conv_manager = sdk_root->ConversationManager();
     
-    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, &local_ext, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(ConvStrand(), [=, &local_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // DBOpt 层内部会查询数据库、合并、序列化、写入
@@ -247,7 +252,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationLocalExtStatus(CT
         }
         
         // 如果有则更新缓存
-        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        auto cache_conv = conv_cache_.at(conv_id);
         if (cache_conv) {
             // 获取当前缓存的 local_ext，合并传入的 local_ext
             auto current_local_ext = cache_conv.value()->local_ext();
@@ -267,7 +272,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationDeletedStatus(CTX
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
     auto conv_manager = sdk_root->ConversationManager();
     
-    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+    co_return co_await boost::asio::co_spawn(ConvStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
         CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
         
         // 存储到DB
@@ -277,7 +282,7 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationDeletedStatus(CTX
         }
         
         // 如果有则更新缓存
-        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        auto cache_conv = conv_cache_.at(conv_id);
         if (cache_conv) {
             cache_conv.value()->set_deleted(is_deleted);
         }
@@ -301,18 +306,16 @@ ConvDatasource::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk:
     std::vector<std::shared_ptr<model::ConversationModel>> cached_sdk_convs;
 
     for (const auto& conv : sdk_convs) {
-        if (conv) {
-            std::string last_message_client_id = conv->last_message_client_id();
-            auto sdk_msg = co_await msg_manager->MessageForId(last_message_client_id);
-            if (sdk_msg) {
-                conv->last_message_ = std::move(sdk_msg);
-            }
-
-            auto cache_sdk_conv = conv_manager->conv_cache_.at(conv->conversation_id(), std::make_shared<model::ConversationModel>());
-            cache_sdk_conv->move_from(std::move(*conv));
-
-            cached_sdk_convs.push_back(cache_sdk_conv);
+        std::string last_message_client_id = conv->last_message_client_id();
+        auto sdk_msg = co_await msg_manager->MessageForId(last_message_client_id);
+        if (sdk_msg) {
+            conv->last_message_ = std::move(sdk_msg);
         }
+
+        auto cache_sdk_conv = conv_cache_.at(conv->conversation_id(), std::make_shared<model::ConversationModel>());
+        cache_sdk_conv->move_from(std::move(*conv));
+
+        cached_sdk_convs.push_back(cache_sdk_conv);
     }
 
     co_return cached_sdk_convs;

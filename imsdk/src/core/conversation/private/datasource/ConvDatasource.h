@@ -5,8 +5,11 @@
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
 #include "imsdk/src/include/model/conversation/ConversationModel.h"
+#include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 
 #include <boost/asio/awaitable.hpp>
+#include <boost/asio/io_context.hpp>
+#include <boost/asio/strand.hpp>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -21,6 +24,8 @@ namespace roc::imsdk::core::conversation {
 class ConvDatasource {
 public:
     explicit ConvDatasource(std::weak_ptr<SDKRoot> sdk_root);
+
+    boost::asio::strand<boost::asio::io_context::executor_type> ConvStrand();
 
     /// 保存网络会话
     boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
@@ -68,6 +73,12 @@ private:
         p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs);
 
     std::weak_ptr<SDKRoot> w_sdk_root;
+    
+    /// 会话缓存
+    base::containers::ThreadSafeUnorderedMap<std::string, std::shared_ptr<model::ConversationModel>> conv_cache_;
+    
+    /// 会话操作串行队列
+    boost::asio::strand<boost::asio::io_context::executor_type> conv_strand_;
 };
 
 } // namespace roc::imsdk::core::conversation

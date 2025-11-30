@@ -8,6 +8,8 @@
 #include "imsdk/src/include/model/message/MessageModel.h"
 #include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 
+#include <boost/asio/io_context.hpp>
+#include <boost/asio/strand.hpp>
 #include <memory>
 #include <vector>
 #include <unordered_map>
@@ -22,6 +24,8 @@ namespace roc::imsdk::core::message {
 class MessageDataSource {
 public:
     explicit MessageDataSource(std::weak_ptr<SDKRoot> sdk_root);
+
+    boost::asio::strand<boost::asio::io_context::executor_type> msg_strand();
 
     /// 保存网络消息
     boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
@@ -78,19 +82,19 @@ public:
 private: 
 
     /// 保存消息日志
-    void p_LogSaveMessages(CTX_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
+    void p_logSaveMessages(CTX_T, std::vector<std::shared_ptr<core::message::MessageORM>> db_msgs);
    
     /// 更新消息区间
-    void p_UpdateMessageRangeForMessage(CTX_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
+    void p_updateMessageRangeForMessage(CTX_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
     /// 获取会话的消息区间
-    std::vector<std::pair<int64_t, int64_t>> p_MessageRangeForConvId(CTX_T, const std::string &conv_id);
+    std::vector<std::pair<int64_t, int64_t>> p_messageRangeForConvId(CTX_T, const std::string &conv_id);
 
     // 给定一个数字序列，生成若干区间。 一个区间内的所有数字都在 给定的数组序列内。 区间内数字是连续的，左右都闭合。
-    static std::vector<std::pair<int64_t, int64_t>> p_GenerateRange(std::vector<int64_t> seqs);
+    static std::vector<std::pair<int64_t, int64_t>> p_generateRange(std::vector<int64_t> seqs);
 
     // 给定两个区间数组，合并两个数组，返回一个新的区间数组。 合并后的区间数组内的区间是连续的，左右都闭合。
-    static std::vector<std::pair<int64_t, int64_t>> p_MergeRanges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second);
+    static std::vector<std::pair<int64_t, int64_t>> p_mergeRanges(std::vector<std::pair<int64_t, int64_t>> first, std::vector<std::pair<int64_t, int64_t>> second);
 
     /// 消息缓存
     base::containers::ThreadSafeUnorderedMap<std::string, std::shared_ptr<model::MessageModel>> message_cache_;
@@ -99,6 +103,9 @@ private:
     base::containers::ThreadSafeUnorderedMap<std::string/*conv_id*/, std::vector<std::pair<int64_t, int64_t>>/*msg_ranges*/> message_range_cache_;
 
     std::weak_ptr<SDKRoot> w_sdk_root;
+    
+    /// 消息操作串行队列
+    boost::asio::strand<boost::asio::io_context::executor_type> msg_strand_;
 };
 
 } // namespace roc::imsdk::core::message

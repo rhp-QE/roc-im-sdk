@@ -143,10 +143,10 @@ private:
 
 struct OnConversationResult {
     /// 新增的会话
-    std::vector<std::shared_ptr<ConversationModel>> added_convs;
+    std::vector<std::shared_ptr<ConversationModel>> invited_convs;
 
-    /// 更新的会话
-    std::vector<std::shared_ptr<ConversationModel>> updated_convs;
+    /// 拉取到的会话
+    std::vector<std::shared_ptr<ConversationModel>> fetched_convs;
 
     /// 删除的会话
     std::vector<std::shared_ptr<ConversationModel>> deleted_convs;
@@ -178,9 +178,14 @@ struct CreateGroupContext {
     std::string group_name;          // 群名称
 };
 
+struct InviteGroupMembersContext {
+    std::string conv_id;             // 会话 ID
+    std::vector<std::string> member_user_ids;  // 要邀请的群成员 ID 列表
+};
+
 
 // callback -------------
-using OnConvUpdateCallbackType = std::function<void(std::shared_ptr<OnConversationResult> result)>;
+using OnConversationsCallbackTy = std::function<void(std::shared_ptr<OnConversationResult> result)>;
 // ------------------------
 
 } // namespace roc::imsdk::model

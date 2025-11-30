@@ -16,9 +16,8 @@
 
 namespace roc::imsdk::core {
 
-MessageManager::MessageManager(std::shared_ptr<SDKRoot> sdk_root, boost::asio::io_context::executor_type executor) 
-    : w_sdk_root(sdk_root), 
-      msg_strand_(boost::asio::make_strand(executor))
+MessageManager::MessageManager(std::shared_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root)
 {
     p_InitSubComponents();
 }
@@ -40,10 +39,6 @@ void MessageManager::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<net
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     boost::asio::co_spawn(sdk_root->sdk_io_context(), receive_message->HandleReceiveMessage(CTX_V, net_msgs), boost::asio::detached);
-}
-
-boost::asio::strand<boost::asio::io_context::executor_type> MessageManager::MsgStrand() {
-    return msg_strand_;
 }
 
 // =============================  message api implementations  ======================================

@@ -338,6 +338,7 @@ message ChangeConversationItemResp {
   int32 cmd = 1;
   uint64 errorCode = 2;
   string errorMsg = 3;
+  ConversationInfo convInfo = 4;
 }
 
 message ChangeConversationResp {

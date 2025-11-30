@@ -120,7 +120,7 @@ public:
     /// =============================  conversation api  ======================================
 
     /// 会话更新回调
-    void OnConvUpdate(model::OnConvUpdateCallbackType callback);
+    void OnConvUpdate(model::OnConversationsCallbackTy callback);
 
     /// 查询会话
     boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> 
@@ -137,6 +137,10 @@ public:
     /// 创建群聊
     boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
         CreateGroup(const model::CreateGroupContext &context);
+
+    /// 邀请群成员
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
+        InviteGroupMembers(const model::InviteGroupMembersContext &context);
 
     /// 设置会话置顶
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>

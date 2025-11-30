@@ -40,14 +40,14 @@ static inline std::string next_request_id(roc::imsdk::SDKRoot *root) {
 
 namespace roc::imsdk::network {
 
-SDKConnectionManager::SDKConnectionManager(boost::asio::io_context &io_context) : net_io_context_(io_context) {}
+SDKConnectionManager::SDKConnectionManager(std::shared_ptr<SDKRoot> sdk_root) 
+    : w_sdk_root(sdk_root)
+{}
 
 boost::asio::awaitable<bool> SDKConnectionManager::InitAndConnect(std::shared_ptr<SDKRoot> sdk_root) {
 
-    w_sdk_root = sdk_root;
-
     START_TRACK;
-    lc_ = std::make_unique<base::net::LongConnectionClient>(p_GenerateNetConfig(sdk_root.get()), net_io_context_);
+    lc_ = std::make_unique<base::net::LongConnectionClient>(p_GenerateNetConfig(sdk_root.get()), *(sdk_root->config().net_io_context));
 
     // 观察网络状态变更
     lc_->set_connection_status_callback([=, this](bool connected, const std::string &detail) {
@@ -75,7 +75,7 @@ boost::asio::awaitable<bool> SDKConnectionManager::InitAndConnect(std::shared_pt
     // 数据接收回调 
     lc_->set_data_received_callback([=, this](boost::beast::flat_buffer data) {
         CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
-        boost::asio::co_spawn(net_io_context_, this->handleDataReceived(std::move(data)), asio::detached);
+        boost::asio::co_spawn(*(sdk_root->config().net_io_context), this->handleDataReceived(std::move(data)), asio::detached);
     });
 
     auto res = co_await lc_->connect();
@@ -125,7 +125,7 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
 
     req->set_requestid(next_request_id(root.get()));
 
-    auto channel = std::make_shared<channel_type>(net_io_context_, 1);
+    auto channel = std::make_shared<channel_type>(*(root->config().net_io_context), 1);
     std::string request_id_str = req->requestid();
     {
         std::lock_guard<std::mutex> lock(mutex_);
