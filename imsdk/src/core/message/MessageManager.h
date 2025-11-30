@@ -5,19 +5,23 @@
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
+#include "imsdk/base/include/network/Error.h"
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/strand.hpp>
 #include <mutex>
+#include <expected>
+#include <unordered_map>
+#include <vector>
 
 // Forward declaration
 namespace roc::imsdk::core::message {
     class MessageDataSource;
     class ReceiveMessage;
-    class CmdMessageOperator;
     class SendMessageController;
     class DBOpt;
     class Convert;
     class ConvMessagesFetcher;
+    class MessageStatusHandler;
 }
 
 namespace roc::imsdk::core {
@@ -31,7 +35,7 @@ public:
     void AllComponentDidLoad();
     
     // 收到消息回调
-    model::OnMessagesCallbackType OnReceiveMessageCallback();
+    model::OnMessagesCallbackType OnMessagesCallback();
 
     void HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);
 
@@ -48,13 +52,22 @@ public:
     void OnMessages(model::OnMessagesCallbackType callback);
 
     /// 删除消息
-    boost::asio::awaitable<bool> DeleteMessage(const std::vector<std::string> &msg_ids);
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>> DeleteMessage(const std::vector<std::string> &msg_ids);
 
     /// 撤回消息
-    boost::asio::awaitable<bool> RecallMessage(std::string msg_id);
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>> RecallMessage(std::string msg_id);
 
-    /// 修改消息 sync_ext
-    boost::asio::awaitable<bool> UpdateMessageSyncExt(std::string msg_id, std::string key, std::string value);
+    /// 设置消息置顶状态
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>> SetMessagePin(std::string msg_id, bool is_pinned);
+
+    /// 设置消息同步扩展字段
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>> SetMessageSyncExt(std::string msg_id, const std::unordered_map<std::string, std::string> &sync_ext);
+
+    /// 设置消息属性
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>> SetMessagePropertys(std::string msg_id, const std::vector<int32_t> &propertys);
+
+    /// 设置消息本地扩展字段（仅本地，不发送网络请求）
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>> SetMessageLocalExt(std::string msg_id, const std::unordered_map<std::string, std::string> &local_ext);
 
     /// 设置消息为已读
     boost::asio::awaitable<bool> MarkMessagesAsRead(const std::vector<std::string> &msg_ids);
@@ -88,9 +101,9 @@ private:
     friend class roc::imsdk::core::message::Convert;
     friend class roc::imsdk::core::message::MessageDataSource;
     friend class roc::imsdk::core::message::ReceiveMessage;
-    friend class roc::imsdk::core::message::CmdMessageOperator;
     friend class roc::imsdk::core::message::SendMessageController;
     friend class roc::imsdk::core::message::ConvMessagesFetcher;
+    friend class roc::imsdk::core::message::MessageStatusHandler;
 
     /// 初始化子组件
     void p_InitSubComponents();
@@ -100,9 +113,9 @@ private:
     std::unique_ptr<message::Convert> convert;
     std::unique_ptr<message::MessageDataSource> message_data_source;
     std::unique_ptr<message::ReceiveMessage> receive_message;
-    std::unique_ptr<message::CmdMessageOperator> cmd_message_operator;
     std::unique_ptr<message::ConvMessagesFetcher> conv_messages_fetcher;
     std::unique_ptr<message::SendMessageController> send_message_controller;
+    std::unique_ptr<message::MessageStatusHandler> message_status_handler;
 };
 
 } // namespace roc::imsdk::core

@@ -23,11 +23,13 @@ enum class MsgDStatus : int32_t {
 /// 命令消息操作类型
 enum class CmdMessageOp : int32_t {
 
-    MSG_STATUS_CHANGED      = 1001, // 消息状态发生变化 (发送成功、发送失败、删除、撤回)
+    MSG_SEND_STATUS_CHANGED = 1001, // 消息发送状态发生变化 (发送成功、发送失败)
     MSG_READ_CHANGED        = 1002, // 已读状态发生变化
     MSG_PIN_CHANGED         = 1003, // 置顶状态发生变化
     MSG_PROPERTY_CHANGED    = 1004, // property 发生改变
     MSG_SYNC_EXT_CHANGED    = 1005, // syncExt 发生改变
+    MSG_DELETE              = 1006, // 删除消息
+    MSG_RECALL              = 1007, // 撤回消息
 
     CONV_STATUS_CHANGED     = 2001, // 会话删除状态发生变化
     CONV_READ_CHANGED       = 2002, // 会话已读状态发生变化
@@ -39,19 +41,3 @@ enum class CmdMessageOp : int32_t {
 };
 
 }
-
-namespace roc::imsdk::network {
-    
-enum class SDKRequestType : int32_t {
-    SEND_MESSAGE                 = 101, // 发送消息
-    FETCH_CONV_MESSAGE_LIST      = 102, // 拉取单链
-    FETCH_USER_MESSAGE_LIST      = 103, // 拉取混链
-    USER_MESSAGE_INTEGRITY_CHECK = 104, // 混链消息检查
-
-    CONV_STATUS_TOP_ON_CHANGE    = 301, // 会话置顶
-    CONV_STATUS_BLOCK_CHANGE     = 302, // 会话拉黑
-    CONV_STATUS_MUTE_CHANGE      = 303, // 会话禁言
-    CONV_STATUS_SYNC_EXT_CHANGE  = 304, // 会话ext变更
-};
-    
-};

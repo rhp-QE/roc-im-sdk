@@ -171,7 +171,8 @@ boost::asio::awaitable<bool> UserMessageFetcher::p_doubleCheckUserMessageIntegri
     }
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
-    req->set_type(static_cast<int32_t>(network::SDKRequestType::USER_MESSAGE_INTEGRITY_CHECK));
+    req->set_service(common::SDKWSService);
+    req->set_method(static_cast<int32_t>(common::SDKWSMethod::USER_MESSGAGE_INTEGRITY_CHECK));
     req->set_data(req_data->SerializeAsString());
     req->set_trackid(TRACK_ID);
 

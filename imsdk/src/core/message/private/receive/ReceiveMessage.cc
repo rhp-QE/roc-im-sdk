@@ -84,7 +84,7 @@ boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::ve
     auto result = co_await ClassifyMessage(CTX_V, net_msgs, sdk_msgs);
     
     // 上抛消息
-    base::util::safe_invoke_block(msg_manager->on_messages_callback_, result);
+    base::util::safe_invoke_block(msg_manager->OnMessagesCallback(), result);
 }
 
 boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {

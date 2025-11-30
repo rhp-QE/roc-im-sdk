@@ -30,7 +30,7 @@ private:
     
     /// 发送获取会话消息列表请求
     boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
-        p_Request(CTX_T, network::FetchConvMessageListReq *request);
+        p_request(CTX_T, network::FetchConvMessageListReq *request);
     
     std::weak_ptr<SDKRoot> w_sdk_root;
 };

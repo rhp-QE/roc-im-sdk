@@ -24,11 +24,12 @@ ConvMessagesFetcher::ConvMessagesFetcher(std::weak_ptr<SDKRoot> sdk_root)
 // =================================== private ===========================================================
 
 boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
-ConvMessagesFetcher::p_Request(CTX_T, network::FetchConvMessageListReq *request) {
+ConvMessagesFetcher::p_request(CTX_T, network::FetchConvMessageListReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
-    req->set_type(static_cast<int32_t>(common::SDKWSMethod::PULL_SINGLE_LIST));
+    req->set_service(common::SDKWSService);
+    req->set_method(static_cast<int32_t>(common::SDKWSMethod::PULL_MIX_LIST));
     req->set_data(request->SerializeAsString());
     req->set_trackid(TRACK_ID);
 
@@ -92,7 +93,7 @@ asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageListForRange(CTX_T, s
 
         // 发送请求
         std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error> resp = 
-            co_await p_Request(CTX_V, req.get());
+            co_await p_request(CTX_V, req.get());
         if (!resp || !resp.has_value()) {
             continue;
         }

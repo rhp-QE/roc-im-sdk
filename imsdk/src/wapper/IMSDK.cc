@@ -1,10 +1,9 @@
-#pragma once
-
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include <boost/asio/io_context.hpp>
+#include <unordered_map>
 
 namespace roc::imsdk {
 
@@ -45,15 +44,29 @@ void IMSDK::OnMessagee(model::OnMessagesCallbackType callback) {
 }
 
 boost::asio::awaitable<bool> IMSDK::DeleteMessage(const std::vector<std::string> &msg_ids) {
-    return sdk_root_->MessageManager()->DeleteMessage(msg_ids);
+    auto result = co_await sdk_root_->MessageManager()->DeleteMessage(msg_ids);
+    if (!result) {
+        co_return false;
+    }
+    co_return result.value();
 }
 
 boost::asio::awaitable<bool> IMSDK::RecallMessage(std::string msg_id) {
-    return sdk_root_->MessageManager()->RecallMessage(msg_id);
+    auto result = co_await sdk_root_->MessageManager()->RecallMessage(msg_id);
+    if (!result) {
+        co_return false;
+    }
+    co_return result.value();
 }
 
 boost::asio::awaitable<bool> IMSDK::UpdateMessageSyncExt(std::string msg_id, std::string key, std::string value) {
-    return sdk_root_->MessageManager()->UpdateMessageSyncExt(msg_id, key, value);
+    std::unordered_map<std::string, std::string> sync_ext;
+    sync_ext[key] = value;
+    auto result = co_await sdk_root_->MessageManager()->SetMessageSyncExt(msg_id, sync_ext);
+    if (!result) {
+        co_return false;
+    }
+    co_return result.value();
 }
 
 boost::asio::awaitable<bool> IMSDK::MarkMessagesAsRead(const std::vector<std::string> &msg_ids) {

@@ -51,6 +51,30 @@ public:
     /// 更新会话的最大 order_index
     void UpdateMsgOrderInConv(CTX_T, const std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> &sdk_msgs);
 
+    /// 更新消息置顶状态（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateMessagePinStatus(CTX_T, const std::string &msg_id, bool is_pinned);
+
+    /// 更新消息同步扩展字段（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateMessageSyncExtStatus(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &sync_ext);
+
+    /// 更新消息属性（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateMessagePropertysStatus(CTX_T, const std::string &msg_id, const std::vector<int32_t> &propertys);
+
+    /// 更新消息本地扩展字段（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateMessageLocalExtStatus(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &local_ext);
+
+    /// 更新消息删除状态（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateMessageDeletedStatus(CTX_T, const std::string &msg_id, bool is_deleted);
+
+    /// 更新消息撤回状态（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateMessageRecalledStatus(CTX_T, const std::string &msg_id, bool is_recalled);
+
 private: 
 
     /// 保存消息日志

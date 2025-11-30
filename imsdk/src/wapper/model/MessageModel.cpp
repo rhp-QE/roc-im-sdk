@@ -91,7 +91,7 @@ bool MessageModel::isGroupMessage() const {
 }
 
 void MessageModel::move_from(MessageModel&& other) noexcept {
-    if (this == &other || this == nullptr) {
+    if (this == &other) {
         return;
     }
 

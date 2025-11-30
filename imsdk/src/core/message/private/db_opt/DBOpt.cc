@@ -6,6 +6,7 @@
 #include "WCDB/Upsert.hpp"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/util.h"
+#include "imsdk/src/core/common/json_util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/db_model/MessageORM.h"
@@ -318,6 +319,195 @@ int64_t DBOpt::NextMsgOrderInConv(CTX_T, std::string conv_id) {
     LOG_INFO("MessageDBOpt", "get next message order index = {}, in cid = {}", max_order + 1, conv_id)
     
     return max_order + 1;
+}
+
+bool DBOpt::SetMessagePin(CTX_T, const std::string &msg_id, bool is_pinned) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    core::message::MessageORM obj;
+    obj.is_pinned = is_pinned;
+    WCDB::Fields fields = {WCDB_FIELD(core::message::MessageORM::is_pinned)};
+    bool update_result = database->updateObject<core::message::MessageORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
+    );
+    LOG_INFO("MsgDBOpt", "SetMessagePin msg_id: {}, is_pinned: {}, result: {}", msg_id, is_pinned, update_result);
+    return update_result;
+}
+
+bool DBOpt::SetMessageSyncExt(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &sync_ext) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    // 1. 查询数据库获取当前的 sync_ext
+    auto result = database->getAllObjects<core::message::MessageORM>(
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id,
+        WCDB::Expression(),
+        WCDB::Expression(),
+        WCDB::Expression()
+    );
+
+    // 2. 反序列化现有的 sync_ext string 为 map
+    std::unordered_map<std::string, std::string> existing_sync_ext;
+    if (result.hasValue() && !result.value().empty()) {
+        std::string existing_sync_ext_str = result.value()[0].sync_ext;
+        auto parse_result = json_util::MapParseFromString(existing_sync_ext_str);
+        if (parse_result) {
+            existing_sync_ext = parse_result.value();
+        } else {
+            LOG_INFO("MsgDBOpt", "Failed to parse existing sync_ext: {}", parse_result.error().to_string());
+        }
+    }
+
+    // 3. 合并传入的 map 与现有 map
+    std::unordered_map<std::string, std::string> merged_sync_ext = existing_sync_ext;
+    for (const auto& [key, value] : sync_ext) {
+        merged_sync_ext[key] = value;
+    }
+
+    // 4. 序列化合并后的 map 为 string
+    auto sync_ext_str_result = json_util::MapSerializeAsString(merged_sync_ext);
+    if (!sync_ext_str_result) {
+        LOG_INFO("MsgDBOpt", "Failed to serialize sync_ext: {}", sync_ext_str_result.error().to_string());
+        return false;
+    }
+    std::string sync_ext_str = sync_ext_str_result.value();
+
+    // 5. 写回数据库
+    core::message::MessageORM obj;
+    obj.sync_ext = sync_ext_str;
+    WCDB::Fields fields = {WCDB_FIELD(core::message::MessageORM::sync_ext)};
+    bool update_result = database->updateObject<core::message::MessageORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
+    );
+    LOG_INFO("MsgDBOpt", "SetMessageSyncExt msg_id: {}, result: {}", msg_id, update_result);
+    return update_result;
+}
+
+bool DBOpt::SetMessagePropertys(CTX_T, const std::string &msg_id, const std::vector<int32_t> &propertys) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    // 序列化 propertys 为 JSON string（整体替换，不合并）
+    auto propertys_str_result = json_util::Int32VectorSerializeAsString(propertys);
+    if (!propertys_str_result) {
+        LOG_INFO("MsgDBOpt", "Failed to serialize propertys: {}", propertys_str_result.error().to_string());
+        return false;
+    }
+    std::string propertys_str = propertys_str_result.value();
+
+    // 写回数据库
+    core::message::MessageORM obj;
+    obj.propertys = propertys_str;
+    WCDB::Fields fields = {WCDB_FIELD(core::message::MessageORM::propertys)};
+    bool update_result = database->updateObject<core::message::MessageORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
+    );
+    LOG_INFO("MsgDBOpt", "SetMessagePropertys msg_id: {}, result: {}", msg_id, update_result);
+    return update_result;
+}
+
+bool DBOpt::SetMessageLocalExt(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &local_ext) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    // 1. 查询数据库获取当前的 local_ext
+    auto result = database->getAllObjects<core::message::MessageORM>(
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id,
+        WCDB::Expression(),
+        WCDB::Expression(),
+        WCDB::Expression()
+    );
+
+    // 2. 反序列化现有的 local_ext string 为 map
+    std::unordered_map<std::string, std::string> existing_local_ext;
+    if (result.hasValue() && !result.value().empty()) {
+        std::string existing_local_ext_str = result.value()[0].local_ext;
+        auto parse_result = json_util::MapParseFromString(existing_local_ext_str);
+        if (parse_result) {
+            existing_local_ext = parse_result.value();
+        } else {
+            LOG_INFO("MsgDBOpt", "Failed to parse existing local_ext: {}", parse_result.error().to_string());
+        }
+    }
+
+    // 3. 合并传入的 map 与现有 map
+    std::unordered_map<std::string, std::string> merged_local_ext = existing_local_ext;
+    for (const auto& [key, value] : local_ext) {
+        merged_local_ext[key] = value;
+    }
+
+    // 4. 序列化合并后的 map 为 string
+    auto local_ext_str_result = json_util::MapSerializeAsString(merged_local_ext);
+    if (!local_ext_str_result) {
+        LOG_INFO("MsgDBOpt", "Failed to serialize local_ext: {}", local_ext_str_result.error().to_string());
+        return false;
+    }
+    std::string local_ext_str = local_ext_str_result.value();
+
+    // 5. 写回数据库
+    core::message::MessageORM obj;
+    obj.local_ext = local_ext_str;
+    WCDB::Fields fields = {WCDB_FIELD(core::message::MessageORM::local_ext)};
+    bool update_result = database->updateObject<core::message::MessageORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
+    );
+    LOG_INFO("MsgDBOpt", "SetMessageLocalExt msg_id: {}, result: {}", msg_id, update_result);
+    return update_result;
+}
+
+bool DBOpt::SetMessageDeleted(CTX_T, const std::string &msg_id, bool is_deleted) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    core::message::MessageORM obj;
+    obj.is_deleted = is_deleted;
+    WCDB::Fields fields = {WCDB_FIELD(core::message::MessageORM::is_deleted)};
+    bool update_result = database->updateObject<core::message::MessageORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
+    );
+    LOG_INFO("MsgDBOpt", "SetMessageDeleted msg_id: {}, is_deleted: {}, result: {}", msg_id, is_deleted, update_result);
+    return update_result;
+}
+
+bool DBOpt::SetMessageRecalled(CTX_T, const std::string &msg_id, bool is_recalled) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    core::message::MessageORM obj;
+    obj.is_recalled = is_recalled;
+    WCDB::Fields fields = {WCDB_FIELD(core::message::MessageORM::is_recalled)};
+    bool update_result = database->updateObject<core::message::MessageORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::message::MessageORM::client_msg_id) == msg_id
+    );
+    LOG_INFO("MsgDBOpt", "SetMessageRecalled msg_id: {}, is_recalled: {}, result: {}", msg_id, is_recalled, update_result);
+    return update_result;
 }
 
 } // namespace roc::imsdk::core::message

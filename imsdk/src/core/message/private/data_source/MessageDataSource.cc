@@ -362,4 +362,154 @@ std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> MessageDataSource:
     return updated_msgs;
 }
 
+boost::asio::awaitable<bool> MessageDataSource::UpdateMessagePinStatus(CTX_T, const std::string &msg_id, bool is_pinned) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto msg_manager = sdk_root->MessageManager();
+    
+    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // 存储到DB
+        bool db_result = msg_manager->db_opt->SetMessagePin(CTX_V, msg_id, is_pinned);
+        if (!db_result) {
+            co_return false;
+        }
+        
+        // 如果有则更新缓存
+        auto cache_msg = message_cache_.at(msg_id);
+        if (cache_msg) {
+            cache_msg.value()->set_pinned(is_pinned);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
+boost::asio::awaitable<bool> MessageDataSource::UpdateMessageSyncExtStatus(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &sync_ext) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto msg_manager = sdk_root->MessageManager();
+    
+    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, &sync_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // DBOpt 层内部会查询数据库、合并、序列化、写入
+        bool db_result = msg_manager->db_opt->SetMessageSyncExt(CTX_V, msg_id, sync_ext);
+        if (!db_result) { 
+            co_return false; 
+        }
+        
+        // 如果有则更新缓存
+        auto cache_msg = message_cache_.at(msg_id);
+        if (cache_msg) {
+            // 获取当前缓存的 sync_ext，合并传入的 sync_ext
+            auto current_sync_ext = cache_msg.value()->sync_ext();
+            auto merged_sync_ext = current_sync_ext;
+            for (const auto& [key, value] : sync_ext) {
+                merged_sync_ext[key] = value;
+            }
+            cache_msg.value()->set_sync_ext(merged_sync_ext);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
+boost::asio::awaitable<bool> MessageDataSource::UpdateMessagePropertysStatus(CTX_T, const std::string &msg_id, const std::vector<int32_t> &propertys) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto msg_manager = sdk_root->MessageManager();
+    
+    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, &propertys, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // DBOpt 层内部会序列化、写入（整体替换，不合并）
+        bool db_result = msg_manager->db_opt->SetMessagePropertys(CTX_V, msg_id, propertys);
+        if (!db_result) { 
+            co_return false; 
+        }
+        
+        // 如果有则更新缓存（整体替换）
+        auto cache_msg = message_cache_.at(msg_id);
+        if (cache_msg) {
+            cache_msg.value()->set_propertys(propertys);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
+boost::asio::awaitable<bool> MessageDataSource::UpdateMessageLocalExtStatus(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &local_ext) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto msg_manager = sdk_root->MessageManager();
+    
+    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, &local_ext, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // DBOpt 层内部会查询数据库、合并、序列化、写入
+        bool db_result = msg_manager->db_opt->SetMessageLocalExt(CTX_V, msg_id, local_ext);
+        if (!db_result) { 
+            co_return false; 
+        }
+        
+        // 如果有则更新缓存
+        auto cache_msg = message_cache_.at(msg_id);
+        if (cache_msg) {
+            // 获取当前缓存的 local_ext，合并传入的 local_ext
+            auto current_local_ext = cache_msg.value()->local_ext();
+            auto merged_local_ext = current_local_ext;
+            for (const auto& [key, value] : local_ext) {
+                merged_local_ext[key] = value;
+            }
+            cache_msg.value()->set_local_ext(merged_local_ext);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
+boost::asio::awaitable<bool> MessageDataSource::UpdateMessageDeletedStatus(CTX_T, const std::string &msg_id, bool is_deleted) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto msg_manager = sdk_root->MessageManager();
+    
+    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // 更新数据库
+        bool db_result = msg_manager->db_opt->SetMessageDeleted(CTX_V, msg_id, is_deleted);
+        if (!db_result) { 
+            co_return false; 
+        }
+        
+        // 如果有则更新缓存
+        auto cache_msg = message_cache_.at(msg_id);
+        if (cache_msg) {
+            cache_msg.value()->set_deleted(is_deleted);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
+boost::asio::awaitable<bool> MessageDataSource::UpdateMessageRecalledStatus(CTX_T, const std::string &msg_id, bool is_recalled) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto msg_manager = sdk_root->MessageManager();
+    
+    co_return co_await boost::asio::co_spawn(msg_manager->MsgStrand(), [=, w_sdk_root = w_sdk_root, this]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // 更新数据库
+        bool db_result = msg_manager->db_opt->SetMessageRecalled(CTX_V, msg_id, is_recalled);
+        if (!db_result) { 
+            co_return false; 
+        }
+        
+        // 如果有则更新缓存
+        auto cache_msg = message_cache_.at(msg_id);
+        if (cache_msg) {
+            cache_msg.value()->set_recalled(is_recalled);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
 } // namespace roc::imsdk::core::message

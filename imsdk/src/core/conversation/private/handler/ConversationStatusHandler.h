@@ -43,8 +43,6 @@ private:
 
     boost::asio::awaitable<std::expected<bool, roc::error::Error>> p_setStatus(CTX_T, std::string cid);
 
-    boost::asio::awaitable<void> p_onStatusChange(CTX_T, std::shared_ptr<const network::CmdMessage> resp);
-
     void p_registTopOnHandler();
     void p_registMuteHandler();
     void p_registBlockHandler();

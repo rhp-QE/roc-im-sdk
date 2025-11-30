@@ -59,6 +59,24 @@ public:
     /// 获取会话最大 order_index
     int64_t NextMsgOrderInConv(CTX_T, std::string conv_id);
 
+    /// 设置消息置顶状态
+    bool SetMessagePin(CTX_T, const std::string &msg_id, bool is_pinned);
+
+    /// 设置消息同步扩展字段（会与现有字段合并）
+    bool SetMessageSyncExt(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &sync_ext);
+
+    /// 设置消息属性（整体替换）
+    bool SetMessagePropertys(CTX_T, const std::string &msg_id, const std::vector<int32_t> &propertys);
+
+    /// 设置消息本地扩展字段（会与现有字段合并）
+    bool SetMessageLocalExt(CTX_T, const std::string &msg_id, const std::unordered_map<std::string, std::string> &local_ext);
+
+    /// 设置消息删除状态
+    bool SetMessageDeleted(CTX_T, const std::string &msg_id, bool is_deleted);
+
+    /// 设置消息撤回状态
+    bool SetMessageRecalled(CTX_T, const std::string &msg_id, bool is_recalled);
+
 private:
     std::string p_TableName(CTX_T);
     std::string p_MessageRangeKey(CTX_T, std::string conv_id);

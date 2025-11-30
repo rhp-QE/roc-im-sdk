@@ -6,9 +6,9 @@
 #include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
 #include "imsdk/src/core/message/private/send/SendMessage.h"
 #include "imsdk/src/core/message/private/receive/ReceiveMessage.h"
-#include "imsdk/src/core/message/private/cmd/CmdMessageOperator.h"
 #include "imsdk/src/core/message/private/fetcher/ConvMessagesFetcher.h"
 #include "imsdk/src/core/message/private/convert/Convert.h"
+#include "imsdk/src/core/message/private/handler/MessageStatusHandler.h"
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
@@ -32,8 +32,8 @@ void MessageManager::AllComponentDidLoad() {
     db_opt->CreateMessageTableIfNeed(CTX_V);
     /// 开启消息接收处理逻辑
     receive_message->Start(CTX_V);
-    /// 开启命令消息处理逻辑
-    cmd_message_operator->Start(CTX_V);
+    /// 注册消息状态处理器
+    message_status_handler->AllComponentDidLoad();
 }
 
 void MessageManager::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
@@ -52,19 +52,54 @@ void MessageManager::OnMessages(model::OnMessagesCallbackType callback) {
     on_messages_callback_ = callback;
 }
 
-boost::asio::awaitable<bool> MessageManager::DeleteMessage(const std::vector<std::string> &msg_ids) {
-    // TODO: Implement delete message
-    co_return false;
+
+model::OnMessagesCallbackType MessageManager::OnMessagesCallback() {
+    return on_messages_callback_;
 }
 
-boost::asio::awaitable<bool> MessageManager::RecallMessage(std::string msg_id) {
-    // TODO: Implement recall message
-    co_return false;
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageManager::DeleteMessage(const std::vector<std::string> &msg_ids) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    
+    // 批量删除消息
+    for (const auto& msg_id : msg_ids) {
+        auto result = co_await message_status_handler->Delete(CTX_V, msg_id);
+        if (!result) {
+            co_return result;
+        }
+    }
+    
+    co_return true;
 }
 
-boost::asio::awaitable<bool> MessageManager::UpdateMessageSyncExt(std::string msg_id, std::string key, std::string value) {
-    // TODO: Implement update message sync ext
-    co_return false;
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageManager::RecallMessage(std::string msg_id) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await message_status_handler->Recall(CTX_V, msg_id);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageManager::SetMessagePin(std::string msg_id, bool is_pinned) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await message_status_handler->SetPin(CTX_V, msg_id, is_pinned);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageManager::SetMessageSyncExt(std::string msg_id, const std::unordered_map<std::string, std::string> &sync_ext) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await message_status_handler->SetSyncExt(CTX_V, msg_id, sync_ext);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageManager::SetMessagePropertys(std::string msg_id, const std::vector<int32_t> &propertys) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await message_status_handler->SetPropertys(CTX_V, msg_id, propertys);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageManager::SetMessageLocalExt(std::string msg_id, const std::unordered_map<std::string, std::string> &local_ext) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await message_status_handler->SetLocalExt(CTX_V, msg_id, local_ext);
 }
 
 boost::asio::awaitable<bool> MessageManager::MarkMessagesAsRead(const std::vector<std::string> &msg_ids) {
@@ -114,10 +149,10 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> MessageManag
 void MessageManager::p_InitSubComponents() {
     message_data_source = std::make_unique<message::MessageDataSource>(w_sdk_root);
     receive_message = std::make_unique<message::ReceiveMessage>(w_sdk_root);
-    cmd_message_operator = std::make_unique<message::CmdMessageOperator>(w_sdk_root);
     send_message_controller = std::make_unique<message::SendMessageController>(w_sdk_root);
     db_opt = std::make_unique<message::DBOpt>(w_sdk_root);
     convert = std::make_unique<message::Convert>(w_sdk_root);
+    message_status_handler = std::make_unique<message::MessageStatusHandler>(w_sdk_root);
     conv_messages_fetcher = std::make_unique<message::ConvMessagesFetcher>(w_sdk_root);
 }
 

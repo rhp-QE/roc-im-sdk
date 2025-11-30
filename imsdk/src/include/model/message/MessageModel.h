@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <shared_mutex>
+#include <mutex>
 #include <unordered_map>
 #include <cstdint>
 #include "imsdk/base/include/uncopyable.h"
@@ -92,6 +93,36 @@ private:
     std::unordered_map<std::string, std::string>  local_ext_;
     
     std::vector<int32_t> propertys_;
+
+    void set_pinned(bool is_pinned) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        is_pinned_ = is_pinned;
+    }
+
+    void set_sync_ext(const std::unordered_map<std::string, std::string> &sync_ext) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        sync_ext_ = sync_ext;
+    }
+
+    void set_propertys(const std::vector<int32_t> &propertys) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        propertys_ = propertys;
+    }
+
+    void set_local_ext(const std::unordered_map<std::string, std::string> &local_ext) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        local_ext_ = local_ext;
+    }
+
+    void set_deleted(bool is_deleted) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        is_deleted_ = is_deleted;
+    }
+
+    void set_recalled(bool is_recalled) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        is_recalled_ = is_recalled;
+    }
 };
 
 
@@ -137,8 +168,14 @@ struct OnMessageResult {
     /// 撤回的消息
     std::vector<std::shared_ptr<MessageModel>> recalled_msgs;
 
-    /// 更新的消息
-    std::vector<std::shared_ptr<MessageModel>> updated_msgs; 
+    // syncExt 发生改变的消息
+    std::vector<std::shared_ptr<MessageModel>> sync_ext_changed_msgs;
+
+    // property 发生改变的消息
+    std::vector<std::shared_ptr<MessageModel>> property_changed_msgs;
+
+    // pin 发生改变的消息
+    std::vector<std::shared_ptr<MessageModel>> pin_changed_msgs;
 
     /// 实时消息 (在线收到的消息)
     std::vector<std::shared_ptr<MessageModel>> real_time_msgs;
