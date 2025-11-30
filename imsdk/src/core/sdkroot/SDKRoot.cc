@@ -16,6 +16,7 @@
 #include <boost/beast/http/field.hpp>
 #include <memory>
 
+#include "imsdk/src/core/cmd/CmdCenter.h"
 #include "imsdk/src/core/group/GroupManager.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
@@ -60,22 +61,25 @@ asio::awaitable<bool> SDKRoot::InitSdk(const Config config) {
         mmkv_ = MMKV::mmkvWithID(config_.user_id);
     }
 
+    auto sdk_root = shared_from_this();
+    auto w_sdk_root = weak_from_this();
+
     {
-        group_manager_ = std::make_unique<core::GroupManager>(shared_from_this());
-        message_manager_ = std::make_unique<core::MessageManager>(shared_from_this(), sdk_io_context().get_executor());
-        conversation_manager_ = std::make_unique<core::ConversationManager>(shared_from_this(), sdk_io_context().get_executor());
+        cmd_center_ = std::make_unique<core::CmdCenter>(sdk_root);
+        group_manager_ = std::make_unique<core::GroupManager>(sdk_root);
         connection_manager_ = std::make_unique<network::SDKConnectionManager>(net_io_context());
+        message_manager_ = std::make_unique<core::MessageManager>(sdk_root, sdk_io_context().get_executor());
+        conversation_manager_ = std::make_unique<core::ConversationManager>(sdk_root, sdk_io_context().get_executor());
     }
 
     {
+        cmd_center()->AllComponentDidLoad();
         GroupManager()->AllComponentDidLoad();
         MessageManager()->AllComponentDidLoad();
         ConversationManager()->AllComponentDidLoad();
         ConnectionManager()->AllComponentDidLoad();
     }
 
-    auto sdk_root = shared_from_this();
-    auto w_sdk_root = weak_from_this();
 
     START_TRACK;
     LOG_DEBUG("SDKRoot", "init_sdk {}", "over")
@@ -122,6 +126,10 @@ WCDB::Database* SDKRoot::database() {
 
 MMKV* SDKRoot::mmkv() {
     return mmkv_;
+}
+
+core::CmdCenter* SDKRoot::cmd_center() {
+    return cmd_center_.get();
 }
 
 core::GroupManager* SDKRoot::GroupManager() {

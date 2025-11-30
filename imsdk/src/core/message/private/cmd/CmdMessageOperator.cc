@@ -31,7 +31,7 @@ void CmdMessageOperator::p_HandlePushMessage(CTX_T, std::shared_ptr<const networ
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     // 必须是命令消息
-    if (resp->type() != static_cast<int>(common::SdkWsEnum::PUSH_CMD_MESSAGE)) {
+    if (resp->type() != static_cast<int>(common::SDKWSMethod::PUSH_CMD_MESSAGE)) {
         return;
     }
 
@@ -41,18 +41,18 @@ void CmdMessageOperator::p_HandlePushMessage(CTX_T, std::shared_ptr<const networ
     }
 
     switch (cmd_msg->cmd()) {
-        // 撤回消息
-        case static_cast<int>(common::CmdMessageOp::Recall):
-            boost::asio::co_spawn(sdk_root->net_io_context(), p_HandleRecallMessage(CTX_V, cmd_msg), boost::asio::detached);
-            break;
-        // 删除消息
-        case static_cast<int>(common::CmdMessageOp::Delete):
-            boost::asio::co_spawn(sdk_root->net_io_context(), p_HandleDeleteMessage(CTX_V, cmd_msg), boost::asio::detached);
-            break;
-        // 更新消息
-        case static_cast<int>(common::CmdMessageOp::Update):
-            boost::asio::co_spawn(sdk_root->net_io_context(), p_HandleUpdateMessage(CTX_V, cmd_msg), boost::asio::detached);
-            break;
+        // // 撤回消息
+        // case static_cast<int>(common::CmdMessageOp::Recall):
+        //     boost::asio::co_spawn(sdk_root->net_io_context(), p_HandleRecallMessage(CTX_V, cmd_msg), boost::asio::detached);
+        //     break;
+        // // 删除消息
+        // case static_cast<int>(common::CmdMessageOp::Delete):
+        //     boost::asio::co_spawn(sdk_root->net_io_context(), p_HandleDeleteMessage(CTX_V, cmd_msg), boost::asio::detached);
+        //     break;
+        // // 更新消息
+        // case static_cast<int>(common::CmdMessageOp::Update):
+        //     boost::asio::co_spawn(sdk_root->net_io_context(), p_HandleUpdateMessage(CTX_V, cmd_msg), boost::asio::detached);
+        //     break;
     }
 }
 

@@ -3,7 +3,7 @@
 #include "imsdk/base/include/utils/utils.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
-#include "imsdk/src/core/conversation/private/save/SaveConversation.h"
+#include "imsdk/src/core/conversation/private/datasource/ConvDatasource.h"
 
 namespace roc::imsdk::core::conversation {
 
@@ -21,7 +21,7 @@ boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CTX_
     auto conv_manager = sdk_root->ConversationManager();
 
     // 保存会话
-    auto sdk_convs = co_await conv_manager->save_conversation->SaveNetConversations(CTX_V, std::move(conversations));
+    auto sdk_convs = co_await conv_manager->conv_datasource->SaveNetConversations(CTX_V, std::move(conversations));
 
     LOG_INFO("ConvManager", "handleReceiveConversation, sdk_convs: {}", sdk_convs.size());
 

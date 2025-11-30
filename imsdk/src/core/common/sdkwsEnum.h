@@ -3,12 +3,16 @@
 #include <cstdint>
 namespace roc::imsdk::core::common {
 
-enum class SdkWsEnum {
-    SEND_MESSAGE       = 101,
-    PULL_SINGLE_LIST   = 102,
-    PULL_MIX_LIST      = 103,
-    PUSH_USER_MESSAGE  = 104,
-    PUSH_CMD_MESSAGE   = 105,
+static int32_t SDKWSService = 6000;
+enum class SDKWSMethod : int32_t {
+    SEND_MESSAGE                  = 101, /// 发送消息
+    PULL_SINGLE_LIST              = 102, /// 拉取单链
+    PULL_MIX_LIST                 = 103, /// 拉取混链
+    PUSH_USER_MESSAGE             = 104, /// 下推用户消息
+    PUSH_CMD_MESSAGE              = 105, /// 下推命令消息
+    USER_MESSGAGE_INTEGRITY_CHECK = 106, /// 混链拉取会话完整性校验
+    MESSAGE_CHANGE                = 107, /// 消息改变 请求
+    CONVERSATION_CHANGE           = 108, /// 会话改变 请求
 };
 
 enum class MsgDStatus : int32_t {
@@ -18,9 +22,6 @@ enum class MsgDStatus : int32_t {
 
 /// 命令消息操作类型
 enum class CmdMessageOp : int32_t {
-    Recall  = 1,  // 撤回
-    Delete  = 2,  // 删除
-    Update  = 3,  // 更新
 
     MSG_STATUS_CHANGED      = 1001, // 消息状态发生变化 (发送成功、发送失败、删除、撤回)
     MSG_READ_CHANGED        = 1002, // 已读状态发生变化
@@ -31,19 +32,10 @@ enum class CmdMessageOp : int32_t {
     CONV_STATUS_CHANGED     = 2001, // 会话删除状态发生变化
     CONV_READ_CHANGED       = 2002, // 会话已读状态发生变化
     CONV_TOP_CHANGED        = 2003, // 会话置顶状态发生变化
+    CONV_MUTE_CHANGE        = 2004, // 会话免打扰状态发生改变
+    CONV_BLOCK_CHANGE       = 2005, // 会话拉黑状态发生改变
     // CONV_PROPERTY_CHANGED   = 2004, // 会话property 发生改变
-    CONV_SYNC_EXT_CHANGED   = 2005, // 会话syncExt 发生改变
-};
-
-enum class CmdConvOp : int32_t {
-    SetTop        = 1,  // 置顶
-    CancelTop     = 2,  // 取消置顶
-    SetMute       = 3,  // 设置静音
-    CancelMute    = 4,  // 取消静音
-    SetDelete     = 5,  // 设置删除
-    CancelDelete  = 6,  // 取消删除
-    SetBlock      = 7,  // 设置屏蔽
-    CancelBlock   = 8,  // 取消屏蔽
+    CONV_SYNC_EXT_CHANGED   = 2006, // 会话syncExt 发生改变
 };
 
 }
@@ -54,7 +46,12 @@ enum class SDKRequestType : int32_t {
     SEND_MESSAGE                 = 101, // 发送消息
     FETCH_CONV_MESSAGE_LIST      = 102, // 拉取单链
     FETCH_USER_MESSAGE_LIST      = 103, // 拉取混链
-    USER_MESSAGE_INTEGRITY_CHECK = 104, // 混链消息 check
+    USER_MESSAGE_INTEGRITY_CHECK = 104, // 混链消息检查
+
+    CONV_STATUS_TOP_ON_CHANGE    = 301, // 会话置顶
+    CONV_STATUS_BLOCK_CHANGE     = 302, // 会话拉黑
+    CONV_STATUS_MUTE_CHANGE      = 303, // 会话禁言
+    CONV_STATUS_SYNC_EXT_CHANGE  = 304, // 会话ext变更
 };
     
 };

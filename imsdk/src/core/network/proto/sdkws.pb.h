@@ -40,7 +40,7 @@ namespace protobuf_sdkws_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[96];
+  static const ::google::protobuf::internal::ParseTable schema[106];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -102,6 +102,24 @@ void InitDefaultsPushMessagesImpl();
 void InitDefaultsPushMessages();
 void InitDefaultsCmdMessageImpl();
 void InitDefaultsCmdMessage();
+void InitDefaultsCmdMessageArrayImpl();
+void InitDefaultsCmdMessageArray();
+void InitDefaultsChangeMessageItemReqImpl();
+void InitDefaultsChangeMessageItemReq();
+void InitDefaultsChangeMessageItemRespImpl();
+void InitDefaultsChangeMessageItemResp();
+void InitDefaultsChangeMessageRespImpl();
+void InitDefaultsChangeMessageResp();
+void InitDefaultsChangeMessageReqImpl();
+void InitDefaultsChangeMessageReq();
+void InitDefaultsChangeConversationItemReqImpl();
+void InitDefaultsChangeConversationItemReq();
+void InitDefaultsChangeConversationItemRespImpl();
+void InitDefaultsChangeConversationItemResp();
+void InitDefaultsChangeConversationRespImpl();
+void InitDefaultsChangeConversationResp();
+void InitDefaultsChangeConversationReqImpl();
+void InitDefaultsChangeConversationReq();
 void InitDefaultsFetchConvMessageListReqImpl();
 void InitDefaultsFetchConvMessageListReq();
 void InitDefaultsFetchConvMessageListRespImpl();
@@ -114,6 +132,8 @@ void InitDefaultsUserMessageIntegrityCheckReqImpl();
 void InitDefaultsUserMessageIntegrityCheckReq();
 void InitDefaultsUserMessageIntegrityCheckRespImpl();
 void InitDefaultsUserMessageIntegrityCheckResp();
+void InitDefaultsConversationInfoArrayImpl();
+void InitDefaultsConversationInfoArray();
 void InitDefaultsSdkWSReqImpl();
 void InitDefaultsSdkWSReq();
 void InitDefaultsSdkWSRespImpl();
@@ -263,12 +283,22 @@ inline void InitDefaults() {
   InitDefaultsSendMessageResp();
   InitDefaultsPushMessages();
   InitDefaultsCmdMessage();
+  InitDefaultsCmdMessageArray();
+  InitDefaultsChangeMessageItemReq();
+  InitDefaultsChangeMessageItemResp();
+  InitDefaultsChangeMessageResp();
+  InitDefaultsChangeMessageReq();
+  InitDefaultsChangeConversationItemReq();
+  InitDefaultsChangeConversationItemResp();
+  InitDefaultsChangeConversationResp();
+  InitDefaultsChangeConversationReq();
   InitDefaultsFetchConvMessageListReq();
   InitDefaultsFetchConvMessageListResp();
   InitDefaultsFetchUserMessageListReq();
   InitDefaultsFetchUserMessageListResp();
   InitDefaultsUserMessageIntegrityCheckReq();
   InitDefaultsUserMessageIntegrityCheckResp();
+  InitDefaultsConversationInfoArray();
   InitDefaultsSdkWSReq();
   InitDefaultsSdkWSResp();
   InitDefaultsOfflinePushInfo();
@@ -343,18 +373,48 @@ extern BlackDeletedTipsDefaultTypeInternal _BlackDeletedTips_default_instance_;
 class BlackInfo;
 class BlackInfoDefaultTypeInternal;
 extern BlackInfoDefaultTypeInternal _BlackInfo_default_instance_;
+class ChangeConversationItemReq;
+class ChangeConversationItemReqDefaultTypeInternal;
+extern ChangeConversationItemReqDefaultTypeInternal _ChangeConversationItemReq_default_instance_;
+class ChangeConversationItemResp;
+class ChangeConversationItemRespDefaultTypeInternal;
+extern ChangeConversationItemRespDefaultTypeInternal _ChangeConversationItemResp_default_instance_;
+class ChangeConversationReq;
+class ChangeConversationReqDefaultTypeInternal;
+extern ChangeConversationReqDefaultTypeInternal _ChangeConversationReq_default_instance_;
+class ChangeConversationResp;
+class ChangeConversationRespDefaultTypeInternal;
+extern ChangeConversationRespDefaultTypeInternal _ChangeConversationResp_default_instance_;
+class ChangeMessageItemReq;
+class ChangeMessageItemReqDefaultTypeInternal;
+extern ChangeMessageItemReqDefaultTypeInternal _ChangeMessageItemReq_default_instance_;
+class ChangeMessageItemResp;
+class ChangeMessageItemRespDefaultTypeInternal;
+extern ChangeMessageItemRespDefaultTypeInternal _ChangeMessageItemResp_default_instance_;
+class ChangeMessageReq;
+class ChangeMessageReqDefaultTypeInternal;
+extern ChangeMessageReqDefaultTypeInternal _ChangeMessageReq_default_instance_;
+class ChangeMessageResp;
+class ChangeMessageRespDefaultTypeInternal;
+extern ChangeMessageRespDefaultTypeInternal _ChangeMessageResp_default_instance_;
 class ClearConversationTips;
 class ClearConversationTipsDefaultTypeInternal;
 extern ClearConversationTipsDefaultTypeInternal _ClearConversationTips_default_instance_;
 class CmdMessage;
 class CmdMessageDefaultTypeInternal;
 extern CmdMessageDefaultTypeInternal _CmdMessage_default_instance_;
+class CmdMessageArray;
+class CmdMessageArrayDefaultTypeInternal;
+extern CmdMessageArrayDefaultTypeInternal _CmdMessageArray_default_instance_;
 class ConversationHasReadTips;
 class ConversationHasReadTipsDefaultTypeInternal;
 extern ConversationHasReadTipsDefaultTypeInternal _ConversationHasReadTips_default_instance_;
 class ConversationInfo;
 class ConversationInfoDefaultTypeInternal;
 extern ConversationInfoDefaultTypeInternal _ConversationInfo_default_instance_;
+class ConversationInfoArray;
+class ConversationInfoArrayDefaultTypeInternal;
+extern ConversationInfoArrayDefaultTypeInternal _ConversationInfoArray_default_instance_;
 class ConversationSetPrivateTips;
 class ConversationSetPrivateTipsDefaultTypeInternal;
 extern ConversationSetPrivateTipsDefaultTypeInternal _ConversationSetPrivateTips_default_instance_;
@@ -4581,6 +4641,12 @@ class CmdMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::roc::imsdk::network::ConversationInfo* mutable_convinfo();
   void set_allocated_convinfo(::roc::imsdk::network::ConversationInfo* convinfo);
 
+  // int64 cursor = 4;
+  void clear_cursor();
+  static const int kCursorFieldNumber = 4;
+  ::google::protobuf::int64 cursor() const;
+  void set_cursor(::google::protobuf::int64 value);
+
   // int32 cmd = 1;
   void clear_cmd();
   static const int kCmdFieldNumber = 1;
@@ -4593,10 +4659,116 @@ class CmdMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::roc::imsdk::network::MsgData* msg_;
   ::roc::imsdk::network::ConversationInfo* convinfo_;
+  ::google::protobuf::int64 cursor_;
   ::google::protobuf::int32 cmd_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageImpl();
+};
+// -------------------------------------------------------------------
+
+class CmdMessageArray : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.CmdMessageArray) */ {
+ public:
+  CmdMessageArray();
+  virtual ~CmdMessageArray();
+
+  CmdMessageArray(const CmdMessageArray& from);
+
+  inline CmdMessageArray& operator=(const CmdMessageArray& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  CmdMessageArray(CmdMessageArray&& from) noexcept
+    : CmdMessageArray() {
+    *this = ::std::move(from);
+  }
+
+  inline CmdMessageArray& operator=(CmdMessageArray&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CmdMessageArray& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const CmdMessageArray* internal_default_instance() {
+    return reinterpret_cast<const CmdMessageArray*>(
+               &_CmdMessageArray_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    28;
+
+  void Swap(CmdMessageArray* other);
+  friend void swap(CmdMessageArray& a, CmdMessageArray& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline CmdMessageArray* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  CmdMessageArray* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const CmdMessageArray& from);
+  void MergeFrom(const CmdMessageArray& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(CmdMessageArray* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .roc.imsdk.network.CmdMessage cmdMsgs = 1;
+  int cmdmsgs_size() const;
+  void clear_cmdmsgs();
+  static const int kCmdMsgsFieldNumber = 1;
+  const ::roc::imsdk::network::CmdMessage& cmdmsgs(int index) const;
+  ::roc::imsdk::network::CmdMessage* mutable_cmdmsgs(int index);
+  ::roc::imsdk::network::CmdMessage* add_cmdmsgs();
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >*
+      mutable_cmdmsgs();
+  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >&
+      cmdmsgs() const;
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.CmdMessageArray)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage > cmdmsgs_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageArrayImpl();
 };
 // -------------------------------------------------------------------
 
@@ -4635,7 +4807,7 @@ class MessageUnion : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_MessageUnion_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    29;
 
   void Swap(MessageUnion* other);
   friend void swap(MessageUnion& a, MessageUnion& b) {
@@ -4719,6 +4891,886 @@ class MessageUnion : public ::google::protobuf::Message /* @@protoc_insertion_po
 };
 // -------------------------------------------------------------------
 
+class ChangeMessageItemReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeMessageItemReq) */ {
+ public:
+  ChangeMessageItemReq();
+  virtual ~ChangeMessageItemReq();
+
+  ChangeMessageItemReq(const ChangeMessageItemReq& from);
+
+  inline ChangeMessageItemReq& operator=(const ChangeMessageItemReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeMessageItemReq(ChangeMessageItemReq&& from) noexcept
+    : ChangeMessageItemReq() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeMessageItemReq& operator=(ChangeMessageItemReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeMessageItemReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeMessageItemReq* internal_default_instance() {
+    return reinterpret_cast<const ChangeMessageItemReq*>(
+               &_ChangeMessageItemReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    30;
+
+  void Swap(ChangeMessageItemReq* other);
+  friend void swap(ChangeMessageItemReq& a, ChangeMessageItemReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeMessageItemReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeMessageItemReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeMessageItemReq& from);
+  void MergeFrom(const ChangeMessageItemReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeMessageItemReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .roc.imsdk.network.MsgData message = 2;
+  bool has_message() const;
+  void clear_message();
+  static const int kMessageFieldNumber = 2;
+  const ::roc::imsdk::network::MsgData& message() const;
+  ::roc::imsdk::network::MsgData* release_message();
+  ::roc::imsdk::network::MsgData* mutable_message();
+  void set_allocated_message(::roc::imsdk::network::MsgData* message);
+
+  // int32 cmd = 1;
+  void clear_cmd();
+  static const int kCmdFieldNumber = 1;
+  ::google::protobuf::int32 cmd() const;
+  void set_cmd(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeMessageItemReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::roc::imsdk::network::MsgData* message_;
+  ::google::protobuf::int32 cmd_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemReqImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeMessageItemResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeMessageItemResp) */ {
+ public:
+  ChangeMessageItemResp();
+  virtual ~ChangeMessageItemResp();
+
+  ChangeMessageItemResp(const ChangeMessageItemResp& from);
+
+  inline ChangeMessageItemResp& operator=(const ChangeMessageItemResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeMessageItemResp(ChangeMessageItemResp&& from) noexcept
+    : ChangeMessageItemResp() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeMessageItemResp& operator=(ChangeMessageItemResp&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeMessageItemResp& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeMessageItemResp* internal_default_instance() {
+    return reinterpret_cast<const ChangeMessageItemResp*>(
+               &_ChangeMessageItemResp_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    31;
+
+  void Swap(ChangeMessageItemResp* other);
+  friend void swap(ChangeMessageItemResp& a, ChangeMessageItemResp& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeMessageItemResp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeMessageItemResp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeMessageItemResp& from);
+  void MergeFrom(const ChangeMessageItemResp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeMessageItemResp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string errorMsg = 3;
+  void clear_errormsg();
+  static const int kErrorMsgFieldNumber = 3;
+  const ::std::string& errormsg() const;
+  void set_errormsg(const ::std::string& value);
+  #if LANG_CXX11
+  void set_errormsg(::std::string&& value);
+  #endif
+  void set_errormsg(const char* value);
+  void set_errormsg(const char* value, size_t size);
+  ::std::string* mutable_errormsg();
+  ::std::string* release_errormsg();
+  void set_allocated_errormsg(::std::string* errormsg);
+
+  // uint64 errorCode = 2;
+  void clear_errorcode();
+  static const int kErrorCodeFieldNumber = 2;
+  ::google::protobuf::uint64 errorcode() const;
+  void set_errorcode(::google::protobuf::uint64 value);
+
+  // int32 cmd = 1;
+  void clear_cmd();
+  static const int kCmdFieldNumber = 1;
+  ::google::protobuf::int32 cmd() const;
+  void set_cmd(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeMessageItemResp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr errormsg_;
+  ::google::protobuf::uint64 errorcode_;
+  ::google::protobuf::int32 cmd_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemRespImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeMessageResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeMessageResp) */ {
+ public:
+  ChangeMessageResp();
+  virtual ~ChangeMessageResp();
+
+  ChangeMessageResp(const ChangeMessageResp& from);
+
+  inline ChangeMessageResp& operator=(const ChangeMessageResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeMessageResp(ChangeMessageResp&& from) noexcept
+    : ChangeMessageResp() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeMessageResp& operator=(ChangeMessageResp&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeMessageResp& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeMessageResp* internal_default_instance() {
+    return reinterpret_cast<const ChangeMessageResp*>(
+               &_ChangeMessageResp_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    32;
+
+  void Swap(ChangeMessageResp* other);
+  friend void swap(ChangeMessageResp& a, ChangeMessageResp& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeMessageResp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeMessageResp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeMessageResp& from);
+  void MergeFrom(const ChangeMessageResp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeMessageResp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .roc.imsdk.network.ChangeMessageItemResp infos = 1;
+  int infos_size() const;
+  void clear_infos();
+  static const int kInfosFieldNumber = 1;
+  const ::roc::imsdk::network::ChangeMessageItemResp& infos(int index) const;
+  ::roc::imsdk::network::ChangeMessageItemResp* mutable_infos(int index);
+  ::roc::imsdk::network::ChangeMessageItemResp* add_infos();
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemResp >*
+      mutable_infos();
+  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemResp >&
+      infos() const;
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeMessageResp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemResp > infos_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageRespImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeMessageReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeMessageReq) */ {
+ public:
+  ChangeMessageReq();
+  virtual ~ChangeMessageReq();
+
+  ChangeMessageReq(const ChangeMessageReq& from);
+
+  inline ChangeMessageReq& operator=(const ChangeMessageReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeMessageReq(ChangeMessageReq&& from) noexcept
+    : ChangeMessageReq() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeMessageReq& operator=(ChangeMessageReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeMessageReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeMessageReq* internal_default_instance() {
+    return reinterpret_cast<const ChangeMessageReq*>(
+               &_ChangeMessageReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    33;
+
+  void Swap(ChangeMessageReq* other);
+  friend void swap(ChangeMessageReq& a, ChangeMessageReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeMessageReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeMessageReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeMessageReq& from);
+  void MergeFrom(const ChangeMessageReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeMessageReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .roc.imsdk.network.ChangeMessageItemReq infos = 1;
+  int infos_size() const;
+  void clear_infos();
+  static const int kInfosFieldNumber = 1;
+  const ::roc::imsdk::network::ChangeMessageItemReq& infos(int index) const;
+  ::roc::imsdk::network::ChangeMessageItemReq* mutable_infos(int index);
+  ::roc::imsdk::network::ChangeMessageItemReq* add_infos();
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemReq >*
+      mutable_infos();
+  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemReq >&
+      infos() const;
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeMessageReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemReq > infos_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageReqImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeConversationItemReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeConversationItemReq) */ {
+ public:
+  ChangeConversationItemReq();
+  virtual ~ChangeConversationItemReq();
+
+  ChangeConversationItemReq(const ChangeConversationItemReq& from);
+
+  inline ChangeConversationItemReq& operator=(const ChangeConversationItemReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeConversationItemReq(ChangeConversationItemReq&& from) noexcept
+    : ChangeConversationItemReq() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeConversationItemReq& operator=(ChangeConversationItemReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeConversationItemReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeConversationItemReq* internal_default_instance() {
+    return reinterpret_cast<const ChangeConversationItemReq*>(
+               &_ChangeConversationItemReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    34;
+
+  void Swap(ChangeConversationItemReq* other);
+  friend void swap(ChangeConversationItemReq& a, ChangeConversationItemReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeConversationItemReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeConversationItemReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeConversationItemReq& from);
+  void MergeFrom(const ChangeConversationItemReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeConversationItemReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .roc.imsdk.network.ConversationInfo conversation = 2;
+  bool has_conversation() const;
+  void clear_conversation();
+  static const int kConversationFieldNumber = 2;
+  const ::roc::imsdk::network::ConversationInfo& conversation() const;
+  ::roc::imsdk::network::ConversationInfo* release_conversation();
+  ::roc::imsdk::network::ConversationInfo* mutable_conversation();
+  void set_allocated_conversation(::roc::imsdk::network::ConversationInfo* conversation);
+
+  // int32 cmd = 1;
+  void clear_cmd();
+  static const int kCmdFieldNumber = 1;
+  ::google::protobuf::int32 cmd() const;
+  void set_cmd(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeConversationItemReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::roc::imsdk::network::ConversationInfo* conversation_;
+  ::google::protobuf::int32 cmd_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemReqImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeConversationItemResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeConversationItemResp) */ {
+ public:
+  ChangeConversationItemResp();
+  virtual ~ChangeConversationItemResp();
+
+  ChangeConversationItemResp(const ChangeConversationItemResp& from);
+
+  inline ChangeConversationItemResp& operator=(const ChangeConversationItemResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeConversationItemResp(ChangeConversationItemResp&& from) noexcept
+    : ChangeConversationItemResp() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeConversationItemResp& operator=(ChangeConversationItemResp&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeConversationItemResp& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeConversationItemResp* internal_default_instance() {
+    return reinterpret_cast<const ChangeConversationItemResp*>(
+               &_ChangeConversationItemResp_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    35;
+
+  void Swap(ChangeConversationItemResp* other);
+  friend void swap(ChangeConversationItemResp& a, ChangeConversationItemResp& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeConversationItemResp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeConversationItemResp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeConversationItemResp& from);
+  void MergeFrom(const ChangeConversationItemResp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeConversationItemResp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string errorMsg = 3;
+  void clear_errormsg();
+  static const int kErrorMsgFieldNumber = 3;
+  const ::std::string& errormsg() const;
+  void set_errormsg(const ::std::string& value);
+  #if LANG_CXX11
+  void set_errormsg(::std::string&& value);
+  #endif
+  void set_errormsg(const char* value);
+  void set_errormsg(const char* value, size_t size);
+  ::std::string* mutable_errormsg();
+  ::std::string* release_errormsg();
+  void set_allocated_errormsg(::std::string* errormsg);
+
+  // uint64 errorCode = 2;
+  void clear_errorcode();
+  static const int kErrorCodeFieldNumber = 2;
+  ::google::protobuf::uint64 errorcode() const;
+  void set_errorcode(::google::protobuf::uint64 value);
+
+  // int32 cmd = 1;
+  void clear_cmd();
+  static const int kCmdFieldNumber = 1;
+  ::google::protobuf::int32 cmd() const;
+  void set_cmd(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeConversationItemResp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr errormsg_;
+  ::google::protobuf::uint64 errorcode_;
+  ::google::protobuf::int32 cmd_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemRespImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeConversationResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeConversationResp) */ {
+ public:
+  ChangeConversationResp();
+  virtual ~ChangeConversationResp();
+
+  ChangeConversationResp(const ChangeConversationResp& from);
+
+  inline ChangeConversationResp& operator=(const ChangeConversationResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeConversationResp(ChangeConversationResp&& from) noexcept
+    : ChangeConversationResp() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeConversationResp& operator=(ChangeConversationResp&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeConversationResp& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeConversationResp* internal_default_instance() {
+    return reinterpret_cast<const ChangeConversationResp*>(
+               &_ChangeConversationResp_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    36;
+
+  void Swap(ChangeConversationResp* other);
+  friend void swap(ChangeConversationResp& a, ChangeConversationResp& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeConversationResp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeConversationResp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeConversationResp& from);
+  void MergeFrom(const ChangeConversationResp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeConversationResp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .roc.imsdk.network.ChangeConversationItemResp infos = 1;
+  int infos_size() const;
+  void clear_infos();
+  static const int kInfosFieldNumber = 1;
+  const ::roc::imsdk::network::ChangeConversationItemResp& infos(int index) const;
+  ::roc::imsdk::network::ChangeConversationItemResp* mutable_infos(int index);
+  ::roc::imsdk::network::ChangeConversationItemResp* add_infos();
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemResp >*
+      mutable_infos();
+  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemResp >&
+      infos() const;
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeConversationResp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemResp > infos_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationRespImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeConversationReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ChangeConversationReq) */ {
+ public:
+  ChangeConversationReq();
+  virtual ~ChangeConversationReq();
+
+  ChangeConversationReq(const ChangeConversationReq& from);
+
+  inline ChangeConversationReq& operator=(const ChangeConversationReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeConversationReq(ChangeConversationReq&& from) noexcept
+    : ChangeConversationReq() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeConversationReq& operator=(ChangeConversationReq&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeConversationReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeConversationReq* internal_default_instance() {
+    return reinterpret_cast<const ChangeConversationReq*>(
+               &_ChangeConversationReq_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    37;
+
+  void Swap(ChangeConversationReq* other);
+  friend void swap(ChangeConversationReq& a, ChangeConversationReq& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeConversationReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ChangeConversationReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeConversationReq& from);
+  void MergeFrom(const ChangeConversationReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeConversationReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .roc.imsdk.network.ChangeConversationItemReq infos = 1;
+  int infos_size() const;
+  void clear_infos();
+  static const int kInfosFieldNumber = 1;
+  const ::roc::imsdk::network::ChangeConversationItemReq& infos(int index) const;
+  ::roc::imsdk::network::ChangeConversationItemReq* mutable_infos(int index);
+  ::roc::imsdk::network::ChangeConversationItemReq* add_infos();
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemReq >*
+      mutable_infos();
+  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemReq >&
+      infos() const;
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ChangeConversationReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemReq > infos_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationReqImpl();
+};
+// -------------------------------------------------------------------
+
 class FetchConvMessageListReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.FetchConvMessageListReq) */ {
  public:
   FetchConvMessageListReq();
@@ -4754,7 +5806,7 @@ class FetchConvMessageListReq : public ::google::protobuf::Message /* @@protoc_i
                &_FetchConvMessageListReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    38;
 
   void Swap(FetchConvMessageListReq* other);
   friend void swap(FetchConvMessageListReq& a, FetchConvMessageListReq& b) {
@@ -4882,7 +5934,7 @@ class FetchConvMessageListResp : public ::google::protobuf::Message /* @@protoc_
                &_FetchConvMessageListResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    39;
 
   void Swap(FetchConvMessageListResp* other);
   friend void swap(FetchConvMessageListResp& a, FetchConvMessageListResp& b) {
@@ -4994,7 +6046,7 @@ class FetchUserMessageListReq : public ::google::protobuf::Message /* @@protoc_i
                &_FetchUserMessageListReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    40;
 
   void Swap(FetchUserMessageListReq* other);
   friend void swap(FetchUserMessageListReq& a, FetchUserMessageListReq& b) {
@@ -5129,7 +6181,7 @@ class ConversationInfo : public ::google::protobuf::Message /* @@protoc_insertio
                &_ConversationInfo_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    32;
+    41;
 
   void Swap(ConversationInfo* other);
   friend void swap(ConversationInfo& a, ConversationInfo& b) {
@@ -5383,7 +6435,7 @@ class FetchUserMessageListResp : public ::google::protobuf::Message /* @@protoc_
                &_FetchUserMessageListResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    33;
+    42;
 
   void Swap(FetchUserMessageListResp* other);
   friend void swap(FetchUserMessageListResp& a, FetchUserMessageListResp& b) {
@@ -5509,7 +6561,7 @@ class UserMessageIntegrityCheckReq : public ::google::protobuf::Message /* @@pro
                &_UserMessageIntegrityCheckReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    34;
+    43;
 
   void Swap(UserMessageIntegrityCheckReq* other);
   friend void swap(UserMessageIntegrityCheckReq& a, UserMessageIntegrityCheckReq& b) {
@@ -5653,7 +6705,7 @@ class UserMessageIntegrityCheckResp : public ::google::protobuf::Message /* @@pr
                &_UserMessageIntegrityCheckResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    35;
+    44;
 
   void Swap(UserMessageIntegrityCheckResp* other);
   friend void swap(UserMessageIntegrityCheckResp& a, UserMessageIntegrityCheckResp& b) {
@@ -5744,6 +6796,111 @@ class UserMessageIntegrityCheckResp : public ::google::protobuf::Message /* @@pr
 };
 // -------------------------------------------------------------------
 
+class ConversationInfoArray : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.ConversationInfoArray) */ {
+ public:
+  ConversationInfoArray();
+  virtual ~ConversationInfoArray();
+
+  ConversationInfoArray(const ConversationInfoArray& from);
+
+  inline ConversationInfoArray& operator=(const ConversationInfoArray& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ConversationInfoArray(ConversationInfoArray&& from) noexcept
+    : ConversationInfoArray() {
+    *this = ::std::move(from);
+  }
+
+  inline ConversationInfoArray& operator=(ConversationInfoArray&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ConversationInfoArray& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ConversationInfoArray* internal_default_instance() {
+    return reinterpret_cast<const ConversationInfoArray*>(
+               &_ConversationInfoArray_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    45;
+
+  void Swap(ConversationInfoArray* other);
+  friend void swap(ConversationInfoArray& a, ConversationInfoArray& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ConversationInfoArray* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ConversationInfoArray* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ConversationInfoArray& from);
+  void MergeFrom(const ConversationInfoArray& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ConversationInfoArray* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .roc.imsdk.network.ConversationInfo convs = 1;
+  int convs_size() const;
+  void clear_convs();
+  static const int kConvsFieldNumber = 1;
+  const ::roc::imsdk::network::ConversationInfo& convs(int index) const;
+  ::roc::imsdk::network::ConversationInfo* mutable_convs(int index);
+  ::roc::imsdk::network::ConversationInfo* add_convs();
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >*
+      mutable_convs();
+  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >&
+      convs() const;
+
+  // @@protoc_insertion_point(class_scope:roc.imsdk.network.ConversationInfoArray)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo > convs_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_sdkws_2eproto::TableStruct;
+  friend void ::protobuf_sdkws_2eproto::InitDefaultsConversationInfoArrayImpl();
+};
+// -------------------------------------------------------------------
+
 class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.SdkWSReq) */ {
  public:
   SdkWSReq();
@@ -5779,7 +6936,7 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_SdkWSReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    36;
+    46;
 
   void Swap(SdkWSReq* other);
   friend void swap(SdkWSReq& a, SdkWSReq& b) {
@@ -5908,6 +7065,18 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::int32 trackid() const;
   void set_trackid(::google::protobuf::int32 value);
 
+  // int32 service = 8;
+  void clear_service();
+  static const int kServiceFieldNumber = 8;
+  ::google::protobuf::int32 service() const;
+  void set_service(::google::protobuf::int32 value);
+
+  // int32 method = 9;
+  void clear_method();
+  static const int kMethodFieldNumber = 9;
+  ::google::protobuf::int32 method() const;
+  void set_method(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.SdkWSReq)
  private:
 
@@ -5919,6 +7088,8 @@ class SdkWSReq : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::ArenaStringPtr data_;
   ::google::protobuf::int32 type_;
   ::google::protobuf::int32 trackid_;
+  ::google::protobuf::int32 service_;
+  ::google::protobuf::int32 method_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsSdkWSReqImpl();
@@ -5960,7 +7131,7 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_SdkWSResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    37;
+    47;
 
   void Swap(SdkWSResp* other);
   friend void swap(SdkWSResp& a, SdkWSResp& b) {
@@ -6105,9 +7276,9 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_data();
   void set_allocated_data(::std::string* data);
 
-  // string logID = 10;
+  // string logID = 12;
   void clear_logid();
-  static const int kLogIDFieldNumber = 10;
+  static const int kLogIDFieldNumber = 12;
   const ::std::string& logid() const;
   void set_logid(const ::std::string& value);
   #if LANG_CXX11
@@ -6125,9 +7296,21 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::int32 type() const;
   void set_type(::google::protobuf::int32 value);
 
-  // int32 trackID = 9;
+  // int32 service = 9;
+  void clear_service();
+  static const int kServiceFieldNumber = 9;
+  ::google::protobuf::int32 service() const;
+  void set_service(::google::protobuf::int32 value);
+
+  // int32 method = 10;
+  void clear_method();
+  static const int kMethodFieldNumber = 10;
+  ::google::protobuf::int32 method() const;
+  void set_method(::google::protobuf::int32 value);
+
+  // int32 trackID = 11;
   void clear_trackid();
-  static const int kTrackIDFieldNumber = 9;
+  static const int kTrackIDFieldNumber = 11;
   ::google::protobuf::int32 trackid() const;
   void set_trackid(::google::protobuf::int32 value);
 
@@ -6144,6 +7327,8 @@ class SdkWSResp : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::ArenaStringPtr data_;
   ::google::protobuf::internal::ArenaStringPtr logid_;
   ::google::protobuf::int32 type_;
+  ::google::protobuf::int32 service_;
+  ::google::protobuf::int32 method_;
   ::google::protobuf::int32 trackid_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
@@ -6186,7 +7371,7 @@ class OfflinePushInfo : public ::google::protobuf::Message /* @@protoc_insertion
                &_OfflinePushInfo_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    38;
+    48;
 
   void Swap(OfflinePushInfo* other);
   friend void swap(OfflinePushInfo& a, OfflinePushInfo& b) {
@@ -6360,7 +7545,7 @@ class TipsComm : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_TipsComm_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    39;
+    49;
 
   void Swap(TipsComm* other);
   friend void swap(TipsComm& a, TipsComm& b) {
@@ -6497,7 +7682,7 @@ class PullMixListReq : public ::google::protobuf::Message /* @@protoc_insertion_
                &_PullMixListReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    40;
+    50;
 
   void Swap(PullMixListReq* other);
   friend void swap(PullMixListReq& a, PullMixListReq& b) {
@@ -6617,7 +7802,7 @@ class PullMixListResp : public ::google::protobuf::Message /* @@protoc_insertion
                &_PullMixListResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    41;
+    51;
 
   void Swap(PullMixListResp* other);
   friend void swap(PullMixListResp& a, PullMixListResp& b) {
@@ -6722,7 +7907,7 @@ class PullSingleListReq : public ::google::protobuf::Message /* @@protoc_inserti
                &_PullSingleListReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    42;
+    52;
 
   void Swap(PullSingleListReq* other);
   friend void swap(PullSingleListReq& a, PullSingleListReq& b) {
@@ -6850,7 +8035,7 @@ class PullSingleListResp : public ::google::protobuf::Message /* @@protoc_insert
                &_PullSingleListResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    43;
+    53;
 
   void Swap(PullSingleListResp* other);
   friend void swap(PullSingleListResp& a, PullSingleListResp& b) {
@@ -6955,7 +8140,7 @@ class GroupCreatedTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_GroupCreatedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    44;
+    54;
 
   void Swap(GroupCreatedTips* other);
   friend void swap(GroupCreatedTips& a, GroupCreatedTips& b) {
@@ -7119,7 +8304,7 @@ class GroupInfoSetTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_GroupInfoSetTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    45;
+    55;
 
   void Swap(GroupInfoSetTips* other);
   friend void swap(GroupInfoSetTips& a, GroupInfoSetTips& b) {
@@ -7260,7 +8445,7 @@ class GroupInfoSetNameTips : public ::google::protobuf::Message /* @@protoc_inse
                &_GroupInfoSetNameTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    46;
+    56;
 
   void Swap(GroupInfoSetNameTips* other);
   friend void swap(GroupInfoSetNameTips& a, GroupInfoSetNameTips& b) {
@@ -7394,7 +8579,7 @@ class GroupInfoSetAnnouncementTips : public ::google::protobuf::Message /* @@pro
                &_GroupInfoSetAnnouncementTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    47;
+    57;
 
   void Swap(GroupInfoSetAnnouncementTips* other);
   friend void swap(GroupInfoSetAnnouncementTips& a, GroupInfoSetAnnouncementTips& b) {
@@ -7528,7 +8713,7 @@ class JoinGroupApplicationTips : public ::google::protobuf::Message /* @@protoc_
                &_JoinGroupApplicationTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    48;
+    58;
 
   void Swap(JoinGroupApplicationTips* other);
   friend void swap(JoinGroupApplicationTips& a, JoinGroupApplicationTips& b) {
@@ -7655,7 +8840,7 @@ class MemberQuitTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_MemberQuitTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    49;
+    59;
 
   void Swap(MemberQuitTips* other);
   friend void swap(MemberQuitTips& a, MemberQuitTips& b) {
@@ -7796,7 +8981,7 @@ class GroupApplicationAcceptedTips : public ::google::protobuf::Message /* @@pro
                &_GroupApplicationAcceptedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    50;
+    60;
 
   void Swap(GroupApplicationAcceptedTips* other);
   friend void swap(GroupApplicationAcceptedTips& a, GroupApplicationAcceptedTips& b) {
@@ -7930,7 +9115,7 @@ class GroupApplicationRejectedTips : public ::google::protobuf::Message /* @@pro
                &_GroupApplicationRejectedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    51;
+    61;
 
   void Swap(GroupApplicationRejectedTips* other);
   friend void swap(GroupApplicationRejectedTips& a, GroupApplicationRejectedTips& b) {
@@ -8064,7 +9249,7 @@ class GroupOwnerTransferredTips : public ::google::protobuf::Message /* @@protoc
                &_GroupOwnerTransferredTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    52;
+    62;
 
   void Swap(GroupOwnerTransferredTips* other);
   friend void swap(GroupOwnerTransferredTips& a, GroupOwnerTransferredTips& b) {
@@ -8240,7 +9425,7 @@ class MemberKickedTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_MemberKickedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    53;
+    63;
 
   void Swap(MemberKickedTips* other);
   friend void swap(MemberKickedTips& a, MemberKickedTips& b) {
@@ -8394,7 +9579,7 @@ class MemberInvitedTips : public ::google::protobuf::Message /* @@protoc_inserti
                &_MemberInvitedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    54;
+    64;
 
   void Swap(MemberInvitedTips* other);
   friend void swap(MemberInvitedTips& a, MemberInvitedTips& b) {
@@ -8558,7 +9743,7 @@ class MemberEnterTips : public ::google::protobuf::Message /* @@protoc_insertion
                &_MemberEnterTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    55;
+    65;
 
   void Swap(MemberEnterTips* other);
   friend void swap(MemberEnterTips& a, MemberEnterTips& b) {
@@ -8699,7 +9884,7 @@ class GroupDismissedTips : public ::google::protobuf::Message /* @@protoc_insert
                &_GroupDismissedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    56;
+    66;
 
   void Swap(GroupDismissedTips* other);
   friend void swap(GroupDismissedTips& a, GroupDismissedTips& b) {
@@ -8818,7 +10003,7 @@ class GroupMemberMutedTips : public ::google::protobuf::Message /* @@protoc_inse
                &_GroupMemberMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    57;
+    67;
 
   void Swap(GroupMemberMutedTips* other);
   friend void swap(GroupMemberMutedTips& a, GroupMemberMutedTips& b) {
@@ -8976,7 +10161,7 @@ class GroupMemberCancelMutedTips : public ::google::protobuf::Message /* @@proto
                &_GroupMemberCancelMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    58;
+    68;
 
   void Swap(GroupMemberCancelMutedTips* other);
   friend void swap(GroupMemberCancelMutedTips& a, GroupMemberCancelMutedTips& b) {
@@ -9127,7 +10312,7 @@ class GroupMutedTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_GroupMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    59;
+    69;
 
   void Swap(GroupMutedTips* other);
   friend void swap(GroupMutedTips& a, GroupMutedTips& b) {
@@ -9268,7 +10453,7 @@ class GroupCancelMutedTips : public ::google::protobuf::Message /* @@protoc_inse
                &_GroupCancelMutedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    60;
+    70;
 
   void Swap(GroupCancelMutedTips* other);
   friend void swap(GroupCancelMutedTips& a, GroupCancelMutedTips& b) {
@@ -9409,7 +10594,7 @@ class GroupMemberInfoSetTips : public ::google::protobuf::Message /* @@protoc_in
                &_GroupMemberInfoSetTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    61;
+    71;
 
   void Swap(GroupMemberInfoSetTips* other);
   friend void swap(GroupMemberInfoSetTips& a, GroupMemberInfoSetTips& b) {
@@ -9567,7 +10752,7 @@ class FriendApplication : public ::google::protobuf::Message /* @@protoc_inserti
                &_FriendApplication_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    62;
+    72;
 
   void Swap(FriendApplication* other);
   friend void swap(FriendApplication& a, FriendApplication& b) {
@@ -9696,7 +10881,7 @@ class FromToUserID : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_FromToUserID_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    63;
+    73;
 
   void Swap(FromToUserID* other);
   friend void swap(FromToUserID& a, FromToUserID& b) {
@@ -9818,7 +11003,7 @@ class FriendApplicationTips : public ::google::protobuf::Message /* @@protoc_ins
                &_FriendApplicationTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    64;
+    74;
 
   void Swap(FriendApplicationTips* other);
   friend void swap(FriendApplicationTips& a, FriendApplicationTips& b) {
@@ -9920,7 +11105,7 @@ class FriendApplicationApprovedTips : public ::google::protobuf::Message /* @@pr
                &_FriendApplicationApprovedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    65;
+    75;
 
   void Swap(FriendApplicationApprovedTips* other);
   friend void swap(FriendApplicationApprovedTips& a, FriendApplicationApprovedTips& b) {
@@ -10059,7 +11244,7 @@ class FriendApplicationRejectedTips : public ::google::protobuf::Message /* @@pr
                &_FriendApplicationRejectedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    66;
+    76;
 
   void Swap(FriendApplicationRejectedTips* other);
   friend void swap(FriendApplicationRejectedTips& a, FriendApplicationRejectedTips& b) {
@@ -10176,7 +11361,7 @@ class FriendAddedTips : public ::google::protobuf::Message /* @@protoc_insertion
                &_FriendAddedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    67;
+    77;
 
   void Swap(FriendAddedTips* other);
   friend void swap(FriendAddedTips& a, FriendAddedTips& b) {
@@ -10317,7 +11502,7 @@ class FriendDeletedTips : public ::google::protobuf::Message /* @@protoc_inserti
                &_FriendDeletedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    68;
+    78;
 
   void Swap(FriendDeletedTips* other);
   friend void swap(FriendDeletedTips& a, FriendDeletedTips& b) {
@@ -10441,7 +11626,7 @@ class BlackAddedTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_BlackAddedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    69;
+    79;
 
   void Swap(BlackAddedTips* other);
   friend void swap(BlackAddedTips& a, BlackAddedTips& b) {
@@ -10543,7 +11728,7 @@ class BlackDeletedTips : public ::google::protobuf::Message /* @@protoc_insertio
                &_BlackDeletedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    70;
+    80;
 
   void Swap(BlackDeletedTips* other);
   friend void swap(BlackDeletedTips& a, BlackDeletedTips& b) {
@@ -10645,7 +11830,7 @@ class FriendInfoChangedTips : public ::google::protobuf::Message /* @@protoc_ins
                &_FriendInfoChangedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    71;
+    81;
 
   void Swap(FriendInfoChangedTips* other);
   friend void swap(FriendInfoChangedTips& a, FriendInfoChangedTips& b) {
@@ -10776,7 +11961,7 @@ class UserInfoUpdatedTips : public ::google::protobuf::Message /* @@protoc_inser
                &_UserInfoUpdatedTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    72;
+    82;
 
   void Swap(UserInfoUpdatedTips* other);
   friend void swap(UserInfoUpdatedTips& a, UserInfoUpdatedTips& b) {
@@ -10883,7 +12068,7 @@ class UserStatusChangeTips : public ::google::protobuf::Message /* @@protoc_inse
                &_UserStatusChangeTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    73;
+    83;
 
   void Swap(UserStatusChangeTips* other);
   friend void swap(UserStatusChangeTips& a, UserStatusChangeTips& b) {
@@ -11019,7 +12204,7 @@ class UserCommandAddTips : public ::google::protobuf::Message /* @@protoc_insert
                &_UserCommandAddTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    74;
+    84;
 
   void Swap(UserCommandAddTips* other);
   friend void swap(UserCommandAddTips& a, UserCommandAddTips& b) {
@@ -11141,7 +12326,7 @@ class UserCommandUpdateTips : public ::google::protobuf::Message /* @@protoc_ins
                &_UserCommandUpdateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    75;
+    85;
 
   void Swap(UserCommandUpdateTips* other);
   friend void swap(UserCommandUpdateTips& a, UserCommandUpdateTips& b) {
@@ -11263,7 +12448,7 @@ class UserCommandDeleteTips : public ::google::protobuf::Message /* @@protoc_ins
                &_UserCommandDeleteTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    76;
+    86;
 
   void Swap(UserCommandDeleteTips* other);
   friend void swap(UserCommandDeleteTips& a, UserCommandDeleteTips& b) {
@@ -11385,7 +12570,7 @@ class ConversationUpdateTips : public ::google::protobuf::Message /* @@protoc_in
                &_ConversationUpdateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    77;
+    87;
 
   void Swap(ConversationUpdateTips* other);
   friend void swap(ConversationUpdateTips& a, ConversationUpdateTips& b) {
@@ -11515,7 +12700,7 @@ class ConversationSetPrivateTips : public ::google::protobuf::Message /* @@proto
                &_ConversationSetPrivateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    78;
+    88;
 
   void Swap(ConversationSetPrivateTips* other);
   friend void swap(ConversationSetPrivateTips& a, ConversationSetPrivateTips& b) {
@@ -11659,7 +12844,7 @@ class ConversationHasReadTips : public ::google::protobuf::Message /* @@protoc_i
                &_ConversationHasReadTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    79;
+    89;
 
   void Swap(ConversationHasReadTips* other);
   friend void swap(ConversationHasReadTips& a, ConversationHasReadTips& b) {
@@ -11795,7 +12980,7 @@ class NotificationElem : public ::google::protobuf::Message /* @@protoc_insertio
                &_NotificationElem_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    80;
+    90;
 
   void Swap(NotificationElem* other);
   friend void swap(NotificationElem& a, NotificationElem& b) {
@@ -11902,7 +13087,7 @@ class DeleteMessageTips : public ::google::protobuf::Message /* @@protoc_inserti
                &_DeleteMessageTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    81;
+    91;
 
   void Swap(DeleteMessageTips* other);
   friend void swap(DeleteMessageTips& a, DeleteMessageTips& b) {
@@ -12038,7 +13223,7 @@ class RevokeMsgTips : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_RevokeMsgTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    82;
+    92;
 
   void Swap(RevokeMsgTips* other);
   friend void swap(RevokeMsgTips& a, RevokeMsgTips& b) {
@@ -12203,7 +13388,7 @@ class MessageRevokedContent : public ::google::protobuf::Message /* @@protoc_ins
                &_MessageRevokedContent_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    83;
+    93;
 
   void Swap(MessageRevokedContent* other);
   friend void swap(MessageRevokedContent& a, MessageRevokedContent& b) {
@@ -12420,7 +13605,7 @@ class ClearConversationTips : public ::google::protobuf::Message /* @@protoc_ins
                &_ClearConversationTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    84;
+    94;
 
   void Swap(ClearConversationTips* other);
   friend void swap(ClearConversationTips& a, ClearConversationTips& b) {
@@ -12550,7 +13735,7 @@ class DeleteMsgsTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_DeleteMsgsTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    85;
+    95;
 
   void Swap(DeleteMsgsTips* other);
   friend void swap(DeleteMsgsTips& a, DeleteMsgsTips& b) {
@@ -12686,7 +13871,7 @@ class MarkAsReadTips : public ::google::protobuf::Message /* @@protoc_insertion_
                &_MarkAsReadTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    86;
+    96;
 
   void Swap(MarkAsReadTips* other);
   friend void swap(MarkAsReadTips& a, MarkAsReadTips& b) {
@@ -12829,7 +14014,7 @@ class SetAppBackgroundStatusReq : public ::google::protobuf::Message /* @@protoc
                &_SetAppBackgroundStatusReq_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    87;
+    97;
 
   void Swap(SetAppBackgroundStatusReq* other);
   friend void swap(SetAppBackgroundStatusReq& a, SetAppBackgroundStatusReq& b) {
@@ -12943,7 +14128,7 @@ class SetAppBackgroundStatusResp : public ::google::protobuf::Message /* @@proto
                &_SetAppBackgroundStatusResp_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    88;
+    98;
 
   void Swap(SetAppBackgroundStatusResp* other);
   friend void swap(SetAppBackgroundStatusResp& a, SetAppBackgroundStatusResp& b) {
@@ -13035,7 +14220,7 @@ class ProcessUserCommand : public ::google::protobuf::Message /* @@protoc_insert
                &_ProcessUserCommand_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    89;
+    99;
 
   void Swap(ProcessUserCommand* other);
   friend void swap(ProcessUserCommand& a, ProcessUserCommand& b) {
@@ -13186,7 +14371,7 @@ class RequestPagination : public ::google::protobuf::Message /* @@protoc_inserti
                &_RequestPagination_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    90;
+    100;
 
   void Swap(RequestPagination* other);
   friend void swap(RequestPagination& a, RequestPagination& b) {
@@ -13292,7 +14477,7 @@ class FriendsInfoUpdateTips : public ::google::protobuf::Message /* @@protoc_ins
                &_FriendsInfoUpdateTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    91;
+    101;
 
   void Swap(FriendsInfoUpdateTips* other);
   friend void swap(FriendsInfoUpdateTips& a, FriendsInfoUpdateTips& b) {
@@ -13439,7 +14624,7 @@ class SubUserOnlineStatusElem : public ::google::protobuf::Message /* @@protoc_i
                &_SubUserOnlineStatusElem_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    92;
+    102;
 
   void Swap(SubUserOnlineStatusElem* other);
   friend void swap(SubUserOnlineStatusElem& a, SubUserOnlineStatusElem& b) {
@@ -13560,7 +14745,7 @@ class SubUserOnlineStatusTips : public ::google::protobuf::Message /* @@protoc_i
                &_SubUserOnlineStatusTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    93;
+    103;
 
   void Swap(SubUserOnlineStatusTips* other);
   friend void swap(SubUserOnlineStatusTips& a, SubUserOnlineStatusTips& b) {
@@ -13665,7 +14850,7 @@ class SubUserOnlineStatus : public ::google::protobuf::Message /* @@protoc_inser
                &_SubUserOnlineStatus_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    94;
+    104;
 
   void Swap(SubUserOnlineStatus* other);
   friend void swap(SubUserOnlineStatus& a, SubUserOnlineStatus& b) {
@@ -13803,7 +14988,7 @@ class StreamMsgTips : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_StreamMsgTips_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    95;
+    105;
 
   void Swap(StreamMsgTips* other);
   friend void swap(StreamMsgTips& a, StreamMsgTips& b) {
@@ -19407,6 +20592,54 @@ inline void CmdMessage::set_allocated_convinfo(::roc::imsdk::network::Conversati
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.CmdMessage.convInfo)
 }
 
+// int64 cursor = 4;
+inline void CmdMessage::clear_cursor() {
+  cursor_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 CmdMessage::cursor() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessage.cursor)
+  return cursor_;
+}
+inline void CmdMessage::set_cursor(::google::protobuf::int64 value) {
+  
+  cursor_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.CmdMessage.cursor)
+}
+
+// -------------------------------------------------------------------
+
+// CmdMessageArray
+
+// repeated .roc.imsdk.network.CmdMessage cmdMsgs = 1;
+inline int CmdMessageArray::cmdmsgs_size() const {
+  return cmdmsgs_.size();
+}
+inline void CmdMessageArray::clear_cmdmsgs() {
+  cmdmsgs_.Clear();
+}
+inline const ::roc::imsdk::network::CmdMessage& CmdMessageArray::cmdmsgs(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessageArray.cmdMsgs)
+  return cmdmsgs_.Get(index);
+}
+inline ::roc::imsdk::network::CmdMessage* CmdMessageArray::mutable_cmdmsgs(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.CmdMessageArray.cmdMsgs)
+  return cmdmsgs_.Mutable(index);
+}
+inline ::roc::imsdk::network::CmdMessage* CmdMessageArray::add_cmdmsgs() {
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.CmdMessageArray.cmdMsgs)
+  return cmdmsgs_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >*
+CmdMessageArray::mutable_cmdmsgs() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.CmdMessageArray.cmdMsgs)
+  return &cmdmsgs_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >&
+CmdMessageArray::cmdmsgs() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.CmdMessageArray.cmdMsgs)
+  return cmdmsgs_;
+}
+
 // -------------------------------------------------------------------
 
 // MessageUnion
@@ -19523,6 +20756,448 @@ inline void MessageUnion::set_allocated_msg(::roc::imsdk::network::MsgData* msg)
   }
   msg_ = msg;
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.MessageUnion.msg)
+}
+
+// -------------------------------------------------------------------
+
+// ChangeMessageItemReq
+
+// int32 cmd = 1;
+inline void ChangeMessageItemReq::clear_cmd() {
+  cmd_ = 0;
+}
+inline ::google::protobuf::int32 ChangeMessageItemReq::cmd() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeMessageItemReq.cmd)
+  return cmd_;
+}
+inline void ChangeMessageItemReq::set_cmd(::google::protobuf::int32 value) {
+  
+  cmd_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeMessageItemReq.cmd)
+}
+
+// .roc.imsdk.network.MsgData message = 2;
+inline bool ChangeMessageItemReq::has_message() const {
+  return this != internal_default_instance() && message_ != NULL;
+}
+inline void ChangeMessageItemReq::clear_message() {
+  if (GetArenaNoVirtual() == NULL && message_ != NULL) {
+    delete message_;
+  }
+  message_ = NULL;
+}
+inline const ::roc::imsdk::network::MsgData& ChangeMessageItemReq::message() const {
+  const ::roc::imsdk::network::MsgData* p = message_;
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeMessageItemReq.message)
+  return p != NULL ? *p : *reinterpret_cast<const ::roc::imsdk::network::MsgData*>(
+      &::roc::imsdk::network::_MsgData_default_instance_);
+}
+inline ::roc::imsdk::network::MsgData* ChangeMessageItemReq::release_message() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ChangeMessageItemReq.message)
+  
+  ::roc::imsdk::network::MsgData* temp = message_;
+  message_ = NULL;
+  return temp;
+}
+inline ::roc::imsdk::network::MsgData* ChangeMessageItemReq::mutable_message() {
+  
+  if (message_ == NULL) {
+    message_ = new ::roc::imsdk::network::MsgData;
+  }
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeMessageItemReq.message)
+  return message_;
+}
+inline void ChangeMessageItemReq::set_allocated_message(::roc::imsdk::network::MsgData* message) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete message_;
+  }
+  if (message) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      message = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, message, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  message_ = message;
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ChangeMessageItemReq.message)
+}
+
+// -------------------------------------------------------------------
+
+// ChangeMessageItemResp
+
+// int32 cmd = 1;
+inline void ChangeMessageItemResp::clear_cmd() {
+  cmd_ = 0;
+}
+inline ::google::protobuf::int32 ChangeMessageItemResp::cmd() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeMessageItemResp.cmd)
+  return cmd_;
+}
+inline void ChangeMessageItemResp::set_cmd(::google::protobuf::int32 value) {
+  
+  cmd_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeMessageItemResp.cmd)
+}
+
+// uint64 errorCode = 2;
+inline void ChangeMessageItemResp::clear_errorcode() {
+  errorcode_ = GOOGLE_ULONGLONG(0);
+}
+inline ::google::protobuf::uint64 ChangeMessageItemResp::errorcode() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeMessageItemResp.errorCode)
+  return errorcode_;
+}
+inline void ChangeMessageItemResp::set_errorcode(::google::protobuf::uint64 value) {
+  
+  errorcode_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeMessageItemResp.errorCode)
+}
+
+// string errorMsg = 3;
+inline void ChangeMessageItemResp::clear_errormsg() {
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeMessageItemResp::errormsg() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+  return errormsg_.GetNoArena();
+}
+inline void ChangeMessageItemResp::set_errormsg(const ::std::string& value) {
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+}
+#if LANG_CXX11
+inline void ChangeMessageItemResp::set_errormsg(::std::string&& value) {
+  
+  errormsg_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+}
+#endif
+inline void ChangeMessageItemResp::set_errormsg(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+}
+inline void ChangeMessageItemResp::set_errormsg(const char* value, size_t size) {
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+}
+inline ::std::string* ChangeMessageItemResp::mutable_errormsg() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+  return errormsg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeMessageItemResp::release_errormsg() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+  
+  return errormsg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeMessageItemResp::set_allocated_errormsg(::std::string* errormsg) {
+  if (errormsg != NULL) {
+    
+  } else {
+    
+  }
+  errormsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), errormsg);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ChangeMessageItemResp.errorMsg)
+}
+
+// -------------------------------------------------------------------
+
+// ChangeMessageResp
+
+// repeated .roc.imsdk.network.ChangeMessageItemResp infos = 1;
+inline int ChangeMessageResp::infos_size() const {
+  return infos_.size();
+}
+inline void ChangeMessageResp::clear_infos() {
+  infos_.Clear();
+}
+inline const ::roc::imsdk::network::ChangeMessageItemResp& ChangeMessageResp::infos(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeMessageResp.infos)
+  return infos_.Get(index);
+}
+inline ::roc::imsdk::network::ChangeMessageItemResp* ChangeMessageResp::mutable_infos(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeMessageResp.infos)
+  return infos_.Mutable(index);
+}
+inline ::roc::imsdk::network::ChangeMessageItemResp* ChangeMessageResp::add_infos() {
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.ChangeMessageResp.infos)
+  return infos_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemResp >*
+ChangeMessageResp::mutable_infos() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.ChangeMessageResp.infos)
+  return &infos_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemResp >&
+ChangeMessageResp::infos() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.ChangeMessageResp.infos)
+  return infos_;
+}
+
+// -------------------------------------------------------------------
+
+// ChangeMessageReq
+
+// repeated .roc.imsdk.network.ChangeMessageItemReq infos = 1;
+inline int ChangeMessageReq::infos_size() const {
+  return infos_.size();
+}
+inline void ChangeMessageReq::clear_infos() {
+  infos_.Clear();
+}
+inline const ::roc::imsdk::network::ChangeMessageItemReq& ChangeMessageReq::infos(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeMessageReq.infos)
+  return infos_.Get(index);
+}
+inline ::roc::imsdk::network::ChangeMessageItemReq* ChangeMessageReq::mutable_infos(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeMessageReq.infos)
+  return infos_.Mutable(index);
+}
+inline ::roc::imsdk::network::ChangeMessageItemReq* ChangeMessageReq::add_infos() {
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.ChangeMessageReq.infos)
+  return infos_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemReq >*
+ChangeMessageReq::mutable_infos() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.ChangeMessageReq.infos)
+  return &infos_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeMessageItemReq >&
+ChangeMessageReq::infos() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.ChangeMessageReq.infos)
+  return infos_;
+}
+
+// -------------------------------------------------------------------
+
+// ChangeConversationItemReq
+
+// int32 cmd = 1;
+inline void ChangeConversationItemReq::clear_cmd() {
+  cmd_ = 0;
+}
+inline ::google::protobuf::int32 ChangeConversationItemReq::cmd() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationItemReq.cmd)
+  return cmd_;
+}
+inline void ChangeConversationItemReq::set_cmd(::google::protobuf::int32 value) {
+  
+  cmd_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeConversationItemReq.cmd)
+}
+
+// .roc.imsdk.network.ConversationInfo conversation = 2;
+inline bool ChangeConversationItemReq::has_conversation() const {
+  return this != internal_default_instance() && conversation_ != NULL;
+}
+inline void ChangeConversationItemReq::clear_conversation() {
+  if (GetArenaNoVirtual() == NULL && conversation_ != NULL) {
+    delete conversation_;
+  }
+  conversation_ = NULL;
+}
+inline const ::roc::imsdk::network::ConversationInfo& ChangeConversationItemReq::conversation() const {
+  const ::roc::imsdk::network::ConversationInfo* p = conversation_;
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationItemReq.conversation)
+  return p != NULL ? *p : *reinterpret_cast<const ::roc::imsdk::network::ConversationInfo*>(
+      &::roc::imsdk::network::_ConversationInfo_default_instance_);
+}
+inline ::roc::imsdk::network::ConversationInfo* ChangeConversationItemReq::release_conversation() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ChangeConversationItemReq.conversation)
+  
+  ::roc::imsdk::network::ConversationInfo* temp = conversation_;
+  conversation_ = NULL;
+  return temp;
+}
+inline ::roc::imsdk::network::ConversationInfo* ChangeConversationItemReq::mutable_conversation() {
+  
+  if (conversation_ == NULL) {
+    conversation_ = new ::roc::imsdk::network::ConversationInfo;
+  }
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeConversationItemReq.conversation)
+  return conversation_;
+}
+inline void ChangeConversationItemReq::set_allocated_conversation(::roc::imsdk::network::ConversationInfo* conversation) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete conversation_;
+  }
+  if (conversation) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      conversation = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, conversation, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  conversation_ = conversation;
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ChangeConversationItemReq.conversation)
+}
+
+// -------------------------------------------------------------------
+
+// ChangeConversationItemResp
+
+// int32 cmd = 1;
+inline void ChangeConversationItemResp::clear_cmd() {
+  cmd_ = 0;
+}
+inline ::google::protobuf::int32 ChangeConversationItemResp::cmd() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationItemResp.cmd)
+  return cmd_;
+}
+inline void ChangeConversationItemResp::set_cmd(::google::protobuf::int32 value) {
+  
+  cmd_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeConversationItemResp.cmd)
+}
+
+// uint64 errorCode = 2;
+inline void ChangeConversationItemResp::clear_errorcode() {
+  errorcode_ = GOOGLE_ULONGLONG(0);
+}
+inline ::google::protobuf::uint64 ChangeConversationItemResp::errorcode() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationItemResp.errorCode)
+  return errorcode_;
+}
+inline void ChangeConversationItemResp::set_errorcode(::google::protobuf::uint64 value) {
+  
+  errorcode_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeConversationItemResp.errorCode)
+}
+
+// string errorMsg = 3;
+inline void ChangeConversationItemResp::clear_errormsg() {
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeConversationItemResp::errormsg() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+  return errormsg_.GetNoArena();
+}
+inline void ChangeConversationItemResp::set_errormsg(const ::std::string& value) {
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+}
+#if LANG_CXX11
+inline void ChangeConversationItemResp::set_errormsg(::std::string&& value) {
+  
+  errormsg_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+}
+#endif
+inline void ChangeConversationItemResp::set_errormsg(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+}
+inline void ChangeConversationItemResp::set_errormsg(const char* value, size_t size) {
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+}
+inline ::std::string* ChangeConversationItemResp::mutable_errormsg() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+  return errormsg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeConversationItemResp::release_errormsg() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+  
+  return errormsg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeConversationItemResp::set_allocated_errormsg(::std::string* errormsg) {
+  if (errormsg != NULL) {
+    
+  } else {
+    
+  }
+  errormsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), errormsg);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.ChangeConversationItemResp.errorMsg)
+}
+
+// -------------------------------------------------------------------
+
+// ChangeConversationResp
+
+// repeated .roc.imsdk.network.ChangeConversationItemResp infos = 1;
+inline int ChangeConversationResp::infos_size() const {
+  return infos_.size();
+}
+inline void ChangeConversationResp::clear_infos() {
+  infos_.Clear();
+}
+inline const ::roc::imsdk::network::ChangeConversationItemResp& ChangeConversationResp::infos(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationResp.infos)
+  return infos_.Get(index);
+}
+inline ::roc::imsdk::network::ChangeConversationItemResp* ChangeConversationResp::mutable_infos(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeConversationResp.infos)
+  return infos_.Mutable(index);
+}
+inline ::roc::imsdk::network::ChangeConversationItemResp* ChangeConversationResp::add_infos() {
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.ChangeConversationResp.infos)
+  return infos_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemResp >*
+ChangeConversationResp::mutable_infos() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.ChangeConversationResp.infos)
+  return &infos_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemResp >&
+ChangeConversationResp::infos() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.ChangeConversationResp.infos)
+  return infos_;
+}
+
+// -------------------------------------------------------------------
+
+// ChangeConversationReq
+
+// repeated .roc.imsdk.network.ChangeConversationItemReq infos = 1;
+inline int ChangeConversationReq::infos_size() const {
+  return infos_.size();
+}
+inline void ChangeConversationReq::clear_infos() {
+  infos_.Clear();
+}
+inline const ::roc::imsdk::network::ChangeConversationItemReq& ChangeConversationReq::infos(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ChangeConversationReq.infos)
+  return infos_.Get(index);
+}
+inline ::roc::imsdk::network::ChangeConversationItemReq* ChangeConversationReq::mutable_infos(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ChangeConversationReq.infos)
+  return infos_.Mutable(index);
+}
+inline ::roc::imsdk::network::ChangeConversationItemReq* ChangeConversationReq::add_infos() {
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.ChangeConversationReq.infos)
+  return infos_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemReq >*
+ChangeConversationReq::mutable_infos() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.ChangeConversationReq.infos)
+  return &infos_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ChangeConversationItemReq >&
+ChangeConversationReq::infos() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.ChangeConversationReq.infos)
+  return infos_;
 }
 
 // -------------------------------------------------------------------
@@ -20593,6 +22268,40 @@ UserMessageIntegrityCheckResp::convsinfo() const {
 
 // -------------------------------------------------------------------
 
+// ConversationInfoArray
+
+// repeated .roc.imsdk.network.ConversationInfo convs = 1;
+inline int ConversationInfoArray::convs_size() const {
+  return convs_.size();
+}
+inline void ConversationInfoArray::clear_convs() {
+  convs_.Clear();
+}
+inline const ::roc::imsdk::network::ConversationInfo& ConversationInfoArray::convs(int index) const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.ConversationInfoArray.convs)
+  return convs_.Get(index);
+}
+inline ::roc::imsdk::network::ConversationInfo* ConversationInfoArray::mutable_convs(int index) {
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.ConversationInfoArray.convs)
+  return convs_.Mutable(index);
+}
+inline ::roc::imsdk::network::ConversationInfo* ConversationInfoArray::add_convs() {
+  // @@protoc_insertion_point(field_add:roc.imsdk.network.ConversationInfoArray.convs)
+  return convs_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >*
+ConversationInfoArray::mutable_convs() {
+  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.ConversationInfoArray.convs)
+  return &convs_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationInfo >&
+ConversationInfoArray::convs() const {
+  // @@protoc_insertion_point(field_list:roc.imsdk.network.ConversationInfoArray.convs)
+  return convs_;
+}
+
+// -------------------------------------------------------------------
+
 // SdkWSReq
 
 // string requestId = 1;
@@ -20886,6 +22595,34 @@ inline void SdkWSReq::set_trackid(::google::protobuf::int32 value) {
   
   trackid_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.trackID)
+}
+
+// int32 service = 8;
+inline void SdkWSReq::clear_service() {
+  service_ = 0;
+}
+inline ::google::protobuf::int32 SdkWSReq::service() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSReq.service)
+  return service_;
+}
+inline void SdkWSReq::set_service(::google::protobuf::int32 value) {
+  
+  service_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.service)
+}
+
+// int32 method = 9;
+inline void SdkWSReq::clear_method() {
+  method_ = 0;
+}
+inline ::google::protobuf::int32 SdkWSReq::method() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSReq.method)
+  return method_;
+}
+inline void SdkWSReq::set_method(::google::protobuf::int32 value) {
+  
+  method_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSReq.method)
 }
 
 // -------------------------------------------------------------------
@@ -21277,7 +23014,35 @@ inline void SdkWSResp::set_type(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.type)
 }
 
-// int32 trackID = 9;
+// int32 service = 9;
+inline void SdkWSResp::clear_service() {
+  service_ = 0;
+}
+inline ::google::protobuf::int32 SdkWSResp::service() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSResp.service)
+  return service_;
+}
+inline void SdkWSResp::set_service(::google::protobuf::int32 value) {
+  
+  service_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.service)
+}
+
+// int32 method = 10;
+inline void SdkWSResp::clear_method() {
+  method_ = 0;
+}
+inline ::google::protobuf::int32 SdkWSResp::method() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.SdkWSResp.method)
+  return method_;
+}
+inline void SdkWSResp::set_method(::google::protobuf::int32 value) {
+  
+  method_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.method)
+}
+
+// int32 trackID = 11;
 inline void SdkWSResp::clear_trackid() {
   trackid_ = 0;
 }
@@ -21291,7 +23056,7 @@ inline void SdkWSResp::set_trackid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.SdkWSResp.trackID)
 }
 
-// string logID = 10;
+// string logID = 12;
 inline void SdkWSResp::clear_logid() {
   logid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -29990,6 +31755,26 @@ inline void StreamMsgTips::set_end(bool value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -3,6 +3,8 @@
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
+#include <unordered_map>
+#include <string>
 
 namespace roc::imsdk::core::conversation {
 
@@ -36,6 +38,12 @@ public:
 
     /// 设置会话免打扰状态
     bool SetConversationMute(CTX_T, const std::string &conv_id, bool is_mute);
+    
+    /// 设置会话拉黑状态
+    bool SetConversationBlock(CTX_T, const std::string &conv_id, bool is_block);
+
+    /// 设置会话同步扩展字段（会与现有字段合并）
+    bool SetConversationSyncExt(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &sync_ext);
 
     /// 设置会话水位
     void SetChatsCursor(CTX_T, int64_t cursor);

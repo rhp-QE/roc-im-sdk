@@ -7,7 +7,7 @@
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/db_opt/DBOpt.h"
-#include "imsdk/src/core/conversation/private/save/SaveConversation.h"
+#include "imsdk/src/core/conversation/private/datasource/ConvDatasource.h"
 #include "imsdk/src/core/conversation/private/receive/ReceiveConversation.h"
 #include "imsdk/src/core/common/sdkwsEnum.h"
 #include "imsdk/base/include/network/Error.h"
@@ -100,7 +100,7 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserMessageListReq *request) 
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
-    req->set_type(static_cast<int32_t>(network::SDKRequestType::FETCH_USER_MESSAGE_LIST));
+    req->set_type(static_cast<int32_t>(common::SDKWSMethod::PULL_MIX_LIST));
     req->set_data(request->SerializeAsString());
     req->set_trackid(TRACK_ID);
 

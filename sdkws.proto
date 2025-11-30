@@ -292,6 +292,11 @@ message CmdMessage {
   // 2005 : 会话syncExt 发生改变
   MsgData msg               = 2;
   ConversationInfo convInfo = 3;
+  int64 cursor = 4;
+}
+
+message CmdMessageArray {
+  repeated CmdMessage cmdMsgs = 1; // 命令消息列表
 }
 
 message MessageUnion {
@@ -300,6 +305,48 @@ message MessageUnion {
   MsgData msg = 3;
 }
 // --------------------------------------------
+
+// 更改消息请求 --------------------------------
+message ChangeMessageItemReq {
+  int32 cmd = 1;
+  MsgData message = 2;
+}
+
+message ChangeMessageItemResp {
+  int32 cmd = 1;
+  uint64 errorCode = 2;
+  string errorMsg = 3;
+}
+
+message ChangeMessageResp {
+  repeated ChangeMessageItemResp infos = 1;
+}
+
+message ChangeMessageReq {
+  repeated ChangeMessageItemReq infos = 1;
+}
+// -------------------------------------------
+
+// 更改会话请求 --------------------------------
+message ChangeConversationItemReq {
+  int32 cmd = 1;
+  ConversationInfo conversation = 2;
+}
+
+message ChangeConversationItemResp {
+  int32 cmd = 1;
+  uint64 errorCode = 2;
+  string errorMsg = 3;
+}
+
+message ChangeConversationResp {
+  repeated ChangeConversationItemResp infos = 1;
+}
+
+message ChangeConversationReq {
+  repeated ChangeConversationItemReq infos = 1;
+}
+// -------------------------------------------
 
 // 单链拉取 ------------------------------------
 message FetchConvMessageListReq {
@@ -362,6 +409,10 @@ message UserMessageIntegrityCheckResp {
   int64 right                         = 3; // 右区间
   repeated ConversationInfo convsInfo = 4; // 补齐的会话信息
 }
+
+message ConversationInfoArray {
+  repeated ConversationInfo convs = 1; // 会话信息列表
+}
 // --------------------------------------------
 
 // sdkRequest ---------------------------------
@@ -373,8 +424,16 @@ message SdkWSReq {
   bytes data = 5; // 数据
   int32 type = 6; // 请求类型
   int32 trackID = 7; // 客户端追踪ID
-  // 101: 发送消息  102：拉取单链  103：拉取混链
-  // 104: 下推用户消息  105: 下推命令消息
+  int32 service = 8; // 服务类型  
+  int32 method  = 9; // 命令类型
+  // 101: 发送消息 
+  // 102：拉取单链 
+  // 103：拉取混链
+  // 104: 混链消息检查 
+  // 301: 会话置顶
+  // 302：会话拉黑
+  // 303：会话禁言
+  // 304: 会话ext变更
 }
 
 message SdkWSResp {
@@ -386,10 +445,12 @@ message SdkWSResp {
   string errorMsg = 6; // 错误信息
   bytes data = 7; // 数据
   int32 type = 8; // 类型
+  int32 service = 9; // 服务类型
+  int32 method = 10; // 命令类型
   //105 下推命令消息
 
-  int32 trackID = 9; // 客户端追踪ID
-  string logID = 10; // 服务端 logid
+  int32 trackID = 11; // 客户端追踪ID
+  string logID = 12; // 服务端 logid
 }
 // --------------------------------------------
 

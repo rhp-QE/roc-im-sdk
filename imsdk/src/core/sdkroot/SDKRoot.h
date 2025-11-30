@@ -35,6 +35,7 @@ namespace roc::imsdk::core {
     class GroupManager;
     class MessageManager;
     class ConversationManager;
+    class CmdCenter;
 }
 
 namespace roc::imsdk {
@@ -67,6 +68,7 @@ public:
     asio::io_context& net_io_context();
     asio::io_context& sdk_io_context();
 
+    core::CmdCenter* cmd_center();
     core::GroupManager* GroupManager();
     core::MessageManager* MessageManager();
     core::ConversationManager* ConversationManager();
@@ -80,6 +82,7 @@ private:
     WCDB::Database *database_;
     std::shared_ptr<ILogger> logger_;
 
+    std::unique_ptr<core::CmdCenter> cmd_center_;
     std::unique_ptr<core::GroupManager> group_manager_;
     std::unique_ptr<core::MessageManager> message_manager_;
     std::unique_ptr<core::ConversationManager> conversation_manager_;

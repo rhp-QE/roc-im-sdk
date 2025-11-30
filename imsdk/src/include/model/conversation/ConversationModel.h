@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <shared_mutex>
+#include <mutex>
 
 
 namespace roc::imsdk::core {
@@ -14,7 +15,8 @@ namespace roc::imsdk::core {
 
 namespace roc::imsdk::core::conversation {
     class Convert;
-    class SaveConversation;
+    class ConvDatasource;
+    class ConversationStatusHandler;
 }
 
 namespace roc::imsdk::model {
@@ -57,7 +59,8 @@ public:
 
     friend class roc::imsdk::core::ConversationManager;
     friend class roc::imsdk::core::conversation::Convert;
-    friend class roc::imsdk::core::conversation::SaveConversation;
+    friend class roc::imsdk::core::conversation::ConvDatasource;
+    friend class roc::imsdk::core::conversation::ConversationStatusHandler;
 
 private:
     // 私有移动操作 - 绕过系统移动赋值，手动实现数据移动
@@ -104,6 +107,26 @@ private:
     std::unordered_map<std::string, std::string> sync_ext_;
     
     std::unordered_map<std::string, std::string> local_ext_;
+
+    void set_top(bool is_top) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        is_top_ = is_top;
+    }
+
+    void set_mute(bool is_mute) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        is_muted_ = is_mute;
+    }
+
+    void set_block(bool is_block) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        is_blocked_ = is_block;
+    }
+
+    void set_sync_ext(const std::unordered_map<std::string, std::string> &sync_ext) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        sync_ext_ = sync_ext;
+    }
 };
 
 
@@ -117,6 +140,18 @@ struct OnConversationResult {
 
     /// 删除的会话
     std::vector<std::shared_ptr<ConversationModel>> deleted_convs;
+
+    /// 置顶状态变更的会话
+    std::vector<std::shared_ptr<ConversationModel>> top_on_change_convs;
+
+    /// 拉黑状态变更的会话
+    std::vector<std::shared_ptr<ConversationModel>> block_change_convs;
+
+    /// 禁言状态变更的会话
+    std::vector<std::shared_ptr<ConversationModel>> mute_change_convs;
+
+    /// sync_ext状态变更的会话
+    std::vector<std::shared_ptr<ConversationModel>> sync_ext_change_convs;
 };
 
 

@@ -1,6 +1,7 @@
 #include "convert.h"
 
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include "imsdk/src/core/common/util.h"
 #include <boost/json.hpp>
 #include <unordered_map>
 #include <vector>
@@ -33,33 +34,6 @@ std::vector<std::string> parseMembersJson(const std::string& members_json) {
     }
 
     return members;
-}
-
-std::unordered_map<std::string, std::string> parseExtString(const std::string& ext) {
-    std::unordered_map<std::string, std::string> result;
-    if (ext.empty()) {
-        return result;
-    }
-
-    try {
-        auto json_value = boost::json::parse(ext);
-        if (!json_value.is_object()) {
-            return result;
-        }
-
-        const auto& obj = json_value.as_object();
-        for (const auto& item : obj) {
-            if (item.value().is_string()) {
-                result.emplace(item.key_c_str(), std::string(item.value().as_string()));
-            } else {
-                result.emplace(item.key_c_str(), boost::json::serialize(item.value()));
-            }
-        }
-    } catch (const std::exception&) {
-        // ignore malformed json, return what we've parsed so far (likely empty)
-    }
-
-    return result;
 }
 
 } // namespace
@@ -167,8 +141,14 @@ std::shared_ptr<model::ConversationModel> Convert::ConvertDbConvToSdkConv(CTX_T,
     sdk_conv->draft_ = db_conv->draft;
     
     // Extensions
-    sdk_conv->sync_ext_ = parseExtString(db_conv->sync_ext);
-    sdk_conv->local_ext_ = parseExtString(db_conv->local_ext);
+    auto sync_ext_result = util::MapParseFromString(db_conv->sync_ext);
+    if (sync_ext_result) {
+        sdk_conv->sync_ext_ = sync_ext_result.value();
+    }
+    auto local_ext_result = util::MapParseFromString(db_conv->local_ext);
+    if (local_ext_result) {
+        sdk_conv->local_ext_ = local_ext_result.value();
+    }
     
     return sdk_conv;
 }

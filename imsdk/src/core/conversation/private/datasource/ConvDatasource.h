@@ -18,9 +18,9 @@ namespace roc::imsdk::core {
 
 namespace roc::imsdk::core::conversation {
 
-class SaveConversation {
+class ConvDatasource {
 public:
-    explicit SaveConversation(std::weak_ptr<SDKRoot> sdk_root);
+    explicit ConvDatasource(std::weak_ptr<SDKRoot> sdk_root);
 
     /// 保存网络会话
     boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
@@ -33,6 +33,26 @@ public:
     /// 查询会话
     boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> 
         LoadConvsFromDb(CTX_T, int64_t cursor, int64_t limit, bool forward);
+
+    /// 根据 ID 获取 SDK 会话
+    boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> 
+        SdkConvForIdFromCache(CTX_T, const std::string &conv_id);
+
+    /// 更新会话置顶状态（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateConversationTopStatus(CTX_T, const std::string &conv_id, bool is_top);
+
+    /// 更新会话免打扰状态（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateConversationMuteStatus(CTX_T, const std::string &conv_id, bool is_mute);
+
+    /// 更新会话拉黑状态（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateConversationBlockStatus(CTX_T, const std::string &conv_id, bool is_block);
+
+    /// 更新会话同步扩展字段（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateConversationSyncExtStatus(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &sync_ext);
     
 private:
     /// 更新会话缓存 (非线程安全， )
@@ -43,3 +63,4 @@ private:
 };
 
 } // namespace roc::imsdk::core::conversation
+

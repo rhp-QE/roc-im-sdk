@@ -162,11 +162,56 @@ class CmdMessageDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<CmdMessage>
       _instance;
 } _CmdMessage_default_instance_;
+class CmdMessageArrayDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<CmdMessageArray>
+      _instance;
+} _CmdMessageArray_default_instance_;
 class MessageUnionDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<MessageUnion>
       _instance;
 } _MessageUnion_default_instance_;
+class ChangeMessageItemReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeMessageItemReq>
+      _instance;
+} _ChangeMessageItemReq_default_instance_;
+class ChangeMessageItemRespDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeMessageItemResp>
+      _instance;
+} _ChangeMessageItemResp_default_instance_;
+class ChangeMessageRespDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeMessageResp>
+      _instance;
+} _ChangeMessageResp_default_instance_;
+class ChangeMessageReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeMessageReq>
+      _instance;
+} _ChangeMessageReq_default_instance_;
+class ChangeConversationItemReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeConversationItemReq>
+      _instance;
+} _ChangeConversationItemReq_default_instance_;
+class ChangeConversationItemRespDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeConversationItemResp>
+      _instance;
+} _ChangeConversationItemResp_default_instance_;
+class ChangeConversationRespDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeConversationResp>
+      _instance;
+} _ChangeConversationResp_default_instance_;
+class ChangeConversationReqDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeConversationReq>
+      _instance;
+} _ChangeConversationReq_default_instance_;
 class FetchConvMessageListReqDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<FetchConvMessageListReq>
@@ -202,6 +247,11 @@ class UserMessageIntegrityCheckRespDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<UserMessageIntegrityCheckResp>
       _instance;
 } _UserMessageIntegrityCheckResp_default_instance_;
+class ConversationInfoArrayDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ConversationInfoArray>
+      _instance;
+} _ConversationInfoArray_default_instance_;
 class SdkWSReqDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<SdkWSReq>
@@ -1120,6 +1170,202 @@ void InitDefaultsCmdMessage() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsCmdMessageImpl);
 }
 
+void InitDefaultsCmdMessageArrayImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsCmdMessage();
+  {
+    void* ptr = &::roc::imsdk::network::_CmdMessageArray_default_instance_;
+    new (ptr) ::roc::imsdk::network::CmdMessageArray();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::CmdMessageArray::InitAsDefaultInstance();
+}
+
+void InitDefaultsCmdMessageArray() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsCmdMessageArrayImpl);
+}
+
+void InitDefaultsChangeMessageItemReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsMsgData();
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeMessageItemReq_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeMessageItemReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeMessageItemReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeMessageItemReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeMessageItemReqImpl);
+}
+
+void InitDefaultsChangeMessageItemRespImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeMessageItemResp_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeMessageItemResp();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeMessageItemResp::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeMessageItemResp() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeMessageItemRespImpl);
+}
+
+void InitDefaultsChangeMessageRespImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemResp();
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeMessageResp_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeMessageResp();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeMessageResp::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeMessageResp() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeMessageRespImpl);
+}
+
+void InitDefaultsChangeMessageReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemReq();
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeMessageReq_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeMessageReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeMessageReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeMessageReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeMessageReqImpl);
+}
+
+void InitDefaultsChangeConversationItemReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsCmdMessage();
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeConversationItemReq_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeConversationItemReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeConversationItemReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeConversationItemReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeConversationItemReqImpl);
+}
+
+void InitDefaultsChangeConversationItemRespImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeConversationItemResp_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeConversationItemResp();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeConversationItemResp::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeConversationItemResp() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeConversationItemRespImpl);
+}
+
+void InitDefaultsChangeConversationRespImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemResp();
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeConversationResp_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeConversationResp();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeConversationResp::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeConversationResp() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeConversationRespImpl);
+}
+
+void InitDefaultsChangeConversationReqImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemReq();
+  {
+    void* ptr = &::roc::imsdk::network::_ChangeConversationReq_default_instance_;
+    new (ptr) ::roc::imsdk::network::ChangeConversationReq();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ChangeConversationReq::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeConversationReq() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeConversationReqImpl);
+}
+
 void InitDefaultsFetchConvMessageListReqImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -1247,6 +1493,28 @@ void InitDefaultsUserMessageIntegrityCheckRespImpl() {
 void InitDefaultsUserMessageIntegrityCheckResp() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsUserMessageIntegrityCheckRespImpl);
+}
+
+void InitDefaultsConversationInfoArrayImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsCmdMessage();
+  {
+    void* ptr = &::roc::imsdk::network::_ConversationInfoArray_default_instance_;
+    new (ptr) ::roc::imsdk::network::ConversationInfoArray();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::ConversationInfoArray::InitAsDefaultInstance();
+}
+
+void InitDefaultsConversationInfoArray() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsConversationInfoArrayImpl);
 }
 
 void InitDefaultsSdkWSReqImpl() {
@@ -2558,7 +2826,7 @@ void InitDefaultsStreamMsgTips() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsStreamMsgTipsImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[96];
+::google::protobuf::Metadata file_level_metadata[106];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -2868,6 +3136,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, cmd_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, msg_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, convinfo_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, cursor_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessageArray, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessageArray, cmdmsgs_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MessageUnion, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2876,6 +3151,60 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MessageUnion, iscmd_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MessageUnion, cmdmsg_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::MessageUnion, msg_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageItemReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageItemReq, cmd_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageItemReq, message_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageItemResp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageItemResp, cmd_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageItemResp, errorcode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageItemResp, errormsg_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageResp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageResp, infos_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeMessageReq, infos_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationItemReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationItemReq, cmd_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationItemReq, conversation_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationItemResp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationItemResp, cmd_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationItemResp, errorcode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationItemResp, errormsg_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationResp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationResp, infos_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ChangeConversationReq, infos_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListReq, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2950,6 +3279,12 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::UserMessageIntegrityCheckResp, right_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::UserMessageIntegrityCheckResp, convsinfo_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ConversationInfoArray, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::ConversationInfoArray, convs_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -2961,6 +3296,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, data_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, trackid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, service_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSReq, method_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -2974,6 +3311,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, errormsg_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, data_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, service_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, method_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, trackid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::SdkWSResp, logid_),
   ~0u,  // no _has_bits_
@@ -3511,74 +3850,84 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 286, -1, sizeof(::roc::imsdk::network::SendMessageResp)},
   { 292, -1, sizeof(::roc::imsdk::network::PushMessages)},
   { 298, -1, sizeof(::roc::imsdk::network::CmdMessage)},
-  { 306, -1, sizeof(::roc::imsdk::network::MessageUnion)},
-  { 314, -1, sizeof(::roc::imsdk::network::FetchConvMessageListReq)},
-  { 323, -1, sizeof(::roc::imsdk::network::FetchConvMessageListResp)},
-  { 330, -1, sizeof(::roc::imsdk::network::FetchUserMessageListReq)},
-  { 340, -1, sizeof(::roc::imsdk::network::ConversationInfo)},
-  { 360, -1, sizeof(::roc::imsdk::network::FetchUserMessageListResp)},
-  { 369, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckReq)},
-  { 378, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckResp)},
-  { 387, -1, sizeof(::roc::imsdk::network::SdkWSReq)},
-  { 399, -1, sizeof(::roc::imsdk::network::SdkWSResp)},
-  { 414, -1, sizeof(::roc::imsdk::network::OfflinePushInfo)},
-  { 425, -1, sizeof(::roc::imsdk::network::TipsComm)},
-  { 433, -1, sizeof(::roc::imsdk::network::PullMixListReq)},
-  { 442, -1, sizeof(::roc::imsdk::network::PullMixListResp)},
-  { 448, -1, sizeof(::roc::imsdk::network::PullSingleListReq)},
-  { 457, -1, sizeof(::roc::imsdk::network::PullSingleListResp)},
-  { 463, -1, sizeof(::roc::imsdk::network::GroupCreatedTips)},
-  { 475, -1, sizeof(::roc::imsdk::network::GroupInfoSetTips)},
-  { 485, -1, sizeof(::roc::imsdk::network::GroupInfoSetNameTips)},
-  { 494, -1, sizeof(::roc::imsdk::network::GroupInfoSetAnnouncementTips)},
-  { 503, -1, sizeof(::roc::imsdk::network::JoinGroupApplicationTips)},
-  { 511, -1, sizeof(::roc::imsdk::network::MemberQuitTips)},
-  { 521, -1, sizeof(::roc::imsdk::network::GroupApplicationAcceptedTips)},
-  { 530, -1, sizeof(::roc::imsdk::network::GroupApplicationRejectedTips)},
-  { 539, -1, sizeof(::roc::imsdk::network::GroupOwnerTransferredTips)},
-  { 552, -1, sizeof(::roc::imsdk::network::MemberKickedTips)},
-  { 563, -1, sizeof(::roc::imsdk::network::MemberInvitedTips)},
-  { 575, -1, sizeof(::roc::imsdk::network::MemberEnterTips)},
-  { 585, -1, sizeof(::roc::imsdk::network::GroupDismissedTips)},
-  { 593, -1, sizeof(::roc::imsdk::network::GroupMemberMutedTips)},
-  { 605, -1, sizeof(::roc::imsdk::network::GroupMemberCancelMutedTips)},
-  { 616, -1, sizeof(::roc::imsdk::network::GroupMutedTips)},
-  { 626, -1, sizeof(::roc::imsdk::network::GroupCancelMutedTips)},
-  { 636, -1, sizeof(::roc::imsdk::network::GroupMemberInfoSetTips)},
-  { 648, -1, sizeof(::roc::imsdk::network::FriendApplication)},
-  { 656, -1, sizeof(::roc::imsdk::network::FromToUserID)},
-  { 663, -1, sizeof(::roc::imsdk::network::FriendApplicationTips)},
-  { 669, -1, sizeof(::roc::imsdk::network::FriendApplicationApprovedTips)},
-  { 678, -1, sizeof(::roc::imsdk::network::FriendApplicationRejectedTips)},
-  { 685, -1, sizeof(::roc::imsdk::network::FriendAddedTips)},
-  { 695, -1, sizeof(::roc::imsdk::network::FriendDeletedTips)},
-  { 703, -1, sizeof(::roc::imsdk::network::BlackAddedTips)},
-  { 709, -1, sizeof(::roc::imsdk::network::BlackDeletedTips)},
-  { 715, -1, sizeof(::roc::imsdk::network::FriendInfoChangedTips)},
-  { 724, -1, sizeof(::roc::imsdk::network::UserInfoUpdatedTips)},
-  { 730, -1, sizeof(::roc::imsdk::network::UserStatusChangeTips)},
-  { 739, -1, sizeof(::roc::imsdk::network::UserCommandAddTips)},
-  { 746, -1, sizeof(::roc::imsdk::network::UserCommandUpdateTips)},
-  { 753, -1, sizeof(::roc::imsdk::network::UserCommandDeleteTips)},
-  { 760, -1, sizeof(::roc::imsdk::network::ConversationUpdateTips)},
-  { 767, -1, sizeof(::roc::imsdk::network::ConversationSetPrivateTips)},
-  { 776, -1, sizeof(::roc::imsdk::network::ConversationHasReadTips)},
-  { 785, -1, sizeof(::roc::imsdk::network::NotificationElem)},
-  { 791, -1, sizeof(::roc::imsdk::network::DeleteMessageTips)},
-  { 799, -1, sizeof(::roc::imsdk::network::RevokeMsgTips)},
-  { 811, -1, sizeof(::roc::imsdk::network::MessageRevokedContent)},
-  { 827, -1, sizeof(::roc::imsdk::network::ClearConversationTips)},
-  { 834, -1, sizeof(::roc::imsdk::network::DeleteMsgsTips)},
-  { 842, -1, sizeof(::roc::imsdk::network::MarkAsReadTips)},
-  { 851, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusReq)},
-  { 858, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusResp)},
-  { 863, -1, sizeof(::roc::imsdk::network::ProcessUserCommand)},
-  { 873, -1, sizeof(::roc::imsdk::network::RequestPagination)},
-  { 880, -1, sizeof(::roc::imsdk::network::FriendsInfoUpdateTips)},
-  { 889, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusElem)},
-  { 896, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusTips)},
-  { 902, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatus)},
-  { 909, -1, sizeof(::roc::imsdk::network::StreamMsgTips)},
+  { 307, -1, sizeof(::roc::imsdk::network::CmdMessageArray)},
+  { 313, -1, sizeof(::roc::imsdk::network::MessageUnion)},
+  { 321, -1, sizeof(::roc::imsdk::network::ChangeMessageItemReq)},
+  { 328, -1, sizeof(::roc::imsdk::network::ChangeMessageItemResp)},
+  { 336, -1, sizeof(::roc::imsdk::network::ChangeMessageResp)},
+  { 342, -1, sizeof(::roc::imsdk::network::ChangeMessageReq)},
+  { 348, -1, sizeof(::roc::imsdk::network::ChangeConversationItemReq)},
+  { 355, -1, sizeof(::roc::imsdk::network::ChangeConversationItemResp)},
+  { 363, -1, sizeof(::roc::imsdk::network::ChangeConversationResp)},
+  { 369, -1, sizeof(::roc::imsdk::network::ChangeConversationReq)},
+  { 375, -1, sizeof(::roc::imsdk::network::FetchConvMessageListReq)},
+  { 384, -1, sizeof(::roc::imsdk::network::FetchConvMessageListResp)},
+  { 391, -1, sizeof(::roc::imsdk::network::FetchUserMessageListReq)},
+  { 401, -1, sizeof(::roc::imsdk::network::ConversationInfo)},
+  { 421, -1, sizeof(::roc::imsdk::network::FetchUserMessageListResp)},
+  { 430, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckReq)},
+  { 439, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckResp)},
+  { 448, -1, sizeof(::roc::imsdk::network::ConversationInfoArray)},
+  { 454, -1, sizeof(::roc::imsdk::network::SdkWSReq)},
+  { 468, -1, sizeof(::roc::imsdk::network::SdkWSResp)},
+  { 485, -1, sizeof(::roc::imsdk::network::OfflinePushInfo)},
+  { 496, -1, sizeof(::roc::imsdk::network::TipsComm)},
+  { 504, -1, sizeof(::roc::imsdk::network::PullMixListReq)},
+  { 513, -1, sizeof(::roc::imsdk::network::PullMixListResp)},
+  { 519, -1, sizeof(::roc::imsdk::network::PullSingleListReq)},
+  { 528, -1, sizeof(::roc::imsdk::network::PullSingleListResp)},
+  { 534, -1, sizeof(::roc::imsdk::network::GroupCreatedTips)},
+  { 546, -1, sizeof(::roc::imsdk::network::GroupInfoSetTips)},
+  { 556, -1, sizeof(::roc::imsdk::network::GroupInfoSetNameTips)},
+  { 565, -1, sizeof(::roc::imsdk::network::GroupInfoSetAnnouncementTips)},
+  { 574, -1, sizeof(::roc::imsdk::network::JoinGroupApplicationTips)},
+  { 582, -1, sizeof(::roc::imsdk::network::MemberQuitTips)},
+  { 592, -1, sizeof(::roc::imsdk::network::GroupApplicationAcceptedTips)},
+  { 601, -1, sizeof(::roc::imsdk::network::GroupApplicationRejectedTips)},
+  { 610, -1, sizeof(::roc::imsdk::network::GroupOwnerTransferredTips)},
+  { 623, -1, sizeof(::roc::imsdk::network::MemberKickedTips)},
+  { 634, -1, sizeof(::roc::imsdk::network::MemberInvitedTips)},
+  { 646, -1, sizeof(::roc::imsdk::network::MemberEnterTips)},
+  { 656, -1, sizeof(::roc::imsdk::network::GroupDismissedTips)},
+  { 664, -1, sizeof(::roc::imsdk::network::GroupMemberMutedTips)},
+  { 676, -1, sizeof(::roc::imsdk::network::GroupMemberCancelMutedTips)},
+  { 687, -1, sizeof(::roc::imsdk::network::GroupMutedTips)},
+  { 697, -1, sizeof(::roc::imsdk::network::GroupCancelMutedTips)},
+  { 707, -1, sizeof(::roc::imsdk::network::GroupMemberInfoSetTips)},
+  { 719, -1, sizeof(::roc::imsdk::network::FriendApplication)},
+  { 727, -1, sizeof(::roc::imsdk::network::FromToUserID)},
+  { 734, -1, sizeof(::roc::imsdk::network::FriendApplicationTips)},
+  { 740, -1, sizeof(::roc::imsdk::network::FriendApplicationApprovedTips)},
+  { 749, -1, sizeof(::roc::imsdk::network::FriendApplicationRejectedTips)},
+  { 756, -1, sizeof(::roc::imsdk::network::FriendAddedTips)},
+  { 766, -1, sizeof(::roc::imsdk::network::FriendDeletedTips)},
+  { 774, -1, sizeof(::roc::imsdk::network::BlackAddedTips)},
+  { 780, -1, sizeof(::roc::imsdk::network::BlackDeletedTips)},
+  { 786, -1, sizeof(::roc::imsdk::network::FriendInfoChangedTips)},
+  { 795, -1, sizeof(::roc::imsdk::network::UserInfoUpdatedTips)},
+  { 801, -1, sizeof(::roc::imsdk::network::UserStatusChangeTips)},
+  { 810, -1, sizeof(::roc::imsdk::network::UserCommandAddTips)},
+  { 817, -1, sizeof(::roc::imsdk::network::UserCommandUpdateTips)},
+  { 824, -1, sizeof(::roc::imsdk::network::UserCommandDeleteTips)},
+  { 831, -1, sizeof(::roc::imsdk::network::ConversationUpdateTips)},
+  { 838, -1, sizeof(::roc::imsdk::network::ConversationSetPrivateTips)},
+  { 847, -1, sizeof(::roc::imsdk::network::ConversationHasReadTips)},
+  { 856, -1, sizeof(::roc::imsdk::network::NotificationElem)},
+  { 862, -1, sizeof(::roc::imsdk::network::DeleteMessageTips)},
+  { 870, -1, sizeof(::roc::imsdk::network::RevokeMsgTips)},
+  { 882, -1, sizeof(::roc::imsdk::network::MessageRevokedContent)},
+  { 898, -1, sizeof(::roc::imsdk::network::ClearConversationTips)},
+  { 905, -1, sizeof(::roc::imsdk::network::DeleteMsgsTips)},
+  { 913, -1, sizeof(::roc::imsdk::network::MarkAsReadTips)},
+  { 922, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusReq)},
+  { 929, -1, sizeof(::roc::imsdk::network::SetAppBackgroundStatusResp)},
+  { 934, -1, sizeof(::roc::imsdk::network::ProcessUserCommand)},
+  { 944, -1, sizeof(::roc::imsdk::network::RequestPagination)},
+  { 951, -1, sizeof(::roc::imsdk::network::FriendsInfoUpdateTips)},
+  { 960, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusElem)},
+  { 967, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatusTips)},
+  { 973, -1, sizeof(::roc::imsdk::network::SubUserOnlineStatus)},
+  { 980, -1, sizeof(::roc::imsdk::network::StreamMsgTips)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -3610,7 +3959,16 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_SendMessageResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_PushMessages_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_CmdMessage_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_CmdMessageArray_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_MessageUnion_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeMessageItemReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeMessageItemResp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeMessageResp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeMessageReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeConversationItemReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeConversationItemResp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeConversationResp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ChangeConversationReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_FetchConvMessageListReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_FetchConvMessageListResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_FetchUserMessageListReq_default_instance_),
@@ -3618,6 +3976,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_FetchUserMessageListResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_UserMessageIntegrityCheckReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_UserMessageIntegrityCheckResp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_ConversationInfoArray_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_SdkWSReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_SdkWSResp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_OfflinePushInfo_default_instance_),
@@ -3696,7 +4055,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 96);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 106);
 }
 
 void AddDescriptorsImpl() {
@@ -3803,250 +4162,273 @@ void AddDescriptorsImpl() {
       "twork.MsgData\"H\n\017SendMessageResp\0225\n\005info"
       "s\030\001 \003(\0132&.roc.imsdk.network.SendMessageR"
       "espInfo\"=\n\014PushMessages\022-\n\004msgs\030\001 \003(\0132\037."
-      "roc.imsdk.network.MessageUnion\"y\n\nCmdMes"
-      "sage\022\013\n\003cmd\030\001 \001(\005\022\'\n\003msg\030\002 \001(\0132\032.roc.ims"
-      "dk.network.MsgData\0225\n\010convInfo\030\003 \001(\0132#.r"
-      "oc.imsdk.network.ConversationInfo\"u\n\014Mes"
-      "sageUnion\022\r\n\005isCmd\030\001 \001(\010\022-\n\006cmdMsg\030\002 \001(\013"
-      "2\035.roc.imsdk.network.CmdMessage\022\'\n\003msg\030\003"
-      " \001(\0132\032.roc.imsdk.network.MsgData\"Y\n\027Fetc"
-      "hConvMessageListReq\022\016\n\006convID\030\001 \001(\t\022\016\n\006c"
-      "ursor\030\002 \001(\003\022\r\n\005limit\030\003 \001(\003\022\017\n\007forward\030\004 "
-      "\001(\010\"Z\n\030FetchConvMessageListResp\022,\n\010messa"
-      "ges\030\001 \003(\0132\032.roc.imsdk.network.MsgData\022\020\n"
-      "\010haveMore\030\002 \001(\010\"g\n\027FetchUserMessageListR"
-      "eq\022\016\n\006userID\030\001 \001(\t\022\016\n\006cursor\030\002 \001(\003\022\r\n\005li"
-      "mit\030\003 \001(\003\022\017\n\007forward\030\004 \001(\010\022\014\n\004news\030\005 \001(\010"
-      "\"\337\002\n\020ConversationInfo\022\016\n\006convID\030\001 \001(\t\022\023\n"
-      "\013ownerUserID\030\002 \001(\t\022\020\n\010convType\030\003 \001(\005\022\020\n\010"
-      "convName\030\004 \001(\t\022\022\n\nconvAvatar\030\005 \001(\t\022-\n\004ms"
-      "gs\030\006 \003(\0132\037.roc.imsdk.network.MessageUnio"
-      "n\022+\n\007lastMsg\030\007 \001(\0132\032.roc.imsdk.network.M"
-      "sgData\022\027\n\017convUnreadCount\030\010 \001(\003\022\017\n\007isMut"
-      "ed\030\t \001(\010\022\r\n\005isTop\030\n \001(\010\022\020\n\010isDelete\030\013 \001("
-      "\010\022\021\n\tisBlocked\030\014 \001(\010\022\017\n\007syncExt\030\r \001(\t\022\017\n"
-      "\007members\030\016 \001(\t\022\022\n\nconvStatus\030\017 \001(\003\"\200\001\n\030F"
-      "etchUserMessageListResp\0226\n\tconvsInfo\030\001 \003"
-      "(\0132#.roc.imsdk.network.ConversationInfo\022"
-      "\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\017\n\007hasMore\030"
-      "\004 \001(\010\"\\\n\034UserMessageIntegrityCheckReq\022\016\n"
-      "\006userID\030\001 \001(\t\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001"
-      "(\003\022\017\n\007convIDs\030\004 \003(\t\"\211\001\n\035UserMessageInteg"
-      "rityCheckResp\022\023\n\013isIntegrity\030\001 \001(\010\022\014\n\004le"
-      "ft\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\0226\n\tconvsInfo\030\004 \003"
-      "(\0132#.roc.imsdk.network.ConversationInfo\""
-      "{\n\010SdkWSReq\022\021\n\trequestId\030\001 \001(\t\022\r\n\005token\030"
-      "\002 \001(\t\022\016\n\006userID\030\003 \001(\t\022\020\n\010deviceID\030\004 \001(\t\022"
-      "\014\n\004data\030\005 \001(\014\022\014\n\004type\030\006 \001(\005\022\017\n\007trackID\030\007"
-      " \001(\005\"\260\001\n\tSdkWSResp\022\021\n\trequestId\030\001 \001(\t\022\r\n"
-      "\005token\030\002 \001(\t\022\016\n\006userID\030\003 \001(\t\022\020\n\010deviceID"
-      "\030\004 \001(\t\022\021\n\terrorCode\030\005 \001(\t\022\020\n\010errorMsg\030\006 "
-      "\001(\t\022\014\n\004data\030\007 \001(\014\022\014\n\004type\030\010 \001(\005\022\017\n\007track"
-      "ID\030\t \001(\005\022\r\n\005logID\030\n \001(\t\"{\n\017OfflinePushIn"
-      "fo\022\r\n\005title\030\001 \001(\t\022\014\n\004desc\030\002 \001(\t\022\n\n\002ex\030\003 "
-      "\001(\t\022\024\n\014iOSPushSound\030\004 \001(\t\022\025\n\riOSBadgeCou"
-      "nt\030\005 \001(\010\022\022\n\nsignalInfo\030\006 \001(\t\"C\n\010TipsComm"
-      "\022\016\n\006detail\030\001 \001(\014\022\023\n\013defaultTips\030\002 \001(\t\022\022\n"
-      "\njsonDetail\030\003 \001(\t\"V\n\016PullMixListReq\022\016\n\006c"
-      "ursor\030\001 \001(\003\022\021\n\tconvLimit\030\002 \001(\005\022\020\n\010msgLim"
-      "it\030\003 \001(\005\022\017\n\007forward\030\004 \001(\010\"M\n\017PullMixList"
-      "Resp\022:\n\rconversations\030\001 \003(\0132#.roc.imsdk."
-      "network.ConversationInfo\"^\n\021PullSingleLi"
-      "stReq\022\026\n\016conversationID\030\001 \001(\t\022\020\n\010msgLimi"
-      "t\030\002 \001(\005\022\017\n\007forward\030\003 \001(\010\022\016\n\006cursor\030\004 \001(\003"
-      "\">\n\022PullSingleListResp\022(\n\004msgs\030\001 \003(\0132\032.r"
-      "oc.imsdk.network.MsgData\"\304\002\n\020GroupCreate"
-      "dTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network"
-      ".GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.n"
-      "etwork.GroupMemberFullInfo\022:\n\nmemberList"
-      "\030\003 \003(\0132&.roc.imsdk.network.GroupMemberFu"
-      "llInfo\022\025\n\roperationTime\030\004 \001(\003\022>\n\016groupOw"
-      "nerUser\030\005 \001(\0132&.roc.imsdk.network.GroupM"
-      "emberFullInfo\022\032\n\022groupMemberVersion\030\006 \001("
-      "\004\022\034\n\024groupMemberVersionID\030\007 \001(\t\"\303\001\n\020Grou"
-      "pInfoSetTips\0226\n\006opUser\030\001 \001(\0132&.roc.imsdk"
-      ".network.GroupMemberFullInfo\022\020\n\010muteTime"
-      "\030\002 \001(\003\022+\n\005group\030\003 \001(\0132\034.roc.imsdk.networ"
-      "k.GroupInfo\022\032\n\022groupMemberVersion\030\004 \001(\004\022"
-      "\034\n\024groupMemberVersionID\030\005 \001(\t\"\265\001\n\024GroupI"
-      "nfoSetNameTips\0226\n\006opUser\030\001 \001(\0132&.roc.ims"
-      "dk.network.GroupMemberFullInfo\022+\n\005group\030"
-      "\002 \001(\0132\034.roc.imsdk.network.GroupInfo\022\032\n\022g"
-      "roupMemberVersion\030\003 \001(\004\022\034\n\024groupMemberVe"
-      "rsionID\030\004 \001(\t\"\275\001\n\034GroupInfoSetAnnounceme"
-      "ntTips\0226\n\006opUser\030\001 \001(\0132&.roc.imsdk.netwo"
-      "rk.GroupMemberFullInfo\022+\n\005group\030\002 \001(\0132\034."
-      "roc.imsdk.network.GroupInfo\022\032\n\022groupMemb"
-      "erVersion\030\003 \001(\004\022\034\n\024groupMemberVersionID\030"
-      "\004 \001(\t\"\215\001\n\030JoinGroupApplicationTips\022+\n\005gr"
-      "oup\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo\022"
-      "4\n\tapplicant\030\002 \001(\0132!.roc.imsdk.network.P"
-      "ublicUserInfo\022\016\n\006reqMsg\030\003 \001(\t\"\310\001\n\016Member"
-      "QuitTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netw"
-      "ork.GroupInfo\0228\n\010quitUser\030\002 \001(\0132&.roc.im"
-      "sdk.network.GroupMemberFullInfo\022\025\n\ropera"
-      "tionTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\004 \001"
-      "(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\252\001\n\034Gro"
-      "upApplicationAcceptedTips\022+\n\005group\030\001 \001(\013"
-      "2\034.roc.imsdk.network.GroupInfo\0226\n\006opUser"
-      "\030\002 \001(\0132&.roc.imsdk.network.GroupMemberFu"
-      "llInfo\022\021\n\thandleMsg\030\004 \001(\t\022\022\n\nreceiverAs\030"
-      "\005 \001(\005\"\252\001\n\034GroupApplicationRejectedTips\022+"
-      "\n\005group\030\001 \001(\0132\034.roc.imsdk.network.GroupI"
-      "nfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.network."
-      "GroupMemberFullInfo\022\021\n\thandleMsg\030\004 \001(\t\022\022"
-      "\n\nreceiverAs\030\005 \001(\005\"\352\002\n\031GroupOwnerTransfe"
-      "rredTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netw"
-      "ork.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsd"
-      "k.network.GroupMemberFullInfo\022=\n\rnewGrou"
-      "pOwner\030\003 \001(\0132&.roc.imsdk.network.GroupMe"
-      "mberFullInfo\022\025\n\roldGroupOwner\030\004 \001(\t\022\025\n\ro"
-      "perationTime\030\005 \001(\003\022A\n\021oldGroupOwnerInfo\030"
-      "\006 \001(\0132&.roc.imsdk.network.GroupMemberFul"
-      "lInfo\022\032\n\022groupMemberVersion\030\007 \001(\004\022\034\n\024gro"
-      "upMemberVersionID\030\010 \001(\t\"\210\002\n\020MemberKicked"
-      "Tips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network."
-      "GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.ne"
-      "twork.GroupMemberFullInfo\022>\n\016kickedUserL"
-      "ist\030\003 \003(\0132&.roc.imsdk.network.GroupMembe"
-      "rFullInfo\022\025\n\roperationTime\030\004 \001(\003\022\032\n\022grou"
-      "pMemberVersion\030\005 \001(\004\022\034\n\024groupMemberVersi"
-      "onID\030\006 \001(\t\"\307\002\n\021MemberInvitedTips\022+\n\005grou"
-      "p\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo\0226\n"
-      "\006opUser\030\002 \001(\0132&.roc.imsdk.network.GroupM"
-      "emberFullInfo\022\?\n\017invitedUserList\030\003 \003(\0132&"
-      ".roc.imsdk.network.GroupMemberFullInfo\022\025"
-      "\n\roperationTime\030\004 \001(\003\022\032\n\022groupMemberVers"
-      "ion\030\005 \001(\004\022\034\n\024groupMemberVersionID\030\006 \001(\t\022"
-      ";\n\013inviterUser\030\007 \001(\0132&.roc.imsdk.network"
-      ".GroupMemberFullInfo\"\314\001\n\017MemberEnterTips"
-      "\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Grou"
-      "pInfo\022;\n\013entrantUser\030\002 \001(\0132&.roc.imsdk.n"
-      "etwork.GroupMemberFullInfo\022\025\n\roperationT"
-      "ime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n"
-      "\024groupMemberVersionID\030\006 \001(\t\"\220\001\n\022GroupDis"
-      "missedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.ne"
-      "twork.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.im"
-      "sdk.network.GroupMemberFullInfo\022\025\n\ropera"
-      "tionTime\030\003 \001(\003\"\235\002\n\024GroupMemberMutedTips\022"
+      "roc.imsdk.network.MessageUnion\"\211\001\n\nCmdMe"
+      "ssage\022\013\n\003cmd\030\001 \001(\005\022\'\n\003msg\030\002 \001(\0132\032.roc.im"
+      "sdk.network.MsgData\0225\n\010convInfo\030\003 \001(\0132#."
+      "roc.imsdk.network.ConversationInfo\022\016\n\006cu"
+      "rsor\030\004 \001(\003\"A\n\017CmdMessageArray\022.\n\007cmdMsgs"
+      "\030\001 \003(\0132\035.roc.imsdk.network.CmdMessage\"u\n"
+      "\014MessageUnion\022\r\n\005isCmd\030\001 \001(\010\022-\n\006cmdMsg\030\002"
+      " \001(\0132\035.roc.imsdk.network.CmdMessage\022\'\n\003m"
+      "sg\030\003 \001(\0132\032.roc.imsdk.network.MsgData\"P\n\024"
+      "ChangeMessageItemReq\022\013\n\003cmd\030\001 \001(\005\022+\n\007mes"
+      "sage\030\002 \001(\0132\032.roc.imsdk.network.MsgData\"I"
+      "\n\025ChangeMessageItemResp\022\013\n\003cmd\030\001 \001(\005\022\021\n\t"
+      "errorCode\030\002 \001(\004\022\020\n\010errorMsg\030\003 \001(\t\"L\n\021Cha"
+      "ngeMessageResp\0227\n\005infos\030\001 \003(\0132(.roc.imsd"
+      "k.network.ChangeMessageItemResp\"J\n\020Chang"
+      "eMessageReq\0226\n\005infos\030\001 \003(\0132\'.roc.imsdk.n"
+      "etwork.ChangeMessageItemReq\"c\n\031ChangeCon"
+      "versationItemReq\022\013\n\003cmd\030\001 \001(\005\0229\n\014convers"
+      "ation\030\002 \001(\0132#.roc.imsdk.network.Conversa"
+      "tionInfo\"N\n\032ChangeConversationItemResp\022\013"
+      "\n\003cmd\030\001 \001(\005\022\021\n\terrorCode\030\002 \001(\004\022\020\n\010errorM"
+      "sg\030\003 \001(\t\"V\n\026ChangeConversationResp\022<\n\005in"
+      "fos\030\001 \003(\0132-.roc.imsdk.network.ChangeConv"
+      "ersationItemResp\"T\n\025ChangeConversationRe"
+      "q\022;\n\005infos\030\001 \003(\0132,.roc.imsdk.network.Cha"
+      "ngeConversationItemReq\"Y\n\027FetchConvMessa"
+      "geListReq\022\016\n\006convID\030\001 \001(\t\022\016\n\006cursor\030\002 \001("
+      "\003\022\r\n\005limit\030\003 \001(\003\022\017\n\007forward\030\004 \001(\010\"Z\n\030Fet"
+      "chConvMessageListResp\022,\n\010messages\030\001 \003(\0132"
+      "\032.roc.imsdk.network.MsgData\022\020\n\010haveMore\030"
+      "\002 \001(\010\"g\n\027FetchUserMessageListReq\022\016\n\006user"
+      "ID\030\001 \001(\t\022\016\n\006cursor\030\002 \001(\003\022\r\n\005limit\030\003 \001(\003\022"
+      "\017\n\007forward\030\004 \001(\010\022\014\n\004news\030\005 \001(\010\"\337\002\n\020Conve"
+      "rsationInfo\022\016\n\006convID\030\001 \001(\t\022\023\n\013ownerUser"
+      "ID\030\002 \001(\t\022\020\n\010convType\030\003 \001(\005\022\020\n\010convName\030\004"
+      " \001(\t\022\022\n\nconvAvatar\030\005 \001(\t\022-\n\004msgs\030\006 \003(\0132\037"
+      ".roc.imsdk.network.MessageUnion\022+\n\007lastM"
+      "sg\030\007 \001(\0132\032.roc.imsdk.network.MsgData\022\027\n\017"
+      "convUnreadCount\030\010 \001(\003\022\017\n\007isMuted\030\t \001(\010\022\r"
+      "\n\005isTop\030\n \001(\010\022\020\n\010isDelete\030\013 \001(\010\022\021\n\tisBlo"
+      "cked\030\014 \001(\010\022\017\n\007syncExt\030\r \001(\t\022\017\n\007members\030\016"
+      " \001(\t\022\022\n\nconvStatus\030\017 \001(\003\"\200\001\n\030FetchUserMe"
+      "ssageListResp\0226\n\tconvsInfo\030\001 \003(\0132#.roc.i"
+      "msdk.network.ConversationInfo\022\014\n\004left\030\002 "
+      "\001(\003\022\r\n\005right\030\003 \001(\003\022\017\n\007hasMore\030\004 \001(\010\"\\\n\034U"
+      "serMessageIntegrityCheckReq\022\016\n\006userID\030\001 "
+      "\001(\t\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\017\n\007conv"
+      "IDs\030\004 \003(\t\"\211\001\n\035UserMessageIntegrityCheckR"
+      "esp\022\023\n\013isIntegrity\030\001 \001(\010\022\014\n\004left\030\002 \001(\003\022\r"
+      "\n\005right\030\003 \001(\003\0226\n\tconvsInfo\030\004 \003(\0132#.roc.i"
+      "msdk.network.ConversationInfo\"K\n\025Convers"
+      "ationInfoArray\0222\n\005convs\030\001 \003(\0132#.roc.imsd"
+      "k.network.ConversationInfo\"\234\001\n\010SdkWSReq\022"
+      "\021\n\trequestId\030\001 \001(\t\022\r\n\005token\030\002 \001(\t\022\016\n\006use"
+      "rID\030\003 \001(\t\022\020\n\010deviceID\030\004 \001(\t\022\014\n\004data\030\005 \001("
+      "\014\022\014\n\004type\030\006 \001(\005\022\017\n\007trackID\030\007 \001(\005\022\017\n\007serv"
+      "ice\030\010 \001(\005\022\016\n\006method\030\t \001(\005\"\321\001\n\tSdkWSResp\022"
+      "\021\n\trequestId\030\001 \001(\t\022\r\n\005token\030\002 \001(\t\022\016\n\006use"
+      "rID\030\003 \001(\t\022\020\n\010deviceID\030\004 \001(\t\022\021\n\terrorCode"
+      "\030\005 \001(\t\022\020\n\010errorMsg\030\006 \001(\t\022\014\n\004data\030\007 \001(\014\022\014"
+      "\n\004type\030\010 \001(\005\022\017\n\007service\030\t \001(\005\022\016\n\006method\030"
+      "\n \001(\005\022\017\n\007trackID\030\013 \001(\005\022\r\n\005logID\030\014 \001(\t\"{\n"
+      "\017OfflinePushInfo\022\r\n\005title\030\001 \001(\t\022\014\n\004desc\030"
+      "\002 \001(\t\022\n\n\002ex\030\003 \001(\t\022\024\n\014iOSPushSound\030\004 \001(\t\022"
+      "\025\n\riOSBadgeCount\030\005 \001(\010\022\022\n\nsignalInfo\030\006 \001"
+      "(\t\"C\n\010TipsComm\022\016\n\006detail\030\001 \001(\014\022\023\n\013defaul"
+      "tTips\030\002 \001(\t\022\022\n\njsonDetail\030\003 \001(\t\"V\n\016PullM"
+      "ixListReq\022\016\n\006cursor\030\001 \001(\003\022\021\n\tconvLimit\030\002"
+      " \001(\005\022\020\n\010msgLimit\030\003 \001(\005\022\017\n\007forward\030\004 \001(\010\""
+      "M\n\017PullMixListResp\022:\n\rconversations\030\001 \003("
+      "\0132#.roc.imsdk.network.ConversationInfo\"^"
+      "\n\021PullSingleListReq\022\026\n\016conversationID\030\001 "
+      "\001(\t\022\020\n\010msgLimit\030\002 \001(\005\022\017\n\007forward\030\003 \001(\010\022\016"
+      "\n\006cursor\030\004 \001(\003\">\n\022PullSingleListResp\022(\n\004"
+      "msgs\030\001 \003(\0132\032.roc.imsdk.network.MsgData\"\304"
+      "\002\n\020GroupCreatedTips\022+\n\005group\030\001 \001(\0132\034.roc"
+      ".imsdk.network.GroupInfo\0226\n\006opUser\030\002 \001(\013"
+      "2&.roc.imsdk.network.GroupMemberFullInfo"
+      "\022:\n\nmemberList\030\003 \003(\0132&.roc.imsdk.network"
+      ".GroupMemberFullInfo\022\025\n\roperationTime\030\004 "
+      "\001(\003\022>\n\016groupOwnerUser\030\005 \001(\0132&.roc.imsdk."
+      "network.GroupMemberFullInfo\022\032\n\022groupMemb"
+      "erVersion\030\006 \001(\004\022\034\n\024groupMemberVersionID\030"
+      "\007 \001(\t\"\303\001\n\020GroupInfoSetTips\0226\n\006opUser\030\001 \001"
+      "(\0132&.roc.imsdk.network.GroupMemberFullIn"
+      "fo\022\020\n\010muteTime\030\002 \001(\003\022+\n\005group\030\003 \001(\0132\034.ro"
+      "c.imsdk.network.GroupInfo\022\032\n\022groupMember"
+      "Version\030\004 \001(\004\022\034\n\024groupMemberVersionID\030\005 "
+      "\001(\t\"\265\001\n\024GroupInfoSetNameTips\0226\n\006opUser\030\001"
+      " \001(\0132&.roc.imsdk.network.GroupMemberFull"
+      "Info\022+\n\005group\030\002 \001(\0132\034.roc.imsdk.network."
+      "GroupInfo\022\032\n\022groupMemberVersion\030\003 \001(\004\022\034\n"
+      "\024groupMemberVersionID\030\004 \001(\t\"\275\001\n\034GroupInf"
+      "oSetAnnouncementTips\0226\n\006opUser\030\001 \001(\0132&.r"
+      "oc.imsdk.network.GroupMemberFullInfo\022+\n\005"
+      "group\030\002 \001(\0132\034.roc.imsdk.network.GroupInf"
+      "o\022\032\n\022groupMemberVersion\030\003 \001(\004\022\034\n\024groupMe"
+      "mberVersionID\030\004 \001(\t\"\215\001\n\030JoinGroupApplica"
+      "tionTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netw"
+      "ork.GroupInfo\0224\n\tapplicant\030\002 \001(\0132!.roc.i"
+      "msdk.network.PublicUserInfo\022\016\n\006reqMsg\030\003 "
+      "\001(\t\"\310\001\n\016MemberQuitTips\022+\n\005group\030\001 \001(\0132\034."
+      "roc.imsdk.network.GroupInfo\0228\n\010quitUser\030"
+      "\002 \001(\0132&.roc.imsdk.network.GroupMemberFul"
+      "lInfo\022\025\n\roperationTime\030\003 \001(\003\022\032\n\022groupMem"
+      "berVersion\030\004 \001(\004\022\034\n\024groupMemberVersionID"
+      "\030\005 \001(\t\"\252\001\n\034GroupApplicationAcceptedTips\022"
       "+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Group"
       "Info\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.network"
-      ".GroupMemberFullInfo\022\025\n\roperationTime\030\003 "
-      "\001(\003\0229\n\tmutedUser\030\004 \001(\0132&.roc.imsdk.netwo"
-      "rk.GroupMemberFullInfo\022\024\n\014mutedSeconds\030\005"
-      " \001(\r\022\032\n\022groupMemberVersion\030\006 \001(\004\022\034\n\024grou"
-      "pMemberVersionID\030\007 \001(\t\"\215\002\n\032GroupMemberCa"
-      "ncelMutedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk"
+      ".GroupMemberFullInfo\022\021\n\thandleMsg\030\004 \001(\t\022"
+      "\022\n\nreceiverAs\030\005 \001(\005\"\252\001\n\034GroupApplication"
+      "RejectedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk."
+      "network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc."
+      "imsdk.network.GroupMemberFullInfo\022\021\n\than"
+      "dleMsg\030\004 \001(\t\022\022\n\nreceiverAs\030\005 \001(\005\"\352\002\n\031Gro"
+      "upOwnerTransferredTips\022+\n\005group\030\001 \001(\0132\034."
+      "roc.imsdk.network.GroupInfo\0226\n\006opUser\030\002 "
+      "\001(\0132&.roc.imsdk.network.GroupMemberFullI"
+      "nfo\022=\n\rnewGroupOwner\030\003 \001(\0132&.roc.imsdk.n"
+      "etwork.GroupMemberFullInfo\022\025\n\roldGroupOw"
+      "ner\030\004 \001(\t\022\025\n\roperationTime\030\005 \001(\003\022A\n\021oldG"
+      "roupOwnerInfo\030\006 \001(\0132&.roc.imsdk.network."
+      "GroupMemberFullInfo\022\032\n\022groupMemberVersio"
+      "n\030\007 \001(\004\022\034\n\024groupMemberVersionID\030\010 \001(\t\"\210\002"
+      "\n\020MemberKickedTips\022+\n\005group\030\001 \001(\0132\034.roc."
+      "imsdk.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132"
+      "&.roc.imsdk.network.GroupMemberFullInfo\022"
+      ">\n\016kickedUserList\030\003 \003(\0132&.roc.imsdk.netw"
+      "ork.GroupMemberFullInfo\022\025\n\roperationTime"
+      "\030\004 \001(\003\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024gr"
+      "oupMemberVersionID\030\006 \001(\t\"\307\002\n\021MemberInvit"
+      "edTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.networ"
+      "k.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk."
+      "network.GroupMemberFullInfo\022\?\n\017invitedUs"
+      "erList\030\003 \003(\0132&.roc.imsdk.network.GroupMe"
+      "mberFullInfo\022\025\n\roperationTime\030\004 \001(\003\022\032\n\022g"
+      "roupMemberVersion\030\005 \001(\004\022\034\n\024groupMemberVe"
+      "rsionID\030\006 \001(\t\022;\n\013inviterUser\030\007 \001(\0132&.roc"
+      ".imsdk.network.GroupMemberFullInfo\"\314\001\n\017M"
+      "emberEnterTips\022+\n\005group\030\001 \001(\0132\034.roc.imsd"
+      "k.network.GroupInfo\022;\n\013entrantUser\030\002 \001(\013"
+      "2&.roc.imsdk.network.GroupMemberFullInfo"
+      "\022\025\n\roperationTime\030\003 \001(\003\022\032\n\022groupMemberVe"
+      "rsion\030\005 \001(\004\022\034\n\024groupMemberVersionID\030\006 \001("
+      "\t\"\220\001\n\022GroupDismissedTips\022+\n\005group\030\001 \001(\0132"
+      "\034.roc.imsdk.network.GroupInfo\0226\n\006opUser\030"
+      "\002 \001(\0132&.roc.imsdk.network.GroupMemberFul"
+      "lInfo\022\025\n\roperationTime\030\003 \001(\003\"\235\002\n\024GroupMe"
+      "mberMutedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk"
       ".network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc"
       ".imsdk.network.GroupMemberFullInfo\022\025\n\rop"
       "erationTime\030\003 \001(\003\0229\n\tmutedUser\030\004 \001(\0132&.r"
-      "oc.imsdk.network.GroupMemberFullInfo\022\032\n\022"
-      "groupMemberVersion\030\005 \001(\004\022\034\n\024groupMemberV"
-      "ersionID\030\006 \001(\t\"\306\001\n\016GroupMutedTips\022+\n\005gro"
-      "up\030\001 \001(\0132\034.roc.imsdk.network.GroupInfo\0226"
-      "\n\006opUser\030\002 \001(\0132&.roc.imsdk.network.Group"
-      "MemberFullInfo\022\025\n\roperationTime\030\003 \001(\003\022\032\n"
-      "\022groupMemberVersion\030\004 \001(\004\022\034\n\024groupMember"
-      "VersionID\030\005 \001(\t\"\314\001\n\024GroupCancelMutedTips"
-      "\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.network.Grou"
-      "pInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk.networ"
-      "k.GroupMemberFullInfo\022\025\n\roperationTime\030\003"
-      " \001(\003\022\032\n\022groupMemberVersion\030\004 \001(\004\022\034\n\024grou"
-      "pMemberVersionID\030\005 \001(\t\"\245\002\n\026GroupMemberIn"
-      "foSetTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.net"
-      "work.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.ims"
-      "dk.network.GroupMemberFullInfo\022\025\n\roperat"
-      "ionTime\030\003 \001(\003\022;\n\013changedUser\030\004 \001(\0132&.roc"
-      ".imsdk.network.GroupMemberFullInfo\022\032\n\022gr"
-      "oupMemberVersion\030\005 \001(\004\022\034\n\024groupMemberVer"
-      "sionID\030\006 \001(\t\022\030\n\020groupSortVersion\030\007 \001(\004\"K"
-      "\n\021FriendApplication\022\017\n\007addTime\030\001 \001(\003\022\021\n\t"
-      "addSource\030\002 \001(\t\022\022\n\naddWording\030\003 \001(\t\"4\n\014F"
-      "romToUserID\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUse"
-      "rID\030\002 \001(\t\"N\n\025FriendApplicationTips\0225\n\014fr"
-      "omToUserID\030\001 \001(\0132\037.roc.imsdk.network.Fro"
-      "mToUserID\"\231\001\n\035FriendApplicationApprovedT"
-      "ips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.ne"
-      "twork.FromToUserID\022\021\n\thandleMsg\030\002 \001(\t\022\025\n"
-      "\rfriendVersion\030\003 \001(\004\022\027\n\017friendVersionID\030"
-      "\004 \001(\t\"i\n\035FriendApplicationRejectedTips\0225"
-      "\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.network"
-      ".FromToUserID\022\021\n\thandleMsg\030\002 \001(\t\"\272\001\n\017Fri"
-      "endAddedTips\022-\n\006friend\030\001 \001(\0132\035.roc.imsdk"
-      ".network.FriendInfo\022\025\n\roperationTime\030\002 \001"
-      "(\003\0221\n\006opUser\030\003 \001(\0132!.roc.imsdk.network.P"
-      "ublicUserInfo\022\025\n\rfriendVersion\030\004 \001(\004\022\027\n\017"
-      "friendVersionID\030\005 \001(\t\"z\n\021FriendDeletedTi"
-      "ps\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.net"
-      "work.FromToUserID\022\025\n\rfriendVersion\030\002 \001(\004"
-      "\022\027\n\017friendVersionID\030\003 \001(\t\"G\n\016BlackAddedT"
-      "ips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.ne"
-      "twork.FromToUserID\"I\n\020BlackDeletedTips\0225"
-      "\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.network"
-      ".FromToUserID\"\231\001\n\025FriendInfoChangedTips\022"
-      "5\n\014fromToUserID\030\001 \001(\0132\037.roc.imsdk.networ"
-      "k.FromToUserID\022\025\n\rfriendVersion\030\002 \001(\004\022\027\n"
-      "\017friendVersionID\030\003 \001(\t\022\031\n\021friendSortVers"
-      "ion\030\004 \001(\004\"%\n\023UserInfoUpdatedTips\022\016\n\006user"
-      "ID\030\001 \001(\t\"`\n\024UserStatusChangeTips\022\022\n\nfrom"
-      "UserID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\022\016\n\006status"
-      "\030\003 \001(\005\022\022\n\nplatformID\030\004 \001(\005\":\n\022UserComman"
-      "dAddTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID"
-      "\030\002 \001(\t\"=\n\025UserCommandUpdateTips\022\022\n\nfromU"
-      "serID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\"=\n\025UserCom"
-      "mandDeleteTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010to"
-      "UserID\030\002 \001(\t\"D\n\026ConversationUpdateTips\022\016"
-      "\n\006userID\030\001 \001(\t\022\032\n\022conversationIDList\030\002 \003"
-      "(\t\"g\n\032ConversationSetPrivateTips\022\016\n\006recv"
-      "ID\030\001 \001(\t\022\016\n\006sendID\030\002 \001(\t\022\021\n\tisPrivate\030\003 "
-      "\001(\010\022\026\n\016conversationID\030\004 \001(\t\"n\n\027Conversat"
-      "ionHasReadTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016conver"
-      "sationID\030\002 \001(\t\022\022\n\nhasReadSeq\030\003 \001(\003\022\027\n\017un"
-      "readCountTime\030\004 \001(\003\"\"\n\020NotificationElem\022"
-      "\016\n\006detail\030\001 \001(\t\"C\n\021DeleteMessageTips\022\020\n\010"
-      "opUserID\030\001 \001(\t\022\016\n\006userID\030\002 \001(\t\022\014\n\004seqs\030\003"
-      " \003(\003\"\241\001\n\rRevokeMsgTips\022\025\n\rrevokerUserID\030"
-      "\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nrevokeTime"
-      "\030\003 \001(\003\022\024\n\014sesstionType\030\005 \001(\005\022\013\n\003seq\030\006 \001("
-      "\003\022\026\n\016conversationID\030\007 \001(\t\022\025\n\risAdminRevo"
-      "ke\030\010 \001(\010\"\220\002\n\025MessageRevokedContent\022\021\n\tre"
-      "vokerID\030\001 \001(\t\022\023\n\013revokerRole\030\002 \001(\005\022\023\n\013cl"
-      "ientMsgID\030\003 \001(\t\022\027\n\017revokerNickname\030\004 \001(\t"
-      "\022\022\n\nrevokeTime\030\005 \001(\003\022\035\n\025sourceMessageSen"
-      "dTime\030\006 \001(\003\022\033\n\023sourceMessageSendID\030\007 \001(\t"
-      "\022#\n\033sourceMessageSenderNickname\030\010 \001(\t\022\023\n"
-      "\013sessionType\030\n \001(\005\022\013\n\003seq\030\013 \001(\003\022\n\n\002ex\030\014 "
-      "\001(\t\"@\n\025ClearConversationTips\022\016\n\006userID\030\001"
-      " \001(\t\022\027\n\017conversationIDs\030\002 \003(\t\"F\n\016DeleteM"
-      "sgsTips\022\016\n\006userID\030\001 \001(\t\022\026\n\016conversationI"
-      "D\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\"d\n\016MarkAsReadTips\022"
-      "\030\n\020markAsReadUserID\030\001 \001(\t\022\026\n\016conversatio"
-      "nID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\022\022\n\nhasReadSeq\030\004 "
-      "\001(\003\"A\n\031SetAppBackgroundStatusReq\022\016\n\006user"
-      "ID\030\001 \001(\t\022\024\n\014isBackground\030\002 \001(\010\"\034\n\032SetApp"
-      "BackgroundStatusResp\"c\n\022ProcessUserComma"
-      "nd\022\016\n\006userID\030\001 \001(\t\022\014\n\004type\030\002 \001(\005\022\022\n\ncrea"
-      "teTime\030\003 \001(\003\022\014\n\004uuid\030\004 \001(\t\022\r\n\005value\030\005 \001("
-      "\t\";\n\021RequestPagination\022\022\n\npageNumber\030\001 \001"
-      "(\005\022\022\n\nshowNumber\030\002 \001(\005\"\221\001\n\025FriendsInfoUp"
-      "dateTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.ims"
-      "dk.network.FromToUserID\022\021\n\tfriendIDs\030\002 \003"
-      "(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017friendVersi"
-      "onID\030\004 \001(\t\"D\n\027SubUserOnlineStatusElem\022\016\n"
-      "\006userID\030\001 \001(\t\022\031\n\021onlinePlatformIDs\030\002 \003(\005"
-      "\"Z\n\027SubUserOnlineStatusTips\022\?\n\013subscribe"
-      "rs\030\001 \003(\0132*.roc.imsdk.network.SubUserOnli"
-      "neStatusElem\"I\n\023SubUserOnlineStatus\022\027\n\017s"
-      "ubscribeUserID\030\001 \003(\t\022\031\n\021unsubscribeUserI"
-      "D\030\002 \003(\t\"n\n\rStreamMsgTips\022\026\n\016conversation"
-      "ID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t\022\022\n\nstartIn"
-      "dex\030\003 \001(\003\022\017\n\007packets\030\004 \003(\t\022\013\n\003end\030\005 \001(\010*"
-      "0\n\tPullOrder\022\020\n\014PullOrderAsc\020\000\022\021\n\rPullOr"
-      "derDesc\020\001B7Z5github.com/roc/roc-im-serve"
-      "r/internal/kitex_gen/sdkwsb\006proto3"
+      "oc.imsdk.network.GroupMemberFullInfo\022\024\n\014"
+      "mutedSeconds\030\005 \001(\r\022\032\n\022groupMemberVersion"
+      "\030\006 \001(\004\022\034\n\024groupMemberVersionID\030\007 \001(\t\"\215\002\n"
+      "\032GroupMemberCancelMutedTips\022+\n\005group\030\001 \001"
+      "(\0132\034.roc.imsdk.network.GroupInfo\0226\n\006opUs"
+      "er\030\002 \001(\0132&.roc.imsdk.network.GroupMember"
+      "FullInfo\022\025\n\roperationTime\030\003 \001(\003\0229\n\tmuted"
+      "User\030\004 \001(\0132&.roc.imsdk.network.GroupMemb"
+      "erFullInfo\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034"
+      "\n\024groupMemberVersionID\030\006 \001(\t\"\306\001\n\016GroupMu"
+      "tedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsdk.netwo"
+      "rk.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.roc.imsdk"
+      ".network.GroupMemberFullInfo\022\025\n\roperatio"
+      "nTime\030\003 \001(\003\022\032\n\022groupMemberVersion\030\004 \001(\004\022"
+      "\034\n\024groupMemberVersionID\030\005 \001(\t\"\314\001\n\024GroupC"
+      "ancelMutedTips\022+\n\005group\030\001 \001(\0132\034.roc.imsd"
+      "k.network.GroupInfo\0226\n\006opUser\030\002 \001(\0132&.ro"
+      "c.imsdk.network.GroupMemberFullInfo\022\025\n\ro"
+      "perationTime\030\003 \001(\003\022\032\n\022groupMemberVersion"
+      "\030\004 \001(\004\022\034\n\024groupMemberVersionID\030\005 \001(\t\"\245\002\n"
+      "\026GroupMemberInfoSetTips\022+\n\005group\030\001 \001(\0132\034"
+      ".roc.imsdk.network.GroupInfo\0226\n\006opUser\030\002"
+      " \001(\0132&.roc.imsdk.network.GroupMemberFull"
+      "Info\022\025\n\roperationTime\030\003 \001(\003\022;\n\013changedUs"
+      "er\030\004 \001(\0132&.roc.imsdk.network.GroupMember"
+      "FullInfo\022\032\n\022groupMemberVersion\030\005 \001(\004\022\034\n\024"
+      "groupMemberVersionID\030\006 \001(\t\022\030\n\020groupSortV"
+      "ersion\030\007 \001(\004\"K\n\021FriendApplication\022\017\n\007add"
+      "Time\030\001 \001(\003\022\021\n\taddSource\030\002 \001(\t\022\022\n\naddWord"
+      "ing\030\003 \001(\t\"4\n\014FromToUserID\022\022\n\nfromUserID\030"
+      "\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\"N\n\025FriendApplica"
+      "tionTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc.ims"
+      "dk.network.FromToUserID\"\231\001\n\035FriendApplic"
+      "ationApprovedTips\0225\n\014fromToUserID\030\001 \001(\0132"
+      "\037.roc.imsdk.network.FromToUserID\022\021\n\thand"
+      "leMsg\030\002 \001(\t\022\025\n\rfriendVersion\030\003 \001(\004\022\027\n\017fr"
+      "iendVersionID\030\004 \001(\t\"i\n\035FriendApplication"
+      "RejectedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc"
+      ".imsdk.network.FromToUserID\022\021\n\thandleMsg"
+      "\030\002 \001(\t\"\272\001\n\017FriendAddedTips\022-\n\006friend\030\001 \001"
+      "(\0132\035.roc.imsdk.network.FriendInfo\022\025\n\rope"
+      "rationTime\030\002 \001(\003\0221\n\006opUser\030\003 \001(\0132!.roc.i"
+      "msdk.network.PublicUserInfo\022\025\n\rfriendVer"
+      "sion\030\004 \001(\004\022\027\n\017friendVersionID\030\005 \001(\t\"z\n\021F"
+      "riendDeletedTips\0225\n\014fromToUserID\030\001 \001(\0132\037"
+      ".roc.imsdk.network.FromToUserID\022\025\n\rfrien"
+      "dVersion\030\002 \001(\004\022\027\n\017friendVersionID\030\003 \001(\t\""
+      "G\n\016BlackAddedTips\0225\n\014fromToUserID\030\001 \001(\0132"
+      "\037.roc.imsdk.network.FromToUserID\"I\n\020Blac"
+      "kDeletedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.roc"
+      ".imsdk.network.FromToUserID\"\231\001\n\025FriendIn"
+      "foChangedTips\0225\n\014fromToUserID\030\001 \001(\0132\037.ro"
+      "c.imsdk.network.FromToUserID\022\025\n\rfriendVe"
+      "rsion\030\002 \001(\004\022\027\n\017friendVersionID\030\003 \001(\t\022\031\n\021"
+      "friendSortVersion\030\004 \001(\004\"%\n\023UserInfoUpdat"
+      "edTips\022\016\n\006userID\030\001 \001(\t\"`\n\024UserStatusChan"
+      "geTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID\030\002"
+      " \001(\t\022\016\n\006status\030\003 \001(\005\022\022\n\nplatformID\030\004 \001(\005"
+      "\":\n\022UserCommandAddTips\022\022\n\nfromUserID\030\001 \001"
+      "(\t\022\020\n\010toUserID\030\002 \001(\t\"=\n\025UserCommandUpdat"
+      "eTips\022\022\n\nfromUserID\030\001 \001(\t\022\020\n\010toUserID\030\002 "
+      "\001(\t\"=\n\025UserCommandDeleteTips\022\022\n\nfromUser"
+      "ID\030\001 \001(\t\022\020\n\010toUserID\030\002 \001(\t\"D\n\026Conversati"
+      "onUpdateTips\022\016\n\006userID\030\001 \001(\t\022\032\n\022conversa"
+      "tionIDList\030\002 \003(\t\"g\n\032ConversationSetPriva"
+      "teTips\022\016\n\006recvID\030\001 \001(\t\022\016\n\006sendID\030\002 \001(\t\022\021"
+      "\n\tisPrivate\030\003 \001(\010\022\026\n\016conversationID\030\004 \001("
+      "\t\"n\n\027ConversationHasReadTips\022\016\n\006userID\030\001"
+      " \001(\t\022\026\n\016conversationID\030\002 \001(\t\022\022\n\nhasReadS"
+      "eq\030\003 \001(\003\022\027\n\017unreadCountTime\030\004 \001(\003\"\"\n\020Not"
+      "ificationElem\022\016\n\006detail\030\001 \001(\t\"C\n\021DeleteM"
+      "essageTips\022\020\n\010opUserID\030\001 \001(\t\022\016\n\006userID\030\002"
+      " \001(\t\022\014\n\004seqs\030\003 \003(\003\"\241\001\n\rRevokeMsgTips\022\025\n\r"
+      "revokerUserID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 \001(\t"
+      "\022\022\n\nrevokeTime\030\003 \001(\003\022\024\n\014sesstionType\030\005 \001"
+      "(\005\022\013\n\003seq\030\006 \001(\003\022\026\n\016conversationID\030\007 \001(\t\022"
+      "\025\n\risAdminRevoke\030\010 \001(\010\"\220\002\n\025MessageRevoke"
+      "dContent\022\021\n\trevokerID\030\001 \001(\t\022\023\n\013revokerRo"
+      "le\030\002 \001(\005\022\023\n\013clientMsgID\030\003 \001(\t\022\027\n\017revoker"
+      "Nickname\030\004 \001(\t\022\022\n\nrevokeTime\030\005 \001(\003\022\035\n\025so"
+      "urceMessageSendTime\030\006 \001(\003\022\033\n\023sourceMessa"
+      "geSendID\030\007 \001(\t\022#\n\033sourceMessageSenderNic"
+      "kname\030\010 \001(\t\022\023\n\013sessionType\030\n \001(\005\022\013\n\003seq\030"
+      "\013 \001(\003\022\n\n\002ex\030\014 \001(\t\"@\n\025ClearConversationTi"
+      "ps\022\016\n\006userID\030\001 \001(\t\022\027\n\017conversationIDs\030\002 "
+      "\003(\t\"F\n\016DeleteMsgsTips\022\016\n\006userID\030\001 \001(\t\022\026\n"
+      "\016conversationID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\"d\n\016M"
+      "arkAsReadTips\022\030\n\020markAsReadUserID\030\001 \001(\t\022"
+      "\026\n\016conversationID\030\002 \001(\t\022\014\n\004seqs\030\003 \003(\003\022\022\n"
+      "\nhasReadSeq\030\004 \001(\003\"A\n\031SetAppBackgroundSta"
+      "tusReq\022\016\n\006userID\030\001 \001(\t\022\024\n\014isBackground\030\002"
+      " \001(\010\"\034\n\032SetAppBackgroundStatusResp\"c\n\022Pr"
+      "ocessUserCommand\022\016\n\006userID\030\001 \001(\t\022\014\n\004type"
+      "\030\002 \001(\005\022\022\n\ncreateTime\030\003 \001(\003\022\014\n\004uuid\030\004 \001(\t"
+      "\022\r\n\005value\030\005 \001(\t\";\n\021RequestPagination\022\022\n\n"
+      "pageNumber\030\001 \001(\005\022\022\n\nshowNumber\030\002 \001(\005\"\221\001\n"
+      "\025FriendsInfoUpdateTips\0225\n\014fromToUserID\030\001"
+      " \001(\0132\037.roc.imsdk.network.FromToUserID\022\021\n"
+      "\tfriendIDs\030\002 \003(\t\022\025\n\rfriendVersion\030\003 \001(\004\022"
+      "\027\n\017friendVersionID\030\004 \001(\t\"D\n\027SubUserOnlin"
+      "eStatusElem\022\016\n\006userID\030\001 \001(\t\022\031\n\021onlinePla"
+      "tformIDs\030\002 \003(\005\"Z\n\027SubUserOnlineStatusTip"
+      "s\022\?\n\013subscribers\030\001 \003(\0132*.roc.imsdk.netwo"
+      "rk.SubUserOnlineStatusElem\"I\n\023SubUserOnl"
+      "ineStatus\022\027\n\017subscribeUserID\030\001 \003(\t\022\031\n\021un"
+      "subscribeUserID\030\002 \003(\t\"n\n\rStreamMsgTips\022\026"
+      "\n\016conversationID\030\001 \001(\t\022\023\n\013clientMsgID\030\002 "
+      "\001(\t\022\022\n\nstartIndex\030\003 \001(\003\022\017\n\007packets\030\004 \003(\t"
+      "\022\013\n\003end\030\005 \001(\010*0\n\tPullOrder\022\020\n\014PullOrderA"
+      "sc\020\000\022\021\n\rPullOrderDesc\020\001B7Z5github.com/ro"
+      "c/roc-im-server/internal/kitex_gen/sdkws"
+      "b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 13674);
+      descriptor, 14568);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "sdkws.proto", &protobuf_RegisterTypes);
 }
@@ -16002,6 +16384,7 @@ void CmdMessage::InitAsDefaultInstance() {
 const int CmdMessage::kCmdFieldNumber;
 const int CmdMessage::kMsgFieldNumber;
 const int CmdMessage::kConvInfoFieldNumber;
+const int CmdMessage::kCursorFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 CmdMessage::CmdMessage()
@@ -16027,7 +16410,9 @@ CmdMessage::CmdMessage(const CmdMessage& from)
   } else {
     convinfo_ = NULL;
   }
-  cmd_ = from.cmd_;
+  ::memcpy(&cursor_, &from.cursor_,
+    static_cast<size_t>(reinterpret_cast<char*>(&cmd_) -
+    reinterpret_cast<char*>(&cursor_)) + sizeof(cmd_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.CmdMessage)
 }
 
@@ -16085,7 +16470,9 @@ void CmdMessage::Clear() {
     delete convinfo_;
   }
   convinfo_ = NULL;
-  cmd_ = 0;
+  ::memset(&cursor_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&cmd_) -
+      reinterpret_cast<char*>(&cursor_)) + sizeof(cmd_));
   _internal_metadata_.Clear();
 }
 
@@ -16137,6 +16524,20 @@ bool CmdMessage::MergePartialFromCodedStream(
         break;
       }
 
+      // int64 cursor = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &cursor_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -16180,6 +16581,11 @@ void CmdMessage::SerializeWithCachedSizes(
       3, *this->convinfo_, output);
   }
 
+  // int64 cursor = 4;
+  if (this->cursor() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(4, this->cursor(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -16213,6 +16619,11 @@ void CmdMessage::SerializeWithCachedSizes(
         3, *this->convinfo_, deterministic, target);
   }
 
+  // int64 cursor = 4;
+  if (this->cursor() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(4, this->cursor(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -16242,6 +16653,13 @@ size_t CmdMessage::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
         *this->convinfo_);
+  }
+
+  // int64 cursor = 4;
+  if (this->cursor() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->cursor());
   }
 
   // int32 cmd = 1;
@@ -16286,6 +16704,9 @@ void CmdMessage::MergeFrom(const CmdMessage& from) {
   if (from.has_convinfo()) {
     mutable_convinfo()->::roc::imsdk::network::ConversationInfo::MergeFrom(from.convinfo());
   }
+  if (from.cursor() != 0) {
+    set_cursor(from.cursor());
+  }
   if (from.cmd() != 0) {
     set_cmd(from.cmd());
   }
@@ -16317,12 +16738,254 @@ void CmdMessage::InternalSwap(CmdMessage* other) {
   using std::swap;
   swap(msg_, other->msg_);
   swap(convinfo_, other->convinfo_);
+  swap(cursor_, other->cursor_);
   swap(cmd_, other->cmd_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata CmdMessage::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void CmdMessageArray::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int CmdMessageArray::kCmdMsgsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+CmdMessageArray::CmdMessageArray()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageArray();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.CmdMessageArray)
+}
+CmdMessageArray::CmdMessageArray(const CmdMessageArray& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      cmdmsgs_(from.cmdmsgs_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.CmdMessageArray)
+}
+
+void CmdMessageArray::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+CmdMessageArray::~CmdMessageArray() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.CmdMessageArray)
+  SharedDtor();
+}
+
+void CmdMessageArray::SharedDtor() {
+}
+
+void CmdMessageArray::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* CmdMessageArray::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const CmdMessageArray& CmdMessageArray::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageArray();
+  return *internal_default_instance();
+}
+
+CmdMessageArray* CmdMessageArray::New(::google::protobuf::Arena* arena) const {
+  CmdMessageArray* n = new CmdMessageArray;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void CmdMessageArray::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.CmdMessageArray)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cmdmsgs_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool CmdMessageArray::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.CmdMessageArray)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .roc.imsdk.network.CmdMessage cmdMsgs = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_cmdmsgs()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.CmdMessageArray)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.CmdMessageArray)
+  return false;
+#undef DO_
+}
+
+void CmdMessageArray::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.CmdMessageArray)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.CmdMessage cmdMsgs = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->cmdmsgs_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->cmdmsgs(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.CmdMessageArray)
+}
+
+::google::protobuf::uint8* CmdMessageArray::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.CmdMessageArray)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.CmdMessage cmdMsgs = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->cmdmsgs_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->cmdmsgs(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.CmdMessageArray)
+  return target;
+}
+
+size_t CmdMessageArray::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.CmdMessageArray)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .roc.imsdk.network.CmdMessage cmdMsgs = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->cmdmsgs_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->cmdmsgs(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void CmdMessageArray::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.CmdMessageArray)
+  GOOGLE_DCHECK_NE(&from, this);
+  const CmdMessageArray* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const CmdMessageArray>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.CmdMessageArray)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.CmdMessageArray)
+    MergeFrom(*source);
+  }
+}
+
+void CmdMessageArray::MergeFrom(const CmdMessageArray& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.CmdMessageArray)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cmdmsgs_.MergeFrom(from.cmdmsgs_);
+}
+
+void CmdMessageArray::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.CmdMessageArray)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void CmdMessageArray::CopyFrom(const CmdMessageArray& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.CmdMessageArray)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CmdMessageArray::IsInitialized() const {
+  return true;
+}
+
+void CmdMessageArray::Swap(CmdMessageArray* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void CmdMessageArray::InternalSwap(CmdMessageArray* other) {
+  using std::swap;
+  cmdmsgs_.InternalSwap(&other->cmdmsgs_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata CmdMessageArray::GetMetadata() const {
   protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -16659,6 +17322,2222 @@ void MessageUnion::InternalSwap(MessageUnion* other) {
 }
 
 ::google::protobuf::Metadata MessageUnion::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeMessageItemReq::InitAsDefaultInstance() {
+  ::roc::imsdk::network::_ChangeMessageItemReq_default_instance_._instance.get_mutable()->message_ = const_cast< ::roc::imsdk::network::MsgData*>(
+      ::roc::imsdk::network::MsgData::internal_default_instance());
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeMessageItemReq::kCmdFieldNumber;
+const int ChangeMessageItemReq::kMessageFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeMessageItemReq::ChangeMessageItemReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeMessageItemReq)
+}
+ChangeMessageItemReq::ChangeMessageItemReq(const ChangeMessageItemReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_message()) {
+    message_ = new ::roc::imsdk::network::MsgData(*from.message_);
+  } else {
+    message_ = NULL;
+  }
+  cmd_ = from.cmd_;
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeMessageItemReq)
+}
+
+void ChangeMessageItemReq::SharedCtor() {
+  ::memset(&message_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&cmd_) -
+      reinterpret_cast<char*>(&message_)) + sizeof(cmd_));
+  _cached_size_ = 0;
+}
+
+ChangeMessageItemReq::~ChangeMessageItemReq() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeMessageItemReq)
+  SharedDtor();
+}
+
+void ChangeMessageItemReq::SharedDtor() {
+  if (this != internal_default_instance()) delete message_;
+}
+
+void ChangeMessageItemReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeMessageItemReq::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeMessageItemReq& ChangeMessageItemReq::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemReq();
+  return *internal_default_instance();
+}
+
+ChangeMessageItemReq* ChangeMessageItemReq::New(::google::protobuf::Arena* arena) const {
+  ChangeMessageItemReq* n = new ChangeMessageItemReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeMessageItemReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeMessageItemReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && message_ != NULL) {
+    delete message_;
+  }
+  message_ = NULL;
+  cmd_ = 0;
+  _internal_metadata_.Clear();
+}
+
+bool ChangeMessageItemReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeMessageItemReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 cmd = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &cmd_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .roc.imsdk.network.MsgData message = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_message()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeMessageItemReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeMessageItemReq)
+  return false;
+#undef DO_
+}
+
+void ChangeMessageItemReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeMessageItemReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->cmd(), output);
+  }
+
+  // .roc.imsdk.network.MsgData message = 2;
+  if (this->has_message()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->message_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeMessageItemReq)
+}
+
+::google::protobuf::uint8* ChangeMessageItemReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeMessageItemReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->cmd(), target);
+  }
+
+  // .roc.imsdk.network.MsgData message = 2;
+  if (this->has_message()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        2, *this->message_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeMessageItemReq)
+  return target;
+}
+
+size_t ChangeMessageItemReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeMessageItemReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .roc.imsdk.network.MsgData message = 2;
+  if (this->has_message()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->message_);
+  }
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->cmd());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeMessageItemReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeMessageItemReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeMessageItemReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeMessageItemReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeMessageItemReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeMessageItemReq)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeMessageItemReq::MergeFrom(const ChangeMessageItemReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeMessageItemReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_message()) {
+    mutable_message()->::roc::imsdk::network::MsgData::MergeFrom(from.message());
+  }
+  if (from.cmd() != 0) {
+    set_cmd(from.cmd());
+  }
+}
+
+void ChangeMessageItemReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeMessageItemReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeMessageItemReq::CopyFrom(const ChangeMessageItemReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeMessageItemReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeMessageItemReq::IsInitialized() const {
+  return true;
+}
+
+void ChangeMessageItemReq::Swap(ChangeMessageItemReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeMessageItemReq::InternalSwap(ChangeMessageItemReq* other) {
+  using std::swap;
+  swap(message_, other->message_);
+  swap(cmd_, other->cmd_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeMessageItemReq::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeMessageItemResp::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeMessageItemResp::kCmdFieldNumber;
+const int ChangeMessageItemResp::kErrorCodeFieldNumber;
+const int ChangeMessageItemResp::kErrorMsgFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeMessageItemResp::ChangeMessageItemResp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemResp();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeMessageItemResp)
+}
+ChangeMessageItemResp::ChangeMessageItemResp(const ChangeMessageItemResp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.errormsg().size() > 0) {
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  ::memcpy(&errorcode_, &from.errorcode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&cmd_) -
+    reinterpret_cast<char*>(&errorcode_)) + sizeof(cmd_));
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeMessageItemResp)
+}
+
+void ChangeMessageItemResp::SharedCtor() {
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&errorcode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&cmd_) -
+      reinterpret_cast<char*>(&errorcode_)) + sizeof(cmd_));
+  _cached_size_ = 0;
+}
+
+ChangeMessageItemResp::~ChangeMessageItemResp() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeMessageItemResp)
+  SharedDtor();
+}
+
+void ChangeMessageItemResp::SharedDtor() {
+  errormsg_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void ChangeMessageItemResp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeMessageItemResp::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeMessageItemResp& ChangeMessageItemResp::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageItemResp();
+  return *internal_default_instance();
+}
+
+ChangeMessageItemResp* ChangeMessageItemResp::New(::google::protobuf::Arena* arena) const {
+  ChangeMessageItemResp* n = new ChangeMessageItemResp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeMessageItemResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeMessageItemResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&errorcode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&cmd_) -
+      reinterpret_cast<char*>(&errorcode_)) + sizeof(cmd_));
+  _internal_metadata_.Clear();
+}
+
+bool ChangeMessageItemResp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeMessageItemResp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 cmd = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &cmd_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint64 errorCode = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &errorcode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string errorMsg = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_errormsg()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.ChangeMessageItemResp.errorMsg"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeMessageItemResp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeMessageItemResp)
+  return false;
+#undef DO_
+}
+
+void ChangeMessageItemResp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeMessageItemResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->cmd(), output);
+  }
+
+  // uint64 errorCode = 2;
+  if (this->errorcode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->errorcode(), output);
+  }
+
+  // string errorMsg = 3;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.ChangeMessageItemResp.errorMsg");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->errormsg(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeMessageItemResp)
+}
+
+::google::protobuf::uint8* ChangeMessageItemResp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeMessageItemResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->cmd(), target);
+  }
+
+  // uint64 errorCode = 2;
+  if (this->errorcode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->errorcode(), target);
+  }
+
+  // string errorMsg = 3;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.ChangeMessageItemResp.errorMsg");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->errormsg(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeMessageItemResp)
+  return target;
+}
+
+size_t ChangeMessageItemResp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeMessageItemResp)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string errorMsg = 3;
+  if (this->errormsg().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->errormsg());
+  }
+
+  // uint64 errorCode = 2;
+  if (this->errorcode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->errorcode());
+  }
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->cmd());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeMessageItemResp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeMessageItemResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeMessageItemResp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeMessageItemResp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeMessageItemResp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeMessageItemResp)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeMessageItemResp::MergeFrom(const ChangeMessageItemResp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeMessageItemResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.errormsg().size() > 0) {
+
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  if (from.errorcode() != 0) {
+    set_errorcode(from.errorcode());
+  }
+  if (from.cmd() != 0) {
+    set_cmd(from.cmd());
+  }
+}
+
+void ChangeMessageItemResp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeMessageItemResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeMessageItemResp::CopyFrom(const ChangeMessageItemResp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeMessageItemResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeMessageItemResp::IsInitialized() const {
+  return true;
+}
+
+void ChangeMessageItemResp::Swap(ChangeMessageItemResp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeMessageItemResp::InternalSwap(ChangeMessageItemResp* other) {
+  using std::swap;
+  errormsg_.Swap(&other->errormsg_);
+  swap(errorcode_, other->errorcode_);
+  swap(cmd_, other->cmd_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeMessageItemResp::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeMessageResp::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeMessageResp::kInfosFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeMessageResp::ChangeMessageResp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageResp();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeMessageResp)
+}
+ChangeMessageResp::ChangeMessageResp(const ChangeMessageResp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      infos_(from.infos_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeMessageResp)
+}
+
+void ChangeMessageResp::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+ChangeMessageResp::~ChangeMessageResp() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeMessageResp)
+  SharedDtor();
+}
+
+void ChangeMessageResp::SharedDtor() {
+}
+
+void ChangeMessageResp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeMessageResp::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeMessageResp& ChangeMessageResp::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageResp();
+  return *internal_default_instance();
+}
+
+ChangeMessageResp* ChangeMessageResp::New(::google::protobuf::Arena* arena) const {
+  ChangeMessageResp* n = new ChangeMessageResp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeMessageResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeMessageResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  infos_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool ChangeMessageResp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeMessageResp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .roc.imsdk.network.ChangeMessageItemResp infos = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_infos()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeMessageResp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeMessageResp)
+  return false;
+#undef DO_
+}
+
+void ChangeMessageResp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeMessageResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeMessageItemResp infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->infos(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeMessageResp)
+}
+
+::google::protobuf::uint8* ChangeMessageResp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeMessageResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeMessageItemResp infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->infos(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeMessageResp)
+  return target;
+}
+
+size_t ChangeMessageResp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeMessageResp)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .roc.imsdk.network.ChangeMessageItemResp infos = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->infos_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->infos(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeMessageResp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeMessageResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeMessageResp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeMessageResp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeMessageResp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeMessageResp)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeMessageResp::MergeFrom(const ChangeMessageResp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeMessageResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  infos_.MergeFrom(from.infos_);
+}
+
+void ChangeMessageResp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeMessageResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeMessageResp::CopyFrom(const ChangeMessageResp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeMessageResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeMessageResp::IsInitialized() const {
+  return true;
+}
+
+void ChangeMessageResp::Swap(ChangeMessageResp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeMessageResp::InternalSwap(ChangeMessageResp* other) {
+  using std::swap;
+  infos_.InternalSwap(&other->infos_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeMessageResp::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeMessageReq::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeMessageReq::kInfosFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeMessageReq::ChangeMessageReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeMessageReq)
+}
+ChangeMessageReq::ChangeMessageReq(const ChangeMessageReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      infos_(from.infos_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeMessageReq)
+}
+
+void ChangeMessageReq::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+ChangeMessageReq::~ChangeMessageReq() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeMessageReq)
+  SharedDtor();
+}
+
+void ChangeMessageReq::SharedDtor() {
+}
+
+void ChangeMessageReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeMessageReq::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeMessageReq& ChangeMessageReq::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeMessageReq();
+  return *internal_default_instance();
+}
+
+ChangeMessageReq* ChangeMessageReq::New(::google::protobuf::Arena* arena) const {
+  ChangeMessageReq* n = new ChangeMessageReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeMessageReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeMessageReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  infos_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool ChangeMessageReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeMessageReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .roc.imsdk.network.ChangeMessageItemReq infos = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_infos()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeMessageReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeMessageReq)
+  return false;
+#undef DO_
+}
+
+void ChangeMessageReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeMessageReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeMessageItemReq infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->infos(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeMessageReq)
+}
+
+::google::protobuf::uint8* ChangeMessageReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeMessageReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeMessageItemReq infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->infos(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeMessageReq)
+  return target;
+}
+
+size_t ChangeMessageReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeMessageReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .roc.imsdk.network.ChangeMessageItemReq infos = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->infos_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->infos(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeMessageReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeMessageReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeMessageReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeMessageReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeMessageReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeMessageReq)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeMessageReq::MergeFrom(const ChangeMessageReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeMessageReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  infos_.MergeFrom(from.infos_);
+}
+
+void ChangeMessageReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeMessageReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeMessageReq::CopyFrom(const ChangeMessageReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeMessageReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeMessageReq::IsInitialized() const {
+  return true;
+}
+
+void ChangeMessageReq::Swap(ChangeMessageReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeMessageReq::InternalSwap(ChangeMessageReq* other) {
+  using std::swap;
+  infos_.InternalSwap(&other->infos_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeMessageReq::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeConversationItemReq::InitAsDefaultInstance() {
+  ::roc::imsdk::network::_ChangeConversationItemReq_default_instance_._instance.get_mutable()->conversation_ = const_cast< ::roc::imsdk::network::ConversationInfo*>(
+      ::roc::imsdk::network::ConversationInfo::internal_default_instance());
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeConversationItemReq::kCmdFieldNumber;
+const int ChangeConversationItemReq::kConversationFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeConversationItemReq::ChangeConversationItemReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeConversationItemReq)
+}
+ChangeConversationItemReq::ChangeConversationItemReq(const ChangeConversationItemReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_conversation()) {
+    conversation_ = new ::roc::imsdk::network::ConversationInfo(*from.conversation_);
+  } else {
+    conversation_ = NULL;
+  }
+  cmd_ = from.cmd_;
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeConversationItemReq)
+}
+
+void ChangeConversationItemReq::SharedCtor() {
+  ::memset(&conversation_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&cmd_) -
+      reinterpret_cast<char*>(&conversation_)) + sizeof(cmd_));
+  _cached_size_ = 0;
+}
+
+ChangeConversationItemReq::~ChangeConversationItemReq() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeConversationItemReq)
+  SharedDtor();
+}
+
+void ChangeConversationItemReq::SharedDtor() {
+  if (this != internal_default_instance()) delete conversation_;
+}
+
+void ChangeConversationItemReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeConversationItemReq::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeConversationItemReq& ChangeConversationItemReq::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemReq();
+  return *internal_default_instance();
+}
+
+ChangeConversationItemReq* ChangeConversationItemReq::New(::google::protobuf::Arena* arena) const {
+  ChangeConversationItemReq* n = new ChangeConversationItemReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeConversationItemReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeConversationItemReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && conversation_ != NULL) {
+    delete conversation_;
+  }
+  conversation_ = NULL;
+  cmd_ = 0;
+  _internal_metadata_.Clear();
+}
+
+bool ChangeConversationItemReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeConversationItemReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 cmd = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &cmd_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .roc.imsdk.network.ConversationInfo conversation = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_conversation()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeConversationItemReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeConversationItemReq)
+  return false;
+#undef DO_
+}
+
+void ChangeConversationItemReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeConversationItemReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->cmd(), output);
+  }
+
+  // .roc.imsdk.network.ConversationInfo conversation = 2;
+  if (this->has_conversation()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->conversation_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeConversationItemReq)
+}
+
+::google::protobuf::uint8* ChangeConversationItemReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeConversationItemReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->cmd(), target);
+  }
+
+  // .roc.imsdk.network.ConversationInfo conversation = 2;
+  if (this->has_conversation()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        2, *this->conversation_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeConversationItemReq)
+  return target;
+}
+
+size_t ChangeConversationItemReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeConversationItemReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .roc.imsdk.network.ConversationInfo conversation = 2;
+  if (this->has_conversation()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->conversation_);
+  }
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->cmd());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeConversationItemReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeConversationItemReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeConversationItemReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeConversationItemReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeConversationItemReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeConversationItemReq)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeConversationItemReq::MergeFrom(const ChangeConversationItemReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeConversationItemReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_conversation()) {
+    mutable_conversation()->::roc::imsdk::network::ConversationInfo::MergeFrom(from.conversation());
+  }
+  if (from.cmd() != 0) {
+    set_cmd(from.cmd());
+  }
+}
+
+void ChangeConversationItemReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeConversationItemReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeConversationItemReq::CopyFrom(const ChangeConversationItemReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeConversationItemReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeConversationItemReq::IsInitialized() const {
+  return true;
+}
+
+void ChangeConversationItemReq::Swap(ChangeConversationItemReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeConversationItemReq::InternalSwap(ChangeConversationItemReq* other) {
+  using std::swap;
+  swap(conversation_, other->conversation_);
+  swap(cmd_, other->cmd_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeConversationItemReq::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeConversationItemResp::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeConversationItemResp::kCmdFieldNumber;
+const int ChangeConversationItemResp::kErrorCodeFieldNumber;
+const int ChangeConversationItemResp::kErrorMsgFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeConversationItemResp::ChangeConversationItemResp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemResp();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeConversationItemResp)
+}
+ChangeConversationItemResp::ChangeConversationItemResp(const ChangeConversationItemResp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.errormsg().size() > 0) {
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  ::memcpy(&errorcode_, &from.errorcode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&cmd_) -
+    reinterpret_cast<char*>(&errorcode_)) + sizeof(cmd_));
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeConversationItemResp)
+}
+
+void ChangeConversationItemResp::SharedCtor() {
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&errorcode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&cmd_) -
+      reinterpret_cast<char*>(&errorcode_)) + sizeof(cmd_));
+  _cached_size_ = 0;
+}
+
+ChangeConversationItemResp::~ChangeConversationItemResp() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeConversationItemResp)
+  SharedDtor();
+}
+
+void ChangeConversationItemResp::SharedDtor() {
+  errormsg_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void ChangeConversationItemResp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeConversationItemResp::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeConversationItemResp& ChangeConversationItemResp::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationItemResp();
+  return *internal_default_instance();
+}
+
+ChangeConversationItemResp* ChangeConversationItemResp::New(::google::protobuf::Arena* arena) const {
+  ChangeConversationItemResp* n = new ChangeConversationItemResp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeConversationItemResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeConversationItemResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&errorcode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&cmd_) -
+      reinterpret_cast<char*>(&errorcode_)) + sizeof(cmd_));
+  _internal_metadata_.Clear();
+}
+
+bool ChangeConversationItemResp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeConversationItemResp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 cmd = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &cmd_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint64 errorCode = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &errorcode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string errorMsg = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_errormsg()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.ChangeConversationItemResp.errorMsg"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeConversationItemResp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeConversationItemResp)
+  return false;
+#undef DO_
+}
+
+void ChangeConversationItemResp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeConversationItemResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->cmd(), output);
+  }
+
+  // uint64 errorCode = 2;
+  if (this->errorcode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->errorcode(), output);
+  }
+
+  // string errorMsg = 3;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.ChangeConversationItemResp.errorMsg");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->errormsg(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeConversationItemResp)
+}
+
+::google::protobuf::uint8* ChangeConversationItemResp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeConversationItemResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->cmd(), target);
+  }
+
+  // uint64 errorCode = 2;
+  if (this->errorcode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->errorcode(), target);
+  }
+
+  // string errorMsg = 3;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.ChangeConversationItemResp.errorMsg");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->errormsg(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeConversationItemResp)
+  return target;
+}
+
+size_t ChangeConversationItemResp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeConversationItemResp)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string errorMsg = 3;
+  if (this->errormsg().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->errormsg());
+  }
+
+  // uint64 errorCode = 2;
+  if (this->errorcode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->errorcode());
+  }
+
+  // int32 cmd = 1;
+  if (this->cmd() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->cmd());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeConversationItemResp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeConversationItemResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeConversationItemResp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeConversationItemResp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeConversationItemResp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeConversationItemResp)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeConversationItemResp::MergeFrom(const ChangeConversationItemResp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeConversationItemResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.errormsg().size() > 0) {
+
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  if (from.errorcode() != 0) {
+    set_errorcode(from.errorcode());
+  }
+  if (from.cmd() != 0) {
+    set_cmd(from.cmd());
+  }
+}
+
+void ChangeConversationItemResp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeConversationItemResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeConversationItemResp::CopyFrom(const ChangeConversationItemResp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeConversationItemResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeConversationItemResp::IsInitialized() const {
+  return true;
+}
+
+void ChangeConversationItemResp::Swap(ChangeConversationItemResp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeConversationItemResp::InternalSwap(ChangeConversationItemResp* other) {
+  using std::swap;
+  errormsg_.Swap(&other->errormsg_);
+  swap(errorcode_, other->errorcode_);
+  swap(cmd_, other->cmd_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeConversationItemResp::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeConversationResp::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeConversationResp::kInfosFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeConversationResp::ChangeConversationResp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationResp();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeConversationResp)
+}
+ChangeConversationResp::ChangeConversationResp(const ChangeConversationResp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      infos_(from.infos_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeConversationResp)
+}
+
+void ChangeConversationResp::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+ChangeConversationResp::~ChangeConversationResp() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeConversationResp)
+  SharedDtor();
+}
+
+void ChangeConversationResp::SharedDtor() {
+}
+
+void ChangeConversationResp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeConversationResp::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeConversationResp& ChangeConversationResp::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationResp();
+  return *internal_default_instance();
+}
+
+ChangeConversationResp* ChangeConversationResp::New(::google::protobuf::Arena* arena) const {
+  ChangeConversationResp* n = new ChangeConversationResp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeConversationResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeConversationResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  infos_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool ChangeConversationResp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeConversationResp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .roc.imsdk.network.ChangeConversationItemResp infos = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_infos()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeConversationResp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeConversationResp)
+  return false;
+#undef DO_
+}
+
+void ChangeConversationResp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeConversationResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeConversationItemResp infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->infos(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeConversationResp)
+}
+
+::google::protobuf::uint8* ChangeConversationResp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeConversationResp)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeConversationItemResp infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->infos(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeConversationResp)
+  return target;
+}
+
+size_t ChangeConversationResp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeConversationResp)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .roc.imsdk.network.ChangeConversationItemResp infos = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->infos_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->infos(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeConversationResp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeConversationResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeConversationResp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeConversationResp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeConversationResp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeConversationResp)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeConversationResp::MergeFrom(const ChangeConversationResp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeConversationResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  infos_.MergeFrom(from.infos_);
+}
+
+void ChangeConversationResp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeConversationResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeConversationResp::CopyFrom(const ChangeConversationResp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeConversationResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeConversationResp::IsInitialized() const {
+  return true;
+}
+
+void ChangeConversationResp::Swap(ChangeConversationResp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeConversationResp::InternalSwap(ChangeConversationResp* other) {
+  using std::swap;
+  infos_.InternalSwap(&other->infos_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeConversationResp::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void ChangeConversationReq::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeConversationReq::kInfosFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeConversationReq::ChangeConversationReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationReq();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ChangeConversationReq)
+}
+ChangeConversationReq::ChangeConversationReq(const ChangeConversationReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      infos_(from.infos_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ChangeConversationReq)
+}
+
+void ChangeConversationReq::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+ChangeConversationReq::~ChangeConversationReq() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ChangeConversationReq)
+  SharedDtor();
+}
+
+void ChangeConversationReq::SharedDtor() {
+}
+
+void ChangeConversationReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeConversationReq::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeConversationReq& ChangeConversationReq::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsChangeConversationReq();
+  return *internal_default_instance();
+}
+
+ChangeConversationReq* ChangeConversationReq::New(::google::protobuf::Arena* arena) const {
+  ChangeConversationReq* n = new ChangeConversationReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ChangeConversationReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ChangeConversationReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  infos_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool ChangeConversationReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ChangeConversationReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .roc.imsdk.network.ChangeConversationItemReq infos = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_infos()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ChangeConversationReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ChangeConversationReq)
+  return false;
+#undef DO_
+}
+
+void ChangeConversationReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ChangeConversationReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeConversationItemReq infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->infos(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ChangeConversationReq)
+}
+
+::google::protobuf::uint8* ChangeConversationReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ChangeConversationReq)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ChangeConversationItemReq infos = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->infos_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->infos(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ChangeConversationReq)
+  return target;
+}
+
+size_t ChangeConversationReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ChangeConversationReq)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .roc.imsdk.network.ChangeConversationItemReq infos = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->infos_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->infos(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeConversationReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ChangeConversationReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeConversationReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeConversationReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ChangeConversationReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ChangeConversationReq)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeConversationReq::MergeFrom(const ChangeConversationReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ChangeConversationReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  infos_.MergeFrom(from.infos_);
+}
+
+void ChangeConversationReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ChangeConversationReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeConversationReq::CopyFrom(const ChangeConversationReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ChangeConversationReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeConversationReq::IsInitialized() const {
+  return true;
+}
+
+void ChangeConversationReq::Swap(ChangeConversationReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeConversationReq::InternalSwap(ChangeConversationReq* other) {
+  using std::swap;
+  infos_.InternalSwap(&other->infos_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeConversationReq::GetMetadata() const {
   protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -19704,6 +22583,247 @@ void UserMessageIntegrityCheckResp::InternalSwap(UserMessageIntegrityCheckResp* 
 
 // ===================================================================
 
+void ConversationInfoArray::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ConversationInfoArray::kConvsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ConversationInfoArray::ConversationInfoArray()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsConversationInfoArray();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.ConversationInfoArray)
+}
+ConversationInfoArray::ConversationInfoArray(const ConversationInfoArray& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      convs_(from.convs_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.ConversationInfoArray)
+}
+
+void ConversationInfoArray::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+ConversationInfoArray::~ConversationInfoArray() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.ConversationInfoArray)
+  SharedDtor();
+}
+
+void ConversationInfoArray::SharedDtor() {
+}
+
+void ConversationInfoArray::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ConversationInfoArray::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ConversationInfoArray& ConversationInfoArray::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsConversationInfoArray();
+  return *internal_default_instance();
+}
+
+ConversationInfoArray* ConversationInfoArray::New(::google::protobuf::Arena* arena) const {
+  ConversationInfoArray* n = new ConversationInfoArray;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ConversationInfoArray::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.ConversationInfoArray)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  convs_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool ConversationInfoArray::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.ConversationInfoArray)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .roc.imsdk.network.ConversationInfo convs = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(input, add_convs()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.ConversationInfoArray)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.ConversationInfoArray)
+  return false;
+#undef DO_
+}
+
+void ConversationInfoArray::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.ConversationInfoArray)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ConversationInfo convs = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->convs_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->convs(static_cast<int>(i)), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.ConversationInfoArray)
+}
+
+::google::protobuf::uint8* ConversationInfoArray::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.ConversationInfoArray)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .roc.imsdk.network.ConversationInfo convs = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->convs_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->convs(static_cast<int>(i)), deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.ConversationInfoArray)
+  return target;
+}
+
+size_t ConversationInfoArray::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.ConversationInfoArray)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated .roc.imsdk.network.ConversationInfo convs = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->convs_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->convs(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ConversationInfoArray::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.ConversationInfoArray)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ConversationInfoArray* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ConversationInfoArray>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.ConversationInfoArray)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.ConversationInfoArray)
+    MergeFrom(*source);
+  }
+}
+
+void ConversationInfoArray::MergeFrom(const ConversationInfoArray& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.ConversationInfoArray)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  convs_.MergeFrom(from.convs_);
+}
+
+void ConversationInfoArray::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.ConversationInfoArray)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ConversationInfoArray::CopyFrom(const ConversationInfoArray& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.ConversationInfoArray)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ConversationInfoArray::IsInitialized() const {
+  return true;
+}
+
+void ConversationInfoArray::Swap(ConversationInfoArray* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ConversationInfoArray::InternalSwap(ConversationInfoArray* other) {
+  using std::swap;
+  convs_.InternalSwap(&other->convs_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ConversationInfoArray::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
 void SdkWSReq::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -19714,6 +22834,8 @@ const int SdkWSReq::kDeviceIDFieldNumber;
 const int SdkWSReq::kDataFieldNumber;
 const int SdkWSReq::kTypeFieldNumber;
 const int SdkWSReq::kTrackIDFieldNumber;
+const int SdkWSReq::kServiceFieldNumber;
+const int SdkWSReq::kMethodFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SdkWSReq::SdkWSReq()
@@ -19750,8 +22872,8 @@ SdkWSReq::SdkWSReq(const SdkWSReq& from)
     data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
   ::memcpy(&type_, &from.type_,
-    static_cast<size_t>(reinterpret_cast<char*>(&trackid_) -
-    reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
+    static_cast<size_t>(reinterpret_cast<char*>(&method_) -
+    reinterpret_cast<char*>(&type_)) + sizeof(method_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.SdkWSReq)
 }
 
@@ -19762,8 +22884,8 @@ void SdkWSReq::SharedCtor() {
   deviceid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&trackid_) -
-      reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
+      reinterpret_cast<char*>(&method_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(method_));
   _cached_size_ = 0;
 }
 
@@ -19815,8 +22937,8 @@ void SdkWSReq::Clear() {
   deviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&trackid_) -
-      reinterpret_cast<char*>(&type_)) + sizeof(trackid_));
+      reinterpret_cast<char*>(&method_) -
+      reinterpret_cast<char*>(&type_)) + sizeof(method_));
   _internal_metadata_.Clear();
 }
 
@@ -19934,6 +23056,34 @@ bool SdkWSReq::MergePartialFromCodedStream(
         break;
       }
 
+      // int32 service = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &service_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 method = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &method_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -20016,6 +23166,16 @@ void SdkWSReq::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->trackid(), output);
   }
 
+  // int32 service = 8;
+  if (this->service() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->service(), output);
+  }
+
+  // int32 method = 9;
+  if (this->method() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->method(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -20091,6 +23251,16 @@ void SdkWSReq::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->trackid(), target);
   }
 
+  // int32 service = 8;
+  if (this->service() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->service(), target);
+  }
+
+  // int32 method = 9;
+  if (this->method() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->method(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -20157,6 +23327,20 @@ size_t SdkWSReq::ByteSizeLong() const {
         this->trackid());
   }
 
+  // int32 service = 8;
+  if (this->service() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->service());
+  }
+
+  // int32 method = 9;
+  if (this->method() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->method());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -20212,6 +23396,12 @@ void SdkWSReq::MergeFrom(const SdkWSReq& from) {
   if (from.trackid() != 0) {
     set_trackid(from.trackid());
   }
+  if (from.service() != 0) {
+    set_service(from.service());
+  }
+  if (from.method() != 0) {
+    set_method(from.method());
+  }
 }
 
 void SdkWSReq::CopyFrom(const ::google::protobuf::Message& from) {
@@ -20245,6 +23435,8 @@ void SdkWSReq::InternalSwap(SdkWSReq* other) {
   data_.Swap(&other->data_);
   swap(type_, other->type_);
   swap(trackid_, other->trackid_);
+  swap(service_, other->service_);
+  swap(method_, other->method_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -20268,6 +23460,8 @@ const int SdkWSResp::kErrorCodeFieldNumber;
 const int SdkWSResp::kErrorMsgFieldNumber;
 const int SdkWSResp::kDataFieldNumber;
 const int SdkWSResp::kTypeFieldNumber;
+const int SdkWSResp::kServiceFieldNumber;
+const int SdkWSResp::kMethodFieldNumber;
 const int SdkWSResp::kTrackIDFieldNumber;
 const int SdkWSResp::kLogIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -20529,10 +23723,38 @@ bool SdkWSResp::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 trackID = 9;
+      // int32 service = 9;
       case 9: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &service_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 method = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(80u /* 80 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &method_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 trackID = 11;
+      case 11: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(88u /* 88 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -20543,10 +23765,10 @@ bool SdkWSResp::MergePartialFromCodedStream(
         break;
       }
 
-      // string logID = 10;
-      case 10: {
+      // string logID = 12;
+      case 12: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(98u /* 98 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_logid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -20656,19 +23878,29 @@ void SdkWSResp::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->type(), output);
   }
 
-  // int32 trackID = 9;
-  if (this->trackid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->trackid(), output);
+  // int32 service = 9;
+  if (this->service() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->service(), output);
   }
 
-  // string logID = 10;
+  // int32 method = 10;
+  if (this->method() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->method(), output);
+  }
+
+  // int32 trackID = 11;
+  if (this->trackid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->trackid(), output);
+  }
+
+  // string logID = 12;
   if (this->logid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->logid().data(), static_cast<int>(this->logid().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "roc.imsdk.network.SdkWSResp.logID");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      10, this->logid(), output);
+      12, this->logid(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -20763,12 +23995,22 @@ void SdkWSResp::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->type(), target);
   }
 
-  // int32 trackID = 9;
-  if (this->trackid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->trackid(), target);
+  // int32 service = 9;
+  if (this->service() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->service(), target);
   }
 
-  // string logID = 10;
+  // int32 method = 10;
+  if (this->method() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->method(), target);
+  }
+
+  // int32 trackID = 11;
+  if (this->trackid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->trackid(), target);
+  }
+
+  // string logID = 12;
   if (this->logid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->logid().data(), static_cast<int>(this->logid().length()),
@@ -20776,7 +24018,7 @@ void SdkWSResp::SerializeWithCachedSizes(
       "roc.imsdk.network.SdkWSResp.logID");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        10, this->logid(), target);
+        12, this->logid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -20845,7 +24087,7 @@ size_t SdkWSResp::ByteSizeLong() const {
         this->data());
   }
 
-  // string logID = 10;
+  // string logID = 12;
   if (this->logid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -20859,7 +24101,21 @@ size_t SdkWSResp::ByteSizeLong() const {
         this->type());
   }
 
-  // int32 trackID = 9;
+  // int32 service = 9;
+  if (this->service() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->service());
+  }
+
+  // int32 method = 10;
+  if (this->method() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->method());
+  }
+
+  // int32 trackID = 11;
   if (this->trackid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -20930,6 +24186,12 @@ void SdkWSResp::MergeFrom(const SdkWSResp& from) {
   if (from.type() != 0) {
     set_type(from.type());
   }
+  if (from.service() != 0) {
+    set_service(from.service());
+  }
+  if (from.method() != 0) {
+    set_method(from.method());
+  }
   if (from.trackid() != 0) {
     set_trackid(from.trackid());
   }
@@ -20968,6 +24230,8 @@ void SdkWSResp::InternalSwap(SdkWSResp* other) {
   data_.Swap(&other->data_);
   logid_.Swap(&other->logid_);
   swap(type_, other->type_);
+  swap(service_, other->service_);
+  swap(method_, other->method_);
   swap(trackid_, other->trackid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);

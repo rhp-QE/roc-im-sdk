@@ -41,7 +41,6 @@ public:
     bool is_deleted;
     
     bool is_blocked;
-    
     std::string draft;
     
     // Extensions

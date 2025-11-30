@@ -9,6 +9,7 @@
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/core/conversation/private/convert/convert.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
+#include <boost/json.hpp>
 
 #include "WCDB/WCDBCpp.h"
 #include <string>
@@ -125,13 +126,119 @@ bool DBOpt::DeleteConversation(CTX_T, const std::string &conv_id) {
 }
 
 bool DBOpt::SetConversationTop(CTX_T, const std::string &conv_id, bool is_top) {
-    // TODO: 实现设置会话置顶
-    return false;
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+
+    auto database = sdk_root->database();
+    core::conversation::ConversationORM obj;
+    obj.is_top = is_top;
+
+    WCDB::Fields fields = {WCDB_FIELD(core::conversation::ConversationORM::is_top)};
+    bool result = database->updateObject<core::conversation::ConversationORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id
+    );
+
+    LOG_INFO("ConvDBOpt", "SetConversationTop conv_id: {}, is_top: {}, result: {}", conv_id, is_top, result);
+    
+    return result;
 }
 
 bool DBOpt::SetConversationMute(CTX_T, const std::string &conv_id, bool is_mute) {
-    // TODO: 实现设置会话免打扰
-    return false;
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+
+    auto database = sdk_root->database();
+    core::conversation::ConversationORM obj;
+    obj.is_muted = is_mute;
+
+    WCDB::Fields fields = {WCDB_FIELD(core::conversation::ConversationORM::is_muted)};
+    bool result = database->updateObject<core::conversation::ConversationORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id
+    );
+    LOG_INFO("ConvDBOpt", "SetConversationMute conv_id: {}, is_mute: {}, result: {}", conv_id, is_mute, result);
+    
+    return result;
+}
+
+bool DBOpt::SetConversationBlock(CTX_T, const std::string &conv_id, bool is_block) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+
+    auto database = sdk_root->database();
+    core::conversation::ConversationORM obj;
+    obj.is_blocked = is_block;
+
+    WCDB::Fields fields = {WCDB_FIELD(core::conversation::ConversationORM::is_blocked)};
+    bool result = database->updateObject<core::conversation::ConversationORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id
+    );
+    LOG_INFO("ConvDBOpt", "SetConversationBlock conv_id: {}, is_block: {}, result: {}", conv_id, is_block, result);
+    
+    return result;
+}
+
+bool DBOpt::SetConversationSyncExt(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &sync_ext) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    // 1. 查询数据库获取当前的 sync_ext
+    auto result = database->getAllObjects<core::conversation::ConversationORM>(
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id,
+        WCDB::Expression(),
+        WCDB::Expression(),
+        WCDB::Expression()
+    );
+
+    // 2. 反序列化现有的 sync_ext string 为 map
+    std::unordered_map<std::string, std::string> existing_sync_ext;
+    if (result.hasValue() && !result.value().empty()) {
+        std::string existing_sync_ext_str = result.value()[0].sync_ext;
+        auto parse_result = util::MapParseFromString(existing_sync_ext_str);
+        if (parse_result) {
+            existing_sync_ext = parse_result.value();
+        } else {
+            // 解析失败，使用空 map
+            LOG_INFO("ConvDBOpt", "Failed to parse existing sync_ext: {}", parse_result.error().to_string());
+        }
+    }
+
+    // 3. 合并传入的 map 与现有 map
+    std::unordered_map<std::string, std::string> merged_sync_ext = existing_sync_ext;
+    for (const auto& [key, value] : sync_ext) {
+        merged_sync_ext[key] = value;
+    }
+
+    // 4. 序列化合并后的 map 为 string
+    auto sync_ext_str_result = util::MapSerializeAsString(merged_sync_ext);
+    if (!sync_ext_str_result) {
+        LOG_INFO("ConvDBOpt", "Failed to serialize sync_ext: {}", sync_ext_str_result.error().to_string());
+        return false;
+    }
+    std::string sync_ext_str = sync_ext_str_result.value();
+
+    // 5. 写回数据库
+    core::conversation::ConversationORM obj;
+    obj.sync_ext = sync_ext_str;
+
+    WCDB::Fields fields = {WCDB_FIELD(core::conversation::ConversationORM::sync_ext)};
+    bool update_result = database->updateObject<core::conversation::ConversationORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id
+    );
+    LOG_INFO("ConvDBOpt", "SetConversationSyncExt conv_id: {}, result: {}", conv_id, update_result);
+    
+    return update_result;
 }
 
 int64_t DBOpt::ChatsCursor(CTX_T) {
