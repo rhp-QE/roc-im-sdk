@@ -33,6 +33,10 @@ public:
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>
         SetSyncExt(CTX_T, std::string cid, const std::unordered_map<std::string, std::string> &sync_ext);
 
+    /// 设置本地扩展字段（仅本地，不发送网络请求）
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
+        SetLocalExt(CTX_T, std::string cid, const std::unordered_map<std::string, std::string> &local_ext);
+
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;

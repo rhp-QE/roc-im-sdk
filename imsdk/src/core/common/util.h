@@ -17,12 +17,6 @@ inline std::string key_for_user(const std::string& user_id, const std::string& k
     return "k" + user_id + "_" + key;
 }
 
-/**
- * Generate single chat conversation ID in format "0:1:smaller_uid:larger_uid"
- * @param user_id1 First user ID
- * @param user_id2 Second user ID
- * @return Conversation ID string
- */
 inline std::string generate_single_conv_id(const std::string& user_id1, const std::string& user_id2) {
     // Determine smaller and larger UIDs
     std::string smaller_uid, larger_uid;
@@ -38,11 +32,6 @@ inline std::string generate_single_conv_id(const std::string& user_id1, const st
     return "0:1:" + smaller_uid + ":" + larger_uid;
 }
 
-/**
- * Parse two user IDs from single chat conversation ID
- * @param conv_id Conversation ID in format "0:1:user_id1:user_id2"
- * @return Pair of user IDs (first, second), empty strings if format is invalid
- */
 inline std::pair<std::string, std::string> parse_single_conv_id(const std::string& conv_id) {
     // Check if conv_id starts with "0:1:"
     if (conv_id.length() < 4 || conv_id.substr(0, 4) != "0:1:") {

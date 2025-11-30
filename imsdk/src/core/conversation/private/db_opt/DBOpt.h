@@ -45,6 +45,9 @@ public:
     /// 设置会话同步扩展字段（会与现有字段合并）
     bool SetConversationSyncExt(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &sync_ext);
 
+    /// 设置会话本地扩展字段（会与现有字段合并）
+    bool SetConversationLocalExt(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &local_ext);
+
     /// 设置会话水位
     void SetChatsCursor(CTX_T, int64_t cursor);
 

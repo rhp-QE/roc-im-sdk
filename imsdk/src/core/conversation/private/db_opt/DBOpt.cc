@@ -241,6 +241,64 @@ bool DBOpt::SetConversationSyncExt(CTX_T, const std::string &conv_id, const std:
     return update_result;
 }
 
+bool DBOpt::SetConversationLocalExt(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &local_ext) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    // 1. 查询数据库获取当前的 local_ext
+    auto result = database->getAllObjects<core::conversation::ConversationORM>(
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id,
+        WCDB::Expression(),
+        WCDB::Expression(),
+        WCDB::Expression()
+    );
+
+    // 2. 反序列化现有的 local_ext string 为 map
+    std::unordered_map<std::string, std::string> existing_local_ext;
+    if (result.hasValue() && !result.value().empty()) {
+        std::string existing_local_ext_str = result.value()[0].local_ext;
+        auto parse_result = util::MapParseFromString(existing_local_ext_str);
+        if (parse_result) {
+            existing_local_ext = parse_result.value();
+        } else {
+            // 解析失败，使用空 map
+            LOG_INFO("ConvDBOpt", "Failed to parse existing local_ext: {}", parse_result.error().to_string());
+        }
+    }
+
+    // 3. 合并传入的 map 与现有 map
+    std::unordered_map<std::string, std::string> merged_local_ext = existing_local_ext;
+    for (const auto& [key, value] : local_ext) {
+        merged_local_ext[key] = value;
+    }
+
+    // 4. 序列化合并后的 map 为 string
+    auto local_ext_str_result = util::MapSerializeAsString(merged_local_ext);
+    if (!local_ext_str_result) {
+        LOG_INFO("ConvDBOpt", "Failed to serialize local_ext: {}", local_ext_str_result.error().to_string());
+        return false;
+    }
+    std::string local_ext_str = local_ext_str_result.value();
+
+    // 5. 写回数据库
+    core::conversation::ConversationORM obj;
+    obj.local_ext = local_ext_str;
+
+    WCDB::Fields fields = {WCDB_FIELD(core::conversation::ConversationORM::local_ext)};
+    bool update_result = database->updateObject<core::conversation::ConversationORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id
+    );
+    LOG_INFO("ConvDBOpt", "SetConversationLocalExt conv_id: {}, result: {}", conv_id, update_result);
+    
+    return update_result;
+}
+
 int64_t DBOpt::ChatsCursor(CTX_T) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, 0)
 

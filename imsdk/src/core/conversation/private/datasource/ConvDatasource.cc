@@ -145,9 +145,9 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationTopStatus(CTX_T, 
         }
 
         // 如果有则更新缓存
-        auto cache_result = conv_manager->conv_cache_.at(conv_id);
-        if (cache_result) {
-            cache_result.value()->set_top(is_top);
+        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        if (cache_conv) {
+            cache_conv.value()->set_top(is_top);
         }
 
         co_return true;
@@ -170,9 +170,9 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationMuteStatus(CTX_T,
         }
 
         // 如果有则更新缓存
-        auto cache_result = conv_manager->conv_cache_.at(conv_id);
-        if (cache_result) {
-            cache_result.value()->set_mute(is_mute);
+        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        if (cache_conv) {
+            cache_conv.value()->set_mute(is_mute);
         }
 
         co_return true;
@@ -195,9 +195,9 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationBlockStatus(CTX_T
         }
 
         // 如果有则更新缓存
-        auto cache_result = conv_manager->conv_cache_.at(conv_id);
-        if (cache_result) {
-            cache_result.value()->set_block(is_block);
+        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        if (cache_conv) {
+            cache_conv.value()->set_block(is_block);
         }
 
         co_return true;
@@ -218,15 +218,44 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationSyncExtStatus(CTX
         }
         
         // 如果有则更新缓存
-        auto cache_result = conv_manager->conv_cache_.at(conv_id);
-        if (cache_result) {
+        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        if (cache_conv) {
             // 获取当前缓存的 sync_ext，合并传入的 sync_ext
-            auto current_sync_ext = cache_result.value()->sync_ext();
+            auto current_sync_ext = cache_conv.value()->sync_ext();
             auto merged_sync_ext = current_sync_ext;
             for (const auto& [key, value] : sync_ext) {
                 merged_sync_ext[key] = value;
             }
-            cache_result.value()->set_sync_ext(merged_sync_ext);
+            cache_conv.value()->set_sync_ext(merged_sync_ext);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
+boost::asio::awaitable<bool> ConvDatasource::UpdateConversationLocalExtStatus(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &local_ext) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto conv_manager = sdk_root->ConversationManager();
+    
+    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, &local_ext, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // DBOpt 层内部会查询数据库、合并、序列化、写入
+        bool db_result = conv_manager->db_opt->SetConversationLocalExt(CTX_V, conv_id, local_ext);
+        if (!db_result) { 
+            co_return false; 
+        }
+        
+        // 如果有则更新缓存
+        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        if (cache_conv) {
+            // 获取当前缓存的 local_ext，合并传入的 local_ext
+            auto current_local_ext = cache_conv.value()->local_ext();
+            auto merged_local_ext = current_local_ext;
+            for (const auto& [key, value] : local_ext) {
+                merged_local_ext[key] = value;
+            }
+            cache_conv.value()->set_local_ext(merged_local_ext);
         }
         
         co_return true;

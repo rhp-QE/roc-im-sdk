@@ -53,6 +53,10 @@ public:
     /// 更新会话同步扩展字段（数据库 + 缓存）
     boost::asio::awaitable<bool> 
         UpdateConversationSyncExtStatus(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &sync_ext);
+
+    /// 更新会话本地扩展字段（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateConversationLocalExtStatus(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &local_ext);
     
 private:
     /// 更新会话缓存 (非线程安全， )

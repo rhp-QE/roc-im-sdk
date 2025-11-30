@@ -181,6 +181,20 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
     co_return true;
 }
 
+/// 设置本地扩展字段（仅本地，不发送网络请求）
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatusHandler::SetLocalExt(CTX_T, std::string cid, const std::unordered_map<std::string, std::string> &local_ext) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    
+    // 直接更新本地数据库和缓存，不发送网络请求
+    auto conv_ds = sdk_root->ConversationManager()->conv_datasource.get();
+    bool update_result = co_await conv_ds->UpdateConversationLocalExtStatus(CTX_V, cid, local_ext);
+    if (!update_result) {
+        co_return std::unexpected(roc::error::make_error(3004, "Failed to update local database"));
+    }
+    
+    co_return true;
+}
+
 
 
 // ================================ private ===============================

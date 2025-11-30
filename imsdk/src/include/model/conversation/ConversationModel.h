@@ -127,6 +127,11 @@ private:
         std::unique_lock<std::shared_mutex> write_lock(mutex_);
         sync_ext_ = sync_ext;
     }
+
+    void set_local_ext(const std::unordered_map<std::string, std::string> &local_ext) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        local_ext_ = local_ext;
+    }
 };
 
 
