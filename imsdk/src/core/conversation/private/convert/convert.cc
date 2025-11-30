@@ -1,6 +1,7 @@
 #include "convert.h"
 
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include "imsdk/src/core/conversation/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/common/json_util.h"
 #include <unordered_map>
@@ -14,7 +15,9 @@ Convert::Convert(std::weak_ptr<SDKRoot> sdk_root)
 
 /// 会话转换 网络会话 -> db 会话
 /// 本地独有字段 会查一次本地数据库进行合并
-std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDbConv(const network::ConversationInfo *conv) {
+std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDbConv(CTX_T, const network::ConversationInfo *conv) {
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
+    
     if (!conv) {
         return nullptr;
     }
@@ -50,12 +53,14 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDb
     
     db_conv->is_blocked = conv->isblocked();
     
-    db_conv->draft = ""; // TODO: Set from network message if available
-    
     // Extensions
     db_conv->sync_ext = conv->syncext();
-    
-    db_conv->local_ext = ""; // TODO: Set from network message if available
+    db_conv->local_ext = "";
+    db_conv->draft = "";
+
+    // 合并本地独有字段（draft, local_ext）
+    auto conv_manager = sdk_root->ConversationManager();
+    conv_manager->db_opt->ConversationMergeWithLocal(CTX_V, db_conv->conversation_id, db_conv.get());
     
     return db_conv;
 }

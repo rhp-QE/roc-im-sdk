@@ -54,6 +54,9 @@ public:
     /// 获取会话水位
     int64_t ChatsCursor(CTX_T);
 
+    /// 查询会话并合并本地独有字段
+    void ConversationMergeWithLocal(CTX_T, const std::string &conv_id, core::conversation::ConversationORM *db_conv_new);
+
 private:
     /// 获取表名
     std::string p_TableName(CTX_T);

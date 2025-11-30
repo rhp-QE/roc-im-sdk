@@ -311,6 +311,35 @@ int64_t DBOpt::ChatsCursor(CTX_T) {
     return cursor;
 }
 
+/// 查询会话并合并本地独有字段
+void DBOpt::ConversationMergeWithLocal(CTX_T, const std::string &conv_id, core::conversation::ConversationORM *db_conv_new) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
+
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VOID(database);
+
+    auto resultFields = WCDB::ResultFields({
+        WCDB_FIELD(core::conversation::ConversationORM::local_ext),
+        WCDB_FIELD(core::conversation::ConversationORM::draft)
+    });
+
+    auto result = database->getFirstObjectWithFields<core::conversation::ConversationORM>(
+        p_TableName(CTX_V), 
+        resultFields,
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id
+    );
+
+    if (!result.hasValue()) {
+        return;
+    }
+
+    auto db_conv_old = &(result.value());
+
+    // 合并本地独有字段
+    db_conv_new->local_ext = db_conv_old->local_ext;
+    db_conv_new->draft = db_conv_old->draft;
+}
+
 void DBOpt::SetChatsCursor(CTX_T, int64_t cursor) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 

@@ -23,8 +23,8 @@ ConvDatasource::SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network:
     auto conv_manager = sdk_root->ConversationManager();
 
     // 转换为 db 会话
-    auto db_convs = base::util::transform(convs, [conv_manager](const std::shared_ptr<network::ConversationInfo> &conv) {
-        return conv_manager->convert->ConvertNetConvToDbConv(conv.get());
+    auto db_convs = base::util::transform(convs, [conv_manager, call_track_id](const std::shared_ptr<network::ConversationInfo> &conv) {
+        return conv_manager->convert->ConvertNetConvToDbConv(CTX_V, conv.get());
     });
 
     // 转换为 sdk 会话

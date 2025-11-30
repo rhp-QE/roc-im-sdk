@@ -25,7 +25,7 @@ enum class CmdMessageOp : int32_t {
 
     MSG_STATUS_CHANGED      = 1001, // 消息状态发生变化 (发送成功、发送失败、删除、撤回)
     MSG_READ_CHANGED        = 1002, // 已读状态发生变化
-    MSG_TOP_CHANGED         = 1003, // 置顶状态发生变化
+    MSG_PIN_CHANGED         = 1003, // 置顶状态发生变化
     MSG_PROPERTY_CHANGED    = 1004, // property 发生改变
     MSG_SYNC_EXT_CHANGED    = 1005, // syncExt 发生改变
 
