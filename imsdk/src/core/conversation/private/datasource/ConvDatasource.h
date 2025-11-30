@@ -57,6 +57,10 @@ public:
     /// 更新会话本地扩展字段（数据库 + 缓存）
     boost::asio::awaitable<bool> 
         UpdateConversationLocalExtStatus(CTX_T, const std::string &conv_id, const std::unordered_map<std::string, std::string> &local_ext);
+
+    /// 更新会话删除状态（数据库 + 缓存）
+    boost::asio::awaitable<bool> 
+        UpdateConversationDeletedStatus(CTX_T, const std::string &conv_id, bool is_deleted);
     
 private:
     /// 更新会话缓存 (非线程安全， )

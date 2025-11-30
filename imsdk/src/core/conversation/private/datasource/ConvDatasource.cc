@@ -262,6 +262,30 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationLocalExtStatus(CT
     }, boost::asio::use_awaitable);
 }
 
+/// 更新会话删除状态（数据库 + 缓存）
+boost::asio::awaitable<bool> ConvDatasource::UpdateConversationDeletedStatus(CTX_T, const std::string &conv_id, bool is_deleted) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+    auto conv_manager = sdk_root->ConversationManager();
+    
+    co_return co_await boost::asio::co_spawn(conv_manager->ConvStrand(), [=, w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<bool> {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false);
+        
+        // 存储到DB
+        bool db_result = conv_manager->db_opt->DeleteConversation(CTX_V, conv_id);
+        if (!db_result) {
+            co_return false;
+        }
+        
+        // 如果有则更新缓存
+        auto cache_conv = conv_manager->conv_cache_.at(conv_id);
+        if (cache_conv) {
+            cache_conv.value()->set_deleted(is_deleted);
+        }
+        
+        co_return true;
+    }, boost::asio::use_awaitable);
+}
+
 /// 更新会话缓存
 boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
 ConvDatasource::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs) {

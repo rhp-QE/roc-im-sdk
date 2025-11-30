@@ -31,13 +31,13 @@ enum class CmdMessageOp : int32_t {
     MSG_DELETE              = 1006, // 删除消息
     MSG_RECALL              = 1007, // 撤回消息
 
-    CONV_STATUS_CHANGED     = 2001, // 会话删除状态发生变化
+    CONV_CREATE             = 2001, // 创建群聊
     CONV_READ_CHANGED       = 2002, // 会话已读状态发生变化
     CONV_TOP_CHANGED        = 2003, // 会话置顶状态发生变化
     CONV_MUTE_CHANGE        = 2004, // 会话免打扰状态发生改变
     CONV_BLOCK_CHANGE       = 2005, // 会话拉黑状态发生改变
-    // CONV_PROPERTY_CHANGED   = 2004, // 会话property 发生改变
     CONV_SYNC_EXT_CHANGED   = 2006, // 会话syncExt 发生改变
+    CONV_DELETE             = 2007, // 会话删除状态发生变化
 };
 
 }

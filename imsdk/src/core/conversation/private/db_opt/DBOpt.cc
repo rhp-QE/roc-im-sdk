@@ -121,8 +121,21 @@ std::vector<std::shared_ptr<core::conversation::ConversationORM>> DBOpt::QueryCo
 }
 
 bool DBOpt::DeleteConversation(CTX_T, const std::string &conv_id) {
-    // TODO: 实现删除会话
-    return false;
+    CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, false);
+    auto database = sdk_root->database();
+    CHECK_POINTER_OR_RETURN_VALUE(database, false);
+
+    core::conversation::ConversationORM obj;
+    obj.is_deleted = true;
+    WCDB::Fields fields = {WCDB_FIELD(core::conversation::ConversationORM::is_deleted)};
+    bool update_result = database->updateObject<core::conversation::ConversationORM>(
+        obj,
+        fields,
+        p_TableName(CTX_V),
+        WCDB_FIELD(core::conversation::ConversationORM::conversation_id) == conv_id
+    );
+    LOG_INFO("ConvDBOpt", "DeleteConversation conv_id: {}, result: {}", conv_id, update_result);
+    return update_result;
 }
 
 bool DBOpt::SetConversationTop(CTX_T, const std::string &conv_id, bool is_top) {

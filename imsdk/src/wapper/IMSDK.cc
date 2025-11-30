@@ -43,30 +43,32 @@ void IMSDK::OnMessagee(model::OnMessagesCallbackType callback) {
     sdk_root_->MessageManager()->OnMessages(callback);
 }
 
-boost::asio::awaitable<bool> IMSDK::DeleteMessage(const std::vector<std::string> &msg_ids) {
-    auto result = co_await sdk_root_->MessageManager()->DeleteMessage(msg_ids);
-    if (!result) {
-        co_return false;
-    }
-    co_return result.value();
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::DeleteMessage(const std::vector<std::string> &msg_ids) {
+    co_return co_await sdk_root_->MessageManager()->DeleteMessage(msg_ids);
 }
 
-boost::asio::awaitable<bool> IMSDK::RecallMessage(std::string msg_id) {
-    auto result = co_await sdk_root_->MessageManager()->RecallMessage(msg_id);
-    if (!result) {
-        co_return false;
-    }
-    co_return result.value();
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::RecallMessage(std::string msg_id) {
+    co_return co_await sdk_root_->MessageManager()->RecallMessage(msg_id);
 }
 
-boost::asio::awaitable<bool> IMSDK::UpdateMessageSyncExt(std::string msg_id, std::string key, std::string value) {
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::UpdateMessageSyncExt(std::string msg_id, std::string key, std::string value) {
     std::unordered_map<std::string, std::string> sync_ext;
     sync_ext[key] = value;
-    auto result = co_await sdk_root_->MessageManager()->SetMessageSyncExt(msg_id, sync_ext);
-    if (!result) {
-        co_return false;
-    }
-    co_return result.value();
+    co_return co_await sdk_root_->MessageManager()->SetMessageSyncExt(msg_id, sync_ext);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetMessagePin(std::string msg_id, bool is_pinned) {
+    co_return co_await sdk_root_->MessageManager()->SetMessagePin(msg_id, is_pinned);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetMessagePropertys(std::string msg_id, const std::vector<int32_t> &propertys) {
+    co_return co_await sdk_root_->MessageManager()->SetMessagePropertys(msg_id, propertys);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetMessageLocalExt(std::string msg_id, std::string key, std::string value) {
+    std::unordered_map<std::string, std::string> local_ext;
+    local_ext[key] = value;
+    co_return co_await sdk_root_->MessageManager()->SetMessageLocalExt(msg_id, local_ext);
 }
 
 boost::asio::awaitable<bool> IMSDK::MarkMessagesAsRead(const std::vector<std::string> &msg_ids) {
@@ -110,13 +112,28 @@ boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> IMSDK::CreateC
 }
 
 // 设置会话置顶
-boost::asio::awaitable<bool> IMSDK::SetConvTop(std::string conv_id, bool is_top) {
-    return sdk_root_->ConversationManager()->SetConvTop(conv_id, is_top);
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetConvTop(std::string conv_id, bool is_top) {
+    co_return co_await sdk_root_->ConversationManager()->SetConvTop(conv_id, is_top);
 }
 
 // 设置会话免打扰
-boost::asio::awaitable<bool> IMSDK::SetConvMute(std::string conv_id, bool is_mute) {
-    return sdk_root_->ConversationManager()->SetConvMute(conv_id, is_mute);
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetConvMute(std::string conv_id, bool is_mute) {
+    co_return co_await sdk_root_->ConversationManager()->SetConvMute(conv_id, is_mute);
+}
+
+// 设置会话拉黑
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetConvBlock(std::string conv_id, bool is_block) {
+    co_return co_await sdk_root_->ConversationManager()->SetConvBlock(conv_id, is_block);
+}
+
+// 设置会话同步扩展字段
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetConvSyncExt(std::string conv_id, std::string key, std::string value) {
+    co_return co_await sdk_root_->ConversationManager()->SetConvSyncExt(conv_id, key, value);
+}
+
+// 设置会话本地扩展字段
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::SetConvLocalExt(std::string conv_id, std::string key, std::string value) {
+    co_return co_await sdk_root_->ConversationManager()->SetConvLocalExt(conv_id, key, value);
 }
 
 // 设置会话已读
@@ -125,8 +142,8 @@ boost::asio::awaitable<bool> IMSDK::SetConvRead(std::string conv_id) {
 }
 
 // 删除会话
-boost::asio::awaitable<bool> IMSDK::DeleteConv(std::string conv_id) {
-    return sdk_root_->ConversationManager()->DeleteConv(conv_id);
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::DeleteConv(std::string conv_id) {
+    co_return co_await sdk_root_->ConversationManager()->DeleteConv(conv_id);
 }
 
 

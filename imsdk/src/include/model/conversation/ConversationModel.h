@@ -132,6 +132,11 @@ private:
         std::unique_lock<std::shared_mutex> write_lock(mutex_);
         local_ext_ = local_ext;
     }
+
+    void set_deleted(bool is_deleted) {
+        std::unique_lock<std::shared_mutex> write_lock(mutex_);
+        is_deleted_ = is_deleted;
+    }
 };
 
 
@@ -152,7 +157,7 @@ struct OnConversationResult {
     /// 拉黑状态变更的会话
     std::vector<std::shared_ptr<ConversationModel>> block_change_convs;
 
-    /// 禁言状态变更的会话
+    /// 免打扰状态变更的会话
     std::vector<std::shared_ptr<ConversationModel>> mute_change_convs;
 
     /// sync_ext状态变更的会话

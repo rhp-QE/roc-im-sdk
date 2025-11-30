@@ -23,7 +23,7 @@ public:
     /// 置顶设置
     boost::asio::awaitable<std::expected<bool, roc::error::Error>> SetTopOn(CTX_T, std::string cid, bool is_top);
     
-    /// 禁言
+    /// 免打扰
     boost::asio::awaitable<std::expected<bool, roc::error::Error>> SetMute(CTX_T, std::string cid, bool is_muted);
 
     /// 拉黑
@@ -37,16 +37,25 @@ public:
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>
         SetLocalExt(CTX_T, std::string cid, const std::unordered_map<std::string, std::string> &local_ext);
 
+    /// 删除会话
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
+        Delete(CTX_T, std::string cid);
+
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;
 
-    boost::asio::awaitable<std::expected<bool, roc::error::Error>> p_setStatus(CTX_T, std::string cid);
+    boost::asio::awaitable<void> p_onTopOnChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
+    boost::asio::awaitable<void> p_onMuteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
+    boost::asio::awaitable<void> p_onBlockChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
+    boost::asio::awaitable<void> p_onSyncExtChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
+    boost::asio::awaitable<void> p_onDeleteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
 
     void p_registTopOnHandler();
     void p_registMuteHandler();
     void p_registBlockHandler();
     void p_registSyncExtHandler();
+    void p_registDeleteHandler();
 
     boost::asio::awaitable<std::unique_ptr<network::ChangeConversationItemResp>> p_request(CTX_T, std::unique_ptr<network::ChangeConversationItemReq>);
      

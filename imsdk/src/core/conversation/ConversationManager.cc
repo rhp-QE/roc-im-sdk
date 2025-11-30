@@ -70,14 +70,38 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> Conversation
     co_return convs;
 }
 
-boost::asio::awaitable<bool> ConversationManager::SetConvTop(std::string conv_id, bool is_top) {
-    // TODO: Implement set conversation as top
-    co_return false;
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::SetConvTop(std::string conv_id, bool is_top) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await conversation_status_handler->SetTopOn(CTX_V, conv_id, is_top);
 }
 
-boost::asio::awaitable<bool> ConversationManager::SetConvMute(std::string conv_id, bool is_mute) {
-    // TODO: Implement set conversation mute
-    co_return false;
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::SetConvMute(std::string conv_id, bool is_mute) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await conversation_status_handler->SetMute(CTX_V, conv_id, is_mute);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::SetConvBlock(std::string conv_id, bool is_block) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await conversation_status_handler->SetBlock(CTX_V, conv_id, is_block);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::SetConvSyncExt(std::string conv_id, std::string key, std::string value) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    std::unordered_map<std::string, std::string> sync_ext;
+    sync_ext[key] = value;
+    co_return co_await conversation_status_handler->SetSyncExt(CTX_V, conv_id, sync_ext);
+}
+
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::SetConvLocalExt(std::string conv_id, std::string key, std::string value) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    std::unordered_map<std::string, std::string> local_ext;
+    local_ext[key] = value;
+    co_return co_await conversation_status_handler->SetLocalExt(CTX_V, conv_id, local_ext);
 }
 
 // 设置会话已读
@@ -86,9 +110,10 @@ boost::asio::awaitable<bool> ConversationManager::SetConvRead(std::string conv_i
     co_return false;
 }
 
-boost::asio::awaitable<bool> ConversationManager::DeleteConv(std::string conv_id) {
-    // TODO: Implement delete conversation
-    co_return false;
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::DeleteConv(std::string conv_id) {
+    START_TRACK;
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    co_return co_await conversation_status_handler->Delete(CTX_V, conv_id);
 }
 
 boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> ConversationManager::CreateConv(std::vector<std::string> member_user_ids, std::string conv_name) {

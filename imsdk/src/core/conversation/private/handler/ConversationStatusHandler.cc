@@ -32,6 +32,7 @@ void ConversationStatusHandler::AllComponentDidLoad() {
     p_registMuteHandler();
     p_registTopOnHandler();
     p_registSyncExtHandler();
+    p_registDeleteHandler();
 }
 
 /// 置顶设置
@@ -69,7 +70,7 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
     co_return true;
 }
     
-/// 禁言
+/// 免打扰
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatusHandler::SetMute(CTX_T, std::string cid, bool is_muted) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
@@ -195,30 +196,146 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
     co_return true;
 }
 
+/// 删除会话
+boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatusHandler::Delete(CTX_T, std::string cid) {
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
+    
+    // 构造请求
+    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
+    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_DELETE));
+    auto* conv_info = req_item->mutable_conversation();
+    conv_info->set_convid(cid);
+    conv_info->set_isdelete(true);
+    
+    // 发送网络请求
+    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    if (!resp) {
+        co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
+    }
+    
+    // 检查响应错误码
+    if (resp->errorcode() != 0) {
+        co_return std::unexpected(roc::error::make_error(
+            static_cast<int>(resp->errorcode()),
+            resp->errormsg().empty() ? "Delete conversation failed" : resp->errormsg()
+        ));
+    }
+    
+    // 成功请求后更新本地数据库和缓存
+    auto conv_ds = sdk_root->ConversationManager()->conv_datasource.get();
+    bool update_result = co_await conv_ds->UpdateConversationDeletedStatus(CTX_V, cid, true);
+    if (!update_result) {
+        co_return std::unexpected(roc::error::make_error(3004, "Failed to update local database"));
+    }
+    
+    co_return true;
+}
 
+// ================================ handler ===============================
 
-// ================================ private ===============================
+boost::asio::awaitable<void> ConversationStatusHandler::p_onTopOnChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
+    // 更新数据库和缓存
+    auto conv_manager = sdk_root->ConversationManager();
+    auto conv_ds = conv_manager->conv_datasource.get();
+    co_await conv_ds->UpdateConversationTopStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().istop());
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+
+    // 用户回调
+    if (sdk_conv) {
+        auto on_conversation_result = std::make_shared<model::OnConversationResult>();
+        on_conversation_result->top_on_change_convs.push_back(sdk_conv);
+        base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
+    }
+}
+
+boost::asio::awaitable<void> ConversationStatusHandler::p_onMuteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    // 更新数据库和缓存
+    auto conv_manager = sdk_root->ConversationManager();
+    auto conv_ds = conv_manager->conv_datasource.get();
+    co_await conv_ds->UpdateConversationMuteStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().ismuted());
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+
+    // 用户回调
+    if (sdk_conv) {
+        auto on_conversation_result = std::make_shared<model::OnConversationResult>();
+        on_conversation_result->mute_change_convs.push_back(sdk_conv);
+        base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
+    }
+}
+
+boost::asio::awaitable<void> ConversationStatusHandler::p_onBlockChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    // 更新数据库和缓存
+    auto conv_manager = sdk_root->ConversationManager();
+    auto conv_ds = conv_manager->conv_datasource.get();
+    co_await conv_ds->UpdateConversationBlockStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().isblocked());
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+
+    // 用户回调
+    if (sdk_conv) {
+        auto on_conversation_result = std::make_shared<model::OnConversationResult>();
+        on_conversation_result->block_change_convs.push_back(sdk_conv);
+        base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
+    }
+}
+
+boost::asio::awaitable<void> ConversationStatusHandler::p_onSyncExtChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    // 解析 sync_ext string 到 map
+    std::string sync_ext_str = cmd->convinfo().syncext();
+    auto parse_result = json_util::MapParseFromString(sync_ext_str);
+    if (!parse_result) {
+        LOG_INFO("ConvStatusHandler", "Failed to parse sync_ext: {}", parse_result.error().to_string());
+        co_return;
+    }
+    std::unordered_map<std::string, std::string> sync_ext_map = parse_result.value();
+
+    // 更新数据库和缓存
+    auto conv_manager = sdk_root->ConversationManager();
+    auto conv_ds = conv_manager->conv_datasource.get();
+    co_await conv_ds->UpdateConversationSyncExtStatus(CTX_V, cmd->convinfo().convid(), sync_ext_map);
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+
+    // 用户回调
+    if (sdk_conv) {
+        auto on_conversation_result = std::make_shared<model::OnConversationResult>();
+        on_conversation_result->sync_ext_change_convs.push_back(sdk_conv);
+        base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
+    }
+}
+
+boost::asio::awaitable<void> ConversationStatusHandler::p_onDeleteChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    // 更新数据库和缓存
+    auto conv_manager = sdk_root->ConversationManager();
+    auto conv_ds = conv_manager->conv_datasource.get();
+    bool is_deleted = cmd->convinfo().isdelete();
+    co_await conv_ds->UpdateConversationDeletedStatus(CTX_V, cmd->convinfo().convid(), is_deleted);
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+
+    // 用户回调
+    if (sdk_conv) {
+        auto on_conversation_result = std::make_shared<model::OnConversationResult>();
+        on_conversation_result->deleted_convs.push_back(sdk_conv);
+        base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
+    }
+}
+
+// =================================  register =================================
 
 void ConversationStatusHandler::p_registTopOnHandler() {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
     sdk_root->cmd_center()->RegistCmdHandler(
         static_cast<int32_t>(common::CmdMessageOp::CONV_TOP_CHANGED),
         [w_sdk_root = w_sdk_root, this](CTX_T, std::shared_ptr<const network::CmdMessage> cmd) -> boost::asio::awaitable<void>{
-            CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
-
-            // 更新数据库
-            auto conv_manager = sdk_root->ConversationManager();
-            auto conv_ds = conv_manager->conv_datasource.get();
-            co_await conv_ds->UpdateConversationTopStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().istop());
-            auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
-
-            // 用户回调
-            if (sdk_conv) {
-                auto on_conversation_result = std::make_shared<model::OnConversationResult>();
-                on_conversation_result->top_on_change_convs.push_back(sdk_conv);
-                base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
-            }
+            return p_onTopOnChange(CTX_V, cmd);
         }
     );
 }
@@ -228,20 +345,7 @@ void ConversationStatusHandler::p_registMuteHandler() {
     sdk_root->cmd_center()->RegistCmdHandler(
         static_cast<int32_t>(common::CmdMessageOp::CONV_MUTE_CHANGE),
         [w_sdk_root = w_sdk_root, this](CTX_T, std::shared_ptr<const network::CmdMessage> cmd) -> boost::asio::awaitable<void>{
-            CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
-
-            // 更新数据库
-            auto conv_manager = sdk_root->ConversationManager();
-            auto conv_ds = conv_manager->conv_datasource.get();
-            co_await conv_ds->UpdateConversationMuteStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().ismuted());
-            auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
-
-            // 用户回调
-            if (sdk_conv) {
-                auto on_conversation_result = std::make_shared<model::OnConversationResult>();
-                on_conversation_result->mute_change_convs.push_back(sdk_conv);
-                base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
-            }
+            return p_onMuteChange(CTX_V, cmd);
         }
     );
 }
@@ -251,20 +355,7 @@ void ConversationStatusHandler::p_registBlockHandler() {
     sdk_root->cmd_center()->RegistCmdHandler(
         static_cast<int32_t>(common::CmdMessageOp::CONV_BLOCK_CHANGE),
         [w_sdk_root = w_sdk_root, this](CTX_T, std::shared_ptr<const network::CmdMessage> cmd) -> boost::asio::awaitable<void>{
-            CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
-
-            // 更新数据库
-            auto conv_manager = sdk_root->ConversationManager();
-            auto conv_ds = conv_manager->conv_datasource.get();
-            co_await conv_ds->UpdateConversationBlockStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().isblocked());
-            auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
-
-            // 用户回调
-            if (sdk_conv) {
-                auto on_conversation_result = std::make_shared<model::OnConversationResult>();
-                on_conversation_result->block_change_convs.push_back(sdk_conv);
-                base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
-            }
+            return p_onBlockChange(CTX_V, cmd);
         }
     );
 }
@@ -274,29 +365,17 @@ void ConversationStatusHandler::p_registSyncExtHandler() {
     sdk_root->cmd_center()->RegistCmdHandler(
         static_cast<int32_t>(common::CmdMessageOp::CONV_SYNC_EXT_CHANGED),
         [w_sdk_root = w_sdk_root, this](CTX_T, std::shared_ptr<const network::CmdMessage> cmd) -> boost::asio::awaitable<void>{
-            CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
+            return p_onSyncExtChange(CTX_V, cmd);
+        }
+    );
+}
 
-            // 解析 sync_ext string 到 map
-            std::string sync_ext_str = cmd->convinfo().syncext();
-            auto parse_result = json_util::MapParseFromString(sync_ext_str);
-            if (!parse_result) {
-                LOG_INFO("ConvStatusHandler", "Failed to parse sync_ext: {}", parse_result.error().to_string());
-                co_return;
-            }
-            std::unordered_map<std::string, std::string> sync_ext_map = parse_result.value();
-
-            // 更新数据库
-            auto conv_manager = sdk_root->ConversationManager();
-            auto conv_ds = conv_manager->conv_datasource.get();
-            co_await conv_ds->UpdateConversationSyncExtStatus(CTX_V, cmd->convinfo().convid(), sync_ext_map);
-            auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
-
-            // 用户回调
-            if (sdk_conv) {
-                auto on_conversation_result = std::make_shared<model::OnConversationResult>();
-                on_conversation_result->sync_ext_change_convs.push_back(sdk_conv);
-                base::util::safe_invoke_block(conv_manager->OnConvUpdateCallback(), on_conversation_result);
-            }
+void ConversationStatusHandler::p_registDeleteHandler() {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+    sdk_root->cmd_center()->RegistCmdHandler(
+        static_cast<int32_t>(common::CmdMessageOp::CONV_DELETE),
+        [w_sdk_root = w_sdk_root, this](CTX_T, std::shared_ptr<const network::CmdMessage> cmd) -> boost::asio::awaitable<void>{
+            return p_onDeleteChange(CTX_V, cmd);
         }
     );
 }

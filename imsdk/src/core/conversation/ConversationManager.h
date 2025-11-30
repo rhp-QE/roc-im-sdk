@@ -4,10 +4,12 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/strand.hpp>
 #include <memory>
+#include <expected>
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
 #include "imsdk/base/include/containers/ThreadSafeUnorderedMap.h"
+#include "imsdk/base/include/network/Error.h"
 
 
 // Forward declaration
@@ -57,19 +59,31 @@ public:
         CreateConv(std::vector<std::string> member_user_ids, std::string conv_name);
 
     /// 设置会话置顶
-    boost::asio::awaitable<bool>
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
         SetConvTop(std::string conv_id, bool is_top);
 
     /// 设置会话免打扰
-    boost::asio::awaitable<bool>
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
         SetConvMute(std::string conv_id, bool is_mute);
+
+    /// 设置会话拉黑
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
+        SetConvBlock(std::string conv_id, bool is_block);
+
+    /// 设置会话同步扩展字段
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
+        SetConvSyncExt(std::string conv_id, std::string key, std::string value);
+
+    /// 设置会话本地扩展字段（仅本地，不发送网络请求）
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
+        SetConvLocalExt(std::string conv_id, std::string key, std::string value);
 
     /// 设置会话已读
     boost::asio::awaitable<bool>
         SetConvRead(std::string conv_id);
 
     /// 删除会话
-    boost::asio::awaitable<bool>
+    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
         DeleteConv(std::string conv_id);
 
     /// =======================================================================================
