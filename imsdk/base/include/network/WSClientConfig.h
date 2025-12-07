@@ -27,7 +27,7 @@ private:
     std::string host_;
     std::string port_;
     uint32_t reconnect_interval_ = 5000; // 重连间隔，单位毫秒
-    std::string path_ = "/"; // WebSocket 路径
+    std::string path_ = "/ws"; // WebSocket 路径
     std::map<std::string, std::string> query_params_; // URL 查询参数
     std::map<std::string, std::string> headers_; // 请求头
     std::shared_ptr<INetworkConfig> network_config_; // 网络配置接口

@@ -213,7 +213,9 @@ base::net::LongConnectionConfig SDKConnectionManager::p_GenerateNetConfig(roc::i
     .set_reconnect_backoff(1000)
     .add_header("User-Agent", "LongConnectionClient/1.0")
     .add_query_param("sendID", root->config().user_id)
-    .add_query_param("sdkType", "RocSDK-c++");
+    .add_query_param("sdkType", "RocSDK-c++")
+    .add_query_param("sdk_type", "roc-imsdk-c++")
+    .add_query_param("user_id", root->config().user_id);
 
     return config;
 }
