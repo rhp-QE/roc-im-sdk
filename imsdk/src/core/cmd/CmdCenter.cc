@@ -40,7 +40,7 @@ boost::asio::awaitable<void> CmdCenter::p_handlePushMesage(std::shared_ptr<const
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     bool can_not_handle = false;
-    can_not_handle = can_not_handle || (resp->service() != common::SDKWSService);
+    can_not_handle = can_not_handle /*|| (resp->service() != common::SDKWSService)*/;
     can_not_handle = can_not_handle || (resp->method()  != static_cast<int32_t>(common::SDKWSMethod::PUSH_CMD_MESSAGE));
     if (can_not_handle) {
         // 转发给 业务层处理

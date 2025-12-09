@@ -18,6 +18,7 @@
 #include "imsdk/src/include/model/message/MessageModel.h"
 #include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/common/json_util.h"
+#include "imsdk/src/include/model/network.h"
 
 #include "imsdk/src/core/cmd/CmdCenter.h"
 
@@ -407,20 +408,26 @@ boost::asio::awaitable<std::unique_ptr<network::ChangeMessageItemResp>>
     std::unique_ptr<network::ChangeMessageReq> req = std::make_unique<network::ChangeMessageReq>();
     req->mutable_infos()->AddAllocated(req_item.release());
 
-    std::unique_ptr<network::SdkWSReq> request = std::make_unique<network::SdkWSReq>();
-    request->set_data(req->SerializeAsString());
-    request->set_service(common::SDKWSService);
-    request->set_method(static_cast<uint32_t>(common::SDKWSMethod::MESSAGE_CHANGE));
-    request->set_trackid(call_track_id);
+    // 创建 FrionterMessage 请求
+    auto frontier_msg = std::make_unique<network::FrionterMessage>();
+    frontier_msg->service = common::SDKWSService;
+    frontier_msg->method = std::to_string(static_cast<int32_t>(common::SDKWSMethod::MESSAGE_CHANGE));
+    // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
+    int payload_size = req->ByteSizeLong();
+    frontier_msg->payload.resize(payload_size);
+    req->SerializeToArray(frontier_msg->payload.data(), payload_size);
+    frontier_msg->metadata["track_id"] = std::to_string(call_track_id);
 
-    auto response = co_await sdk_root->ConnectionManager()->SendRequest(request.get());
+    auto response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
 
-    if (!response) {
+    if (!response.has_value()) {
         co_return nullptr;
     }
 
+    // 从响应的 payload 中解析 ChangeMessageResp
     std::unique_ptr<network::ChangeMessageResp> resp = std::make_unique<network::ChangeMessageResp>();
-    resp->ParseFromString(response.value()->data());
+    // 直接使用 vector 中的数据解析，避免拷贝
+    resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
     if (resp->infos().size() <= 0) {
         co_return nullptr;
     }

@@ -64,7 +64,7 @@ public:
 
     void AddOnPushMessageCallback(OnPushMesageCallbackType callback);
 
-    boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> SendRequest(network::SdkWSReq *req);
+    boost::asio::awaitable<std::expected<std::unique_ptr<FrionterMessage>, roc::error::Error>> SendRequest(std::unique_ptr<FrionterMessage> req);
 
     /// 获取网络状态
     roc::imsdk::network::NetworkStatus GetNetworkStatus();
@@ -78,7 +78,7 @@ private:
     std::unique_ptr<base::net::LongConnectionClient> lc_;
     
     std::atomic_uint64_t request_id_ = 0;
-    using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::unique_ptr<network::SdkWSResp>)>;
+    using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::unique_ptr<FrionterMessage>)>;
     std::unordered_map<std::string, std::shared_ptr<channel_type>> channel_map_;
     std::mutex mutex_;
 

@@ -8,6 +8,7 @@
 //
 
 #include "SDKConnectionManager.h"
+#include "imsdk/src/core/network/connection/FrontierMessageJsonSerializer.h"
 #include "imsdk/base/include/network/LongConnectionClient.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
@@ -117,26 +118,38 @@ void SDKConnectionManager::AllComponentDidLoad() {
 }
 
 
-boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error>> SDKConnectionManager::SendRequest(network::SdkWSReq *req) {
+boost::asio::awaitable<std::expected<std::unique_ptr<FrionterMessage>, roc::error::Error>> SDKConnectionManager::SendRequest(std::unique_ptr<FrionterMessage> req) {
     std::shared_ptr<SDKRoot> root = w_sdk_root.lock();
     if (!root) {
         co_return std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request"));
     }
 
-    req->set_requestid(next_request_id(root.get()));
+    if (!req) {
+        co_return std::unexpected(roc::error::make_error(1001, "request is null", "SDKConnectionManager:send_request"));
+    }
+
+    // 设置通用字段：type、timestamp、request_id
+    req->type = "request";
+    auto now = std::chrono::system_clock::now();
+    auto duration = now.time_since_epoch();
+    req->timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    req->request_id = next_request_id(root.get());
+
+    // 序列化为 JSON 字符串
+    std::string json_str = FrontierMessageJsonSerializer::ToJsonString(*req);
 
     auto channel = std::make_shared<channel_type>(*(root->config().net_io_context), 1);
-    std::string request_id_str = req->requestid();
+    std::string request_id_str = req->request_id;
     {
         std::lock_guard<std::mutex> lock(mutex_);
         channel_map_[request_id_str] = channel;
     }
 
-    std::vector<char> buffer(req->ByteSizeLong());
-    req->SerializeToArray(buffer.data(), req->ByteSizeLong());
+    // 将 JSON 字符串转换为字节数组发送
+    std::vector<char> buffer(json_str.begin(), json_str.end());
     auto result = co_await lc_->send_data(std::move(buffer));
 
-    std::unique_ptr<network::SdkWSResp> resp = co_await channel->async_receive(boost::asio::use_awaitable);
+    std::unique_ptr<FrionterMessage> resp = co_await channel->async_receive(boost::asio::use_awaitable);
     {
         std::lock_guard<std::mutex> lock(mutex_);
         channel_map_.erase(request_id_str);
@@ -151,12 +164,18 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SdkWSResp>, roc::e
 boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::beast::flat_buffer data) {
     try {
         CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+        START_TRACK;
 
-        std::unique_ptr<network::SdkWSResp> resp = std::make_unique<network::SdkWSResp>();
-        resp->ParseFromArray(data.data().data(), data.size());
+        // 从 JSON 缓冲区反序列化为 FrionterMessage（零拷贝）
+        auto msg_result = FrontierMessageJsonSerializer::FromJsonBuffer(data.data().data(), data.size());
+        
+        if (!msg_result) {
+            LOG_INFO("WS", "Failed to parse JSON message: {}", msg_result.error().to_string());
+            co_return;
+        }
 
-        uint32_t call_track_id = resp->trackid();
-        const std::string &request_id = resp->requestid();
+        std::unique_ptr<FrionterMessage> resp = std::make_unique<FrionterMessage>(std::move(msg_result.value()));
+        const std::string &request_id = resp->request_id;
 
         std::shared_ptr<channel_type> channel;
         {
@@ -177,17 +196,20 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
                 std::lock_guard<std::mutex> lock(mutex_);
                 callbacks_tmp = on_push_message_callbacks_;
             } // lock
-            std::shared_ptr<const network::SdkWSResp> s_resp = std::move(resp);
+            std::shared_ptr<const network::SdkWSResp> s_resp = nullptr; // TODO: 需要转换 FrionterMessage 到 SdkWSResp
             
             // 转发到 sdk 线程处理 避免卡死主线程
             boost::asio::co_spawn(sdk_root->sdk_io_context(), [callbacks_tmp = std::move(callbacks_tmp), s_resp]->boost::asio::awaitable<void> {
                 for (const auto &callback : callbacks_tmp) {
-                    base::util::safe_invoke_block(callback, s_resp);
+                    if (s_resp) {
+                        base::util::safe_invoke_block(callback, s_resp);
+                    }
                 }
                 co_return;
             }, boost::asio::detached);
         } else {
-            LOG_INFO("WS", "handle_request_response, request_id: {}, service: {}, method: {}", request_id, resp->service(), resp->method());
+            LOG_INFO("WS", "handle_request_response, request_id: {}, type: {}, service: {}, method: {}", 
+                     request_id, resp->type, resp->service, resp->method);
 
             // 唤醒请求携程
             co_await channel->async_send(boost::system::error_code{}, std::move(resp), boost::asio::use_awaitable);
@@ -202,7 +224,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
 // =================================== private ===========================================================
 
 base::net::LongConnectionConfig SDKConnectionManager::p_GenerateNetConfig(roc::imsdk::SDKRoot* root) {
-    roc::base::net::LongConnectionConfig config("localhost", "10010");
+    roc::base::net::LongConnectionConfig config("localhost", "6060");
 
     config
     .set_heartbeat_interval(5000)

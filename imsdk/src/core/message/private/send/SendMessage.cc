@@ -13,6 +13,7 @@
 #include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
 #include "imsdk/src/core/message/private/db_opt/DBOpt.h"
 #include "imsdk/src/core/common/sdkwsEnum.h"
+#include "imsdk/src/include/model/network.h"
 #include <algorithm>
 #include <expected>
 #include <memory>
@@ -28,22 +29,28 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, 
 SendMessageController::p_request(CTX_T, network::SendMessageReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
-    std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
-    req->set_service(common::SDKWSService);
-    req->set_method(static_cast<int32_t>(common::SDKWSMethod::SEND_MESSAGE));
-    req->set_data(request->SerializeAsString());
-    req->set_trackid(TRACK_ID);
+    // 创建 FrionterMessage 请求
+    auto frontier_msg = std::make_unique<network::FrionterMessage>();
+    frontier_msg->service = core::common::SDKWSService;
+    frontier_msg->method  = std::to_string(static_cast<int32_t>(common::SDKWSMethod::SEND_MESSAGE));
+    // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
+    int payload_size = request->ByteSizeLong();
+    frontier_msg->payload.resize(payload_size);
+    request->SerializeToArray(frontier_msg->payload.data(), payload_size);
+    
+    // 将 track_id 放在 metadata 中
+    frontier_msg->metadata["track_id"] = std::to_string(TRACK_ID);
 
-    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
-    if (!response) {
-        co_return std::unexpected(roc::error::make_error(40201, "SDKRequest send_message response is empty"));
-    }
+    // 发送请求（type 和 timestamp 会在 ConnectionManager 内设置）
+    std::expected<std::unique_ptr<network::FrionterMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
     if (!response.has_value()) {
         co_return std::unexpected(response.error());
     }
 
+    // 从响应的 payload 中解析 SendMessageResp
     auto resp = std::make_unique<network::SendMessageResp>();
-    bool ok = resp->ParseFromArray(response.value()->data().data(), response.value()->data().size());
+    // 直接使用 vector 中的数据解析，避免拷贝
+    bool ok = resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
     if (!ok) {
         co_return std::unexpected(roc::error::make_error(40201, "SDKRequest send_message parse response failed"));
     }

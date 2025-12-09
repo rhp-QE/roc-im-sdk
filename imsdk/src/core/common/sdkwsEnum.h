@@ -1,9 +1,11 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 namespace roc::imsdk::core::common {
 
-static int32_t SDKWSService = 6000;
+static std::string SDKWSService = "backservice-im";
+
 enum class SDKWSMethod : int32_t {
     SEND_MESSAGE                  = 101, /// 发送消息
     PULL_SINGLE_LIST              = 102, /// 拉取单链

@@ -10,7 +10,7 @@
 #include "imsdk/src/core/common/sdkwsEnum.h"
 #include "imsdk/base/include/network/Error.h"
 #include "imsdk/base/include/utils/utils.h"
-#include "imsdk/src/core/common/sdkwsEnum.h"
+#include "imsdk/src/include/model/network.h"
 
 #include <atomic>
 #include <expected>
@@ -27,19 +27,25 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageLi
 ConvMessagesFetcher::p_request(CTX_T, network::FetchConvMessageListReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
-    std::unique_ptr<network::SdkWSReq> req = std::make_unique<network::SdkWSReq>();
-    req->set_service(common::SDKWSService);
-    req->set_method(static_cast<int32_t>(common::SDKWSMethod::PULL_MIX_LIST));
-    req->set_data(request->SerializeAsString());
-    req->set_trackid(TRACK_ID);
+    // 创建 FrionterMessage 请求
+    auto frontier_msg = std::make_unique<network::FrionterMessage>();
+    frontier_msg->service = common::SDKWSService;
+    frontier_msg->method = std::to_string(static_cast<int32_t>(common::SDKWSMethod::PULL_SINGLE_LIST));
+    // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
+    int payload_size = request->ByteSizeLong();
+    frontier_msg->payload.resize(payload_size);
+    request->SerializeToArray(frontier_msg->payload.data(), payload_size);
+    frontier_msg->metadata["track_id"] = std::to_string(TRACK_ID);
 
-    std::expected<std::unique_ptr<network::SdkWSResp>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(req.get());
-    if (!response || !response.has_value()) {
-        co_return std::unexpected(roc::error::make_error(40202, "SDKRequest fetch_conv_message_list response is empty"));
+    std::expected<std::unique_ptr<network::FrionterMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
+    if (!response.has_value()) {
+        co_return std::unexpected(response.error());
     }
 
+    // 从响应的 payload 中解析 FetchConvMessageListResp
     auto resp = std::make_unique<network::FetchConvMessageListResp>();
-    bool ok = resp->ParseFromArray(response.value()->data().data(), response.value()->data().size());
+    // 直接使用 vector 中的数据解析，避免拷贝
+    bool ok = resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
     if (!ok) {
         co_return std::unexpected(roc::error::make_error(40202, "SDKRequest fetch_conv_message_list parse response failed"));
     }
