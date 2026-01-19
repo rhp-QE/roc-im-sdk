@@ -29,8 +29,8 @@ boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, 
 SendMessageController::p_request(CTX_T, network::SendMessageReq *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
-    // 创建 FrionterMessage 请求
-    auto frontier_msg = std::make_unique<network::FrionterMessage>();
+    // 创建 FrontierMessage 请求
+    auto frontier_msg = std::make_unique<network::FrontierMessage>();
     frontier_msg->service = core::common::SDKWSService;
     frontier_msg->method  = std::to_string(static_cast<int32_t>(common::SDKWSMethod::SEND_MESSAGE));
     // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
@@ -42,7 +42,7 @@ SendMessageController::p_request(CTX_T, network::SendMessageReq *request) {
     frontier_msg->metadata["track_id"] = std::to_string(TRACK_ID);
 
     // 发送请求（type 和 timestamp 会在 ConnectionManager 内设置）
-    std::expected<std::unique_ptr<network::FrionterMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
+    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
     if (!response.has_value()) {
         co_return std::unexpected(response.error());
     }

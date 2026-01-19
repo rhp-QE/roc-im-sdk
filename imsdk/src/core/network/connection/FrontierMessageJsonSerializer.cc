@@ -1,7 +1,7 @@
 //
 // FrontierMessageJsonSerializer.cc
 //
-// FrionterMessage JSON 序列化和反序列化工具类实现
+// FrontierMessage JSON 序列化和反序列化工具类实现
 //
 // author: Ruan Huipeng
 // date: 2025-12-07
@@ -20,31 +20,62 @@
 
 namespace roc::imsdk::network {
 
-std::string FrontierMessageJsonSerializer::ToJsonString(const FrionterMessage& msg) {
+std::string FrontierMessageJsonSerializer::ToJsonString(const FrontierMessage& msg) {
     boost::json::value json_value = ToJson(msg);
     return boost::json::serialize(json_value);
 }
 
-boost::json::value FrontierMessageJsonSerializer::ToJson(const FrionterMessage& msg) {
+boost::json::value FrontierMessageJsonSerializer::ToJson(const FrontierMessage& msg) {
     boost::json::object obj;
     
-    obj["requestID"] = msg.request_id;
-    obj["type"] = msg.type;
-    obj["service"] = msg.service;
-    obj["method"] = msg.method;
-    obj["payload"] = PayloadToBase64String(msg.payload);
-    obj["error"] = msg.error;
-    obj["timestamp"] = msg.timestamp;
-    obj["metadata"] = MetadataToJsonObject(msg.metadata);
+    // requestID: omitempty - 只有非空时才序列化
+    if (!msg.request_id.empty()) {
+        obj["requestID"] = msg.request_id;
+    }
+    
+    // type: omitempty - 只有非空时才序列化
+    if (!msg.type.empty()) {
+        obj["type"] = msg.type;
+    }
+    
+    // service: omitempty - 只有非空时才序列化
+    if (!msg.service.empty()) {
+        obj["service"] = msg.service;
+    }
+    
+    // method: omitempty - 只有非空时才序列化
+    if (!msg.method.empty()) {
+        obj["method"] = msg.method;
+    }
+    
+    // payload: omitempty - 只有非空时才序列化（Go 的 []byte 会被编码为 base64 字符串）
+    if (!msg.payload.empty()) {
+        obj["payload"] = PayloadToBase64String(msg.payload);
+    }
+    
+    // error: omitempty - 只有非空时才序列化
+    if (!msg.error.empty()) {
+        obj["error"] = msg.error;
+    }
+    
+    // timestamp: omitempty - 只有非零时才序列化
+    if (msg.timestamp != 0) {
+        obj["timestamp"] = msg.timestamp;
+    }
+    
+    // metadata: omitempty - 只有非空时才序列化
+    if (!msg.metadata.empty()) {
+        obj["metadata"] = MetadataToJsonObject(msg.metadata);
+    }
     
     return obj;
 }
 
-std::expected<FrionterMessage, roc::error::Error> FrontierMessageJsonSerializer::FromJsonString(const std::string& json_str) {
+std::expected<FrontierMessage, roc::error::Error> FrontierMessageJsonSerializer::FromJsonString(const std::string& json_str) {
     return FromJsonBuffer(json_str.data(), json_str.size());
 }
 
-std::expected<FrionterMessage, roc::error::Error> FrontierMessageJsonSerializer::FromJsonBuffer(const void* data, size_t size) {
+std::expected<FrontierMessage, roc::error::Error> FrontierMessageJsonSerializer::FromJsonBuffer(const void* data, size_t size) {
     try {
         if (!data || size == 0) {
             return std::unexpected(roc::error::make_error(1001, "Invalid buffer: data is null or size is zero"));
@@ -59,25 +90,23 @@ std::expected<FrionterMessage, roc::error::Error> FrontierMessageJsonSerializer:
     }
 }
 
-std::expected<FrionterMessage, roc::error::Error> FrontierMessageJsonSerializer::FromJson(const boost::json::value& json_value) {
+std::expected<FrontierMessage, roc::error::Error> FrontierMessageJsonSerializer::FromJson(const boost::json::value& json_value) {
     try {
         if (!json_value.is_object()) {
             return std::unexpected(roc::error::make_error(1002, "JSON value is not an object"));
         }
 
         const boost::json::object& obj = json_value.as_object();
-        FrionterMessage msg;
+        FrontierMessage msg;
 
         // requestID
         if (obj.contains("requestID") && obj.at("requestID").is_string()) {
             msg.request_id = std::string(obj.at("requestID").as_string());
         }
 
-        // type
+        // type: 可选字段
         if (obj.contains("type") && obj.at("type").is_string()) {
             msg.type = std::string(obj.at("type").as_string());
-        } else {
-            return std::unexpected(roc::error::make_error(1003, "Missing required field: type"));
         }
 
         // service

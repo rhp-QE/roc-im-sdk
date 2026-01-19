@@ -15,7 +15,7 @@
 syntax = "proto3";
 package roc.imsdk.network;
 
-option go_package = "github.com/roc/roc-im-server/internal/kitex_gen/sdkws";
+option go_package = "github.com/rhp-QE/roc-im-server/kitex_gen/sdkws";
 
 // 包含消息的完整信息，是系统中最核心的消息结构
 message MessageData {
@@ -43,17 +43,19 @@ message ConversationData {
   string convID = 1;          // 会话ID
   string ownerID = 2;     // 会话拥有者用户ID
   int32 convType = 3;         // 会话类型
-  repeated MessageData messages = 4;  // 会话消息列表
-  MessageData lastMessage = 5;        // 会话最后一条消息
-  int64 unreadCount = 6;  // 会话未读消息数量
-  bool isMuted = 7;           // 会话是否静音
-  bool isTop = 8;             // 会话是否置顶
-  bool isDelete = 9;
-  bool isBlocked = 10;
-  string syncExt = 11;
-  string members = 12;
-  string name = 13;
-  string avatarURL = 14;
+  int64 version = 4;          // 会话版本
+  repeated MessageData messages = 5;  // 会话消息列表
+  MessageData lastMessage = 6;        // 会话最后一条消息
+  string lastMessageID = 7; // 会话最后一条消息ID
+  int64 unreadCount = 8;  // 会话未读消息数量
+  bool isMuted = 9;           // 会话是否静音
+  bool isTop = 10;             // 会话是否置顶
+  bool isDelete = 11;
+  bool isBlocked = 12;
+  string syncExt = 13;
+  string members = 14;
+  string name = 15;
+  string avatarURL = 16;
 }
 
 
@@ -121,7 +123,6 @@ message BatchChangeConversationsRequest {
 message BatchChangeConversationsResponse {
   repeated CmdMessageOptResult results = 1;
 }
-
 // -------------------------------------------
 
 // 单链拉取 ------------------------------------
@@ -142,18 +143,17 @@ message FetchConvMessageListResponse {
 
 // 混链拉取 ------------------------------------
 message FetchUserRecentConvListRequest {
-  string userID = 1;
-  int64 cursor  = 2; // 水位
-  int64 limit   = 3;
-  bool forward  = 4;
-  bool news     = 5; // 是否拉取新消息
+  string userID    = 1;
+  int64 lowerVersion = 2;
+  int64 upperVersion  = 3;
+  bool first       = 4; // 是否是一次完整交互的第一条
 }
 
 message FetchUserRecentConvListResponse {
   repeated ConversationData conversations = 1;
   int64 left = 2; // 左右闭合
   int64 right = 3;
-  bool hasMore = 4;
+  string error = 4;
 }
 //---------------------------------------------
 
@@ -170,5 +170,41 @@ message UserMessageIntegrityCheckResponse {
   int64 left                          = 2; // 左右闭合
   int64 right                         = 3; // 右区间
   repeated ConversationData conversations = 4; // 补齐的会话信息
+}
+// --------------------------------------------
+
+// 批量获取消息 ------------------------------------
+message GetMessageResult {
+  string messageID = 1; // 请求的消息ID
+  MessageData message = 2; // 消息数据（如果获取成功）
+  string errorCode = 3; // 错误码（如果获取失败）
+  string errorMsg = 4; // 错误信息（如果获取失败）
+}
+
+message BatchGetMessagesRequest {
+  repeated string messageIDs = 1; // 消息ID列表
+  string convID = 2; // 会话ID（可选，用于过滤）
+}
+
+message BatchGetMessagesResponse {
+  repeated GetMessageResult results = 1; // 结果列表，每个结果包含消息和对应的错误信息
+}
+// --------------------------------------------
+
+// 批量获取会话 ------------------------------------
+message GetConversationResult {
+  string convID = 1; // 请求的会话ID
+  ConversationData conversation = 2; // 会话数据（如果获取成功）
+  string errorCode = 3; // 错误码（如果获取失败）
+  string errorMsg = 4; // 错误信息（如果获取失败）
+}
+
+message BatchGetConversationsRequest {
+  repeated string convIDs = 1; // 会话ID列表
+  string ownerID = 2; // 会话拥有者用户ID（可选，用于过滤）
+}
+
+message BatchGetConversationsResponse {
+  repeated GetConversationResult results = 1; // 结果列表，每个结果包含会话和对应的错误信息
 }
 // --------------------------------------------

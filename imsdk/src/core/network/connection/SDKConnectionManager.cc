@@ -118,7 +118,7 @@ void SDKConnectionManager::AllComponentDidLoad() {
 }
 
 
-boost::asio::awaitable<std::expected<std::unique_ptr<FrionterMessage>, roc::error::Error>> SDKConnectionManager::SendRequest(std::unique_ptr<FrionterMessage> req) {
+boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::error::Error>> SDKConnectionManager::SendRequest(std::unique_ptr<FrontierMessage> req) {
     std::shared_ptr<SDKRoot> root = w_sdk_root.lock();
     if (!root) {
         co_return std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request"));
@@ -149,7 +149,7 @@ boost::asio::awaitable<std::expected<std::unique_ptr<FrionterMessage>, roc::erro
     std::vector<char> buffer(json_str.begin(), json_str.end());
     auto result = co_await lc_->send_data(std::move(buffer));
 
-    std::unique_ptr<FrionterMessage> resp = co_await channel->async_receive(boost::asio::use_awaitable);
+    std::unique_ptr<FrontierMessage> resp = co_await channel->async_receive(boost::asio::use_awaitable);
     {
         std::lock_guard<std::mutex> lock(mutex_);
         channel_map_.erase(request_id_str);
@@ -166,7 +166,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
         CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
         START_TRACK;
 
-        // 从 JSON 缓冲区反序列化为 FrionterMessage（零拷贝）
+        // 从 JSON 缓冲区反序列化为 FrontierMessage（零拷贝）
         auto msg_result = FrontierMessageJsonSerializer::FromJsonBuffer(data.data().data(), data.size());
         
         if (!msg_result) {
@@ -174,7 +174,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
             co_return;
         }
 
-        std::unique_ptr<FrionterMessage> resp = std::make_unique<FrionterMessage>(std::move(msg_result.value()));
+        std::unique_ptr<FrontierMessage> resp = std::make_unique<FrontierMessage>(std::move(msg_result.value()));
         const std::string &request_id = resp->request_id;
 
         std::shared_ptr<channel_type> channel;
@@ -196,7 +196,7 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
                 std::lock_guard<std::mutex> lock(mutex_);
                 callbacks_tmp = on_push_message_callbacks_;
             } // lock
-            std::shared_ptr<const network::SdkWSResp> s_resp = nullptr; // TODO: 需要转换 FrionterMessage 到 SdkWSResp
+            std::shared_ptr<const network::SdkWSResp> s_resp = nullptr; // TODO: 需要转换 FrontierMessage 到 SdkWSResp
             
             // 转发到 sdk 线程处理 避免卡死主线程
             boost::asio::co_spawn(sdk_root->sdk_io_context(), [callbacks_tmp = std::move(callbacks_tmp), s_resp]->boost::asio::awaitable<void> {

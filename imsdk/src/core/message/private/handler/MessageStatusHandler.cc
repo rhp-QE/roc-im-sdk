@@ -408,8 +408,8 @@ boost::asio::awaitable<std::unique_ptr<network::ChangeMessageItemResp>>
     std::unique_ptr<network::ChangeMessageReq> req = std::make_unique<network::ChangeMessageReq>();
     req->mutable_infos()->AddAllocated(req_item.release());
 
-    // 创建 FrionterMessage 请求
-    auto frontier_msg = std::make_unique<network::FrionterMessage>();
+    // 创建 FrontierMessage 请求
+    auto frontier_msg = std::make_unique<network::FrontierMessage>();
     frontier_msg->service = common::SDKWSService;
     frontier_msg->method = std::to_string(static_cast<int32_t>(common::SDKWSMethod::MESSAGE_CHANGE));
     // 使用 SerializeToArray 避免数据拷贝，直接写入 vector

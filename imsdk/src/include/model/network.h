@@ -16,15 +16,15 @@ enum class NetworkStatus {
 // Message WebSocket消息结构（网关模式）
 // 用于请求-响应匹配和消息路由
 // 对标 Go 语言的 Message 结构体
-struct FrionterMessage {
-    std::string request_id;                    // 请求ID（用于请求-响应匹配）
-    std::string type;                          // 消息类型
-    std::string service;                       // 目标服务名称
-    std::string method;                        // 服务方法名称
-    std::vector<uint8_t> payload;              // 消息有效载荷/数据（字节数组，业务数据）
-    std::string error;                         // 错误信息（响应时使用）
-    int64_t timestamp;                         // 时间戳
-    std::unordered_map<std::string, std::string> metadata;  // 元数据（用于传递验证信息如token、track_id等）
+struct FrontierMessage {
+    std::string request_id;                    // 请求ID（用于请求-响应匹配），JSON字段名：requestID
+    std::string type;                          // 消息类型，JSON字段名：type
+    std::string service;                       // 目标服务名称，JSON字段名：service
+    std::string method;                        // 服务方法名称，JSON字段名：method
+    std::vector<uint8_t> payload;              // 消息有效载荷/数据（字节数组，业务数据），JSON字段名：payload（base64编码）
+    std::string error;                         // 错误信息（响应时使用），JSON字段名：error
+    int64_t timestamp;                         // 时间戳，JSON字段名：timestamp
+    std::unordered_map<std::string, std::string> metadata;  // 元数据（用于传递验证信息如token、track_id等），JSON字段名：metadata
 };
 
 } // namespace roc::imsdk::network

@@ -1,7 +1,7 @@
 //
 // FrontierMessageJsonSerializer.h
 //
-// FrionterMessage JSON 序列化和反序列化工具类
+// FrontierMessage JSON 序列化和反序列化工具类
 //
 // author: Ruan Huipeng
 // date: 2025-12-07
@@ -18,20 +18,20 @@
 namespace roc::imsdk::network {
 
 // 前置声明
-struct FrionterMessage;
+struct FrontierMessage;
 
-/// FrionterMessage JSON 序列化和反序列化工具类
+/// FrontierMessage JSON 序列化和反序列化工具类
 class FrontierMessageJsonSerializer {
 public:
-    static std::string ToJsonString(const FrionterMessage& msg);
+    static std::string ToJsonString(const FrontierMessage& msg);
 
-    static boost::json::value ToJson(const FrionterMessage& msg);
+    static boost::json::value ToJson(const FrontierMessage& msg);
 
-    static std::expected<FrionterMessage, roc::error::Error> FromJsonString(const std::string& json_str);
+    static std::expected<FrontierMessage, roc::error::Error> FromJsonString(const std::string& json_str);
 
-    static std::expected<FrionterMessage, roc::error::Error> FromJsonBuffer(const void* data, size_t size);
+    static std::expected<FrontierMessage, roc::error::Error> FromJsonBuffer(const void* data, size_t size);
 
-    static std::expected<FrionterMessage, roc::error::Error> FromJson(const boost::json::value& json_value);
+    static std::expected<FrontierMessage, roc::error::Error> FromJson(const boost::json::value& json_value);
 
 private:
     static boost::json::object MetadataToJsonObject(const std::unordered_map<std::string, std::string>& metadata);

@@ -42,7 +42,7 @@ namespace error {
 
 
 // call back
-using OnPushMesageCallbackType = std::function<void(std::shared_ptr<const network::SdkWSResp>)>;
+using OnPushMesageCallbackType = std::function<void(std::shared_ptr<const network::FrontierMessage>)>;
 using OnConnectionStatusChangeCallbackType = std::function<void(roc::imsdk::network::NetworkStatus)>;
 
 // ------------------------------------------------------------------------------------------
@@ -62,9 +62,11 @@ public:
     // 组件加载完成后的初始化
     void AllComponentDidLoad();
 
+    // 添加接收消息回调
     void AddOnPushMessageCallback(OnPushMesageCallbackType callback);
 
-    boost::asio::awaitable<std::expected<std::unique_ptr<FrionterMessage>, roc::error::Error>> SendRequest(std::unique_ptr<FrionterMessage> req);
+    // 发送请求
+    boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::error::Error>> SendRequest(std::unique_ptr<FrontierMessage> req);
 
     /// 获取网络状态
     roc::imsdk::network::NetworkStatus GetNetworkStatus();
@@ -78,7 +80,7 @@ private:
     std::unique_ptr<base::net::LongConnectionClient> lc_;
     
     std::atomic_uint64_t request_id_ = 0;
-    using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::unique_ptr<FrionterMessage>)>;
+    using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::unique_ptr<FrontierMessage>)>;
     std::unordered_map<std::string, std::shared_ptr<channel_type>> channel_map_;
     std::mutex mutex_;
 
