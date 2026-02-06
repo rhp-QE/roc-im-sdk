@@ -24,7 +24,7 @@ DBOpt::DBOpt(std::weak_ptr<SDKRoot> sdk_root)
 
 std::string DBOpt::p_TableName(CTX_T) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, "default_conversation_table");
-    return core::util::key_for_user(sdk_root->config().user_id, ConversationTableName);
+    return core::util::KeyForUser(sdk_root->config().user_id, ConversationTableName);
 }
 
 bool DBOpt::CreateConversationTableIfNeed(CTX_T) {

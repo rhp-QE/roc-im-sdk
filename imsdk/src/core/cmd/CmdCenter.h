@@ -24,7 +24,7 @@ public:
 
 private:
 
-    boost::asio::awaitable<void> p_handlePushMesage(std::shared_ptr<const network::SdkWSResp> resp);
+    boost::asio::awaitable<void> p_handlePushMesage(std::shared_ptr<const network::FrontierMessage> resp);
 
     std::weak_ptr<SDKRoot> w_sdk_root;
 

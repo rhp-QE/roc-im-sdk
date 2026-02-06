@@ -25,15 +25,14 @@ SendMessageController::SendMessageController(std::weak_ptr<SDKRoot> sdk_root)
     : w_sdk_root(sdk_root) {
 }
 
-boost::asio::awaitable<std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error>> 
-SendMessageController::p_request(CTX_T, network::SendMessageReq *request) {
+boost::asio::awaitable<std::expected<std::unique_ptr<network::BatchSendMessageResponse>, roc::error::Error>> 
+SendMessageController::p_request(CTX_T, std::unique_ptr<network::BatchSendMessageRequest> request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     // 创建 FrontierMessage 请求
     auto frontier_msg = std::make_unique<network::FrontierMessage>();
     frontier_msg->service = core::common::SDKWSService;
     frontier_msg->method  = std::to_string(static_cast<int32_t>(common::SDKWSMethod::SEND_MESSAGE));
-    // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
     int payload_size = request->ByteSizeLong();
     frontier_msg->payload.resize(payload_size);
     request->SerializeToArray(frontier_msg->payload.data(), payload_size);
@@ -47,8 +46,8 @@ SendMessageController::p_request(CTX_T, network::SendMessageReq *request) {
         co_return std::unexpected(response.error());
     }
 
-    // 从响应的 payload 中解析 SendMessageResp
-    auto resp = std::make_unique<network::SendMessageResp>();
+    // 从响应的 payload 中解析 BatchSendMessageResponse
+    auto resp = std::make_unique<network::BatchSendMessageResponse>();
     // 直接使用 vector 中的数据解析，避免拷贝
     bool ok = resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
     if (!ok) {
@@ -70,11 +69,11 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageC
     } 
 
     auto msg_manager = sdk_root->MessageManager();
-    double send_time = util::current_time_since1970();
+    double send_time = util::CurrentTimeSince1970();
     std::string client_msg_id = p_generateClientMsgId(); 
 
 
-    std::unique_ptr<network::SendMessageReq> req = std::make_unique<network::SendMessageReq>();
+    std::unique_ptr<network::BatchSendMessageRequest> req = std::make_unique<network::BatchSendMessageRequest>();
     p_convertSendContextToSdkwsMessage(CTX_V, context, client_msg_id, send_time, req->add_msgs());
 
     LOG_INFO("MsgManager", "call_asyncSendMessage, is_group_msg: {}, conv_id: {}, from: {}, to: {}", context.is_group_msg, context.conv_id, context.from_user_id, context.to_user_id);
@@ -92,25 +91,31 @@ boost::asio::awaitable<std::shared_ptr<model::SendMessageResponse>> SendMessageC
     } // 保存db 然后先返回给用户
 
     { 
-        boost::asio::co_spawn(sdk_root->net_io_context(), p_asyncSendMessage(CTX_V, std::move(req), std::move(callback)), boost::asio::detached);
+        boost::asio::co_spawn(
+            sdk_root->net_io_context(),
+            p_asyncSendMessage(CTX_V, std::move(req), std::move(callback)),
+            boost::asio::detached
+        );
     } // 构造请求 异步发送数据
 
 
     co_return response;
 }
 
-boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CTX_T, std::unique_ptr<network::SendMessageReq> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
+boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CTX_T, std::unique_ptr<network::BatchSendMessageRequest> req, std::function<void(std::shared_ptr<model::SendMessageResponse>)> callback) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    std::expected<std::unique_ptr<network::SendMessageResp>, roc::error::Error> resp = co_await p_request(CTX_V, req.get());
+    std::expected<std::unique_ptr<network::BatchSendMessageResponse>, roc::error::Error> resp =
+        co_await p_request(CTX_V, std::move(req));
 
-    if (!resp || !resp.has_value() || resp.value()->infos().size() != 1) {
+    if (!resp || !resp.has_value() || resp.value()->results_size() != 1) {
         base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, resp.error().message(), nullptr));
         co_return;
     }
 
     auto msg_manager = sdk_root->MessageManager();
-    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CTX_V, {&(resp.value()->infos()[0].msg())});
+    const network::SendMessageResult& result = resp.value()->results(0);
+    auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CTX_V, { &(result.msg()) });
 
     LOG_INFO("MsgManager", "asyncSendMessage, result: {}", sdk_msgs.empty() ? "failed" : "success");
 
@@ -145,28 +150,25 @@ bool SendMessageController::p_checkSendContext(const model::SendMsgContext &cont
     return true;
 }
 
-void SendMessageController::p_convertSendContextToSdkwsMessage(CTX_T, model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MsgData *net_msg) {
+void SendMessageController::p_convertSendContextToSdkwsMessage(CTX_T, model::SendMsgContext &context, std::string client_msg_id, double send_time, network::MessageData *net_msg) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
     if (!net_msg) {
         return;
     }
 
-    net_msg->set_clientmsgid(client_msg_id);
-    net_msg->set_content(context.content);
-    net_msg->set_senderplatformid(1);
-    net_msg->set_msgfrom(100);
-    net_msg->set_contenttype(101);
+    net_msg->set_cmessaegid(client_msg_id);
     net_msg->set_content(context.content);
     net_msg->set_sendid(sdk_root->config().user_id);
     net_msg->set_sendtime(send_time);
+    net_msg->set_convtype(context.is_group_msg ? 2 : 1);
 
     if (context.is_group_msg) {
         net_msg->set_convid(context.conv_id);
     } else {
-        std::string conv_id = context.conv_id.empty() ? core::util::generate_single_conv_id(sdk_root->config().user_id, context.to_user_id) : context.conv_id;
+        std::string conv_id = context.conv_id.empty() ? core::util::GenerateSingleConvId(sdk_root->config().user_id, context.to_user_id) : context.conv_id;
 
-        std::pair<std::string, std::string> user_ids = core::util::parse_single_conv_id(conv_id);
+        std::pair<std::string, std::string> user_ids = core::util::ParseSingleConvId(conv_id);
         std::string receiver_id = user_ids.first;
         if (user_ids.first == sdk_root->config().user_id) {
             receiver_id = user_ids.second;

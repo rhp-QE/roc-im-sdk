@@ -22,13 +22,13 @@ boost::asio::strand<boost::asio::io_context::executor_type> ConvDatasource::Conv
 
 /// 保存网络会话
 boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
-ConvDatasource::SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> convs) {
+ConvDatasource::SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network::ConversationData>> convs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
     
     auto conv_manager = sdk_root->ConversationManager();
 
     // 转换为 db 会话
-    auto db_convs = base::util::transform(convs, [conv_manager, call_track_id](const std::shared_ptr<network::ConversationInfo> &conv) {
+    auto db_convs = base::util::transform(convs, [conv_manager, call_track_id](const std::shared_ptr<network::ConversationData> &conv) {
         return conv_manager->convert->ConvertNetConvToDbConv(CTX_V, conv.get());
     });
 

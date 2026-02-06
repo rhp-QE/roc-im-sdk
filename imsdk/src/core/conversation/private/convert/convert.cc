@@ -15,7 +15,7 @@ Convert::Convert(std::weak_ptr<SDKRoot> sdk_root)
 
 /// 会话转换 网络会话 -> db 会话
 /// 本地独有字段 会查一次本地数据库进行合并
-std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDbConv(CTX_T, const network::ConversationInfo *conv) {
+std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDbConv(CTX_T, const network::ConversationData *conv) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
     
     if (!conv) {
@@ -26,19 +26,19 @@ std::shared_ptr<core::conversation::ConversationORM> Convert::ConvertNetConvToDb
     // Basic conversation info
     db_conv->type = conv->convtype();
     
-    db_conv->name = conv->convname();
+    db_conv->name = conv->name();
     
-    db_conv->unread_count = conv->convunreadcount();
+    db_conv->unread_count = conv->unreadcount();
     
-    db_conv->avatar_url = conv->convavatar();
+    db_conv->avatar_url = conv->avatarurl();
     
-    db_conv->last_message_time = conv->has_lastmsg() ? conv->lastmsg().sendtime() : 0;
+    db_conv->last_message_time = conv->has_lastmessage() ? static_cast<int64_t>(conv->lastmessage().sendtime()) : 0;
     
     db_conv->conversation_id = conv->convid();
     
-    db_conv->last_message_client_id = conv->has_lastmsg() ? conv->lastmsg().clientmsgid() : "";
+    db_conv->last_message_client_id = conv->has_lastmessage() ? conv->lastmessage().cmessaegid() : "";
     
-    db_conv->last_message_server_id = conv->has_lastmsg() ? conv->lastmsg().servermsgid() : "";
+    db_conv->last_message_server_id = conv->has_lastmessage() ? conv->lastmessage().smessageid() : "";
 
     db_conv->members_json = conv->members();
     

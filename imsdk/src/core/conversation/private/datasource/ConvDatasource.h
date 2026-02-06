@@ -29,7 +29,7 @@ public:
 
     /// 保存网络会话
     boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
-        SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> convs);
+        SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network::ConversationData>> convs);
     
     /// 根据 ID 获取 SDK 会话
     boost::asio::awaitable<std::shared_ptr<model::ConversationModel>> 

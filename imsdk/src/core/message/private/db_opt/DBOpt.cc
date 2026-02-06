@@ -33,17 +33,17 @@ DBOpt::DBOpt(std::weak_ptr<SDKRoot> sdk_root)
 //-----------------------
 std::string DBOpt::p_TableName(CTX_T) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, "defaule_message_table");
-    return core::util::key_for_user(sdk_root->config().user_id, MessageTableName);
+    return core::util::KeyForUser(sdk_root->config().user_id, MessageTableName);
 }
 
 std::string DBOpt::p_MessageRangeKey(CTX_T, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, MessageRangeKey);
-    return core::util::key_for_user(sdk_root->config().user_id, MessageRangeKey + "_" + conv_id);
+    return core::util::KeyForUser(sdk_root->config().user_id, MessageRangeKey + "_" + conv_id);
 }
 
 std::string DBOpt::p_OrderIndexKey(CTX_T, std::string conv_id) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, OrderIndexKey);
-    return core::util::key_for_user(sdk_root->config().user_id, OrderIndexKey + "_" + conv_id);
+    return core::util::KeyForUser(sdk_root->config().user_id, OrderIndexKey + "_" + conv_id);
 }
 //-----------------------
 

@@ -23,8 +23,8 @@ ConvMessagesFetcher::ConvMessagesFetcher(std::weak_ptr<SDKRoot> sdk_root)
 
 // =================================== private ===========================================================
 
-boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
-ConvMessagesFetcher::p_request(CTX_T, network::FetchConvMessageListReq *request) {
+boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResponse>, roc::error::Error>> 
+ConvMessagesFetcher::p_request(CTX_T, network::FetchConvMessageListRequest *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     // 创建 FrontierMessage 请求
@@ -42,8 +42,8 @@ ConvMessagesFetcher::p_request(CTX_T, network::FetchConvMessageListReq *request)
         co_return std::unexpected(response.error());
     }
 
-    // 从响应的 payload 中解析 FetchConvMessageListResp
-    auto resp = std::make_unique<network::FetchConvMessageListResp>();
+    // 从响应的 payload 中解析 FetchConvMessageListResponse
+    auto resp = std::make_unique<network::FetchConvMessageListResponse>();
     // 直接使用 vector 中的数据解析，避免拷贝
     bool ok = resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
     if (!ok) {
@@ -54,10 +54,10 @@ ConvMessagesFetcher::p_request(CTX_T, network::FetchConvMessageListReq *request)
 }
 
 // 生成请求
-std::unique_ptr<network::FetchConvMessageListReq> ConvMessagesFetcher::p_MakeFetchConvMessageListReq(CTX_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
+std::unique_ptr<network::FetchConvMessageListRequest> ConvMessagesFetcher::p_MakeFetchConvMessageListReq(CTX_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
-    auto req = std::make_unique<network::FetchConvMessageListReq>();
+    auto req = std::make_unique<network::FetchConvMessageListRequest>();
 
     req->set_convid(conv_id);
     req->set_cursor(range.first);
@@ -68,14 +68,14 @@ std::unique_ptr<network::FetchConvMessageListReq> ConvMessagesFetcher::p_MakeFet
 }
 
 // 处理返回数据
-void ConvMessagesFetcher::p_HandleFetchConvMessgaeListResp(CTX_T, std::unique_ptr<network::FetchConvMessageListResp> resp) {
+void ConvMessagesFetcher::p_HandleFetchConvMessgaeListResp(CTX_T, std::unique_ptr<network::FetchConvMessageListResponse> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 
-    std::vector<std::shared_ptr<network::MsgData>> net_msgs;
+    std::vector<std::shared_ptr<network::MessageData>> net_msgs;
 
-    while (!resp->messages().empty()) {
-        auto msg = resp->mutable_messages()->ReleaseLast();
-        net_msgs.push_back(std::shared_ptr<network::MsgData>(msg));
+    while (resp->messages_size() > 0) {
+        auto* msg = resp->mutable_messages()->ReleaseLast();
+        net_msgs.push_back(std::shared_ptr<network::MessageData>(msg));
     }
 
     LOG_INFO("MsgManager", "call_track_id: {}, handle_fetchConvMessageList_resp, size: {}", TRACK_ID, net_msgs.size());
@@ -92,13 +92,13 @@ asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageListForRange(CTX_T, s
     int cnt = 10;
     bool has_more = true;
     do {
-        std::unique_ptr<network::FetchConvMessageListReq> req = p_MakeFetchConvMessageListReq(CTX_V, conv_id, range);
+        std::unique_ptr<network::FetchConvMessageListRequest> req = p_MakeFetchConvMessageListReq(CTX_V, conv_id, range);
         if (!req) {
             break;
         }
 
         // 发送请求
-        std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error> resp = 
+        std::expected<std::unique_ptr<network::FetchConvMessageListResponse>, roc::error::Error> resp = 
             co_await p_request(CTX_V, req.get());
         if (!resp || !resp.has_value()) {
             continue;

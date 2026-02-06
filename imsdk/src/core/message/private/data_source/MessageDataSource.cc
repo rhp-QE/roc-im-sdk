@@ -46,12 +46,12 @@ void MessageDataSource::p_logSaveMessages(CTX_T, std::vector<std::shared_ptr<cor
 
 /// 保存网络消息
 boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
-MessageDataSource::SaveNetMessages(CTX_T, std::vector<const network::MsgData *> msgs) {
+MessageDataSource::SaveNetMessages(CTX_T, std::vector<const network::MessageData *> msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::MessageModel>>());
     
     auto msg_manager = sdk_root->MessageManager();
     // 转换为 db 消息
-    auto db_msgs = base::util::transform(msgs, [msg_manager, w_sdk_root = w_sdk_root, call_track_id](const network::MsgData *msg) {
+    auto db_msgs = base::util::transform(msgs, [=](const network::MessageData *msg) {
         return msg_manager->convert->ConvertNetMsgToDbMsg(CTX_V, msg);
     }); 
 

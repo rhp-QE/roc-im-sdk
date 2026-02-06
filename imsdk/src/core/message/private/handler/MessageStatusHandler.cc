@@ -40,15 +40,13 @@ void MessageStatusHandler::AllComponentDidLoad() {
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHandler::SetPin(CTX_T, std::string msg_id, bool is_pinned) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeMessageItemReq> req_item = std::make_unique<network::ChangeMessageItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_PIN_CHANGED));
-    auto* msg_data = req_item->mutable_message();
-    msg_data->set_clientmsgid(msg_id);
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_PIN_CHANGED));
+    auto* msg_data = cmd_msg->mutable_message();
+    msg_data->set_cmessaegid(msg_id);
     msg_data->set_ispinned(is_pinned);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
@@ -57,7 +55,7 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Set pin failed" : resp->errormsg()
+            resp->error().empty() ? "Set pin failed" : resp->error()
         ));
     }
     
@@ -82,15 +80,13 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
     }
     std::string sync_ext_str = sync_ext_str_result.value();
     
-    // 构造请求
-    std::unique_ptr<network::ChangeMessageItemReq> req_item = std::make_unique<network::ChangeMessageItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_SYNC_EXT_CHANGED));
-    auto* msg_data = req_item->mutable_message();
-    msg_data->set_clientmsgid(msg_id);
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_SYNC_EXT_CHANGED));
+    auto* msg_data = cmd_msg->mutable_message();
+    msg_data->set_cmessaegid(msg_id);
     msg_data->set_syncext(sync_ext_str);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
@@ -99,7 +95,7 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Set sync_ext failed" : resp->errormsg()
+            resp->error().empty() ? "Set sync_ext failed" : resp->error()
         ));
     }
     
@@ -124,15 +120,13 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
     }
     std::string propertys_str = propertys_str_result.value();
     
-    // 构造请求
-    std::unique_ptr<network::ChangeMessageItemReq> req_item = std::make_unique<network::ChangeMessageItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_PROPERTY_CHANGED));
-    auto* msg_data = req_item->mutable_message();
-    msg_data->set_clientmsgid(msg_id);
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_PROPERTY_CHANGED));
+    auto* msg_data = cmd_msg->mutable_message();
+    msg_data->set_cmessaegid(msg_id);
     msg_data->set_propertys(propertys_str);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
@@ -141,7 +135,7 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Set propertys failed" : resp->errormsg()
+            resp->error().empty() ? "Set propertys failed" : resp->error()
         ));
     }
     
@@ -173,15 +167,13 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHandler::Delete(CTX_T, std::string msg_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeMessageItemReq> req_item = std::make_unique<network::ChangeMessageItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_DELETE));
-    auto* msg_data = req_item->mutable_message();
-    msg_data->set_clientmsgid(msg_id);
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_DELETE));
+    auto* msg_data = cmd_msg->mutable_message();
+    msg_data->set_cmessaegid(msg_id);
     msg_data->set_isdeleted(true);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
@@ -190,7 +182,7 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Delete message failed" : resp->errormsg()
+            resp->error().empty() ? "Delete message failed" : resp->error()
         ));
     }
     
@@ -208,15 +200,13 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHandler::Recall(CTX_T, std::string msg_id) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeMessageItemReq> req_item = std::make_unique<network::ChangeMessageItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_RECALL));
-    auto* msg_data = req_item->mutable_message();
-    msg_data->set_clientmsgid(msg_id);
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::MSG_RECALL));
+    auto* msg_data = cmd_msg->mutable_message();
+    msg_data->set_cmessaegid(msg_id);
     msg_data->set_isrecalled(true);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
@@ -225,7 +215,7 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> MessageStatusHand
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Recall message failed" : resp->errormsg()
+            resp->error().empty() ? "Recall message failed" : resp->error()
         ));
     }
     
@@ -247,10 +237,10 @@ boost::asio::awaitable<void> MessageStatusHandler::p_onPinChange(CTX_T, std::sha
     // 更新数据库和缓存
     auto msg_manager = sdk_root->MessageManager();
     auto msg_ds = msg_manager->message_data_source.get();
-    co_await msg_ds->UpdateMessagePinStatus(CTX_V, cmd->msg().clientmsgid(), cmd->msg().ispinned());
+    co_await msg_ds->UpdateMessagePinStatus(CTX_V, cmd->message().cmessaegid(), cmd->message().ispinned());
     
     // 获取更新后的消息并触发用户回调
-    auto sdk_msg = co_await msg_ds->SdkMsgForId(CTX_V, cmd->msg().clientmsgid());
+    auto sdk_msg = co_await msg_ds->SdkMsgForId(CTX_V, cmd->message().cmessaegid());
     if (sdk_msg) {
         model::OnMessageResult result{};
         result.pin_changed_msgs.push_back(sdk_msg);
@@ -262,7 +252,7 @@ boost::asio::awaitable<void> MessageStatusHandler::p_onSyncExtChange(CTX_T, std:
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     // 解析 sync_ext string 到 map
-    std::string sync_ext_str = cmd->msg().syncext();
+    std::string sync_ext_str = cmd->message().syncext();
     auto parse_result = json_util::MapParseFromString(sync_ext_str);
     if (!parse_result) {
         LOG_INFO("MsgStatusHandler", "Failed to parse sync_ext: {}", parse_result.error().to_string());
@@ -273,10 +263,10 @@ boost::asio::awaitable<void> MessageStatusHandler::p_onSyncExtChange(CTX_T, std:
     // 更新数据库和缓存
     auto msg_manager = sdk_root->MessageManager();
     auto msg_ds = msg_manager->message_data_source.get();
-    co_await msg_ds->UpdateMessageSyncExtStatus(CTX_V, cmd->msg().clientmsgid(), sync_ext_map);
+    co_await msg_ds->UpdateMessageSyncExtStatus(CTX_V, cmd->message().cmessaegid(), sync_ext_map);
     
     // 获取更新后的消息并触发用户回调
-    auto sdk_msg = co_await msg_ds->SdkMsgForId(CTX_V, cmd->msg().clientmsgid());
+    auto sdk_msg = co_await msg_ds->SdkMsgForId(CTX_V, cmd->message().cmessaegid());
     if (sdk_msg) {
         model::OnMessageResult result{};
         result.sync_ext_changed_msgs.push_back(sdk_msg);
@@ -288,7 +278,7 @@ boost::asio::awaitable<void> MessageStatusHandler::p_onPropertyChange(CTX_T, std
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     // 解析 propertys string 到 vector
-    std::string propertys_str = cmd->msg().propertys();
+    std::string propertys_str = cmd->message().propertys();
     auto parse_result = json_util::Int32VectorParseFromString(propertys_str);
     if (!parse_result) {
         LOG_INFO("MsgStatusHandler", "Failed to parse propertys: {}", parse_result.error().to_string());
@@ -299,10 +289,10 @@ boost::asio::awaitable<void> MessageStatusHandler::p_onPropertyChange(CTX_T, std
     // 更新数据库和缓存
     auto msg_manager = sdk_root->MessageManager();
     auto msg_ds = msg_manager->message_data_source.get();
-    co_await msg_ds->UpdateMessagePropertysStatus(CTX_V, cmd->msg().clientmsgid(), propertys_vec);
+    co_await msg_ds->UpdateMessagePropertysStatus(CTX_V, cmd->message().cmessaegid(), propertys_vec);
     
     // 获取更新后的消息并触发用户回调
-    auto sdk_msg = co_await msg_ds->SdkMsgForId(CTX_V, cmd->msg().clientmsgid());
+    auto sdk_msg = co_await msg_ds->SdkMsgForId(CTX_V, cmd->message().cmessaegid());
     if (sdk_msg) {
         model::OnMessageResult result{};
         result.property_changed_msgs.push_back(sdk_msg);
@@ -313,7 +303,7 @@ boost::asio::awaitable<void> MessageStatusHandler::p_onPropertyChange(CTX_T, std
 boost::asio::awaitable<void> MessageStatusHandler::p_onDelete(CTX_T, std::shared_ptr<const network::CmdMessage> cmd) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
-    std::string msg_id = cmd->msg().clientmsgid();
+    std::string msg_id = cmd->message().cmessaegid();
     auto msg_manager = sdk_root->MessageManager();
     auto msg_ds = msg_manager->message_data_source.get();
 
@@ -332,7 +322,7 @@ boost::asio::awaitable<void> MessageStatusHandler::p_onDelete(CTX_T, std::shared
 boost::asio::awaitable<void> MessageStatusHandler::p_onRecall(CTX_T, std::shared_ptr<const network::CmdMessage> cmd) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
-    std::string msg_id = cmd->msg().clientmsgid();
+    std::string msg_id = cmd->message().cmessaegid();
     auto msg_manager = sdk_root->MessageManager();
     auto msg_ds = msg_manager->message_data_source.get();
 
@@ -401,19 +391,17 @@ void MessageStatusHandler::p_registRecallHandler() {
     );
 }
 
-boost::asio::awaitable<std::unique_ptr<network::ChangeMessageItemResp>>
-    MessageStatusHandler::p_request(CTX_T, std::unique_ptr<network::ChangeMessageItemReq> req_item)
+boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>>
+    MessageStatusHandler::p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg)
 {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr)
-    std::unique_ptr<network::ChangeMessageReq> req = std::make_unique<network::ChangeMessageReq>();
-    req->mutable_infos()->AddAllocated(req_item.release());
+    std::unique_ptr<network::BatchChangeMessagesRequest> req = std::make_unique<network::BatchChangeMessagesRequest>();
+    req->mutable_cmdmessages()->AddAllocated(cmd_msg.release());
 
-    // 创建 FrontierMessage 请求
     auto frontier_msg = std::make_unique<network::FrontierMessage>();
     frontier_msg->service = common::SDKWSService;
     frontier_msg->method = std::to_string(static_cast<int32_t>(common::SDKWSMethod::MESSAGE_CHANGE));
-    // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
-    int payload_size = req->ByteSizeLong();
+    int payload_size = static_cast<int>(req->ByteSizeLong());
     frontier_msg->payload.resize(payload_size);
     req->SerializeToArray(frontier_msg->payload.data(), payload_size);
     frontier_msg->metadata["track_id"] = std::to_string(call_track_id);
@@ -424,15 +412,13 @@ boost::asio::awaitable<std::unique_ptr<network::ChangeMessageItemResp>>
         co_return nullptr;
     }
 
-    // 从响应的 payload 中解析 ChangeMessageResp
-    std::unique_ptr<network::ChangeMessageResp> resp = std::make_unique<network::ChangeMessageResp>();
-    // 直接使用 vector 中的数据解析，避免拷贝
-    resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
-    if (resp->infos().size() <= 0) {
+    std::unique_ptr<network::BatchChangeMessagesResponse> resp = std::make_unique<network::BatchChangeMessagesResponse>();
+    resp->ParseFromArray(response.value()->payload.data(), static_cast<int>(response.value()->payload.size()));
+    if (resp->results_size() <= 0) {
         co_return nullptr;
     }
 
-    std::unique_ptr<network::ChangeMessageItemResp> resp_item = std::unique_ptr<network::ChangeMessageItemResp>(resp->mutable_infos()->ReleaseLast());
+    std::unique_ptr<network::CmdMessageOptResult> resp_item(resp->mutable_results()->ReleaseLast());
     co_return resp_item;
 }
 

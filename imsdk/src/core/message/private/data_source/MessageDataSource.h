@@ -29,7 +29,7 @@ public:
 
     /// 保存网络消息
     boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 
-        SaveNetMessages(CTX_T, std::vector<const network::MsgData *> msgs);
+        SaveNetMessages(CTX_T, std::vector<const network::MessageData *> msgs);
 
     /// 保存db消息 (只允许在没有 db 消息的时候调用)
     boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> 

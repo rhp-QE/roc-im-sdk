@@ -12,6 +12,7 @@
 #include "imsdk/base/include/network/LongConnectionClient.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
+#include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
@@ -26,6 +27,7 @@
 #include <string>
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/base/include/utils/utils.h"
+#include "model/network.h"
 
 
 namespace {
@@ -128,14 +130,10 @@ boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::erro
         co_return std::unexpected(roc::error::make_error(1001, "request is null", "SDKConnectionManager:send_request"));
     }
 
-    // 设置通用字段：type、timestamp、request_id
-    req->type = "request";
-    auto now = std::chrono::system_clock::now();
-    auto duration = now.time_since_epoch();
-    req->timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    req->type = FrontierMessageType::Request;
+    req->timestamp = roc::imsdk::core::util::CurrentTimestampMs();
     req->request_id = next_request_id(root.get());
 
-    // 序列化为 JSON 字符串
     std::string json_str = FrontierMessageJsonSerializer::ToJsonString(*req);
 
     auto channel = std::make_shared<channel_type>(*(root->config().net_io_context), 1);
@@ -145,7 +143,6 @@ boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::erro
         channel_map_[request_id_str] = channel;
     }
 
-    // 将 JSON 字符串转换为字节数组发送
     std::vector<char> buffer(json_str.begin(), json_str.end());
     auto result = co_await lc_->send_data(std::move(buffer));
 
@@ -196,10 +193,11 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
                 std::lock_guard<std::mutex> lock(mutex_);
                 callbacks_tmp = on_push_message_callbacks_;
             } // lock
-            std::shared_ptr<const network::SdkWSResp> s_resp = nullptr; // TODO: 需要转换 FrontierMessage 到 SdkWSResp
+
+            std::shared_ptr<const network::FrontierMessage> s_resp = std::move(resp);
             
             // 转发到 sdk 线程处理 避免卡死主线程
-            boost::asio::co_spawn(sdk_root->sdk_io_context(), [callbacks_tmp = std::move(callbacks_tmp), s_resp]->boost::asio::awaitable<void> {
+            boost::asio::co_spawn(sdk_root->sdk_io_context(), [=, callbacks_tmp = std::move(callbacks_tmp)]->boost::asio::awaitable<void> {
                 for (const auto &callback : callbacks_tmp) {
                     if (s_resp) {
                         base::util::safe_invoke_block(callback, s_resp);

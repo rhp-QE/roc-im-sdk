@@ -22,14 +22,14 @@ public:
     
 private:
     /// 构造获取用户消息列表请求
-    std::unique_ptr<network::FetchUserMessageListReq> p_makeFetchUserMessageListReq(CTX_T, bool news, int64_t cursor, bool forward);
+    std::unique_ptr<network::FetchUserRecentConvListRequest> p_makeFetchUserMessageListReq(CTX_T, bool news, int64_t cursor, bool forward);
     
     /// 处理获取到的用户消息
-    boost::asio::awaitable<void> p_handleFetchedUserMessage(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> net_convs);
+    boost::asio::awaitable<void> p_handleFetchedUserMessage(CTX_T, std::vector<std::shared_ptr<network::ConversationData>> net_convs);
 
     /// 发送获取用户消息列表请求
-    boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error>> 
-        p_request(CTX_T, network::FetchUserMessageListReq *request);
+    boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchUserRecentConvListResponse>, roc::error::Error>> 
+        p_request(CTX_T, network::FetchUserRecentConvListRequest *request);
 
     /// 二次校验混链拉取的完整性
     boost::asio::awaitable<bool> p_doubleCheckUserMessageIntegrity(CTX_T, int64_t left, int64_t right);

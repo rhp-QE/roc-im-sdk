@@ -11,7 +11,7 @@ public:
 
     void Start(CTX_T);
 
-    boost::asio::awaitable<void> HandleReceiveConversation(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations);
+    boost::asio::awaitable<void> HandleReceiveConversation(CTX_T, std::vector<std::shared_ptr<network::ConversationData>> conversations);
 
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;

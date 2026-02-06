@@ -35,7 +35,7 @@ void MessageManager::AllComponentDidLoad() {
     message_status_handler->AllComponentDidLoad();
 }
 
-void MessageManager::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
+void MessageManager::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     boost::asio::co_spawn(sdk_root->sdk_io_context(), receive_message->HandleReceiveMessage(CTX_V, net_msgs), boost::asio::detached);

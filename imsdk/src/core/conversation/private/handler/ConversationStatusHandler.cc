@@ -41,24 +41,21 @@ void ConversationStatusHandler::AllComponentDidLoad() {
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatusHandler::SetTopOn(CTX_T, std::string cid, bool is_top) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_TOP_CHANGED));
-    auto* conv_info = req_item->mutable_conversation();
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_TOP_CHANGED));
+    auto* conv_info = cmd_msg->mutable_conversation();
     conv_info->set_convid(cid);
     conv_info->set_istop(is_top);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
     
-    // 检查响应错误码
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Set top failed" : resp->errormsg()
+            resp->error().empty() ? "Set top failed" : resp->error()
         ));
     }
     
@@ -76,24 +73,21 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatusHandler::SetMute(CTX_T, std::string cid, bool is_muted) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_MUTE_CHANGE));
-    auto* conv_info = req_item->mutable_conversation();
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_MUTE_CHANGE));
+    auto* conv_info = cmd_msg->mutable_conversation();
     conv_info->set_convid(cid);
     conv_info->set_ismuted(is_muted);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
     
-    // 检查响应错误码
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Set mute failed" : resp->errormsg()
+            resp->error().empty() ? "Set mute failed" : resp->error()
         ));
     }
     
@@ -111,24 +105,21 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatusHandler::SetBlock(CTX_T, std::string cid, bool is_blocked) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_BLOCK_CHANGE));
-    auto* conv_info = req_item->mutable_conversation();
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_BLOCK_CHANGE));
+    auto* conv_info = cmd_msg->mutable_conversation();
     conv_info->set_convid(cid);
     conv_info->set_isblocked(is_blocked);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
     
-    // 检查响应错误码
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Set block failed" : resp->errormsg()
+            resp->error().empty() ? "Set block failed" : resp->error()
         ));
     }
     
@@ -153,24 +144,21 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
     }
     std::string sync_ext_str = sync_ext_str_result.value();
     
-    // 构造请求
-    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_SYNC_EXT_CHANGED));
-    auto* conv_info = req_item->mutable_conversation();
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_SYNC_EXT_CHANGED));
+    auto* conv_info = cmd_msg->mutable_conversation();
     conv_info->set_convid(cid);
     conv_info->set_syncext(sync_ext_str);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
     
-    // 检查响应错误码
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Set sync_ext failed" : resp->errormsg()
+            resp->error().empty() ? "Set sync_ext failed" : resp->error()
         ));
     }
     
@@ -202,24 +190,21 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatu
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationStatusHandler::Delete(CTX_T, std::string cid) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_DELETE));
-    auto* conv_info = req_item->mutable_conversation();
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_DELETE));
+    auto* conv_info = cmd_msg->mutable_conversation();
     conv_info->set_convid(cid);
     conv_info->set_isdelete(true);
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
     
-    // 检查响应错误码
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Delete conversation failed" : resp->errormsg()
+            resp->error().empty() ? "Delete conversation failed" : resp->error()
         ));
     }
     
@@ -238,49 +223,32 @@ boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, 
 ConversationStatusHandler::CreateGroup(CTX_T, const model::CreateGroupContext &context) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_GROUP_CREATE));
-    auto* conv_info = req_item->mutable_conversation();
-    conv_info->set_owneruserid(context.owner_user_id);
-    conv_info->set_convname(context.group_name);
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_GROUP_CREATE));
+    auto* conv_info = cmd_msg->mutable_conversation();
+    conv_info->set_ownerid(context.owner_user_id);
+    conv_info->set_name(context.group_name);
     
-    // 序列化成员列表为 JSON 字符串
     auto members_result = json_util::StringVectorSerializeAsString(context.member_user_ids);
     if (!members_result) {
         co_return std::unexpected(roc::error::make_error(3005, "Failed to serialize member list"));
     }
     conv_info->set_members(members_result.value());
     
-    // 发送网络请求并使用 p_request 函数
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
     
-    // 检查响应错误码
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Create group failed" : resp->errormsg()
+            resp->error().empty() ? "Create group failed" : resp->error()
         ));
     }
     
-    // 从响应中获取会话信息（响应中的 convInfo 字段）
-    if (!resp->has_convinfo()) {
-        co_return std::unexpected(roc::error::make_error(3006, "Create group: response does not contain conversation info"));
-    }
-    
-    // 将响应中的会话信息转换为网络会话格式并保存
-    auto conv_ds = sdk_root->ConversationManager()->conv_datasource.get();
-    auto net_conv = std::shared_ptr<network::ConversationInfo>(resp->release_convinfo());
-    auto sdk_convs = co_await conv_ds->SaveNetConversations(CTX_V, {net_conv});
-    
-    if (sdk_convs.empty()) {
-        co_return std::unexpected(roc::error::make_error(3007, "Create group: failed to save conversation"));
-    }
-    
-    co_return sdk_convs[0];
+    // BatchChangeConversationsResponse 不包含创建的会话，需通过 CMD 推送获取。暂返回协议不支持错误
+    co_return std::unexpected(roc::error::make_error(3006, "Create group: new protocol does not return conversation in response, need CMD push"));
 }
 
 /// 邀请群成员
@@ -288,30 +256,26 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>>
 ConversationStatusHandler::InviteGroupMembers(CTX_T, const model::InviteGroupMembersContext &context) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
     
-    // 构造请求
-    std::unique_ptr<network::ChangeConversationItemReq> req_item = std::make_unique<network::ChangeConversationItemReq>();
-    req_item->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_GROUP_INVITE));
-    auto* conv_info = req_item->mutable_conversation();
+    auto cmd_msg = std::make_unique<network::CmdMessage>();
+    cmd_msg->set_cmd(static_cast<int32_t>(common::CmdMessageOp::CONV_GROUP_INVITE));
+    auto* conv_info = cmd_msg->mutable_conversation();
     conv_info->set_convid(context.conv_id);
     
-    // 序列化成员列表为 JSON 字符串
     auto members_result = json_util::StringVectorSerializeAsString(context.member_user_ids);
     if (!members_result) {
         co_return std::unexpected(roc::error::make_error(3005, "Failed to serialize member list"));
     }
     conv_info->set_members(members_result.value());
     
-    // 发送网络请求
-    auto resp = co_await p_request(CTX_V, std::move(req_item));
+    auto resp = co_await p_request(CTX_V, std::move(cmd_msg));
     if (!resp) {
         co_return std::unexpected(roc::error::make_error(3003, "Network request failed"));
     }
     
-    // 检查响应错误码
     if (resp->errorcode() != 0) {
         co_return std::unexpected(roc::error::make_error(
             static_cast<int>(resp->errorcode()),
-            resp->errormsg().empty() ? "Invite group members failed" : resp->errormsg()
+            resp->error().empty() ? "Invite group members failed" : resp->error()
         ));
     }
     
@@ -328,8 +292,8 @@ boost::asio::awaitable<void> ConversationStatusHandler::p_onTopOnChange(CTX_T, s
     // 更新数据库和缓存
     auto conv_manager = sdk_root->ConversationManager();
     auto conv_ds = conv_manager->conv_datasource.get();
-    co_await conv_ds->UpdateConversationTopStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().istop());
-    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+    co_await conv_ds->UpdateConversationTopStatus(CTX_V, cmd->conversation().convid(), cmd->conversation().istop());
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->conversation().convid());
 
     // 用户回调
     if (sdk_conv) {
@@ -345,8 +309,8 @@ boost::asio::awaitable<void> ConversationStatusHandler::p_onMuteChange(CTX_T, st
     // 更新数据库和缓存
     auto conv_manager = sdk_root->ConversationManager();
     auto conv_ds = conv_manager->conv_datasource.get();
-    co_await conv_ds->UpdateConversationMuteStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().ismuted());
-    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+    co_await conv_ds->UpdateConversationMuteStatus(CTX_V, cmd->conversation().convid(), cmd->conversation().ismuted());
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->conversation().convid());
 
     // 用户回调
     if (sdk_conv) {
@@ -362,8 +326,8 @@ boost::asio::awaitable<void> ConversationStatusHandler::p_onBlockChange(CTX_T, s
     // 更新数据库和缓存
     auto conv_manager = sdk_root->ConversationManager();
     auto conv_ds = conv_manager->conv_datasource.get();
-    co_await conv_ds->UpdateConversationBlockStatus(CTX_V, cmd->convinfo().convid(), cmd->convinfo().isblocked());
-    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+    co_await conv_ds->UpdateConversationBlockStatus(CTX_V, cmd->conversation().convid(), cmd->conversation().isblocked());
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->conversation().convid());
 
     // 用户回调
     if (sdk_conv) {
@@ -377,7 +341,7 @@ boost::asio::awaitable<void> ConversationStatusHandler::p_onSyncExtChange(CTX_T,
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
     // 解析 sync_ext string 到 map
-    std::string sync_ext_str = cmd->convinfo().syncext();
+    std::string sync_ext_str = cmd->conversation().syncext();
     auto parse_result = json_util::MapParseFromString(sync_ext_str);
     if (!parse_result) {
         LOG_INFO("ConvStatusHandler", "Failed to parse sync_ext: {}", parse_result.error().to_string());
@@ -388,8 +352,8 @@ boost::asio::awaitable<void> ConversationStatusHandler::p_onSyncExtChange(CTX_T,
     // 更新数据库和缓存
     auto conv_manager = sdk_root->ConversationManager();
     auto conv_ds = conv_manager->conv_datasource.get();
-    co_await conv_ds->UpdateConversationSyncExtStatus(CTX_V, cmd->convinfo().convid(), sync_ext_map);
-    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+    co_await conv_ds->UpdateConversationSyncExtStatus(CTX_V, cmd->conversation().convid(), sync_ext_map);
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->conversation().convid());
 
     // 用户回调
     if (sdk_conv) {
@@ -405,9 +369,9 @@ boost::asio::awaitable<void> ConversationStatusHandler::p_onDelete(CTX_T, std::s
     // 更新数据库和缓存
     auto conv_manager = sdk_root->ConversationManager();
     auto conv_ds = conv_manager->conv_datasource.get();
-    bool is_deleted = cmd->convinfo().isdelete();
-    co_await conv_ds->UpdateConversationDeletedStatus(CTX_V, cmd->convinfo().convid(), is_deleted);
-    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->convinfo().convid());
+    bool is_deleted = cmd->conversation().isdelete();
+    co_await conv_ds->UpdateConversationDeletedStatus(CTX_V, cmd->conversation().convid(), is_deleted);
+    auto sdk_conv = co_await conv_ds->SdkConvForId(CTX_V, cmd->conversation().convid());
 
     // 用户回调
     if (sdk_conv) {
@@ -424,9 +388,9 @@ boost::asio::awaitable<void> ConversationStatusHandler::p_onGroupInvite(CTX_T, s
     auto conv_manager = sdk_root->ConversationManager();
     auto conv_ds = conv_manager->conv_datasource.get();
     
-    // 将 CMD 消息中的 ConversationInfo 转换为网络会话格式并保存
-    auto net_conv = std::make_shared<network::ConversationInfo>();
-    net_conv->CopyFrom(cmd->convinfo());
+    // 将 CMD 消息中的 ConversationData 转换为网络会话格式并保存
+    auto net_conv = std::make_shared<network::ConversationData>();
+    net_conv->CopyFrom(cmd->conversation());
     auto sdk_convs = co_await conv_ds->SaveNetConversations(CTX_V, {net_conv});
 
     // 用户回调
@@ -501,19 +465,17 @@ void ConversationStatusHandler::p_registGroupInviteHandler() {
 }
 
  
-boost::asio::awaitable<std::unique_ptr<network::ChangeConversationItemResp>>
-    ConversationStatusHandler::p_request(CTX_T, std::unique_ptr<network::ChangeConversationItemReq> req_item)
+boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>>
+    ConversationStatusHandler::p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg)
 {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, nullptr)
-    std::unique_ptr<network::ChangeConversationReq> req = std::make_unique<network::ChangeConversationReq>();
-    req->mutable_infos()->AddAllocated(req_item.release());
+    std::unique_ptr<network::BatchChangeConversationsRequest> req = std::make_unique<network::BatchChangeConversationsRequest>();
+    req->mutable_cmdmessages()->AddAllocated(cmd_msg.release());
 
-    // 创建 FrontierMessage 请求
     auto frontier_msg = std::make_unique<network::FrontierMessage>();
     frontier_msg->service = common::SDKWSService;
     frontier_msg->method = std::to_string(static_cast<int32_t>(common::SDKWSMethod::CONVERSATION_CHANGE));
-    // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
-    int payload_size = req->ByteSizeLong();
+    int payload_size = static_cast<int>(req->ByteSizeLong());
     frontier_msg->payload.resize(payload_size);
     req->SerializeToArray(frontier_msg->payload.data(), payload_size);
     frontier_msg->metadata["track_id"] = std::to_string(call_track_id);
@@ -524,15 +486,13 @@ boost::asio::awaitable<std::unique_ptr<network::ChangeConversationItemResp>>
         co_return nullptr;
     }
 
-    // 从响应的 payload 中解析 ChangeConversationResp
-    std::unique_ptr<network::ChangeConversationResp> resp = std::make_unique<network::ChangeConversationResp>();
-    // 直接使用 vector 中的数据解析，避免拷贝
-    resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
-    if (resp->infos().size() <= 0) {
+    std::unique_ptr<network::BatchChangeConversationsResponse> resp = std::make_unique<network::BatchChangeConversationsResponse>();
+    resp->ParseFromArray(response.value()->payload.data(), static_cast<int>(response.value()->payload.size()));
+    if (resp->results_size() <= 0) {
         co_return nullptr;
     }
 
-    std::unique_ptr<network::ChangeConversationItemResp> resp_item = std::unique_ptr<network::ChangeConversationItemResp>(resp->mutable_infos()->ReleaseLast());
+    std::unique_ptr<network::CmdMessageOptResult> resp_item(resp->mutable_results()->ReleaseLast());
     co_return resp_item;
 }
 

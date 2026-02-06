@@ -8,11 +8,11 @@
 #include <chrono>
 namespace roc::imsdk::core::util {
 
-inline std::string key_for_user(const std::string& user_id, const std::string& key) {
+inline std::string KeyForUser(const std::string& user_id, const std::string& key) {
     return "k" + user_id + "_" + key;
 }
 
-inline std::string generate_single_conv_id(const std::string& user_id1, const std::string& user_id2) {
+inline std::string GenerateSingleConvId(const std::string& user_id1, const std::string& user_id2) {
     // Determine smaller and larger UIDs
     std::string smaller_uid, larger_uid;
     if (user_id1 < user_id2) {
@@ -27,7 +27,7 @@ inline std::string generate_single_conv_id(const std::string& user_id1, const st
     return "0:1:" + smaller_uid + ":" + larger_uid;
 }
 
-inline std::pair<std::string, std::string> parse_single_conv_id(const std::string& conv_id) {
+inline std::pair<std::string, std::string> ParseSingleConvId(const std::string& conv_id) {
     // Check if conv_id starts with "0:1:"
     if (conv_id.length() < 4 || conv_id.substr(0, 4) != "0:1:") {
         return std::make_pair("", "");
@@ -51,11 +51,11 @@ inline std::pair<std::string, std::string> parse_single_conv_id(const std::strin
     return std::make_pair(user_id1, user_id2);
 }
 
-inline bool message_send_from_me(std::string login_uid, std::string from_uid) {
+inline bool MessageSendFromMe(std::string login_uid, std::string from_uid) {
     return login_uid == from_uid;
 }
 
-inline double current_time_since1970() {
+inline double CurrentTimeSince1970() {
     // 获取当前时间点（UTC）
     auto now = std::chrono::system_clock::now();
     
@@ -64,6 +64,17 @@ inline double current_time_since1970() {
     
     // 转换为秒（double 类型，包含小数微秒/纳秒）
     return std::chrono::duration<double>(duration).count();
+}
+
+inline int64_t CurrentTimestampMs() {
+    // 获取当前时间点（UTC）
+    auto now = std::chrono::system_clock::now();
+    
+    // 转换为自 1970-01-01 00:00:00 UTC 以来的持续时间
+    auto duration = now.time_since_epoch();
+    
+    // 转换为毫秒（int64_t 类型）
+    return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 }
 
 } // namespace roc::imsdk::core::util

@@ -68,7 +68,7 @@ private:
     void p_registDeleteHandler();
     void p_registGroupInviteHandler();
 
-    boost::asio::awaitable<std::unique_ptr<network::ChangeConversationItemResp>> p_request(CTX_T, std::unique_ptr<network::ChangeConversationItemReq>);
+    boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>> p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg);
      
 };
 

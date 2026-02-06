@@ -35,7 +35,7 @@ public:
     // 收到消息回调
     model::OnMessagesCallbackType OnMessagesCallback();
 
-    void HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs);
+    void HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs);
 
  
     // =============================  message api  ======================================

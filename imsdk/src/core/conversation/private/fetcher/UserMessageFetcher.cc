@@ -50,10 +50,10 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
 
     do {
         // 构造请求
-        std::unique_ptr<network::FetchUserMessageListReq> req = p_makeFetchUserMessageListReq(CTX_V, is_news, cursor, forward);
+        std::unique_ptr<network::FetchUserRecentConvListRequest> req = p_makeFetchUserMessageListReq(CTX_V, is_news, cursor, forward);
 
         // 发送请求
-        std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error> resp = co_await p_request(CTX_V, req.get());
+        std::expected<std::unique_ptr<network::FetchUserRecentConvListResponse>, roc::error::Error> resp = co_await p_request(CTX_V, req.get());
         if (!resp || !resp.has_value()) {
             co_return;
         }
@@ -62,18 +62,20 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
             right = resp.value()->right();
             is_news = false;
         }
-        if (!resp.value()->hasmore()) {
+        if (!resp.value()->error().empty()) {
             left = resp.value()->left();
         }
 
         cursor = resp.value()->left();
-        has_more = resp.value()->hasmore();
+        has_more = resp.value()->conversations_size() > 0 && resp.value()->error().empty();
 
-        const int size = resp.value()->convsinfo_size();
-        std::vector<std::shared_ptr<network::ConversationInfo>> net_convs(size);
-        for (int index = 0; index < size; ++index) {
-            std::shared_ptr<network::ConversationInfo> conv(resp.value()->mutable_convsinfo()->ReleaseLast());
-            net_convs[index++] = std::shared_ptr<network::ConversationInfo>(conv);
+        const int size = resp.value()->conversations_size();
+        std::vector<std::shared_ptr<network::ConversationData>> net_convs;
+        net_convs.reserve(size);
+        for (int i = size - 1; i >= 0; --i) {
+            network::ConversationData* raw = resp.value()->mutable_conversations()->ReleaseLast();
+            std::shared_ptr<network::ConversationData> conv(raw);
+            net_convs.push_back(conv);
             pulled_convs_.push_back(conv->convid());
         }
 
@@ -96,8 +98,8 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
 
 // =================================== private ===========================================================
 
-boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchUserMessageListResp>, roc::error::Error>> 
-UserMessageFetcher::p_request(CTX_T, network::FetchUserMessageListReq *request) {
+boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchUserRecentConvListResponse>, roc::error::Error>> 
+UserMessageFetcher::p_request(CTX_T, network::FetchUserRecentConvListRequest *request) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     // 创建 FrontierMessage 请求
@@ -115,8 +117,8 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserMessageListReq *request) 
         co_return std::unexpected(response.error());
     }
 
-    // 从响应的 payload 中解析 FetchUserMessageListResp
-    auto resp = std::make_unique<network::FetchUserMessageListResp>();
+    // 从响应的 payload 中解析 FetchUserRecentConvListResponse
+    auto resp = std::make_unique<network::FetchUserRecentConvListResponse>();
     // 直接使用 vector 中的数据解析，避免拷贝
     bool ok = resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
     if (!ok) {
@@ -126,30 +128,28 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserMessageListReq *request) 
     co_return resp;
 }
 
-std::unique_ptr<network::FetchUserMessageListReq> UserMessageFetcher::p_makeFetchUserMessageListReq(CTX_T, bool news, int64_t cursor, bool forward) {
+std::unique_ptr<network::FetchUserRecentConvListRequest> UserMessageFetcher::p_makeFetchUserMessageListReq(CTX_T, bool news, int64_t cursor, bool forward) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
-    auto req = std::make_unique<network::FetchUserMessageListReq>();
+    auto req = std::make_unique<network::FetchUserRecentConvListRequest>();
 
     req->set_userid(sdk_root->config().user_id);
-    req->set_limit(20);
-    req->set_news(news);
-    req->set_cursor(cursor);
-    req->set_forward(forward);
+    req->set_lowerversion(cursor);
+    req->set_upperversion(cursor + 100);
+    req->set_first(news);
 
     return req;
 }
 
-boost::asio::awaitable<void> UserMessageFetcher::p_handleFetchedUserMessage(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> net_convs) {
+boost::asio::awaitable<void> UserMessageFetcher::p_handleFetchedUserMessage(CTX_T, std::vector<std::shared_ptr<network::ConversationData>> net_convs) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
-    std::vector<std::shared_ptr<network::MsgData>> net_msgs;
+    std::vector<std::shared_ptr<network::MessageData>> net_msgs;
 
     for (auto &conv : net_convs) {
-        auto msgs = conv->mutable_msgs();
-        while (!msgs->empty()) {
-            auto msg = msgs->ReleaseLast();
-            net_msgs.push_back(std::shared_ptr<network::MsgData>(msg->release_msg()));
+        while (conv->messages_size() > 0) {
+            auto* msg = conv->mutable_messages()->ReleaseLast();
+            net_msgs.push_back(std::shared_ptr<network::MessageData>(msg));
         }
     }
 
@@ -170,7 +170,7 @@ boost::asio::awaitable<void> UserMessageFetcher::p_handleFetchedUserMessage(CTX_
 boost::asio::awaitable<bool> UserMessageFetcher::p_doubleCheckUserMessageIntegrity(CTX_T, int64_t left, int64_t right) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, false)
 
-    std::unique_ptr<network::UserMessageIntegrityCheckReq> req_data = std::make_unique<network::UserMessageIntegrityCheckReq>();
+    std::unique_ptr<network::UserMessageIntegrityCheckRequest> req_data = std::make_unique<network::UserMessageIntegrityCheckRequest>();
     req_data->set_userid(sdk_root->config().user_id);
     req_data->set_left(left);
     req_data->set_right(right);
@@ -197,7 +197,7 @@ boost::asio::awaitable<bool> UserMessageFetcher::p_doubleCheckUserMessageIntegri
     }
 
     // 从响应的 payload 中解析 UserMessageIntegrityCheckResp
-    std::unique_ptr<network::UserMessageIntegrityCheckResp> resp_data = std::make_unique<network::UserMessageIntegrityCheckResp>();
+    std::unique_ptr<network::UserMessageIntegrityCheckResponse> resp_data = std::make_unique<network::UserMessageIntegrityCheckResponse>();
     // 直接使用 vector 中的数据解析，避免拷贝
     if (!resp_data->ParseFromArray(resp.value()->payload.data(), resp.value()->payload.size())) {
         co_return false;
@@ -208,11 +208,13 @@ boost::asio::awaitable<bool> UserMessageFetcher::p_doubleCheckUserMessageIntegri
     }
 
     std::string log_str;
-    const int size = resp_data->convsinfo_size();
-    std::vector<std::shared_ptr<network::ConversationInfo>> net_convs(size);
-    for (int index = 0; index < size; ++index) {
-        std::shared_ptr<network::ConversationInfo> conv(resp_data->mutable_convsinfo()->ReleaseLast());
-        net_convs[index++] = std::shared_ptr<network::ConversationInfo>(conv);
+    const int size = resp_data->conversations_size();
+    std::vector<std::shared_ptr<network::ConversationData>> net_convs;
+    net_convs.reserve(size);
+    for (int i = size - 1; i >= 0; --i) {
+        network::ConversationData* raw = resp_data->mutable_conversations()->ReleaseLast();
+        std::shared_ptr<network::ConversationData> conv(raw);
+        net_convs.push_back(conv);
         log_str += conv->convid() + " | ";
     }
     LOG_INFO("UserMessageFetcher", "trigger user message complete, convIDS = {}", log_str);

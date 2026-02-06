@@ -10,6 +10,7 @@
 #include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include "imsdk/src/include/model/network.h"
 #include "model/conversation/ConversationModel.h"
 #include "model/message/MessageModel.h"
 #include <boost/asio/awaitable.hpp>
@@ -30,29 +31,33 @@ void ReceiveMessage::Start(CTX_T) {
     auto conn = sdk_root->ConnectionManager();
 
     auto msg_manager = sdk_root->MessageManager();
-    conn->AddOnPushMessageCallback([msg_manager](std::shared_ptr<const network::SdkWSResp> resp) {
-        uint32_t call_track_id = resp->trackid();
+    conn->AddOnPushMessageCallback([msg_manager](std::shared_ptr<const network::FrontierMessage> resp) {
+        uint32_t call_track_id = 0;
+        auto it = resp->metadata.find("track_id");
+        if (it != resp->metadata.end()) {
+            call_track_id = static_cast<uint32_t>(std::stoul(it->second));
+        }
         msg_manager->receive_message->HandlePushMessage(call_track_id, resp);
     });
 }
 
-void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<const network::SdkWSResp> resp) {
+void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<const network::FrontierMessage> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->MessageManager();
     CHECK_POINTER_OR_RETURN_VOID(msg_manager);
 
     // 处理下推的用户消息
-    if (resp->method() != static_cast<int32_t>(common::SDKWSMethod::PUSH_USER_MESSAGE)) {
+    if (resp->method != std::to_string(static_cast<int32_t>(common::SDKWSMethod::PUSH_USER_MESSAGE))) {
         return;
     }
     
-    if (resp->data().empty()) {
+    if (resp->payload.empty()) {
         return;
     }
 
-    std::shared_ptr<network::MsgData> net_msg = std::make_shared<network::MsgData>();
-    if (!net_msg->ParseFromString(resp->data())) {
+    auto net_msg = std::make_shared<network::MessageData>();
+    if (!net_msg->ParseFromArray(resp->payload.data(), static_cast<int>(resp->payload.size()))) {
         return;
     }
 
@@ -61,7 +66,7 @@ void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<const network::Sdk
     boost::asio::co_spawn(sdk_root->net_io_context(), HandleReceiveMessage(CTX_V, {net_msg}), boost::asio::detached);
 }
 
-boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs) {
+boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
     if (net_msgs.empty()) {
         co_return;
     }
@@ -70,7 +75,7 @@ boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::ve
 
     auto msg_manager = sdk_root->MessageManager();
 
-    std::vector<const network::MsgData *> net_msgs_ptr;
+    std::vector<const network::MessageData *> net_msgs_ptr;
     for (const auto &msg : net_msgs) {
         net_msgs_ptr.push_back(msg.get());
     }
@@ -87,7 +92,7 @@ boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::ve
     base::util::safe_invoke_block(msg_manager->OnMessagesCallback(), result);
 }
 
-boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MsgData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
+boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, model::OnMessageResult())
 
     model::OnMessageResult result;
@@ -98,7 +103,7 @@ boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(C
     });
 
     for (const auto &msg : net_msgs) {
-        std::shared_ptr<model::MessageModel> sdk_msg = sdk_msg_map[msg->servermsgid()].front();
+        std::shared_ptr<model::MessageModel> sdk_msg = sdk_msg_map[msg->smessageid()].front();
         // std::shared_ptr<model::ConversationModel> sdk_conv = co_await conv_manager->conv_for_id(sdk_msg->conversation_id());
 
         // if (!sdk_conv || !sdk_msg) {

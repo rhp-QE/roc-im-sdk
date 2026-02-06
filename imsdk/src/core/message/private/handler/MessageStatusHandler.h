@@ -61,7 +61,7 @@ private:
     void p_registDeleteHandler();
     void p_registRecallHandler();
 
-    boost::asio::awaitable<std::unique_ptr<network::ChangeMessageItemResp>> p_request(CTX_T, std::unique_ptr<network::ChangeMessageItemReq>);
+    boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>> p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg);
      
 };
 

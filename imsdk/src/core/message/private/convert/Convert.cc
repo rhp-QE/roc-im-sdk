@@ -19,11 +19,11 @@ Convert::Convert(std::weak_ptr<SDKRoot> sdk_root)
 
 /// 消息转换 网络消息 -> db 消息
 /// 本地独有字段会差一次本地数据库进行合并
-std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, const network::MsgData *msg) {
+std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, const network::MessageData *msg) {
     CHECK_POINTER_OR_RETURN_VALUE(msg, nullptr)
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr)
     
-    bool send_from_me = util::message_send_from_me(sdk_root->config().user_id, msg->sendid());
+    bool send_from_me = util::MessageSendFromMe(sdk_root->config().user_id, msg->sendid());
 
     std::shared_ptr<core::message::MessageORM> db_msg = std::make_shared<core::message::MessageORM>();
     
@@ -36,7 +36,7 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, 
     
     db_msg->is_recalled = msg->isrecalled();
     
-    db_msg->is_group_msg = msg->isgroupmsg();
+    db_msg->is_group_msg = msg->convtype() == 2 ? true : false;
     
     db_msg->content = msg->content();
     
@@ -45,9 +45,9 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, 
     db_msg->from_user_id = msg->sendid();
     
     // 一条消息只会出自一个客户端， 即使一个客户 多端登录 也不会出现 同一条消息 clent_msg_id 覆盖或者不一致的情况
-    db_msg->client_msg_id = send_from_me ? msg->clientmsgid() : msg->servermsgid();
+    db_msg->client_msg_id = send_from_me ? msg->cmessaegid() : msg->smessageid();
     
-    db_msg->server_msg_id = msg->servermsgid();
+    db_msg->server_msg_id = msg->smessageid();
     
     db_msg->conversation_id = msg->convid();
     

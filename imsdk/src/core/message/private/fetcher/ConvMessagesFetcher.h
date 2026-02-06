@@ -23,14 +23,14 @@ public:
 
 private:
     /// 生成请求
-    std::unique_ptr<network::FetchConvMessageListReq> p_MakeFetchConvMessageListReq(CTX_T, std::string conv_id, std::pair<int64_t, int64_t> range);
+    std::unique_ptr<network::FetchConvMessageListRequest> p_MakeFetchConvMessageListReq(CTX_T, std::string conv_id, std::pair<int64_t, int64_t> range);
     
     /// 处理返回数据
-    void p_HandleFetchConvMessgaeListResp(CTX_T, std::unique_ptr<network::FetchConvMessageListResp> resp);
+    void p_HandleFetchConvMessgaeListResp(CTX_T, std::unique_ptr<network::FetchConvMessageListResponse> resp);
     
     /// 发送获取会话消息列表请求
-    boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResp>, roc::error::Error>> 
-        p_request(CTX_T, network::FetchConvMessageListReq *request);
+    boost::asio::awaitable<std::expected<std::unique_ptr<network::FetchConvMessageListResponse>, roc::error::Error>> 
+        p_request(CTX_T, network::FetchConvMessageListRequest *request);
     
     std::weak_ptr<SDKRoot> w_sdk_root;
 };

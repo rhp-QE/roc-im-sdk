@@ -15,7 +15,7 @@ void ReceiveConversation::Start(CTX_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root);
 }
 
-boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CTX_T, std::vector<std::shared_ptr<network::ConversationInfo>> conversations) {
+boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CTX_T, std::vector<std::shared_ptr<network::ConversationData>> conversations) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root);
 
     auto conv_manager = sdk_root->ConversationManager();
