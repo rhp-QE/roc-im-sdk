@@ -13,6 +13,7 @@
 
 #include "imsdk/base/include/network/LongConnectionClient.h"
 #include "imsdk/base/include/uncopyable.h"
+#include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/network.h"
 
@@ -66,7 +67,7 @@ public:
     void AddOnPushMessageCallback(OnPushMesageCallbackType callback);
 
     // 发送请求
-    boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::error::Error>> SendRequest(std::unique_ptr<FrontierMessage> req);
+    boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::error::Error>> SendRequest(CTX_T, std::unique_ptr<FrontierMessage> req);
 
     /// 获取网络状态
     roc::imsdk::network::NetworkStatus GetNetworkStatus();

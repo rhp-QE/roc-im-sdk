@@ -35,9 +35,9 @@ ConvMessagesFetcher::p_request(CTX_T, network::FetchConvMessageListRequest *requ
     int payload_size = request->ByteSizeLong();
     frontier_msg->payload.resize(payload_size);
     request->SerializeToArray(frontier_msg->payload.data(), payload_size);
-    frontier_msg->metadata["track_id"] = std::to_string(TRACK_ID);
 
-    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
+    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response =
+        co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
     if (!response.has_value()) {
         co_return std::unexpected(response.error());
     }

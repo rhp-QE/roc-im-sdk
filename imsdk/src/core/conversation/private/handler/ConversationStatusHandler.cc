@@ -478,9 +478,8 @@ boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>>
     int payload_size = static_cast<int>(req->ByteSizeLong());
     frontier_msg->payload.resize(payload_size);
     req->SerializeToArray(frontier_msg->payload.data(), payload_size);
-    frontier_msg->metadata["track_id"] = std::to_string(call_track_id);
 
-    auto response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
+    auto response = co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
 
     if (!response.has_value()) {
         co_return nullptr;

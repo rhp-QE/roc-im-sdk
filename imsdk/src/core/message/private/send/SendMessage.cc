@@ -36,12 +36,9 @@ SendMessageController::p_request(CTX_T, std::unique_ptr<network::BatchSendMessag
     int payload_size = request->ByteSizeLong();
     frontier_msg->payload.resize(payload_size);
     request->SerializeToArray(frontier_msg->payload.data(), payload_size);
-    
-    // 将 track_id 放在 metadata 中
-    frontier_msg->metadata["track_id"] = std::to_string(TRACK_ID);
 
-    // 发送请求（type 和 timestamp 会在 ConnectionManager 内设置）
-    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
+    // 发送请求（type、timestamp、track_id 会在 ConnectionManager 内设置）
+    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
     if (!response.has_value()) {
         co_return std::unexpected(response.error());
     }

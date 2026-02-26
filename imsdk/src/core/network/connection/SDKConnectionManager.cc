@@ -120,7 +120,7 @@ void SDKConnectionManager::AllComponentDidLoad() {
 }
 
 
-boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::error::Error>> SDKConnectionManager::SendRequest(std::unique_ptr<FrontierMessage> req) {
+boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::error::Error>> SDKConnectionManager::SendRequest(CTX_T, std::unique_ptr<FrontierMessage> req) {
     std::shared_ptr<SDKRoot> root = w_sdk_root.lock();
     if (!root) {
         co_return std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request"));
@@ -130,9 +130,10 @@ boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::erro
         co_return std::unexpected(roc::error::make_error(1001, "request is null", "SDKConnectionManager:send_request"));
     }
 
-    req->type = FrontierMessageType::Request;
-    req->timestamp = roc::imsdk::core::util::CurrentTimestampMs();
-    req->request_id = next_request_id(root.get());
+    req->type                 = FrontierMessageType::Request;
+    req->timestamp            = roc::imsdk::core::util::CurrentTimestampMs();
+    req->request_id           = next_request_id(root.get());
+    req->metadata["track_id"] = std::to_string(TRACK_ID);
 
     std::string json_str = FrontierMessageJsonSerializer::ToJsonString(*req);
 

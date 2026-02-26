@@ -54,7 +54,7 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
 
         // 发送请求
         std::expected<std::unique_ptr<network::FetchUserRecentConvListResponse>, roc::error::Error> resp = co_await p_request(CTX_V, req.get());
-        if (!resp || !resp.has_value()) {
+        if (!resp.has_value()) {
             co_return;
         }
 
@@ -110,9 +110,9 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserRecentConvListRequest *re
     int payload_size = request->ByteSizeLong();
     frontier_msg->payload.resize(payload_size);
     request->SerializeToArray(frontier_msg->payload.data(), payload_size);
-    frontier_msg->metadata["track_id"] = std::to_string(TRACK_ID);
 
-    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
+    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response =
+        co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
     if (!response.has_value()) {
         co_return std::unexpected(response.error());
     }
@@ -186,12 +186,10 @@ boost::asio::awaitable<bool> UserMessageFetcher::p_doubleCheckUserMessageIntegri
     int payload_size = req_data->ByteSizeLong();
     frontier_msg->payload.resize(payload_size);
     req_data->SerializeToArray(frontier_msg->payload.data(), payload_size);
-    
-    // 将 track_id 放在 metadata 中
-    frontier_msg->metadata["track_id"] = std::to_string(TRACK_ID);
 
-    // 发送请求（type 和 timestamp 会在 ConnectionManager 内设置）
-    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> resp = co_await sdk_root->ConnectionManager()->SendRequest(std::move(frontier_msg));
+    // 发送请求（type、timestamp、track_id 会在 ConnectionManager 内设置）
+    std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> resp =
+        co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
     if (!resp.has_value()) {
         co_return false;
     }
