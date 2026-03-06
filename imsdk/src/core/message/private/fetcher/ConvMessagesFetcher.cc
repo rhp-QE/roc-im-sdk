@@ -12,6 +12,7 @@
 #include "imsdk/base/include/utils/utils.h"
 #include "imsdk/src/include/model/network.h"
 
+#include <algorithm>
 #include <atomic>
 #include <expected>
 
@@ -59,10 +60,11 @@ std::unique_ptr<network::FetchConvMessageListRequest> ConvMessagesFetcher::p_Mak
 
     auto req = std::make_unique<network::FetchConvMessageListRequest>();
 
+    req->set_userid(sdk_root->config().user_id);
     req->set_convid(conv_id);
-    req->set_cursor(range.first);
-    req->set_limit(range.second - range.first + 1);
-    req->set_forward(false);
+    req->set_mode(1);
+    req->set_left(range.first);
+    req->set_right(range.second);
 
     return req;
 }

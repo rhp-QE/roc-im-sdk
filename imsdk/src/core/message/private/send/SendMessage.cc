@@ -30,14 +30,14 @@ SendMessageController::p_request(CTX_T, std::unique_ptr<network::BatchSendMessag
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     // 创建 FrontierMessage 请求
-    auto frontier_msg = std::make_unique<network::FrontierMessage>();
-    frontier_msg->service = core::common::SDKWSService;
-    frontier_msg->method  = std::to_string(static_cast<int32_t>(common::SDKWSMethod::SEND_MESSAGE));
-    int payload_size = request->ByteSizeLong();
-    frontier_msg->payload.resize(payload_size);
-    request->SerializeToArray(frontier_msg->payload.data(), payload_size);
+    size_t size = request->ByteSizeLong();
+    auto frontier_msg = std::unique_ptr<network::FrontierMessage>(new network::FrontierMessage{
+        .service = core::common::SDKWSService,
+        .method  = std::to_string(static_cast<int32_t>(common::SDKWSMethod::SEND_MESSAGE)),
+        .payload = std::vector<uint8_t>(size),
+    });
+    request->SerializeToArray(frontier_msg->payload.data(), size);
 
-    // 发送请求（type、timestamp、track_id 会在 ConnectionManager 内设置）
     std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response = co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
     if (!response.has_value()) {
         co_return std::unexpected(response.error());
@@ -106,7 +106,11 @@ boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CTX_T, st
         co_await p_request(CTX_V, std::move(req));
 
     if (!resp || !resp.has_value() || resp.value()->results_size() != 1) {
-        base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, resp.error().message(), nullptr));
+        base::util::safe_invoke_block(callback, std::shared_ptr<model::SendMessageResponse>(new model::SendMessageResponse{
+            .error_code = 1, 
+            .error_msg  = resp.error().message(),
+            .msg        = nullptr,
+        }));
         co_return;
     }
 
@@ -117,11 +121,19 @@ boost::asio::awaitable<void> SendMessageController::p_asyncSendMessage(CTX_T, st
     LOG_INFO("MsgManager", "asyncSendMessage, result: {}", sdk_msgs.empty() ? "failed" : "success");
 
     if (sdk_msgs.empty()) {
-        base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(false, "save message failed", nullptr));
+        base::util::safe_invoke_block(callback, std::shared_ptr<model::SendMessageResponse>(new model::SendMessageResponse{
+            .error_code = 1, 
+            .error_msg  = "save message failed",
+            .msg        = nullptr,
+        }));
         co_return;
     }
 
-    base::util::safe_invoke_block(callback, std::make_shared<model::SendMessageResponse>(true, "", sdk_msgs.front()));
+    base::util::safe_invoke_block(callback, std::shared_ptr<model::SendMessageResponse>(new model::SendMessageResponse{
+        .error_code = 0, 
+        .error_msg  = "",
+        .msg        = sdk_msgs.front(),
+    }));
     co_return;
 }
 

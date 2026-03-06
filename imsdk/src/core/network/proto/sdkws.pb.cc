@@ -755,28 +755,34 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, mode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, userid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, convid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, cursor_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, version_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, limit_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, forward_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, left_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListRequest, right_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListResponse, messages_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListResponse, left_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListResponse, right_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListResponse, havemore_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListResponse, errorcode_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchConvMessageListResponse, error_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, mode_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, userid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, lowerversion_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, version_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, limit_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, lowversion_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, upperversion_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListRequest, first_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -785,6 +791,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListResponse, conversations_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListResponse, left_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListResponse, right_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListResponse, havemore_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::FetchUserRecentConvListResponse, error_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::UserMessageIntegrityCheckRequest, _internal_metadata_),
@@ -862,17 +869,17 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 94, -1, sizeof(::roc::imsdk::network::BatchChangeConversationsRequest)},
   { 100, -1, sizeof(::roc::imsdk::network::BatchChangeConversationsResponse)},
   { 106, -1, sizeof(::roc::imsdk::network::FetchConvMessageListRequest)},
-  { 115, -1, sizeof(::roc::imsdk::network::FetchConvMessageListResponse)},
-  { 124, -1, sizeof(::roc::imsdk::network::FetchUserRecentConvListRequest)},
-  { 133, -1, sizeof(::roc::imsdk::network::FetchUserRecentConvListResponse)},
-  { 142, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckRequest)},
-  { 151, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckResponse)},
-  { 160, -1, sizeof(::roc::imsdk::network::GetMessageResult)},
-  { 169, -1, sizeof(::roc::imsdk::network::BatchGetMessagesRequest)},
-  { 176, -1, sizeof(::roc::imsdk::network::BatchGetMessagesResponse)},
-  { 182, -1, sizeof(::roc::imsdk::network::GetConversationResult)},
-  { 191, -1, sizeof(::roc::imsdk::network::BatchGetConversationsRequest)},
-  { 198, -1, sizeof(::roc::imsdk::network::BatchGetConversationsResponse)},
+  { 118, -1, sizeof(::roc::imsdk::network::FetchConvMessageListResponse)},
+  { 128, -1, sizeof(::roc::imsdk::network::FetchUserRecentConvListRequest)},
+  { 139, -1, sizeof(::roc::imsdk::network::FetchUserRecentConvListResponse)},
+  { 149, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckRequest)},
+  { 158, -1, sizeof(::roc::imsdk::network::UserMessageIntegrityCheckResponse)},
+  { 167, -1, sizeof(::roc::imsdk::network::GetMessageResult)},
+  { 176, -1, sizeof(::roc::imsdk::network::BatchGetMessagesRequest)},
+  { 183, -1, sizeof(::roc::imsdk::network::BatchGetMessagesResponse)},
+  { 189, -1, sizeof(::roc::imsdk::network::GetConversationResult)},
+  { 198, -1, sizeof(::roc::imsdk::network::BatchGetConversationsRequest)},
+  { 205, -1, sizeof(::roc::imsdk::network::BatchGetConversationsResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -962,44 +969,46 @@ void AddDescriptorsImpl() {
       "s\030\001 \003(\0132\035.roc.imsdk.network.CmdMessage\"["
       "\n BatchChangeConversationsResponse\0227\n\007re"
       "sults\030\001 \003(\0132&.roc.imsdk.network.CmdMessa"
-      "geOptResult\"]\n\033FetchConvMessageListReque"
-      "st\022\016\n\006convID\030\001 \001(\t\022\016\n\006cursor\030\002 \001(\003\022\r\n\005li"
-      "mit\030\003 \001(\003\022\017\n\007forward\030\004 \001(\010\"\204\001\n\034FetchConv"
-      "MessageListResponse\0220\n\010messages\030\001 \003(\0132\036."
-      "roc.imsdk.network.MessageData\022\020\n\010haveMor"
-      "e\030\002 \001(\010\022\021\n\terrorCode\030\003 \001(\005\022\r\n\005error\030\004 \001("
-      "\t\"k\n\036FetchUserRecentConvListRequest\022\016\n\006u"
-      "serID\030\001 \001(\t\022\024\n\014lowerVersion\030\002 \001(\003\022\024\n\014upp"
-      "erVersion\030\003 \001(\003\022\r\n\005first\030\004 \001(\010\"\211\001\n\037Fetch"
-      "UserRecentConvListResponse\022:\n\rconversati"
-      "ons\030\001 \003(\0132#.roc.imsdk.network.Conversati"
-      "onData\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\r\n\005e"
-      "rror\030\004 \001(\t\"`\n UserMessageIntegrityCheckR"
-      "equest\022\016\n\006userID\030\001 \001(\t\022\014\n\004left\030\002 \001(\003\022\r\n\005"
-      "right\030\003 \001(\003\022\017\n\007convIDs\030\004 \003(\t\"\221\001\n!UserMes"
-      "sageIntegrityCheckResponse\022\023\n\013isIntegrit"
-      "y\030\001 \001(\010\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022:\n\r"
-      "conversations\030\004 \003(\0132#.roc.imsdk.network."
-      "ConversationData\"{\n\020GetMessageResult\022\021\n\t"
-      "messageID\030\001 \001(\t\022/\n\007message\030\002 \001(\0132\036.roc.i"
-      "msdk.network.MessageData\022\021\n\terrorCode\030\003 "
-      "\001(\t\022\020\n\010errorMsg\030\004 \001(\t\"=\n\027BatchGetMessage"
-      "sRequest\022\022\n\nmessageIDs\030\001 \003(\t\022\016\n\006convID\030\002"
-      " \001(\t\"P\n\030BatchGetMessagesResponse\0224\n\007resu"
-      "lts\030\001 \003(\0132#.roc.imsdk.network.GetMessage"
-      "Result\"\207\001\n\025GetConversationResult\022\016\n\006conv"
-      "ID\030\001 \001(\t\0229\n\014conversation\030\002 \001(\0132#.roc.ims"
-      "dk.network.ConversationData\022\021\n\terrorCode"
-      "\030\003 \001(\t\022\020\n\010errorMsg\030\004 \001(\t\"@\n\034BatchGetConv"
-      "ersationsRequest\022\017\n\007convIDs\030\001 \003(\t\022\017\n\007own"
-      "erID\030\002 \001(\t\"Z\n\035BatchGetConversationsRespo"
-      "nse\0229\n\007results\030\001 \003(\0132(.roc.imsdk.network"
-      ".GetConversationResultB1Z/github.com/rhp"
-      "-QE/roc-im-server/kitex_gen/sdkwsb\006proto"
-      "3"
+      "geOptResult\"\210\001\n\033FetchConvMessageListRequ"
+      "est\022\014\n\004mode\030\001 \001(\003\022\016\n\006userID\030\002 \001(\t\022\016\n\006con"
+      "vID\030\003 \001(\t\022\017\n\007version\030\004 \001(\003\022\r\n\005limit\030\005 \001("
+      "\003\022\014\n\004left\030\006 \001(\003\022\r\n\005right\030\007 \001(\003\"\216\001\n\034Fetch"
+      "ConvMessageListResponse\0220\n\010messages\030\001 \003("
+      "\0132\036.roc.imsdk.network.MessageData\022\014\n\004lef"
+      "t\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\020\n\010haveMore\030\004 \001(\010"
+      "\022\r\n\005error\030\005 \001(\t\"\210\001\n\036FetchUserRecentConvL"
+      "istRequest\022\014\n\004mode\030\001 \001(\003\022\016\n\006userID\030\002 \001(\t"
+      "\022\017\n\007version\030\003 \001(\003\022\r\n\005limit\030\004 \001(\003\022\022\n\nlowV"
+      "ersion\030\005 \001(\003\022\024\n\014upperVersion\030\006 \001(\003\"\233\001\n\037F"
+      "etchUserRecentConvListResponse\022:\n\rconver"
+      "sations\030\001 \003(\0132#.roc.imsdk.network.Conver"
+      "sationData\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022"
+      "\020\n\010haveMore\030\004 \001(\010\022\r\n\005error\030\005 \001(\t\"`\n User"
+      "MessageIntegrityCheckRequest\022\016\n\006userID\030\001"
+      " \001(\t\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\017\n\007con"
+      "vIDs\030\004 \003(\t\"\221\001\n!UserMessageIntegrityCheck"
+      "Response\022\023\n\013isIntegrity\030\001 \001(\010\022\014\n\004left\030\002 "
+      "\001(\003\022\r\n\005right\030\003 \001(\003\022:\n\rconversations\030\004 \003("
+      "\0132#.roc.imsdk.network.ConversationData\"{"
+      "\n\020GetMessageResult\022\021\n\tmessageID\030\001 \001(\t\022/\n"
+      "\007message\030\002 \001(\0132\036.roc.imsdk.network.Messa"
+      "geData\022\021\n\terrorCode\030\003 \001(\t\022\020\n\010errorMsg\030\004 "
+      "\001(\t\"=\n\027BatchGetMessagesRequest\022\022\n\nmessag"
+      "eIDs\030\001 \003(\t\022\016\n\006convID\030\002 \001(\t\"P\n\030BatchGetMe"
+      "ssagesResponse\0224\n\007results\030\001 \003(\0132#.roc.im"
+      "sdk.network.GetMessageResult\"\207\001\n\025GetConv"
+      "ersationResult\022\016\n\006convID\030\001 \001(\t\0229\n\014conver"
+      "sation\030\002 \001(\0132#.roc.imsdk.network.Convers"
+      "ationData\022\021\n\terrorCode\030\003 \001(\t\022\020\n\010errorMsg"
+      "\030\004 \001(\t\"@\n\034BatchGetConversationsRequest\022\017"
+      "\n\007convIDs\030\001 \003(\t\022\017\n\007ownerID\030\002 \001(\t\"Z\n\035Batc"
+      "hGetConversationsResponse\0229\n\007results\030\001 \003"
+      "(\0132(.roc.imsdk.network.GetConversationRe"
+      "sultB1Z/github.com/rhp-QE/roc-im-server/"
+      "kitex_gen/sdkwsb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2921);
+      descriptor, 3023);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "sdkws.proto", &protobuf_RegisterTypes);
 }
@@ -5528,10 +5537,13 @@ void BatchChangeConversationsResponse::InternalSwap(BatchChangeConversationsResp
 void FetchConvMessageListRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int FetchConvMessageListRequest::kModeFieldNumber;
+const int FetchConvMessageListRequest::kUserIDFieldNumber;
 const int FetchConvMessageListRequest::kConvIDFieldNumber;
-const int FetchConvMessageListRequest::kCursorFieldNumber;
+const int FetchConvMessageListRequest::kVersionFieldNumber;
 const int FetchConvMessageListRequest::kLimitFieldNumber;
-const int FetchConvMessageListRequest::kForwardFieldNumber;
+const int FetchConvMessageListRequest::kLeftFieldNumber;
+const int FetchConvMessageListRequest::kRightFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 FetchConvMessageListRequest::FetchConvMessageListRequest()
@@ -5547,21 +5559,26 @@ FetchConvMessageListRequest::FetchConvMessageListRequest(const FetchConvMessageL
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  userid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.userid().size() > 0) {
+    userid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.userid_);
+  }
   convid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.convid().size() > 0) {
     convid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.convid_);
   }
-  ::memcpy(&cursor_, &from.cursor_,
-    static_cast<size_t>(reinterpret_cast<char*>(&forward_) -
-    reinterpret_cast<char*>(&cursor_)) + sizeof(forward_));
+  ::memcpy(&mode_, &from.mode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&right_) -
+    reinterpret_cast<char*>(&mode_)) + sizeof(right_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.FetchConvMessageListRequest)
 }
 
 void FetchConvMessageListRequest::SharedCtor() {
+  userid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&cursor_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&forward_) -
-      reinterpret_cast<char*>(&cursor_)) + sizeof(forward_));
+  ::memset(&mode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&right_) -
+      reinterpret_cast<char*>(&mode_)) + sizeof(right_));
   _cached_size_ = 0;
 }
 
@@ -5571,6 +5588,7 @@ FetchConvMessageListRequest::~FetchConvMessageListRequest() {
 }
 
 void FetchConvMessageListRequest::SharedDtor() {
+  userid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -5603,10 +5621,11 @@ void FetchConvMessageListRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   convid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&cursor_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&forward_) -
-      reinterpret_cast<char*>(&cursor_)) + sizeof(forward_));
+  ::memset(&mode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&right_) -
+      reinterpret_cast<char*>(&mode_)) + sizeof(right_));
   _internal_metadata_.Clear();
 }
 
@@ -5620,10 +5639,40 @@ bool FetchConvMessageListRequest::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string convID = 1;
+      // int64 mode = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &mode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string userID = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_userid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->userid().data(), static_cast<int>(this->userid().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.FetchConvMessageListRequest.userID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string convID = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_convid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -5636,24 +5685,24 @@ bool FetchConvMessageListRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 cursor = 2;
-      case 2: {
+      // int64 version = 4;
+      case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &cursor_)));
+                 input, &version_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int64 limit = 3;
-      case 3: {
+      // int64 limit = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
@@ -5664,14 +5713,28 @@ bool FetchConvMessageListRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // bool forward = 4;
-      case 4: {
+      // int64 left = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &forward_)));
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &left_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 right = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &right_)));
         } else {
           goto handle_unusual;
         }
@@ -5704,29 +5767,49 @@ void FetchConvMessageListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string convID = 1;
+  // int64 mode = 1;
+  if (this->mode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->mode(), output);
+  }
+
+  // string userID = 2;
+  if (this->userid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->userid().data(), static_cast<int>(this->userid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.FetchConvMessageListRequest.userID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->userid(), output);
+  }
+
+  // string convID = 3;
   if (this->convid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->convid().data(), static_cast<int>(this->convid().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "roc.imsdk.network.FetchConvMessageListRequest.convID");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->convid(), output);
+      3, this->convid(), output);
   }
 
-  // int64 cursor = 2;
-  if (this->cursor() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->cursor(), output);
+  // int64 version = 4;
+  if (this->version() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(4, this->version(), output);
   }
 
-  // int64 limit = 3;
+  // int64 limit = 5;
   if (this->limit() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->limit(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->limit(), output);
   }
 
-  // bool forward = 4;
-  if (this->forward() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->forward(), output);
+  // int64 left = 6;
+  if (this->left() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->left(), output);
+  }
+
+  // int64 right = 7;
+  if (this->right() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(7, this->right(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -5743,7 +5826,23 @@ void FetchConvMessageListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string convID = 1;
+  // int64 mode = 1;
+  if (this->mode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->mode(), target);
+  }
+
+  // string userID = 2;
+  if (this->userid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->userid().data(), static_cast<int>(this->userid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.FetchConvMessageListRequest.userID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->userid(), target);
+  }
+
+  // string convID = 3;
   if (this->convid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->convid().data(), static_cast<int>(this->convid().length()),
@@ -5751,22 +5850,27 @@ void FetchConvMessageListRequest::SerializeWithCachedSizes(
       "roc.imsdk.network.FetchConvMessageListRequest.convID");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->convid(), target);
+        3, this->convid(), target);
   }
 
-  // int64 cursor = 2;
-  if (this->cursor() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->cursor(), target);
+  // int64 version = 4;
+  if (this->version() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(4, this->version(), target);
   }
 
-  // int64 limit = 3;
+  // int64 limit = 5;
   if (this->limit() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->limit(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->limit(), target);
   }
 
-  // bool forward = 4;
-  if (this->forward() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->forward(), target);
+  // int64 left = 6;
+  if (this->left() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->left(), target);
+  }
+
+  // int64 right = 7;
+  if (this->right() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(7, this->right(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -5786,30 +5890,53 @@ size_t FetchConvMessageListRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string convID = 1;
+  // string userID = 2;
+  if (this->userid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->userid());
+  }
+
+  // string convID = 3;
   if (this->convid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->convid());
   }
 
-  // int64 cursor = 2;
-  if (this->cursor() != 0) {
+  // int64 mode = 1;
+  if (this->mode() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->cursor());
+        this->mode());
   }
 
-  // int64 limit = 3;
+  // int64 version = 4;
+  if (this->version() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->version());
+  }
+
+  // int64 limit = 5;
   if (this->limit() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->limit());
   }
 
-  // bool forward = 4;
-  if (this->forward() != 0) {
-    total_size += 1 + 1;
+  // int64 left = 6;
+  if (this->left() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->left());
+  }
+
+  // int64 right = 7;
+  if (this->right() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->right());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -5841,18 +5968,28 @@ void FetchConvMessageListRequest::MergeFrom(const FetchConvMessageListRequest& f
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.userid().size() > 0) {
+
+    userid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.userid_);
+  }
   if (from.convid().size() > 0) {
 
     convid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.convid_);
   }
-  if (from.cursor() != 0) {
-    set_cursor(from.cursor());
+  if (from.mode() != 0) {
+    set_mode(from.mode());
+  }
+  if (from.version() != 0) {
+    set_version(from.version());
   }
   if (from.limit() != 0) {
     set_limit(from.limit());
   }
-  if (from.forward() != 0) {
-    set_forward(from.forward());
+  if (from.left() != 0) {
+    set_left(from.left());
+  }
+  if (from.right() != 0) {
+    set_right(from.right());
   }
 }
 
@@ -5880,10 +6017,13 @@ void FetchConvMessageListRequest::Swap(FetchConvMessageListRequest* other) {
 }
 void FetchConvMessageListRequest::InternalSwap(FetchConvMessageListRequest* other) {
   using std::swap;
+  userid_.Swap(&other->userid_);
   convid_.Swap(&other->convid_);
-  swap(cursor_, other->cursor_);
+  swap(mode_, other->mode_);
+  swap(version_, other->version_);
   swap(limit_, other->limit_);
-  swap(forward_, other->forward_);
+  swap(left_, other->left_);
+  swap(right_, other->right_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -5900,8 +6040,9 @@ void FetchConvMessageListResponse::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int FetchConvMessageListResponse::kMessagesFieldNumber;
+const int FetchConvMessageListResponse::kLeftFieldNumber;
+const int FetchConvMessageListResponse::kRightFieldNumber;
 const int FetchConvMessageListResponse::kHaveMoreFieldNumber;
-const int FetchConvMessageListResponse::kErrorCodeFieldNumber;
 const int FetchConvMessageListResponse::kErrorFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -5923,17 +6064,17 @@ FetchConvMessageListResponse::FetchConvMessageListResponse(const FetchConvMessag
   if (from.error().size() > 0) {
     error_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.error_);
   }
-  ::memcpy(&havemore_, &from.havemore_,
-    static_cast<size_t>(reinterpret_cast<char*>(&errorcode_) -
-    reinterpret_cast<char*>(&havemore_)) + sizeof(errorcode_));
+  ::memcpy(&left_, &from.left_,
+    static_cast<size_t>(reinterpret_cast<char*>(&havemore_) -
+    reinterpret_cast<char*>(&left_)) + sizeof(havemore_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.FetchConvMessageListResponse)
 }
 
 void FetchConvMessageListResponse::SharedCtor() {
   error_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&havemore_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&errorcode_) -
-      reinterpret_cast<char*>(&havemore_)) + sizeof(errorcode_));
+  ::memset(&left_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&havemore_) -
+      reinterpret_cast<char*>(&left_)) + sizeof(havemore_));
   _cached_size_ = 0;
 }
 
@@ -5977,9 +6118,9 @@ void FetchConvMessageListResponse::Clear() {
 
   messages_.Clear();
   error_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&havemore_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&errorcode_) -
-      reinterpret_cast<char*>(&havemore_)) + sizeof(errorcode_));
+  ::memset(&left_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&havemore_) -
+      reinterpret_cast<char*>(&left_)) + sizeof(havemore_));
   _internal_metadata_.Clear();
 }
 
@@ -6004,10 +6145,38 @@ bool FetchConvMessageListResponse::MergePartialFromCodedStream(
         break;
       }
 
-      // bool haveMore = 2;
+      // int64 left = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &left_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 right = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &right_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool haveMore = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -6018,24 +6187,10 @@ bool FetchConvMessageListResponse::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 errorCode = 3;
-      case 3: {
+      // string error = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &errorcode_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string error = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_error()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -6081,24 +6236,29 @@ void FetchConvMessageListResponse::SerializeWithCachedSizes(
       1, this->messages(static_cast<int>(i)), output);
   }
 
-  // bool haveMore = 2;
+  // int64 left = 2;
+  if (this->left() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->left(), output);
+  }
+
+  // int64 right = 3;
+  if (this->right() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->right(), output);
+  }
+
+  // bool haveMore = 4;
   if (this->havemore() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->havemore(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->havemore(), output);
   }
 
-  // int32 errorCode = 3;
-  if (this->errorcode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->errorcode(), output);
-  }
-
-  // string error = 4;
+  // string error = 5;
   if (this->error().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->error().data(), static_cast<int>(this->error().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "roc.imsdk.network.FetchConvMessageListResponse.error");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->error(), output);
+      5, this->error(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6123,17 +6283,22 @@ void FetchConvMessageListResponse::SerializeWithCachedSizes(
         1, this->messages(static_cast<int>(i)), deterministic, target);
   }
 
-  // bool haveMore = 2;
+  // int64 left = 2;
+  if (this->left() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->left(), target);
+  }
+
+  // int64 right = 3;
+  if (this->right() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->right(), target);
+  }
+
+  // bool haveMore = 4;
   if (this->havemore() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->havemore(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->havemore(), target);
   }
 
-  // int32 errorCode = 3;
-  if (this->errorcode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->errorcode(), target);
-  }
-
-  // string error = 4;
+  // string error = 5;
   if (this->error().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->error().data(), static_cast<int>(this->error().length()),
@@ -6141,7 +6306,7 @@ void FetchConvMessageListResponse::SerializeWithCachedSizes(
       "roc.imsdk.network.FetchConvMessageListResponse.error");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->error(), target);
+        5, this->error(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6172,23 +6337,30 @@ size_t FetchConvMessageListResponse::ByteSizeLong() const {
     }
   }
 
-  // string error = 4;
+  // string error = 5;
   if (this->error().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->error());
   }
 
-  // bool haveMore = 2;
-  if (this->havemore() != 0) {
-    total_size += 1 + 1;
+  // int64 left = 2;
+  if (this->left() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->left());
   }
 
-  // int32 errorCode = 3;
-  if (this->errorcode() != 0) {
+  // int64 right = 3;
+  if (this->right() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->errorcode());
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->right());
+  }
+
+  // bool haveMore = 4;
+  if (this->havemore() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -6225,11 +6397,14 @@ void FetchConvMessageListResponse::MergeFrom(const FetchConvMessageListResponse&
 
     error_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.error_);
   }
+  if (from.left() != 0) {
+    set_left(from.left());
+  }
+  if (from.right() != 0) {
+    set_right(from.right());
+  }
   if (from.havemore() != 0) {
     set_havemore(from.havemore());
-  }
-  if (from.errorcode() != 0) {
-    set_errorcode(from.errorcode());
   }
 }
 
@@ -6259,8 +6434,9 @@ void FetchConvMessageListResponse::InternalSwap(FetchConvMessageListResponse* ot
   using std::swap;
   messages_.InternalSwap(&other->messages_);
   error_.Swap(&other->error_);
+  swap(left_, other->left_);
+  swap(right_, other->right_);
   swap(havemore_, other->havemore_);
-  swap(errorcode_, other->errorcode_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -6276,10 +6452,12 @@ void FetchConvMessageListResponse::InternalSwap(FetchConvMessageListResponse* ot
 void FetchUserRecentConvListRequest::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int FetchUserRecentConvListRequest::kModeFieldNumber;
 const int FetchUserRecentConvListRequest::kUserIDFieldNumber;
-const int FetchUserRecentConvListRequest::kLowerVersionFieldNumber;
+const int FetchUserRecentConvListRequest::kVersionFieldNumber;
+const int FetchUserRecentConvListRequest::kLimitFieldNumber;
+const int FetchUserRecentConvListRequest::kLowVersionFieldNumber;
 const int FetchUserRecentConvListRequest::kUpperVersionFieldNumber;
-const int FetchUserRecentConvListRequest::kFirstFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 FetchUserRecentConvListRequest::FetchUserRecentConvListRequest()
@@ -6299,17 +6477,17 @@ FetchUserRecentConvListRequest::FetchUserRecentConvListRequest(const FetchUserRe
   if (from.userid().size() > 0) {
     userid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.userid_);
   }
-  ::memcpy(&lowerversion_, &from.lowerversion_,
-    static_cast<size_t>(reinterpret_cast<char*>(&first_) -
-    reinterpret_cast<char*>(&lowerversion_)) + sizeof(first_));
+  ::memcpy(&mode_, &from.mode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&upperversion_) -
+    reinterpret_cast<char*>(&mode_)) + sizeof(upperversion_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.FetchUserRecentConvListRequest)
 }
 
 void FetchUserRecentConvListRequest::SharedCtor() {
   userid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&lowerversion_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&first_) -
-      reinterpret_cast<char*>(&lowerversion_)) + sizeof(first_));
+  ::memset(&mode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&upperversion_) -
+      reinterpret_cast<char*>(&mode_)) + sizeof(upperversion_));
   _cached_size_ = 0;
 }
 
@@ -6352,9 +6530,9 @@ void FetchUserRecentConvListRequest::Clear() {
   (void) cached_has_bits;
 
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&lowerversion_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&first_) -
-      reinterpret_cast<char*>(&lowerversion_)) + sizeof(first_));
+  ::memset(&mode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&upperversion_) -
+      reinterpret_cast<char*>(&mode_)) + sizeof(upperversion_));
   _internal_metadata_.Clear();
 }
 
@@ -6368,10 +6546,24 @@ bool FetchUserRecentConvListRequest::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string userID = 1;
+      // int64 mode = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &mode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string userID = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_userid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -6384,42 +6576,56 @@ bool FetchUserRecentConvListRequest::MergePartialFromCodedStream(
         break;
       }
 
-      // int64 lowerVersion = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &lowerversion_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int64 upperVersion = 3;
+      // int64 version = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &upperversion_)));
+                 input, &version_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // bool first = 4;
+      // int64 limit = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &first_)));
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &limit_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 lowVersion = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &lowversion_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int64 upperVersion = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &upperversion_)));
         } else {
           goto handle_unusual;
         }
@@ -6452,29 +6658,39 @@ void FetchUserRecentConvListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string userID = 1;
+  // int64 mode = 1;
+  if (this->mode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->mode(), output);
+  }
+
+  // string userID = 2;
   if (this->userid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->userid().data(), static_cast<int>(this->userid().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "roc.imsdk.network.FetchUserRecentConvListRequest.userID");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->userid(), output);
+      2, this->userid(), output);
   }
 
-  // int64 lowerVersion = 2;
-  if (this->lowerversion() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->lowerversion(), output);
+  // int64 version = 3;
+  if (this->version() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->version(), output);
   }
 
-  // int64 upperVersion = 3;
+  // int64 limit = 4;
+  if (this->limit() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(4, this->limit(), output);
+  }
+
+  // int64 lowVersion = 5;
+  if (this->lowversion() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->lowversion(), output);
+  }
+
+  // int64 upperVersion = 6;
   if (this->upperversion() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->upperversion(), output);
-  }
-
-  // bool first = 4;
-  if (this->first() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->first(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->upperversion(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6491,7 +6707,12 @@ void FetchUserRecentConvListRequest::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string userID = 1;
+  // int64 mode = 1;
+  if (this->mode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->mode(), target);
+  }
+
+  // string userID = 2;
   if (this->userid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->userid().data(), static_cast<int>(this->userid().length()),
@@ -6499,22 +6720,27 @@ void FetchUserRecentConvListRequest::SerializeWithCachedSizes(
       "roc.imsdk.network.FetchUserRecentConvListRequest.userID");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->userid(), target);
+        2, this->userid(), target);
   }
 
-  // int64 lowerVersion = 2;
-  if (this->lowerversion() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->lowerversion(), target);
+  // int64 version = 3;
+  if (this->version() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->version(), target);
   }
 
-  // int64 upperVersion = 3;
+  // int64 limit = 4;
+  if (this->limit() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(4, this->limit(), target);
+  }
+
+  // int64 lowVersion = 5;
+  if (this->lowversion() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->lowversion(), target);
+  }
+
+  // int64 upperVersion = 6;
   if (this->upperversion() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->upperversion(), target);
-  }
-
-  // bool first = 4;
-  if (this->first() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->first(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->upperversion(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6534,30 +6760,46 @@ size_t FetchUserRecentConvListRequest::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string userID = 1;
+  // string userID = 2;
   if (this->userid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->userid());
   }
 
-  // int64 lowerVersion = 2;
-  if (this->lowerversion() != 0) {
+  // int64 mode = 1;
+  if (this->mode() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->lowerversion());
+        this->mode());
   }
 
-  // int64 upperVersion = 3;
+  // int64 version = 3;
+  if (this->version() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->version());
+  }
+
+  // int64 limit = 4;
+  if (this->limit() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->limit());
+  }
+
+  // int64 lowVersion = 5;
+  if (this->lowversion() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->lowversion());
+  }
+
+  // int64 upperVersion = 6;
   if (this->upperversion() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->upperversion());
-  }
-
-  // bool first = 4;
-  if (this->first() != 0) {
-    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -6593,14 +6835,20 @@ void FetchUserRecentConvListRequest::MergeFrom(const FetchUserRecentConvListRequ
 
     userid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.userid_);
   }
-  if (from.lowerversion() != 0) {
-    set_lowerversion(from.lowerversion());
+  if (from.mode() != 0) {
+    set_mode(from.mode());
+  }
+  if (from.version() != 0) {
+    set_version(from.version());
+  }
+  if (from.limit() != 0) {
+    set_limit(from.limit());
+  }
+  if (from.lowversion() != 0) {
+    set_lowversion(from.lowversion());
   }
   if (from.upperversion() != 0) {
     set_upperversion(from.upperversion());
-  }
-  if (from.first() != 0) {
-    set_first(from.first());
   }
 }
 
@@ -6629,9 +6877,11 @@ void FetchUserRecentConvListRequest::Swap(FetchUserRecentConvListRequest* other)
 void FetchUserRecentConvListRequest::InternalSwap(FetchUserRecentConvListRequest* other) {
   using std::swap;
   userid_.Swap(&other->userid_);
-  swap(lowerversion_, other->lowerversion_);
+  swap(mode_, other->mode_);
+  swap(version_, other->version_);
+  swap(limit_, other->limit_);
+  swap(lowversion_, other->lowversion_);
   swap(upperversion_, other->upperversion_);
-  swap(first_, other->first_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -6650,6 +6900,7 @@ void FetchUserRecentConvListResponse::InitAsDefaultInstance() {
 const int FetchUserRecentConvListResponse::kConversationsFieldNumber;
 const int FetchUserRecentConvListResponse::kLeftFieldNumber;
 const int FetchUserRecentConvListResponse::kRightFieldNumber;
+const int FetchUserRecentConvListResponse::kHaveMoreFieldNumber;
 const int FetchUserRecentConvListResponse::kErrorFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -6672,16 +6923,16 @@ FetchUserRecentConvListResponse::FetchUserRecentConvListResponse(const FetchUser
     error_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.error_);
   }
   ::memcpy(&left_, &from.left_,
-    static_cast<size_t>(reinterpret_cast<char*>(&right_) -
-    reinterpret_cast<char*>(&left_)) + sizeof(right_));
+    static_cast<size_t>(reinterpret_cast<char*>(&havemore_) -
+    reinterpret_cast<char*>(&left_)) + sizeof(havemore_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.FetchUserRecentConvListResponse)
 }
 
 void FetchUserRecentConvListResponse::SharedCtor() {
   error_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&left_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&right_) -
-      reinterpret_cast<char*>(&left_)) + sizeof(right_));
+      reinterpret_cast<char*>(&havemore_) -
+      reinterpret_cast<char*>(&left_)) + sizeof(havemore_));
   _cached_size_ = 0;
 }
 
@@ -6726,8 +6977,8 @@ void FetchUserRecentConvListResponse::Clear() {
   conversations_.Clear();
   error_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&left_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&right_) -
-      reinterpret_cast<char*>(&left_)) + sizeof(right_));
+      reinterpret_cast<char*>(&havemore_) -
+      reinterpret_cast<char*>(&left_)) + sizeof(havemore_));
   _internal_metadata_.Clear();
 }
 
@@ -6780,10 +7031,24 @@ bool FetchUserRecentConvListResponse::MergePartialFromCodedStream(
         break;
       }
 
-      // string error = 4;
+      // bool haveMore = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &havemore_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string error = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_error()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -6839,14 +7104,19 @@ void FetchUserRecentConvListResponse::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->right(), output);
   }
 
-  // string error = 4;
+  // bool haveMore = 4;
+  if (this->havemore() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->havemore(), output);
+  }
+
+  // string error = 5;
   if (this->error().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->error().data(), static_cast<int>(this->error().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "roc.imsdk.network.FetchUserRecentConvListResponse.error");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->error(), output);
+      5, this->error(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6881,7 +7151,12 @@ void FetchUserRecentConvListResponse::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->right(), target);
   }
 
-  // string error = 4;
+  // bool haveMore = 4;
+  if (this->havemore() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->havemore(), target);
+  }
+
+  // string error = 5;
   if (this->error().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->error().data(), static_cast<int>(this->error().length()),
@@ -6889,7 +7164,7 @@ void FetchUserRecentConvListResponse::SerializeWithCachedSizes(
       "roc.imsdk.network.FetchUserRecentConvListResponse.error");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->error(), target);
+        5, this->error(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6920,7 +7195,7 @@ size_t FetchUserRecentConvListResponse::ByteSizeLong() const {
     }
   }
 
-  // string error = 4;
+  // string error = 5;
   if (this->error().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -6939,6 +7214,11 @@ size_t FetchUserRecentConvListResponse::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->right());
+  }
+
+  // bool haveMore = 4;
+  if (this->havemore() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -6981,6 +7261,9 @@ void FetchUserRecentConvListResponse::MergeFrom(const FetchUserRecentConvListRes
   if (from.right() != 0) {
     set_right(from.right());
   }
+  if (from.havemore() != 0) {
+    set_havemore(from.havemore());
+  }
 }
 
 void FetchUserRecentConvListResponse::CopyFrom(const ::google::protobuf::Message& from) {
@@ -7011,6 +7294,7 @@ void FetchUserRecentConvListResponse::InternalSwap(FetchUserRecentConvListRespon
   error_.Swap(&other->error_);
   swap(left_, other->left_);
   swap(right_, other->right_);
+  swap(havemore_, other->havemore_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

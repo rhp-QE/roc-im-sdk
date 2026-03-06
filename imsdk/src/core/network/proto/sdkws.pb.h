@@ -1844,9 +1844,23 @@ class FetchConvMessageListRequest : public ::google::protobuf::Message /* @@prot
 
   // accessors -------------------------------------------------------
 
-  // string convID = 1;
+  // string userID = 2;
+  void clear_userid();
+  static const int kUserIDFieldNumber = 2;
+  const ::std::string& userid() const;
+  void set_userid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_userid(::std::string&& value);
+  #endif
+  void set_userid(const char* value);
+  void set_userid(const char* value, size_t size);
+  ::std::string* mutable_userid();
+  ::std::string* release_userid();
+  void set_allocated_userid(::std::string* userid);
+
+  // string convID = 3;
   void clear_convid();
-  static const int kConvIDFieldNumber = 1;
+  static const int kConvIDFieldNumber = 3;
   const ::std::string& convid() const;
   void set_convid(const ::std::string& value);
   #if LANG_CXX11
@@ -1858,32 +1872,47 @@ class FetchConvMessageListRequest : public ::google::protobuf::Message /* @@prot
   ::std::string* release_convid();
   void set_allocated_convid(::std::string* convid);
 
-  // int64 cursor = 2;
-  void clear_cursor();
-  static const int kCursorFieldNumber = 2;
-  ::google::protobuf::int64 cursor() const;
-  void set_cursor(::google::protobuf::int64 value);
+  // int64 mode = 1;
+  void clear_mode();
+  static const int kModeFieldNumber = 1;
+  ::google::protobuf::int64 mode() const;
+  void set_mode(::google::protobuf::int64 value);
 
-  // int64 limit = 3;
+  // int64 version = 4;
+  void clear_version();
+  static const int kVersionFieldNumber = 4;
+  ::google::protobuf::int64 version() const;
+  void set_version(::google::protobuf::int64 value);
+
+  // int64 limit = 5;
   void clear_limit();
-  static const int kLimitFieldNumber = 3;
+  static const int kLimitFieldNumber = 5;
   ::google::protobuf::int64 limit() const;
   void set_limit(::google::protobuf::int64 value);
 
-  // bool forward = 4;
-  void clear_forward();
-  static const int kForwardFieldNumber = 4;
-  bool forward() const;
-  void set_forward(bool value);
+  // int64 left = 6;
+  void clear_left();
+  static const int kLeftFieldNumber = 6;
+  ::google::protobuf::int64 left() const;
+  void set_left(::google::protobuf::int64 value);
+
+  // int64 right = 7;
+  void clear_right();
+  static const int kRightFieldNumber = 7;
+  ::google::protobuf::int64 right() const;
+  void set_right(::google::protobuf::int64 value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.FetchConvMessageListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr userid_;
   ::google::protobuf::internal::ArenaStringPtr convid_;
-  ::google::protobuf::int64 cursor_;
+  ::google::protobuf::int64 mode_;
+  ::google::protobuf::int64 version_;
   ::google::protobuf::int64 limit_;
-  bool forward_;
+  ::google::protobuf::int64 left_;
+  ::google::protobuf::int64 right_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsFetchConvMessageListRequestImpl();
@@ -1984,9 +2013,9 @@ class FetchConvMessageListResponse : public ::google::protobuf::Message /* @@pro
   const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::MessageData >&
       messages() const;
 
-  // string error = 4;
+  // string error = 5;
   void clear_error();
-  static const int kErrorFieldNumber = 4;
+  static const int kErrorFieldNumber = 5;
   const ::std::string& error() const;
   void set_error(const ::std::string& value);
   #if LANG_CXX11
@@ -1998,17 +2027,23 @@ class FetchConvMessageListResponse : public ::google::protobuf::Message /* @@pro
   ::std::string* release_error();
   void set_allocated_error(::std::string* error);
 
-  // bool haveMore = 2;
+  // int64 left = 2;
+  void clear_left();
+  static const int kLeftFieldNumber = 2;
+  ::google::protobuf::int64 left() const;
+  void set_left(::google::protobuf::int64 value);
+
+  // int64 right = 3;
+  void clear_right();
+  static const int kRightFieldNumber = 3;
+  ::google::protobuf::int64 right() const;
+  void set_right(::google::protobuf::int64 value);
+
+  // bool haveMore = 4;
   void clear_havemore();
-  static const int kHaveMoreFieldNumber = 2;
+  static const int kHaveMoreFieldNumber = 4;
   bool havemore() const;
   void set_havemore(bool value);
-
-  // int32 errorCode = 3;
-  void clear_errorcode();
-  static const int kErrorCodeFieldNumber = 3;
-  ::google::protobuf::int32 errorcode() const;
-  void set_errorcode(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.FetchConvMessageListResponse)
  private:
@@ -2016,8 +2051,9 @@ class FetchConvMessageListResponse : public ::google::protobuf::Message /* @@pro
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::MessageData > messages_;
   ::google::protobuf::internal::ArenaStringPtr error_;
+  ::google::protobuf::int64 left_;
+  ::google::protobuf::int64 right_;
   bool havemore_;
-  ::google::protobuf::int32 errorcode_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsFetchConvMessageListResponseImpl();
@@ -2106,9 +2142,9 @@ class FetchUserRecentConvListRequest : public ::google::protobuf::Message /* @@p
 
   // accessors -------------------------------------------------------
 
-  // string userID = 1;
+  // string userID = 2;
   void clear_userid();
-  static const int kUserIDFieldNumber = 1;
+  static const int kUserIDFieldNumber = 2;
   const ::std::string& userid() const;
   void set_userid(const ::std::string& value);
   #if LANG_CXX11
@@ -2120,32 +2156,46 @@ class FetchUserRecentConvListRequest : public ::google::protobuf::Message /* @@p
   ::std::string* release_userid();
   void set_allocated_userid(::std::string* userid);
 
-  // int64 lowerVersion = 2;
-  void clear_lowerversion();
-  static const int kLowerVersionFieldNumber = 2;
-  ::google::protobuf::int64 lowerversion() const;
-  void set_lowerversion(::google::protobuf::int64 value);
+  // int64 mode = 1;
+  void clear_mode();
+  static const int kModeFieldNumber = 1;
+  ::google::protobuf::int64 mode() const;
+  void set_mode(::google::protobuf::int64 value);
 
-  // int64 upperVersion = 3;
+  // int64 version = 3;
+  void clear_version();
+  static const int kVersionFieldNumber = 3;
+  ::google::protobuf::int64 version() const;
+  void set_version(::google::protobuf::int64 value);
+
+  // int64 limit = 4;
+  void clear_limit();
+  static const int kLimitFieldNumber = 4;
+  ::google::protobuf::int64 limit() const;
+  void set_limit(::google::protobuf::int64 value);
+
+  // int64 lowVersion = 5;
+  void clear_lowversion();
+  static const int kLowVersionFieldNumber = 5;
+  ::google::protobuf::int64 lowversion() const;
+  void set_lowversion(::google::protobuf::int64 value);
+
+  // int64 upperVersion = 6;
   void clear_upperversion();
-  static const int kUpperVersionFieldNumber = 3;
+  static const int kUpperVersionFieldNumber = 6;
   ::google::protobuf::int64 upperversion() const;
   void set_upperversion(::google::protobuf::int64 value);
-
-  // bool first = 4;
-  void clear_first();
-  static const int kFirstFieldNumber = 4;
-  bool first() const;
-  void set_first(bool value);
 
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.FetchUserRecentConvListRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr userid_;
-  ::google::protobuf::int64 lowerversion_;
+  ::google::protobuf::int64 mode_;
+  ::google::protobuf::int64 version_;
+  ::google::protobuf::int64 limit_;
+  ::google::protobuf::int64 lowversion_;
   ::google::protobuf::int64 upperversion_;
-  bool first_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsFetchUserRecentConvListRequestImpl();
@@ -2246,9 +2296,9 @@ class FetchUserRecentConvListResponse : public ::google::protobuf::Message /* @@
   const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::ConversationData >&
       conversations() const;
 
-  // string error = 4;
+  // string error = 5;
   void clear_error();
-  static const int kErrorFieldNumber = 4;
+  static const int kErrorFieldNumber = 5;
   const ::std::string& error() const;
   void set_error(const ::std::string& value);
   #if LANG_CXX11
@@ -2272,6 +2322,12 @@ class FetchUserRecentConvListResponse : public ::google::protobuf::Message /* @@
   ::google::protobuf::int64 right() const;
   void set_right(::google::protobuf::int64 value);
 
+  // bool haveMore = 4;
+  void clear_havemore();
+  static const int kHaveMoreFieldNumber = 4;
+  bool havemore() const;
+  void set_havemore(bool value);
+
   // @@protoc_insertion_point(class_scope:roc.imsdk.network.FetchUserRecentConvListResponse)
  private:
 
@@ -2280,6 +2336,7 @@ class FetchUserRecentConvListResponse : public ::google::protobuf::Message /* @@
   ::google::protobuf::internal::ArenaStringPtr error_;
   ::google::protobuf::int64 left_;
   ::google::protobuf::int64 right_;
+  bool havemore_;
   mutable int _cached_size_;
   friend struct ::protobuf_sdkws_2eproto::TableStruct;
   friend void ::protobuf_sdkws_2eproto::InitDefaultsFetchUserRecentConvListResponseImpl();
@@ -5045,7 +5102,74 @@ BatchChangeConversationsResponse::results() const {
 
 // FetchConvMessageListRequest
 
-// string convID = 1;
+// int64 mode = 1;
+inline void FetchConvMessageListRequest::clear_mode() {
+  mode_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchConvMessageListRequest::mode() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListRequest.mode)
+  return mode_;
+}
+inline void FetchConvMessageListRequest::set_mode(::google::protobuf::int64 value) {
+  
+  mode_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.mode)
+}
+
+// string userID = 2;
+inline void FetchConvMessageListRequest::clear_userid() {
+  userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& FetchConvMessageListRequest::userid() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListRequest.userID)
+  return userid_.GetNoArena();
+}
+inline void FetchConvMessageListRequest::set_userid(const ::std::string& value) {
+  
+  userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.userID)
+}
+#if LANG_CXX11
+inline void FetchConvMessageListRequest::set_userid(::std::string&& value) {
+  
+  userid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.FetchConvMessageListRequest.userID)
+}
+#endif
+inline void FetchConvMessageListRequest::set_userid(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.FetchConvMessageListRequest.userID)
+}
+inline void FetchConvMessageListRequest::set_userid(const char* value, size_t size) {
+  
+  userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.FetchConvMessageListRequest.userID)
+}
+inline ::std::string* FetchConvMessageListRequest::mutable_userid() {
+  
+  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.FetchConvMessageListRequest.userID)
+  return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* FetchConvMessageListRequest::release_userid() {
+  // @@protoc_insertion_point(field_release:roc.imsdk.network.FetchConvMessageListRequest.userID)
+  
+  return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void FetchConvMessageListRequest::set_allocated_userid(::std::string* userid) {
+  if (userid != NULL) {
+    
+  } else {
+    
+  }
+  userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
+  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.FetchConvMessageListRequest.userID)
+}
+
+// string convID = 3;
 inline void FetchConvMessageListRequest::clear_convid() {
   convid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -5098,21 +5222,21 @@ inline void FetchConvMessageListRequest::set_allocated_convid(::std::string* con
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.FetchConvMessageListRequest.convID)
 }
 
-// int64 cursor = 2;
-inline void FetchConvMessageListRequest::clear_cursor() {
-  cursor_ = GOOGLE_LONGLONG(0);
+// int64 version = 4;
+inline void FetchConvMessageListRequest::clear_version() {
+  version_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 FetchConvMessageListRequest::cursor() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListRequest.cursor)
-  return cursor_;
+inline ::google::protobuf::int64 FetchConvMessageListRequest::version() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListRequest.version)
+  return version_;
 }
-inline void FetchConvMessageListRequest::set_cursor(::google::protobuf::int64 value) {
+inline void FetchConvMessageListRequest::set_version(::google::protobuf::int64 value) {
   
-  cursor_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.cursor)
+  version_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.version)
 }
 
-// int64 limit = 3;
+// int64 limit = 5;
 inline void FetchConvMessageListRequest::clear_limit() {
   limit_ = GOOGLE_LONGLONG(0);
 }
@@ -5126,18 +5250,32 @@ inline void FetchConvMessageListRequest::set_limit(::google::protobuf::int64 val
   // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.limit)
 }
 
-// bool forward = 4;
-inline void FetchConvMessageListRequest::clear_forward() {
-  forward_ = false;
+// int64 left = 6;
+inline void FetchConvMessageListRequest::clear_left() {
+  left_ = GOOGLE_LONGLONG(0);
 }
-inline bool FetchConvMessageListRequest::forward() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListRequest.forward)
-  return forward_;
+inline ::google::protobuf::int64 FetchConvMessageListRequest::left() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListRequest.left)
+  return left_;
 }
-inline void FetchConvMessageListRequest::set_forward(bool value) {
+inline void FetchConvMessageListRequest::set_left(::google::protobuf::int64 value) {
   
-  forward_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.forward)
+  left_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.left)
+}
+
+// int64 right = 7;
+inline void FetchConvMessageListRequest::clear_right() {
+  right_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchConvMessageListRequest::right() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListRequest.right)
+  return right_;
+}
+inline void FetchConvMessageListRequest::set_right(::google::protobuf::int64 value) {
+  
+  right_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListRequest.right)
 }
 
 // -------------------------------------------------------------------
@@ -5174,7 +5312,35 @@ FetchConvMessageListResponse::messages() const {
   return messages_;
 }
 
-// bool haveMore = 2;
+// int64 left = 2;
+inline void FetchConvMessageListResponse::clear_left() {
+  left_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchConvMessageListResponse::left() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListResponse.left)
+  return left_;
+}
+inline void FetchConvMessageListResponse::set_left(::google::protobuf::int64 value) {
+  
+  left_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListResponse.left)
+}
+
+// int64 right = 3;
+inline void FetchConvMessageListResponse::clear_right() {
+  right_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchConvMessageListResponse::right() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListResponse.right)
+  return right_;
+}
+inline void FetchConvMessageListResponse::set_right(::google::protobuf::int64 value) {
+  
+  right_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListResponse.right)
+}
+
+// bool haveMore = 4;
 inline void FetchConvMessageListResponse::clear_havemore() {
   havemore_ = false;
 }
@@ -5188,21 +5354,7 @@ inline void FetchConvMessageListResponse::set_havemore(bool value) {
   // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListResponse.haveMore)
 }
 
-// int32 errorCode = 3;
-inline void FetchConvMessageListResponse::clear_errorcode() {
-  errorcode_ = 0;
-}
-inline ::google::protobuf::int32 FetchConvMessageListResponse::errorcode() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchConvMessageListResponse.errorCode)
-  return errorcode_;
-}
-inline void FetchConvMessageListResponse::set_errorcode(::google::protobuf::int32 value) {
-  
-  errorcode_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchConvMessageListResponse.errorCode)
-}
-
-// string error = 4;
+// string error = 5;
 inline void FetchConvMessageListResponse::clear_error() {
   error_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -5259,7 +5411,21 @@ inline void FetchConvMessageListResponse::set_allocated_error(::std::string* err
 
 // FetchUserRecentConvListRequest
 
-// string userID = 1;
+// int64 mode = 1;
+inline void FetchUserRecentConvListRequest::clear_mode() {
+  mode_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchUserRecentConvListRequest::mode() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserRecentConvListRequest.mode)
+  return mode_;
+}
+inline void FetchUserRecentConvListRequest::set_mode(::google::protobuf::int64 value) {
+  
+  mode_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListRequest.mode)
+}
+
+// string userID = 2;
 inline void FetchUserRecentConvListRequest::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -5312,21 +5478,49 @@ inline void FetchUserRecentConvListRequest::set_allocated_userid(::std::string* 
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.FetchUserRecentConvListRequest.userID)
 }
 
-// int64 lowerVersion = 2;
-inline void FetchUserRecentConvListRequest::clear_lowerversion() {
-  lowerversion_ = GOOGLE_LONGLONG(0);
+// int64 version = 3;
+inline void FetchUserRecentConvListRequest::clear_version() {
+  version_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 FetchUserRecentConvListRequest::lowerversion() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserRecentConvListRequest.lowerVersion)
-  return lowerversion_;
+inline ::google::protobuf::int64 FetchUserRecentConvListRequest::version() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserRecentConvListRequest.version)
+  return version_;
 }
-inline void FetchUserRecentConvListRequest::set_lowerversion(::google::protobuf::int64 value) {
+inline void FetchUserRecentConvListRequest::set_version(::google::protobuf::int64 value) {
   
-  lowerversion_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListRequest.lowerVersion)
+  version_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListRequest.version)
 }
 
-// int64 upperVersion = 3;
+// int64 limit = 4;
+inline void FetchUserRecentConvListRequest::clear_limit() {
+  limit_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchUserRecentConvListRequest::limit() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserRecentConvListRequest.limit)
+  return limit_;
+}
+inline void FetchUserRecentConvListRequest::set_limit(::google::protobuf::int64 value) {
+  
+  limit_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListRequest.limit)
+}
+
+// int64 lowVersion = 5;
+inline void FetchUserRecentConvListRequest::clear_lowversion() {
+  lowversion_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 FetchUserRecentConvListRequest::lowversion() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserRecentConvListRequest.lowVersion)
+  return lowversion_;
+}
+inline void FetchUserRecentConvListRequest::set_lowversion(::google::protobuf::int64 value) {
+  
+  lowversion_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListRequest.lowVersion)
+}
+
+// int64 upperVersion = 6;
 inline void FetchUserRecentConvListRequest::clear_upperversion() {
   upperversion_ = GOOGLE_LONGLONG(0);
 }
@@ -5338,20 +5532,6 @@ inline void FetchUserRecentConvListRequest::set_upperversion(::google::protobuf:
   
   upperversion_ = value;
   // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListRequest.upperVersion)
-}
-
-// bool first = 4;
-inline void FetchUserRecentConvListRequest::clear_first() {
-  first_ = false;
-}
-inline bool FetchUserRecentConvListRequest::first() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserRecentConvListRequest.first)
-  return first_;
-}
-inline void FetchUserRecentConvListRequest::set_first(bool value) {
-  
-  first_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListRequest.first)
 }
 
 // -------------------------------------------------------------------
@@ -5416,7 +5596,21 @@ inline void FetchUserRecentConvListResponse::set_right(::google::protobuf::int64
   // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListResponse.right)
 }
 
-// string error = 4;
+// bool haveMore = 4;
+inline void FetchUserRecentConvListResponse::clear_havemore() {
+  havemore_ = false;
+}
+inline bool FetchUserRecentConvListResponse::havemore() const {
+  // @@protoc_insertion_point(field_get:roc.imsdk.network.FetchUserRecentConvListResponse.haveMore)
+  return havemore_;
+}
+inline void FetchUserRecentConvListResponse::set_havemore(bool value) {
+  
+  havemore_ = value;
+  // @@protoc_insertion_point(field_set:roc.imsdk.network.FetchUserRecentConvListResponse.haveMore)
+}
+
+// string error = 5;
 inline void FetchUserRecentConvListResponse::clear_error() {
   error_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

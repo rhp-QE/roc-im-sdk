@@ -36,11 +36,9 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
     }
 
     int cnt = 10;
-    bool is_news = true;
-    bool has_more = true;
-    bool forward = true;
-    int64_t cursor = sdk_root->ConversationManager()->db_opt->ChatsCursor(CTX_V); // TODO 使用本地水位
+    int mode = 0;
     int64_t left = -1, right = -1; // 本次混链拉取的会话区间
+    int64_t version = sdk_root->ConversationManager()->db_opt->ChatsCursor(CTX_V) + 1; // TODO 使用本地水位
 
     /// 第一次请求 is_news = true, 拉取区间为 【cursor, *】 的消息， 由于区间可能过大， 服务端触发分页拉取 返回 区间为【left，right】 的消息 （left > cursor）
     /// 如果触发分页拉取，is_news = false，则拉取区间为 【cursor, left】的消息 
@@ -48,9 +46,11 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
     /// 消息检验： 【left, right】区间的会话 发送给服务端， 服务的那进行校验 补充空洞。 空洞补齐后 更新会话cursor 为 right
     /// note: left， right 为左闭右开区间
 
+    bool has_more = true;
+
     do {
         // 构造请求
-        std::unique_ptr<network::FetchUserRecentConvListRequest> req = p_makeFetchUserMessageListReq(CTX_V, is_news, cursor, forward);
+        std::unique_ptr<network::FetchUserRecentConvListRequest> req = p_makeFetchUserMessageListReq(CTX_V, mode, version, {left, right});
 
         // 发送请求
         std::expected<std::unique_ptr<network::FetchUserRecentConvListResponse>, roc::error::Error> resp = co_await p_request(CTX_V, req.get());
@@ -58,16 +58,12 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
             co_return;
         }
 
-        if (is_news) {
-            right = resp.value()->right();
-            is_news = false;
-        }
-        if (!resp.value()->error().empty()) {
-            left = resp.value()->left();
-        }
+        has_more = resp.value()->havemore();
 
-        cursor = resp.value()->left();
-        has_more = resp.value()->conversations_size() > 0 && resp.value()->error().empty();
+        if (has_more) {
+            right = resp.value()->left() - 1;
+            left = version;
+        }
 
         const int size = resp.value()->conversations_size();
         std::vector<std::shared_ptr<network::ConversationData>> net_convs;
@@ -79,19 +75,22 @@ asio::awaitable<void> UserMessageFetcher::FetchUserMessages(CTX_T) {
             pulled_convs_.push_back(conv->convid());
         }
 
+        mode = 1;
+        version = std::max(version, resp.value()->right());
+
         // 处理请求
         asio::co_spawn(sdk_root->sdk_io_context(), p_handleFetchedUserMessage(CTX_V, net_convs), asio::detached);
     } while (has_more && (cnt--) > 0);
 
     // 会话区间二次校验【left, right】
-    bool is_integrity = co_await p_doubleCheckUserMessageIntegrity(CTX_V, left, right);
+    // bool is_integrity = co_await p_doubleCheckUserMessageIntegrity(CTX_V, left, right);
 
     // 存储本地水位 right
-    if (is_integrity) {
+    // if (is_integrity) {
         sdk_root->ConversationManager()->db_opt->SetChatsCursor(CTX_V, right);
-    }
+    // }
 
-    LOG_INFO("UserMessageFetcher", "user message fetch integrity = {}", is_integrity);
+    // LOG_INFO("UserMessageFetcher", "user message fetch integrity = {}", is_integrity);
 
     co_return;
 }
@@ -103,13 +102,12 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserRecentConvListRequest *re
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error("sdk root is empty")))
 
     // 创建 FrontierMessage 请求
-    auto frontier_msg = std::make_unique<network::FrontierMessage>();
-    frontier_msg->service = common::SDKWSService;
-    frontier_msg->method = std::to_string(static_cast<int32_t>(common::SDKWSMethod::PULL_MIX_LIST));
-    // 使用 SerializeToArray 避免数据拷贝，直接写入 vector
-    int payload_size = request->ByteSizeLong();
-    frontier_msg->payload.resize(payload_size);
-    request->SerializeToArray(frontier_msg->payload.data(), payload_size);
+    auto frontier_msg = std::unique_ptr<network::FrontierMessage>(new network::FrontierMessage{
+        .service = core::common::SDKWSService,
+        .method  = std::to_string(static_cast<int32_t>(common::SDKWSMethod::PULL_MIX_LIST)),
+        .payload = std::vector<uint8_t>(request->ByteSizeLong()),
+    });
+    request->SerializeToArray(frontier_msg->payload.data(), frontier_msg->payload.size());
 
     std::expected<std::unique_ptr<network::FrontierMessage>, roc::error::Error> response =
         co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
@@ -119,7 +117,6 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserRecentConvListRequest *re
 
     // 从响应的 payload 中解析 FetchUserRecentConvListResponse
     auto resp = std::make_unique<network::FetchUserRecentConvListResponse>();
-    // 直接使用 vector 中的数据解析，避免拷贝
     bool ok = resp->ParseFromArray(response.value()->payload.data(), response.value()->payload.size());
     if (!ok) {
         co_return std::unexpected(roc::error::make_error(40203, "SDKRequest fetch_user_message_list parse response failed"));
@@ -128,15 +125,17 @@ UserMessageFetcher::p_request(CTX_T, network::FetchUserRecentConvListRequest *re
     co_return resp;
 }
 
-std::unique_ptr<network::FetchUserRecentConvListRequest> UserMessageFetcher::p_makeFetchUserMessageListReq(CTX_T, bool news, int64_t cursor, bool forward) {
+std::unique_ptr<network::FetchUserRecentConvListRequest> UserMessageFetcher::p_makeFetchUserMessageListReq(CTX_T, int64_t mode, int64_t version, std::pair<int64_t, int64_t> range) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
     auto req = std::make_unique<network::FetchUserRecentConvListRequest>();
 
     req->set_userid(sdk_root->config().user_id);
-    req->set_lowerversion(cursor);
-    req->set_upperversion(cursor + 100);
-    req->set_first(news);
+    req->set_mode(mode);
+    req->set_version(version);
+    req->set_limit(10);
+    req->set_lowversion(range.first);
+    req->set_upperversion(range.second);
 
     return req;
 }

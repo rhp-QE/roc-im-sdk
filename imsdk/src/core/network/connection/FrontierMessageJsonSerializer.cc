@@ -17,6 +17,7 @@
 #include <boost/beast/core/detail/base64.hpp>
 #include <algorithm>
 #include <stdexcept>
+#include <cctype>
 
 namespace roc::imsdk::network {
 
@@ -28,42 +29,34 @@ std::string FrontierMessageJsonSerializer::ToJsonString(const FrontierMessage& m
 boost::json::value FrontierMessageJsonSerializer::ToJson(const FrontierMessage& msg) {
     boost::json::object obj;
     
-    // requestID: omitempty - 只有非空时才序列化
     if (!msg.request_id.empty()) {
         obj["requestID"] = msg.request_id;
     }
     
-    // type: omitempty - 只有非空时才序列化
     if (!msg.type.empty()) {
         obj["type"] = msg.type;
     }
     
-    // service: omitempty - 只有非空时才序列化
     if (!msg.service.empty()) {
         obj["service"] = msg.service;
     }
     
-    // method: omitempty - 只有非空时才序列化
     if (!msg.method.empty()) {
         obj["method"] = msg.method;
     }
     
-    // payload: omitempty - 只有非空时才序列化（Go 的 []byte 会被编码为 base64 字符串）
     if (!msg.payload.empty()) {
         obj["payload"] = PayloadToBase64String(msg.payload);
     }
     
-    // error: omitempty - 只有非空时才序列化
     if (!msg.error.empty()) {
         obj["error"] = msg.error;
     }
     
-    // timestamp: omitempty - 只有非零时才序列化
     if (msg.timestamp != 0) {
         obj["timestamp"] = msg.timestamp;
     }
     
-    // metadata: omitempty - 只有非空时才序列化
     if (!msg.metadata.empty()) {
         obj["metadata"] = MetadataToJsonObject(msg.metadata);
     }
@@ -196,15 +189,30 @@ std::expected<std::vector<uint8_t>, roc::error::Error> FrontierMessageJsonSerial
     }
 
     try {
+        // 先移除所有空白字符，避免日志或传输过程中混入的换行/空格影响解码
+        std::string cleaned;
+        cleaned.reserve(base64_str.size());
+        for (char c : base64_str) {
+            if (std::isspace(static_cast<unsigned char>(c))) {
+                continue;
+            }
+            cleaned.push_back(c);
+        }
+
+        if (cleaned.empty()) {
+            return std::vector<uint8_t>();
+        }
+
         // 从 base64 解码
         std::vector<uint8_t> decoded;
-        decoded.resize(boost::beast::detail::base64::decoded_size(base64_str.size()));
-        auto [bytes_written, chars_read] = boost::beast::detail::base64::decode(decoded.data(), base64_str.data(), base64_str.size());
-        
-        if (chars_read != base64_str.size()) {
-            return std::unexpected(roc::error::make_error(1006, "Failed to decode base64 payload: incomplete decode"));
+        decoded.resize(boost::beast::detail::base64::decoded_size(cleaned.size()));
+        auto [bytes_written, chars_read] = boost::beast::detail::base64::decode(decoded.data(), cleaned.data(), cleaned.size());
+
+        // 如果完全无法解码（写入 0 字节），认为失败
+        if (bytes_written == 0 && !cleaned.empty()) {
+            return std::unexpected(roc::error::make_error(1006, "Failed to decode base64 payload: invalid data, str = " + base64_str));
         }
-        
+
         decoded.resize(bytes_written);
         return decoded;
     } catch (const std::exception& e) {

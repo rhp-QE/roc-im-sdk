@@ -22,7 +22,7 @@ public:
     
 private:
     /// 构造获取用户消息列表请求
-    std::unique_ptr<network::FetchUserRecentConvListRequest> p_makeFetchUserMessageListReq(CTX_T, bool news, int64_t cursor, bool forward);
+    std::unique_ptr<network::FetchUserRecentConvListRequest> p_makeFetchUserMessageListReq(CTX_T, int64_t mode, int64_t version, std::pair<int64_t, int64_t> range);
     
     /// 处理获取到的用户消息
     boost::asio::awaitable<void> p_handleFetchedUserMessage(CTX_T, std::vector<std::shared_ptr<network::ConversationData>> net_convs);
