@@ -155,7 +155,7 @@ boost::asio::awaitable<void> UserMessageFetcher::p_handleFetchedUserMessage(CTX_
     LOG_INFO("ConvManager", "finish_fetch_user_message, net_msgs: {}, net_convs: {}", net_msgs.size(), net_convs.size());
 
     // 处理接收到的消息
-    sdk_root->MessageManager()->HandleReceiveMessage(CTX_V, net_msgs);
+    sdk_root->MessageManager()->HandleOfflineMessage(CTX_V, net_msgs);
 
     // 处理接收到的会话
     auto conv_manager = sdk_root->ConversationManager();

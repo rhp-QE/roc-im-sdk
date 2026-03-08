@@ -37,11 +37,11 @@ void ReceiveMessage::Start(CTX_T) {
         if (it != resp->metadata.end()) {
             call_track_id = static_cast<uint32_t>(std::stoul(it->second));
         }
-        msg_manager->receive_message->HandlePushMessage(call_track_id, resp);
+        msg_manager->receive_message->p_HandleOnlineMessage(call_track_id, resp);
     });
 }
 
-void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<const network::FrontierMessage> resp) {
+void ReceiveMessage::p_HandleOnlineMessage(CTX_T, std::shared_ptr<const network::FrontierMessage> resp) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     auto msg_manager = sdk_root->MessageManager();
@@ -64,6 +64,13 @@ void ReceiveMessage::HandlePushMessage(CTX_T, std::shared_ptr<const network::Fro
     LOG_INFO("MsgManager", "receive_message, from: {}", net_msg->sendid());
 
     boost::asio::co_spawn(sdk_root->net_io_context(), HandleReceiveMessage(CTX_V, {net_msg}), boost::asio::detached);
+}
+
+boost::asio::awaitable<void> ReceiveMessage::HandleOfflineMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
+    CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+
+    /// 直接处理消息
+    co_return co_await HandleOfflineMessage(CTX_V, std::move(net_msgs));
 }
 
 boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {

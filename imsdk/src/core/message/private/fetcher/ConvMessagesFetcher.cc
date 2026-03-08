@@ -84,7 +84,7 @@ void ConvMessagesFetcher::p_HandleFetchConvMessgaeListResp(CTX_T, std::unique_pt
 
     // 保存消息
     auto msg_manager = sdk_root->MessageManager();
-    boost::asio::co_spawn(sdk_root->net_io_context(), msg_manager->receive_message->HandleReceiveMessage(CTX_V, net_msgs), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->net_io_context(), msg_manager->receive_message->HandleOfflineMessage(CTX_V, net_msgs), boost::asio::detached);
 }
 
 asio::awaitable<void> ConvMessagesFetcher::FetchConvMessageListForRange(CTX_T, std::string conv_id, std::pair<int64_t, int64_t> range) {
