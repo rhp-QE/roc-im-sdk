@@ -8,6 +8,7 @@
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/message/private/data_source/MessageDataSource.h"
+#include "imsdk/src/core/network/connection/FrontierMessageUtility.h"
 #include "imsdk/src/core/network/connection/SDKConnectionManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
 #include "imsdk/src/include/model/network.h"
@@ -30,13 +31,12 @@ void ReceiveMessage::Start(CTX_T) {
 
     auto conn = sdk_root->ConnectionManager();
 
-    auto msg_manager = sdk_root->MessageManager();
-    conn->AddOnPushMessageCallback([msg_manager](std::shared_ptr<const network::FrontierMessage> resp) {
-        uint32_t call_track_id = 0;
-        auto it = resp->metadata.find("track_id");
-        if (it != resp->metadata.end()) {
-            call_track_id = static_cast<uint32_t>(std::stoul(it->second));
-        }
+    conn->AddOnPushMessageCallback([w_sdk_root = w_sdk_root](std::shared_ptr<const network::FrontierMessage> resp) {
+        CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
+        uint32_t call_track_id = static_cast<uint32_t>(std::stoul(
+            network::FrontierMessageUtility::ExtractTrackId(*resp).value_or("0")));
+        
+        auto msg_manager = sdk_root->MessageManager();
         msg_manager->receive_message->p_HandleOnlineMessage(call_track_id, resp);
     });
 }
@@ -63,7 +63,7 @@ void ReceiveMessage::p_HandleOnlineMessage(CTX_T, std::shared_ptr<const network:
 
     LOG_INFO("MsgManager", "receive_message, from: {}", net_msg->sendid());
 
-    boost::asio::co_spawn(sdk_root->net_io_context(), HandleReceiveMessage(CTX_V, {net_msg}), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->net_io_context(), HandleMessage(CTX_V, {net_msg}), boost::asio::detached);
 }
 
 boost::asio::awaitable<void> ReceiveMessage::HandleOfflineMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
@@ -73,7 +73,7 @@ boost::asio::awaitable<void> ReceiveMessage::HandleOfflineMessage(CTX_T, std::ve
     co_return co_await HandleOfflineMessage(CTX_V, std::move(net_msgs));
 }
 
-boost::asio::awaitable<void> ReceiveMessage::HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
+boost::asio::awaitable<void> ReceiveMessage::HandleMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
     if (net_msgs.empty()) {
         co_return;
     }

@@ -13,7 +13,7 @@ public:
     void Start(CTX_T);
 
     /// 处理接收到的消息 (混链、单链拉到的消息， 长链下推的消息)
-    boost::asio::awaitable<void> HandleReceiveMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs);
+    boost::asio::awaitable<void> HandleMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs);
 
     /// 处理离线消息
     boost::asio::awaitable<void> HandleOfflineMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs);

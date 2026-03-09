@@ -120,6 +120,10 @@ asio::io_context& SDKRoot::sdk_io_context() {
     return *(config_.sdk_io_context);
 }
 
+asio::io_context& SDKRoot::db_io_context() {
+    return *(config_.db_io_context);
+}
+
 WCDB::Database* SDKRoot::database() {
     return database_;
 }

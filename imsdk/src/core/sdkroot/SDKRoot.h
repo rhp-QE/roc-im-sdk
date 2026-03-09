@@ -67,6 +67,8 @@ public:
     WCDB::Database* database();
     asio::io_context& net_io_context();
     asio::io_context& sdk_io_context();
+    /// 单线程 DB 操作上下文
+    asio::io_context& db_io_context();
 
     core::CmdCenter* cmd_center();
     core::GroupManager* GroupManager();

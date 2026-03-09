@@ -13,7 +13,7 @@ namespace roc::imsdk::core::conversation {
 
 ConvDatasource::ConvDatasource(std::weak_ptr<SDKRoot> sdk_root) 
     : w_sdk_root(sdk_root),
-      conv_strand_(boost::asio::make_strand(sdk_root.lock()->sdk_io_context().get_executor())) {
+      conv_strand_(boost::asio::make_strand(sdk_root.lock()->db_io_context().get_executor())) {
 }
 
 boost::asio::strand<boost::asio::io_context::executor_type> ConvDatasource::ConvStrand() {
@@ -37,11 +37,16 @@ ConvDatasource::SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network:
         return conv_manager->convert->ConvertDbConvToSdkConv(CTX_V, conv.get());
     });
 
-    auto sdk_convs = co_await boost::asio::co_spawn(ConvStrand(), [=, sdk_convs_copy = std::move(sdk_convs_copy), w_sdk_root = w_sdk_root]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> {
-        CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
+    auto sdk_convs = co_await boost::asio::co_spawn(sdk_root->db_io_context(), [
+        =, this, sdk = w_sdk_root,
+        sdk_convs_copy = std::move(sdk_convs_copy),
+        db_convs_copy = std::move(db_convs)]
+        () -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>>
+    {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(sdk, std::vector<std::shared_ptr<model::ConversationModel>>());
 
         /// 保存到数据库
-        conv_manager->db_opt->InsertConversation(CTX_V, db_convs);
+        conv_manager->db_opt->InsertConversation(CTX_V, db_convs_copy);
 
         /// 更新会话缓存
         co_return co_await this->p_UpdateConvCache(CTX_V, std::move(sdk_convs_copy));

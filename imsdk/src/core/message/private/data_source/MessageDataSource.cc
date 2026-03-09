@@ -19,7 +19,7 @@ namespace roc::imsdk::core::message {
 
 MessageDataSource::MessageDataSource(std::weak_ptr<SDKRoot> sdk_root) 
     : w_sdk_root(sdk_root),
-      msg_strand_(boost::asio::make_strand(sdk_root.lock()->config().sdk_io_context->get_executor())) {
+      msg_strand_(boost::asio::make_strand(sdk_root.lock()->db_io_context().get_executor())) {
 }
 
 boost::asio::strand<boost::asio::io_context::executor_type> MessageDataSource::msg_strand() {
@@ -67,14 +67,22 @@ MessageDataSource::SaveDbMsgs(CTX_T, std::vector<std::shared_ptr<core::message::
     auto msg_manager = sdk_root->MessageManager();
 
     // 转换为 sdk 消息
-    auto sdk_msgs = base::util::transform(db_msgs, [msg_manager, w_sdk_root = w_sdk_root, call_track_id](const std::shared_ptr<core::message::MessageORM> &msg) {
+    auto sdk_msgs = base::util::transform(db_msgs, [=](const std::shared_ptr<core::message::MessageORM> &msg) {
         return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CTX_V, msg.get());
     });
 
     /// 在同一个线程内执行 确保 db 和 缓存的一致性
-    auto saved_msgs = co_await boost::asio::co_spawn(msg_strand(), [this, msg_manager, sdk_msgs = std::move(sdk_msgs), db_msgs = std::move(db_msgs), w_sdk_root = w_sdk_root, call_track_id]() -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>> {
+    auto saved_msgs = co_await boost::asio::co_spawn(sdk_root->db_io_context(), [
+        =, this, sdk = w_sdk_root,
+        sdk_msgs = std::move(sdk_msgs),
+        db_msgs_copy = std::move(db_msgs)]
+        () -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>>
+    {
+        CHECK_ROOT_OR_CO_RETURN_VALUE(sdk, std::vector<std::shared_ptr<model::MessageModel>>());
+        auto msg_manager = sdk_root->MessageManager();
+
         // 保存到数据库
-        bool ret = msg_manager->db_opt->InsertOrReplaceMessage(CTX_V, db_msgs);
+        bool ret = msg_manager->db_opt->InsertOrReplaceMessage(CTX_V, db_msgs_copy);
 
         // // 排除 local_ext 和 client_order_index 字段（黑名单模式）
         // WCDB::Fields not_update_when_exit({

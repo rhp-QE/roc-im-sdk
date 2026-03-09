@@ -26,6 +26,7 @@ public:
 
     std::shared_ptr<boost::asio::io_context> net_io_context;
     std::shared_ptr<boost::asio::io_context> sdk_io_context;
+    std::shared_ptr<boost::asio::io_context> db_io_context;
 
 };
 
