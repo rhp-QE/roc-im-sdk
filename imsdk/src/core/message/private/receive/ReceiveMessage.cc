@@ -33,8 +33,7 @@ void ReceiveMessage::Start(CTX_T) {
 
     conn->AddOnPushMessageCallback([w_sdk_root = w_sdk_root](std::shared_ptr<const network::FrontierMessage> resp) {
         CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
-        uint32_t call_track_id = static_cast<uint32_t>(std::stoul(
-            network::FrontierMessageUtility::ExtractTrackId(*resp).value_or("0")));
+        uint32_t call_track_id = network::FrontierMessageUtility::ExtractTrackId(*resp).value_or(0);
         
         auto msg_manager = sdk_root->MessageManager();
         msg_manager->receive_message->p_HandleOnlineMessage(call_track_id, resp);

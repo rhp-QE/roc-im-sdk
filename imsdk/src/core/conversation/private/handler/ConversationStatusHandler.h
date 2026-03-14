@@ -19,7 +19,7 @@ public:
 
     ConversationStatusHandler(std::weak_ptr<SDKRoot> root);
 
-    void AllComponentDidLoad();
+    void AllComponentDidLoad(CTX_T);
 
     /// 置顶设置
     boost::asio::awaitable<std::expected<bool, roc::error::Error>> SetTopOn(CTX_T, std::string cid, bool is_top);
@@ -50,16 +50,14 @@ private:
     boost::asio::awaitable<void> p_onBlockChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
     boost::asio::awaitable<void> p_onSyncExtChange(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
     boost::asio::awaitable<void> p_onDelete(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
-    boost::asio::awaitable<void> p_onGroupInvite(CTX_T, std::shared_ptr<const network::CmdMessage> cmd);
 
-    void p_registTopOnHandler();
-    void p_registMuteHandler();
-    void p_registBlockHandler();
-    void p_registSyncExtHandler();
-    void p_registDeleteHandler();
-    void p_registGroupInviteHandler();
+    void p_registTopOnHandler(CTX_T);
+    void p_registMuteHandler(CTX_T);
+    void p_registBlockHandler(CTX_T);
+    void p_registSyncExtHandler(CTX_T);
+    void p_registDeleteHandler(CTX_T);
 
-    boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>> p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg);
+    // boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>> p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg);
      
 };
 

@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <cstdint>
 #include <optional>
-#include <string>
 
 namespace roc::imsdk::network {
 
@@ -16,8 +16,8 @@ struct FrontierMessage;
 /// FrontierMessage 工具类
 class FrontierMessageUtility {
 public:
-    /// 从 FrontierMessage 的 metadata 中提取 track_id
-    static std::optional<std::string> ExtractTrackId(const FrontierMessage& msg);
+    /// 从 FrontierMessage 的 metadata 中提取 track_id，统一转换为 uint32_t
+    static std::optional<uint32_t> ExtractTrackId(const FrontierMessage& msg);
 };
 
 } // namespace roc::imsdk::network

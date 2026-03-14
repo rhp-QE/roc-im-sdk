@@ -24,15 +24,13 @@ MessageManager::MessageManager(std::shared_ptr<SDKRoot> sdk_root)
 
 MessageManager::~MessageManager() = default;
 
-void MessageManager::AllComponentDidLoad() {
-    START_TRACK;
-
+void MessageManager::AllComponentDidLoad(CTX_T) {
     /// 创建BD 如果必要
     db_opt->CreateMessageTableIfNeed(CTX_V);
     /// 开启消息接收处理逻辑
     receive_message->Start(CTX_V);
     /// 注册消息状态处理器
-    message_status_handler->AllComponentDidLoad();
+    message_status_handler->AllComponentDidLoad(CTX_V);
 }
 
 void MessageManager::HandleOfflineMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {

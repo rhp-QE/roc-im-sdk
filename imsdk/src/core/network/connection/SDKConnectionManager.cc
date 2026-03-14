@@ -115,7 +115,7 @@ void SDKConnectionManager::AddOnPushMessageCallback(OnPushMesageCallbackType cal
     on_push_message_callbacks_.push_back(callback);
 }
 
-void SDKConnectionManager::AllComponentDidLoad() {
+void SDKConnectionManager::AllComponentDidLoad(CTX_T) {
     // 组件加载完成后的初始化逻辑
 }
 

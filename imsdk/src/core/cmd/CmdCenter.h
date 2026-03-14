@@ -18,9 +18,9 @@ public:
     using HandlerCallbackTy = std::function<boost::asio::awaitable<void>(CTX_T, std::shared_ptr<const network::CmdMessage>)>;
     CmdCenter(std::shared_ptr<SDKRoot> sdk_root);
 
-    void AllComponentDidLoad();
+    void AllComponentDidLoad(CTX_T);
 
-    void RegistCmdHandler(int32_t cmd, HandlerCallbackTy handler);
+    void RegistCmdHandler(CTX_T, int32_t cmd, HandlerCallbackTy handler);
 
 private:
 

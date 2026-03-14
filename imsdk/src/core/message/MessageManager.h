@@ -30,7 +30,7 @@ public:
     ~MessageManager();
 
     // 组件加载完成后的初始化
-    void AllComponentDidLoad();
+    void AllComponentDidLoad(CTX_T);
     
     // 收到消息回调
     model::OnMessagesCallbackType OnMessagesCallback();

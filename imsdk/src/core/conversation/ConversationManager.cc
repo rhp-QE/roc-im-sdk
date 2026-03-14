@@ -22,14 +22,13 @@ ConversationManager::ConversationManager(std::shared_ptr<SDKRoot> sdk_root)
 
 ConversationManager::~ConversationManager() = default;
 
-void ConversationManager::AllComponentDidLoad() {
+void ConversationManager::AllComponentDidLoad(CTX_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
-    START_TRACK;
 
     /// 创建数据库表
     db_opt->CreateConversationTableIfNeed(CTX_V);
 
-    conversation_status_handler->AllComponentDidLoad();
+    conversation_status_handler->AllComponentDidLoad(CTX_V);
 }
 
 model::OnConversationsCallbackTy& ConversationManager::OnConversationsCallback() {

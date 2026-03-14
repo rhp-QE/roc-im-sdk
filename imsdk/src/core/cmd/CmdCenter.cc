@@ -1,15 +1,18 @@
 #include "CmdCenter.h"
+#include "core/common/logger_macro.h"
 #include "core/common/macro.h"
 #include "core/sdkroot/SDKRoot.h"
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
+#include <cassert>
 #include <cstdint>
 #include <functional>
 #include <memory>
 #include <mutex>
 
 #include "imsdk/src/core/common/sdkwsEnum.h"
+#include "imsdk/src/core/network/connection/FrontierMessageUtility.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/network.h"
 
@@ -17,7 +20,7 @@ namespace roc::imsdk::core {
 
 CmdCenter::CmdCenter(std::shared_ptr<SDKRoot> sdk_root) : w_sdk_root(sdk_root) {}
 
-void CmdCenter::AllComponentDidLoad() {
+void CmdCenter::AllComponentDidLoad(CTX_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
 
     sdk_root->ConnectionManager()->AddOnPushMessageCallback([w_sdk_root = w_sdk_root, this](std::shared_ptr<const network::FrontierMessage> resp) {
@@ -27,11 +30,12 @@ void CmdCenter::AllComponentDidLoad() {
     });
 }
 
-void CmdCenter::RegistCmdHandler(int32_t cmd, HandlerCallbackTy handler) {
+void CmdCenter::RegistCmdHandler(CTX_T, int32_t cmd, HandlerCallbackTy handler) {
+    CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
     std::lock_guard<std::mutex> lock(mutex_);
-    if (handlers_.find(cmd) != handlers_.end()) {
-        handlers_[cmd] = handler;
-    }
+    assert(handlers_.find(cmd) == handlers_.end() && "RegistCmdHandler: cmd already registered");
+    handlers_[cmd] = std::move(handler);
+    LOG_INFO("CmdCenter", "RegistCmdHandler: cmd {} registered", cmd);
 }
 
 
@@ -48,32 +52,23 @@ boost::asio::awaitable<void> CmdCenter::p_handlePushMesage(std::shared_ptr<const
         co_return;
     }
 
-    // 解析 BatchChangeMessagesRequest（包含 repeated CmdMessage）作为 CMD 推送的载体
-    network::BatchChangeMessagesRequest cmd_request;
-    if (!cmd_request.ParseFromArray(resp->payload.data(), static_cast<int>(resp->payload.size()))) {
+    // 直接从下推的 FrontierMessage payload 解析出 CmdMessage
+    auto cmd = std::make_shared<network::CmdMessage>();
+    if (!cmd->ParseFromArray(resp->payload.data(), static_cast<int>(resp->payload.size()))) {
         co_return;
     }
 
-    uint32_t call_track_id = 0;
-    auto it = resp->metadata.find("track_id");
-    if (it != resp->metadata.end()) {
-        call_track_id = static_cast<uint32_t>(std::stoul(it->second));
+    uint32_t call_track_id = network::FrontierMessageUtility::ExtractTrackId(*resp).value_or(0);
+
+    HandlerCallbackTy handler;
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        auto iter = handlers_.find(cmd->cmd());
+        if (iter == handlers_.end()) co_return;
+        handler = iter->second;
     }
 
-    // 分发处理命令消息（从后往前 Release，保持顺序）
-    while (cmd_request.cmdmessages_size() > 0) {
-        std::shared_ptr<network::CmdMessage> cmd(cmd_request.mutable_cmdmessages()->ReleaseLast());
-
-        HandlerCallbackTy handler;
-        {
-            std::lock_guard<std::mutex> lock(mutex_);
-            auto iter = handlers_.find(cmd->cmd());
-            if (iter == handlers_.end()) continue;
-            handler = iter->second;
-        }
-
-        co_await handler(CTX_V, cmd);
-    }
+    co_await handler(CTX_V, cmd);
 }
 
 };

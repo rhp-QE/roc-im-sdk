@@ -3,13 +3,16 @@
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/base/include/network/Error.h"
-#include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/network.h"
 #include <boost/asio/awaitable.hpp>
 #include <expected>
 #include <memory>
-#include <optional>
-#include <vector>
+
+namespace roc::imsdk::core::group {
+class CreateGroupController;
+class InviteGroupController;
+class GroupInviteHandler;
+}
 
 namespace roc::imsdk::core {
 
@@ -18,7 +21,7 @@ public:
     GroupManager(std::shared_ptr<SDKRoot> sdk_root);
     ~GroupManager();
 
-    void AllComponentDidLoad();
+    void AllComponentDidLoad(CTX_T);
 
     /// 创建群聊
     boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
@@ -29,13 +32,11 @@ public:
         InviteGroupMembers(const model::InviteGroupMembersContext &context);
 
 private:
-    std::optional<roc::error::Error> p_validateCreateGroupContext(CTX_T, const model::CreateGroupContext &context);
-    std::unique_ptr<network::FrontierMessage> p_buildCreateGroupRequest(CTX_T, const model::CreateGroupContext &context);
-    std::expected<network::CreateGroupResponse, roc::error::Error> p_parseCreateGroupResponse(
-        CTX_T, const std::vector<uint8_t> &payload);
-    boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
-        p_handleCreateGroupResult(CTX_T, const network::CreateGroupResponse &resp);
+    void p_InitSubComponents();
 
+    std::unique_ptr<group::CreateGroupController> create_group_controller_;
+    std::unique_ptr<group::InviteGroupController> invite_group_controller_;
+    std::unique_ptr<group::GroupInviteHandler> group_invite_handler_;
     std::weak_ptr<SDKRoot> w_sdk_root;
 };
 

@@ -39,6 +39,7 @@ SDKRoot::~SDKRoot() {
 }
 
 asio::awaitable<bool> SDKRoot::InitSdk(const Config config) {
+    START_TRACK;
     config_ = config;
  
     {
@@ -73,15 +74,13 @@ asio::awaitable<bool> SDKRoot::InitSdk(const Config config) {
     }
 
     {
-        cmd_center()->AllComponentDidLoad();
-        GroupManager()->AllComponentDidLoad();
-        MessageManager()->AllComponentDidLoad();
-        ConversationManager()->AllComponentDidLoad();
-        ConnectionManager()->AllComponentDidLoad();
+        cmd_center()->AllComponentDidLoad(CTX_V);
+        GroupManager()->AllComponentDidLoad(CTX_V);
+        MessageManager()->AllComponentDidLoad(CTX_V);
+        ConversationManager()->AllComponentDidLoad(CTX_V);
+        ConnectionManager()->AllComponentDidLoad(CTX_V);
     }
 
-
-    START_TRACK;
     LOG_DEBUG("SDKRoot", "init_sdk {}", "over")
     
     co_return true;

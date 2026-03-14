@@ -28,7 +28,7 @@ public:
     ~ConversationManager();
 
     // 组件加载完成后的初始化
-    void AllComponentDidLoad();
+    void AllComponentDidLoad(CTX_T);
 
     model::OnConversationsCallbackTy& OnConversationsCallback();
 

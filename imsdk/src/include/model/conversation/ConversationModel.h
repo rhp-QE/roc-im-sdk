@@ -143,7 +143,7 @@ private:
 
 struct OnConversationResult {
     /// 新增的会话
-    std::vector<std::shared_ptr<ConversationModel>> invited_convs;
+    std::vector<std::shared_ptr<ConversationModel>> new_convs;
 
     /// 拉取到的会话
     std::vector<std::shared_ptr<ConversationModel>> fetched_convs;

@@ -101,34 +101,6 @@ message CmdMessage {
   string uid = 6;
 }
 
-message CmdMessageOptResult {
-  int32 cmd = 1;
-  int32 id  = 2;
-  int32 errorCode = 3;
-  string error = 4;
-}
-
-
-// 更改消息请求 --------------------------------
-message BatchChangeMessagesRequest {
-  repeated CmdMessage cmdMessages = 1;
-}
-
-message BatchChangeMessagesResponse {
-  repeated CmdMessageOptResult results = 1; 
-}
-// -------------------------------------------
-
-// 更改会话请求 --------------------------------
-message BatchChangeConversationsRequest {
-  repeated CmdMessage cmdMessages = 1;
-}
-
-message BatchChangeConversationsResponse {
-  repeated CmdMessageOptResult results = 1;
-}
-// -------------------------------------------
-
 // 单链拉取 ------------------------------------
 message FetchConvMessageListRequest {
   int64 mode = 1;

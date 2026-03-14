@@ -36,7 +36,7 @@ namespace protobuf_sdkws_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[28];
+  static const ::google::protobuf::internal::ParseTable schema[23];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -54,16 +54,6 @@ void InitDefaultsBatchSendMessageResponseImpl();
 void InitDefaultsBatchSendMessageResponse();
 void InitDefaultsCmdMessageImpl();
 void InitDefaultsCmdMessage();
-void InitDefaultsCmdMessageOptResultImpl();
-void InitDefaultsCmdMessageOptResult();
-void InitDefaultsBatchChangeMessagesRequestImpl();
-void InitDefaultsBatchChangeMessagesRequest();
-void InitDefaultsBatchChangeMessagesResponseImpl();
-void InitDefaultsBatchChangeMessagesResponse();
-void InitDefaultsBatchChangeConversationsRequestImpl();
-void InitDefaultsBatchChangeConversationsRequest();
-void InitDefaultsBatchChangeConversationsResponseImpl();
-void InitDefaultsBatchChangeConversationsResponse();
 void InitDefaultsFetchConvMessageListRequestImpl();
 void InitDefaultsFetchConvMessageListRequest();
 void InitDefaultsFetchConvMessageListResponseImpl();
@@ -105,11 +95,6 @@ inline void InitDefaults() {
   InitDefaultsBatchSendMessageRequest();
   InitDefaultsBatchSendMessageResponse();
   InitDefaultsCmdMessage();
-  InitDefaultsCmdMessageOptResult();
-  InitDefaultsBatchChangeMessagesRequest();
-  InitDefaultsBatchChangeMessagesResponse();
-  InitDefaultsBatchChangeConversationsRequest();
-  InitDefaultsBatchChangeConversationsResponse();
   InitDefaultsFetchConvMessageListRequest();
   InitDefaultsFetchConvMessageListResponse();
   InitDefaultsFetchUserRecentConvListRequest();
@@ -132,18 +117,6 @@ inline void InitDefaults() {
 namespace roc {
 namespace imsdk {
 namespace network {
-class BatchChangeConversationsRequest;
-class BatchChangeConversationsRequestDefaultTypeInternal;
-extern BatchChangeConversationsRequestDefaultTypeInternal _BatchChangeConversationsRequest_default_instance_;
-class BatchChangeConversationsResponse;
-class BatchChangeConversationsResponseDefaultTypeInternal;
-extern BatchChangeConversationsResponseDefaultTypeInternal _BatchChangeConversationsResponse_default_instance_;
-class BatchChangeMessagesRequest;
-class BatchChangeMessagesRequestDefaultTypeInternal;
-extern BatchChangeMessagesRequestDefaultTypeInternal _BatchChangeMessagesRequest_default_instance_;
-class BatchChangeMessagesResponse;
-class BatchChangeMessagesResponseDefaultTypeInternal;
-extern BatchChangeMessagesResponseDefaultTypeInternal _BatchChangeMessagesResponse_default_instance_;
 class BatchGetConversationsRequest;
 class BatchGetConversationsRequestDefaultTypeInternal;
 extern BatchGetConversationsRequestDefaultTypeInternal _BatchGetConversationsRequest_default_instance_;
@@ -165,9 +138,6 @@ extern BatchSendMessageResponseDefaultTypeInternal _BatchSendMessageResponse_def
 class CmdMessage;
 class CmdMessageDefaultTypeInternal;
 extern CmdMessageDefaultTypeInternal _CmdMessage_default_instance_;
-class CmdMessageOptResult;
-class CmdMessageOptResultDefaultTypeInternal;
-extern CmdMessageOptResultDefaultTypeInternal _CmdMessageOptResult_default_instance_;
 class ConversationData;
 class ConversationDataDefaultTypeInternal;
 extern ConversationDataDefaultTypeInternal _ConversationData_default_instance_;
@@ -1254,554 +1224,6 @@ class CmdMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
 };
 // -------------------------------------------------------------------
 
-class CmdMessageOptResult : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.CmdMessageOptResult) */ {
- public:
-  CmdMessageOptResult();
-  virtual ~CmdMessageOptResult();
-
-  CmdMessageOptResult(const CmdMessageOptResult& from);
-
-  inline CmdMessageOptResult& operator=(const CmdMessageOptResult& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  CmdMessageOptResult(CmdMessageOptResult&& from) noexcept
-    : CmdMessageOptResult() {
-    *this = ::std::move(from);
-  }
-
-  inline CmdMessageOptResult& operator=(CmdMessageOptResult&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const CmdMessageOptResult& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const CmdMessageOptResult* internal_default_instance() {
-    return reinterpret_cast<const CmdMessageOptResult*>(
-               &_CmdMessageOptResult_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
-
-  void Swap(CmdMessageOptResult* other);
-  friend void swap(CmdMessageOptResult& a, CmdMessageOptResult& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline CmdMessageOptResult* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  CmdMessageOptResult* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const CmdMessageOptResult& from);
-  void MergeFrom(const CmdMessageOptResult& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(CmdMessageOptResult* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // string error = 4;
-  void clear_error();
-  static const int kErrorFieldNumber = 4;
-  const ::std::string& error() const;
-  void set_error(const ::std::string& value);
-  #if LANG_CXX11
-  void set_error(::std::string&& value);
-  #endif
-  void set_error(const char* value);
-  void set_error(const char* value, size_t size);
-  ::std::string* mutable_error();
-  ::std::string* release_error();
-  void set_allocated_error(::std::string* error);
-
-  // int32 cmd = 1;
-  void clear_cmd();
-  static const int kCmdFieldNumber = 1;
-  ::google::protobuf::int32 cmd() const;
-  void set_cmd(::google::protobuf::int32 value);
-
-  // int32 id = 2;
-  void clear_id();
-  static const int kIdFieldNumber = 2;
-  ::google::protobuf::int32 id() const;
-  void set_id(::google::protobuf::int32 value);
-
-  // int32 errorCode = 3;
-  void clear_errorcode();
-  static const int kErrorCodeFieldNumber = 3;
-  ::google::protobuf::int32 errorcode() const;
-  void set_errorcode(::google::protobuf::int32 value);
-
-  // @@protoc_insertion_point(class_scope:roc.imsdk.network.CmdMessageOptResult)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr error_;
-  ::google::protobuf::int32 cmd_;
-  ::google::protobuf::int32 id_;
-  ::google::protobuf::int32 errorcode_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_sdkws_2eproto::TableStruct;
-  friend void ::protobuf_sdkws_2eproto::InitDefaultsCmdMessageOptResultImpl();
-};
-// -------------------------------------------------------------------
-
-class BatchChangeMessagesRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.BatchChangeMessagesRequest) */ {
- public:
-  BatchChangeMessagesRequest();
-  virtual ~BatchChangeMessagesRequest();
-
-  BatchChangeMessagesRequest(const BatchChangeMessagesRequest& from);
-
-  inline BatchChangeMessagesRequest& operator=(const BatchChangeMessagesRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  BatchChangeMessagesRequest(BatchChangeMessagesRequest&& from) noexcept
-    : BatchChangeMessagesRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline BatchChangeMessagesRequest& operator=(BatchChangeMessagesRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const BatchChangeMessagesRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const BatchChangeMessagesRequest* internal_default_instance() {
-    return reinterpret_cast<const BatchChangeMessagesRequest*>(
-               &_BatchChangeMessagesRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
-
-  void Swap(BatchChangeMessagesRequest* other);
-  friend void swap(BatchChangeMessagesRequest& a, BatchChangeMessagesRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline BatchChangeMessagesRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  BatchChangeMessagesRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const BatchChangeMessagesRequest& from);
-  void MergeFrom(const BatchChangeMessagesRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(BatchChangeMessagesRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .roc.imsdk.network.CmdMessage cmdMessages = 1;
-  int cmdmessages_size() const;
-  void clear_cmdmessages();
-  static const int kCmdMessagesFieldNumber = 1;
-  const ::roc::imsdk::network::CmdMessage& cmdmessages(int index) const;
-  ::roc::imsdk::network::CmdMessage* mutable_cmdmessages(int index);
-  ::roc::imsdk::network::CmdMessage* add_cmdmessages();
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >*
-      mutable_cmdmessages();
-  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >&
-      cmdmessages() const;
-
-  // @@protoc_insertion_point(class_scope:roc.imsdk.network.BatchChangeMessagesRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage > cmdmessages_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_sdkws_2eproto::TableStruct;
-  friend void ::protobuf_sdkws_2eproto::InitDefaultsBatchChangeMessagesRequestImpl();
-};
-// -------------------------------------------------------------------
-
-class BatchChangeMessagesResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.BatchChangeMessagesResponse) */ {
- public:
-  BatchChangeMessagesResponse();
-  virtual ~BatchChangeMessagesResponse();
-
-  BatchChangeMessagesResponse(const BatchChangeMessagesResponse& from);
-
-  inline BatchChangeMessagesResponse& operator=(const BatchChangeMessagesResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  BatchChangeMessagesResponse(BatchChangeMessagesResponse&& from) noexcept
-    : BatchChangeMessagesResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline BatchChangeMessagesResponse& operator=(BatchChangeMessagesResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const BatchChangeMessagesResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const BatchChangeMessagesResponse* internal_default_instance() {
-    return reinterpret_cast<const BatchChangeMessagesResponse*>(
-               &_BatchChangeMessagesResponse_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    8;
-
-  void Swap(BatchChangeMessagesResponse* other);
-  friend void swap(BatchChangeMessagesResponse& a, BatchChangeMessagesResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline BatchChangeMessagesResponse* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  BatchChangeMessagesResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const BatchChangeMessagesResponse& from);
-  void MergeFrom(const BatchChangeMessagesResponse& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(BatchChangeMessagesResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .roc.imsdk.network.CmdMessageOptResult results = 1;
-  int results_size() const;
-  void clear_results();
-  static const int kResultsFieldNumber = 1;
-  const ::roc::imsdk::network::CmdMessageOptResult& results(int index) const;
-  ::roc::imsdk::network::CmdMessageOptResult* mutable_results(int index);
-  ::roc::imsdk::network::CmdMessageOptResult* add_results();
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >*
-      mutable_results();
-  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >&
-      results() const;
-
-  // @@protoc_insertion_point(class_scope:roc.imsdk.network.BatchChangeMessagesResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult > results_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_sdkws_2eproto::TableStruct;
-  friend void ::protobuf_sdkws_2eproto::InitDefaultsBatchChangeMessagesResponseImpl();
-};
-// -------------------------------------------------------------------
-
-class BatchChangeConversationsRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.BatchChangeConversationsRequest) */ {
- public:
-  BatchChangeConversationsRequest();
-  virtual ~BatchChangeConversationsRequest();
-
-  BatchChangeConversationsRequest(const BatchChangeConversationsRequest& from);
-
-  inline BatchChangeConversationsRequest& operator=(const BatchChangeConversationsRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  BatchChangeConversationsRequest(BatchChangeConversationsRequest&& from) noexcept
-    : BatchChangeConversationsRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline BatchChangeConversationsRequest& operator=(BatchChangeConversationsRequest&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const BatchChangeConversationsRequest& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const BatchChangeConversationsRequest* internal_default_instance() {
-    return reinterpret_cast<const BatchChangeConversationsRequest*>(
-               &_BatchChangeConversationsRequest_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    9;
-
-  void Swap(BatchChangeConversationsRequest* other);
-  friend void swap(BatchChangeConversationsRequest& a, BatchChangeConversationsRequest& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline BatchChangeConversationsRequest* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  BatchChangeConversationsRequest* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const BatchChangeConversationsRequest& from);
-  void MergeFrom(const BatchChangeConversationsRequest& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(BatchChangeConversationsRequest* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .roc.imsdk.network.CmdMessage cmdMessages = 1;
-  int cmdmessages_size() const;
-  void clear_cmdmessages();
-  static const int kCmdMessagesFieldNumber = 1;
-  const ::roc::imsdk::network::CmdMessage& cmdmessages(int index) const;
-  ::roc::imsdk::network::CmdMessage* mutable_cmdmessages(int index);
-  ::roc::imsdk::network::CmdMessage* add_cmdmessages();
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >*
-      mutable_cmdmessages();
-  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >&
-      cmdmessages() const;
-
-  // @@protoc_insertion_point(class_scope:roc.imsdk.network.BatchChangeConversationsRequest)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage > cmdmessages_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_sdkws_2eproto::TableStruct;
-  friend void ::protobuf_sdkws_2eproto::InitDefaultsBatchChangeConversationsRequestImpl();
-};
-// -------------------------------------------------------------------
-
-class BatchChangeConversationsResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.BatchChangeConversationsResponse) */ {
- public:
-  BatchChangeConversationsResponse();
-  virtual ~BatchChangeConversationsResponse();
-
-  BatchChangeConversationsResponse(const BatchChangeConversationsResponse& from);
-
-  inline BatchChangeConversationsResponse& operator=(const BatchChangeConversationsResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  BatchChangeConversationsResponse(BatchChangeConversationsResponse&& from) noexcept
-    : BatchChangeConversationsResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline BatchChangeConversationsResponse& operator=(BatchChangeConversationsResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const BatchChangeConversationsResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const BatchChangeConversationsResponse* internal_default_instance() {
-    return reinterpret_cast<const BatchChangeConversationsResponse*>(
-               &_BatchChangeConversationsResponse_default_instance_);
-  }
-  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    10;
-
-  void Swap(BatchChangeConversationsResponse* other);
-  friend void swap(BatchChangeConversationsResponse& a, BatchChangeConversationsResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline BatchChangeConversationsResponse* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  BatchChangeConversationsResponse* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const BatchChangeConversationsResponse& from);
-  void MergeFrom(const BatchChangeConversationsResponse& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(BatchChangeConversationsResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated .roc.imsdk.network.CmdMessageOptResult results = 1;
-  int results_size() const;
-  void clear_results();
-  static const int kResultsFieldNumber = 1;
-  const ::roc::imsdk::network::CmdMessageOptResult& results(int index) const;
-  ::roc::imsdk::network::CmdMessageOptResult* mutable_results(int index);
-  ::roc::imsdk::network::CmdMessageOptResult* add_results();
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >*
-      mutable_results();
-  const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >&
-      results() const;
-
-  // @@protoc_insertion_point(class_scope:roc.imsdk.network.BatchChangeConversationsResponse)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult > results_;
-  mutable int _cached_size_;
-  friend struct ::protobuf_sdkws_2eproto::TableStruct;
-  friend void ::protobuf_sdkws_2eproto::InitDefaultsBatchChangeConversationsResponseImpl();
-};
-// -------------------------------------------------------------------
-
 class FetchConvMessageListRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:roc.imsdk.network.FetchConvMessageListRequest) */ {
  public:
   FetchConvMessageListRequest();
@@ -1837,7 +1259,7 @@ class FetchConvMessageListRequest : public ::google::protobuf::Message /* @@prot
                &_FetchConvMessageListRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    11;
+    6;
 
   void Swap(FetchConvMessageListRequest* other);
   friend void swap(FetchConvMessageListRequest& a, FetchConvMessageListRequest& b) {
@@ -1994,7 +1416,7 @@ class FetchConvMessageListResponse : public ::google::protobuf::Message /* @@pro
                &_FetchConvMessageListResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    12;
+    7;
 
   void Swap(FetchConvMessageListResponse* other);
   friend void swap(FetchConvMessageListResponse& a, FetchConvMessageListResponse& b) {
@@ -2135,7 +1557,7 @@ class FetchUserRecentConvListRequest : public ::google::protobuf::Message /* @@p
                &_FetchUserRecentConvListRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    13;
+    8;
 
   void Swap(FetchUserRecentConvListRequest* other);
   friend void swap(FetchUserRecentConvListRequest& a, FetchUserRecentConvListRequest& b) {
@@ -2277,7 +1699,7 @@ class FetchUserRecentConvListResponse : public ::google::protobuf::Message /* @@
                &_FetchUserRecentConvListResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    14;
+    9;
 
   void Swap(FetchUserRecentConvListResponse* other);
   friend void swap(FetchUserRecentConvListResponse& a, FetchUserRecentConvListResponse& b) {
@@ -2418,7 +1840,7 @@ class UserMessageIntegrityCheckRequest : public ::google::protobuf::Message /* @
                &_UserMessageIntegrityCheckRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    15;
+    10;
 
   void Swap(UserMessageIntegrityCheckRequest* other);
   friend void swap(UserMessageIntegrityCheckRequest& a, UserMessageIntegrityCheckRequest& b) {
@@ -2562,7 +1984,7 @@ class UserMessageIntegrityCheckResponse : public ::google::protobuf::Message /* 
                &_UserMessageIntegrityCheckResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    16;
+    11;
 
   void Swap(UserMessageIntegrityCheckResponse* other);
   friend void swap(UserMessageIntegrityCheckResponse& a, UserMessageIntegrityCheckResponse& b) {
@@ -2688,7 +2110,7 @@ class GetMessageResult : public ::google::protobuf::Message /* @@protoc_insertio
                &_GetMessageResult_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    17;
+    12;
 
   void Swap(GetMessageResult* other);
   friend void swap(GetMessageResult& a, GetMessageResult& b) {
@@ -2835,7 +2257,7 @@ class BatchGetMessagesRequest : public ::google::protobuf::Message /* @@protoc_i
                &_BatchGetMessagesRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    18;
+    13;
 
   void Swap(BatchGetMessagesRequest* other);
   friend void swap(BatchGetMessagesRequest& a, BatchGetMessagesRequest& b) {
@@ -2965,7 +2387,7 @@ class BatchGetMessagesResponse : public ::google::protobuf::Message /* @@protoc_
                &_BatchGetMessagesResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    19;
+    14;
 
   void Swap(BatchGetMessagesResponse* other);
   friend void swap(BatchGetMessagesResponse& a, BatchGetMessagesResponse& b) {
@@ -3070,7 +2492,7 @@ class GetConversationResult : public ::google::protobuf::Message /* @@protoc_ins
                &_GetConversationResult_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    20;
+    15;
 
   void Swap(GetConversationResult* other);
   friend void swap(GetConversationResult& a, GetConversationResult& b) {
@@ -3217,7 +2639,7 @@ class BatchGetConversationsRequest : public ::google::protobuf::Message /* @@pro
                &_BatchGetConversationsRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    21;
+    16;
 
   void Swap(BatchGetConversationsRequest* other);
   friend void swap(BatchGetConversationsRequest& a, BatchGetConversationsRequest& b) {
@@ -3347,7 +2769,7 @@ class BatchGetConversationsResponse : public ::google::protobuf::Message /* @@pr
                &_BatchGetConversationsResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    22;
+    17;
 
   void Swap(BatchGetConversationsResponse* other);
   friend void swap(BatchGetConversationsResponse& a, BatchGetConversationsResponse& b) {
@@ -3452,7 +2874,7 @@ class CreateGroupRequest : public ::google::protobuf::Message /* @@protoc_insert
                &_CreateGroupRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    23;
+    18;
 
   void Swap(CreateGroupRequest* other);
   friend void swap(CreateGroupRequest& a, CreateGroupRequest& b) {
@@ -3597,7 +3019,7 @@ class CreateGroupResponse : public ::google::protobuf::Message /* @@protoc_inser
                &_CreateGroupResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    24;
+    19;
 
   void Swap(CreateGroupResponse* other);
   friend void swap(CreateGroupResponse& a, CreateGroupResponse& b) {
@@ -3721,7 +3143,7 @@ class InviteGroupMembersRequest : public ::google::protobuf::Message /* @@protoc
                &_InviteGroupMembersRequest_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    25;
+    20;
 
   void Swap(InviteGroupMembersRequest* other);
   friend void swap(InviteGroupMembersRequest& a, InviteGroupMembersRequest& b) {
@@ -3851,7 +3273,7 @@ class InviteGroupMembersResponse : public ::google::protobuf::Message /* @@proto
                &_InviteGroupMembersResponse_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
+    21;
 
   void Swap(InviteGroupMembersResponse* other);
   friend void swap(InviteGroupMembersResponse& a, InviteGroupMembersResponse& b) {
@@ -3965,7 +3387,7 @@ class InvitedGroupInfo : public ::google::protobuf::Message /* @@protoc_insertio
                &_InvitedGroupInfo_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    22;
 
   void Swap(InvitedGroupInfo* other);
   friend void swap(InvitedGroupInfo& a, InvitedGroupInfo& b) {
@@ -5522,241 +4944,6 @@ inline void CmdMessage::set_allocated_uid(::std::string* uid) {
   }
   uid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), uid);
   // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.CmdMessage.uid)
-}
-
-// -------------------------------------------------------------------
-
-// CmdMessageOptResult
-
-// int32 cmd = 1;
-inline void CmdMessageOptResult::clear_cmd() {
-  cmd_ = 0;
-}
-inline ::google::protobuf::int32 CmdMessageOptResult::cmd() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessageOptResult.cmd)
-  return cmd_;
-}
-inline void CmdMessageOptResult::set_cmd(::google::protobuf::int32 value) {
-  
-  cmd_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.CmdMessageOptResult.cmd)
-}
-
-// int32 id = 2;
-inline void CmdMessageOptResult::clear_id() {
-  id_ = 0;
-}
-inline ::google::protobuf::int32 CmdMessageOptResult::id() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessageOptResult.id)
-  return id_;
-}
-inline void CmdMessageOptResult::set_id(::google::protobuf::int32 value) {
-  
-  id_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.CmdMessageOptResult.id)
-}
-
-// int32 errorCode = 3;
-inline void CmdMessageOptResult::clear_errorcode() {
-  errorcode_ = 0;
-}
-inline ::google::protobuf::int32 CmdMessageOptResult::errorcode() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessageOptResult.errorCode)
-  return errorcode_;
-}
-inline void CmdMessageOptResult::set_errorcode(::google::protobuf::int32 value) {
-  
-  errorcode_ = value;
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.CmdMessageOptResult.errorCode)
-}
-
-// string error = 4;
-inline void CmdMessageOptResult::clear_error() {
-  error_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& CmdMessageOptResult::error() const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.CmdMessageOptResult.error)
-  return error_.GetNoArena();
-}
-inline void CmdMessageOptResult::set_error(const ::std::string& value) {
-  
-  error_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:roc.imsdk.network.CmdMessageOptResult.error)
-}
-#if LANG_CXX11
-inline void CmdMessageOptResult::set_error(::std::string&& value) {
-  
-  error_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:roc.imsdk.network.CmdMessageOptResult.error)
-}
-#endif
-inline void CmdMessageOptResult::set_error(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  error_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:roc.imsdk.network.CmdMessageOptResult.error)
-}
-inline void CmdMessageOptResult::set_error(const char* value, size_t size) {
-  
-  error_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:roc.imsdk.network.CmdMessageOptResult.error)
-}
-inline ::std::string* CmdMessageOptResult::mutable_error() {
-  
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.CmdMessageOptResult.error)
-  return error_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* CmdMessageOptResult::release_error() {
-  // @@protoc_insertion_point(field_release:roc.imsdk.network.CmdMessageOptResult.error)
-  
-  return error_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void CmdMessageOptResult::set_allocated_error(::std::string* error) {
-  if (error != NULL) {
-    
-  } else {
-    
-  }
-  error_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), error);
-  // @@protoc_insertion_point(field_set_allocated:roc.imsdk.network.CmdMessageOptResult.error)
-}
-
-// -------------------------------------------------------------------
-
-// BatchChangeMessagesRequest
-
-// repeated .roc.imsdk.network.CmdMessage cmdMessages = 1;
-inline int BatchChangeMessagesRequest::cmdmessages_size() const {
-  return cmdmessages_.size();
-}
-inline void BatchChangeMessagesRequest::clear_cmdmessages() {
-  cmdmessages_.Clear();
-}
-inline const ::roc::imsdk::network::CmdMessage& BatchChangeMessagesRequest::cmdmessages(int index) const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.BatchChangeMessagesRequest.cmdMessages)
-  return cmdmessages_.Get(index);
-}
-inline ::roc::imsdk::network::CmdMessage* BatchChangeMessagesRequest::mutable_cmdmessages(int index) {
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.BatchChangeMessagesRequest.cmdMessages)
-  return cmdmessages_.Mutable(index);
-}
-inline ::roc::imsdk::network::CmdMessage* BatchChangeMessagesRequest::add_cmdmessages() {
-  // @@protoc_insertion_point(field_add:roc.imsdk.network.BatchChangeMessagesRequest.cmdMessages)
-  return cmdmessages_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >*
-BatchChangeMessagesRequest::mutable_cmdmessages() {
-  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.BatchChangeMessagesRequest.cmdMessages)
-  return &cmdmessages_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >&
-BatchChangeMessagesRequest::cmdmessages() const {
-  // @@protoc_insertion_point(field_list:roc.imsdk.network.BatchChangeMessagesRequest.cmdMessages)
-  return cmdmessages_;
-}
-
-// -------------------------------------------------------------------
-
-// BatchChangeMessagesResponse
-
-// repeated .roc.imsdk.network.CmdMessageOptResult results = 1;
-inline int BatchChangeMessagesResponse::results_size() const {
-  return results_.size();
-}
-inline void BatchChangeMessagesResponse::clear_results() {
-  results_.Clear();
-}
-inline const ::roc::imsdk::network::CmdMessageOptResult& BatchChangeMessagesResponse::results(int index) const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.BatchChangeMessagesResponse.results)
-  return results_.Get(index);
-}
-inline ::roc::imsdk::network::CmdMessageOptResult* BatchChangeMessagesResponse::mutable_results(int index) {
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.BatchChangeMessagesResponse.results)
-  return results_.Mutable(index);
-}
-inline ::roc::imsdk::network::CmdMessageOptResult* BatchChangeMessagesResponse::add_results() {
-  // @@protoc_insertion_point(field_add:roc.imsdk.network.BatchChangeMessagesResponse.results)
-  return results_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >*
-BatchChangeMessagesResponse::mutable_results() {
-  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.BatchChangeMessagesResponse.results)
-  return &results_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >&
-BatchChangeMessagesResponse::results() const {
-  // @@protoc_insertion_point(field_list:roc.imsdk.network.BatchChangeMessagesResponse.results)
-  return results_;
-}
-
-// -------------------------------------------------------------------
-
-// BatchChangeConversationsRequest
-
-// repeated .roc.imsdk.network.CmdMessage cmdMessages = 1;
-inline int BatchChangeConversationsRequest::cmdmessages_size() const {
-  return cmdmessages_.size();
-}
-inline void BatchChangeConversationsRequest::clear_cmdmessages() {
-  cmdmessages_.Clear();
-}
-inline const ::roc::imsdk::network::CmdMessage& BatchChangeConversationsRequest::cmdmessages(int index) const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.BatchChangeConversationsRequest.cmdMessages)
-  return cmdmessages_.Get(index);
-}
-inline ::roc::imsdk::network::CmdMessage* BatchChangeConversationsRequest::mutable_cmdmessages(int index) {
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.BatchChangeConversationsRequest.cmdMessages)
-  return cmdmessages_.Mutable(index);
-}
-inline ::roc::imsdk::network::CmdMessage* BatchChangeConversationsRequest::add_cmdmessages() {
-  // @@protoc_insertion_point(field_add:roc.imsdk.network.BatchChangeConversationsRequest.cmdMessages)
-  return cmdmessages_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >*
-BatchChangeConversationsRequest::mutable_cmdmessages() {
-  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.BatchChangeConversationsRequest.cmdMessages)
-  return &cmdmessages_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessage >&
-BatchChangeConversationsRequest::cmdmessages() const {
-  // @@protoc_insertion_point(field_list:roc.imsdk.network.BatchChangeConversationsRequest.cmdMessages)
-  return cmdmessages_;
-}
-
-// -------------------------------------------------------------------
-
-// BatchChangeConversationsResponse
-
-// repeated .roc.imsdk.network.CmdMessageOptResult results = 1;
-inline int BatchChangeConversationsResponse::results_size() const {
-  return results_.size();
-}
-inline void BatchChangeConversationsResponse::clear_results() {
-  results_.Clear();
-}
-inline const ::roc::imsdk::network::CmdMessageOptResult& BatchChangeConversationsResponse::results(int index) const {
-  // @@protoc_insertion_point(field_get:roc.imsdk.network.BatchChangeConversationsResponse.results)
-  return results_.Get(index);
-}
-inline ::roc::imsdk::network::CmdMessageOptResult* BatchChangeConversationsResponse::mutable_results(int index) {
-  // @@protoc_insertion_point(field_mutable:roc.imsdk.network.BatchChangeConversationsResponse.results)
-  return results_.Mutable(index);
-}
-inline ::roc::imsdk::network::CmdMessageOptResult* BatchChangeConversationsResponse::add_results() {
-  // @@protoc_insertion_point(field_add:roc.imsdk.network.BatchChangeConversationsResponse.results)
-  return results_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >*
-BatchChangeConversationsResponse::mutable_results() {
-  // @@protoc_insertion_point(field_mutable_list:roc.imsdk.network.BatchChangeConversationsResponse.results)
-  return &results_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::roc::imsdk::network::CmdMessageOptResult >&
-BatchChangeConversationsResponse::results() const {
-  // @@protoc_insertion_point(field_list:roc.imsdk.network.BatchChangeConversationsResponse.results)
-  return results_;
 }
 
 // -------------------------------------------------------------------
@@ -7854,16 +7041,6 @@ inline void InvitedGroupInfo::set_allocated_conversation(::roc::imsdk::network::
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -61,7 +61,7 @@ public:
     boost::asio::awaitable<bool> disconnect();
 
     // 组件加载完成后的初始化
-    void AllComponentDidLoad();
+    void AllComponentDidLoad(CTX_T);
 
     // 添加接收消息回调
     void AddOnPushMessageCallback(OnPushMesageCallbackType callback);

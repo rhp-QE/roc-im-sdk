@@ -19,7 +19,7 @@ public:
 
     MessageStatusHandler(std::weak_ptr<SDKRoot> root);
 
-    void AllComponentDidLoad();
+    void AllComponentDidLoad(CTX_T);
 
     /// 设置消息置顶状态
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>
@@ -55,13 +55,13 @@ private:
     boost::asio::awaitable<void> p_onDelete(CTX_T, std::shared_ptr<const network::CmdMessage> resp);
     boost::asio::awaitable<void> p_onRecall(CTX_T, std::shared_ptr<const network::CmdMessage> resp);
 
-    void p_registPinHandler();
-    void p_registSyncExtHandler();
-    void p_registPropertyHandler();
-    void p_registDeleteHandler();
-    void p_registRecallHandler();
+    void p_registPinHandler(CTX_T);
+    void p_registSyncExtHandler(CTX_T);
+    void p_registPropertyHandler(CTX_T);
+    void p_registDeleteHandler(CTX_T);
+    void p_registRecallHandler(CTX_T);
 
-    boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>> p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg);
+    // boost::asio::awaitable<std::unique_ptr<network::CmdMessageOptResult>> p_request(CTX_T, std::unique_ptr<network::CmdMessage> cmd_msg);
      
 };
 
