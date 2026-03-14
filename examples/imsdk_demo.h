@@ -13,6 +13,7 @@
 #include "imsdk/src/include/config.h"
 #include "BaseConfig.h"
 #include "imsdk/src/include/model/message/MessageModel.h"
+#include "imsdk/src/include/model/conversation/ConversationModel.h"
 #include "imsdk/base/include/utils/utils.h"
 #include "adapter/log/SpdlogAdapter.h"
 
@@ -47,6 +48,13 @@ inline void print_msg(std::shared_ptr<roc::imsdk::model::MessageModel> msg) {
     std::cout << "      ----------------------------------------" << std::endl;
 }
 
+inline void print_conv(std::shared_ptr<roc::imsdk::model::ConversationModel> conv) {
+    std::cout << "      ----------------------------------------" << std::endl;
+    std::cout << "      [conversation_id: ] " << conv->conversation_id() << std::endl;
+    std::cout << "      [conversation_name: ] " << conv->name() << std::endl;
+    std::cout << "      [conversation_type: ] " << (conv->type() == roc::imsdk::model::ConvType::Single ? "单聊" : "群聊") << std::endl;
+    std::cout << "      ----------------------------------------" << std::endl;
+}
 
 inline boost::asio::awaitable<bool> p_login() {
     std::cout << "请输入用户ID: ";
@@ -89,6 +97,15 @@ inline boost::asio::awaitable<bool> p_login() {
             print_msg(msg);
         }
         std::cout << " ==============消息更新 (end) =============\n" << std::endl;
+    });
+
+    // 监听会话更新
+    imsdk->OnConvUpdate([](std::shared_ptr<roc::imsdk::model::OnConversationResult> result) {
+        std::cout << "\n ==============会话更新 (begin) =============" << std::endl;
+        std::cout << " 新增会话: " << result->new_convs.size() << std::endl;
+        for (auto conv : result->new_convs) {
+            print_conv(conv);
+        }
     });
 
     // 运行sdk
@@ -155,6 +172,65 @@ inline boost::asio::awaitable<void> p_logout() {
     co_await imsdk->LoginOut();
 }
 
+/// 创建群聊测试
+inline boost::asio::awaitable<void> p_create_group() {
+    std::cout << "请输入群主ID (owner_user_id): ";
+    std::string owner_id;
+    std::cin >> owner_id;
+    std::cout << "请输入群名称 (group_name): ";
+    std::string group_name;
+    std::cin >> group_name;
+    std::cout << "请输入邀请的进群人数: ";
+    size_t invite_count = 0;
+    std::cin >> invite_count;
+    std::vector<std::string> member_ids;
+    for (size_t i = 0; i < invite_count; ++i) {
+        std::cout << "请输入第 " << (i + 1) << " 个成员ID: ";
+        std::string id;
+        std::cin >> id;
+        member_ids.push_back(id);
+    }
+
+    roc::imsdk::model::CreateGroupContext ctx;
+    ctx.owner_user_id = owner_id;
+    ctx.group_name = group_name;
+    ctx.member_user_ids = member_ids;
+
+    auto result = co_await imsdk->CreateGroup(ctx);
+    if (!result.has_value()) {
+        std::cout << "创建群聊失败: " << result.error().to_string() << std::endl;
+        co_return;
+    }
+    std::cout << "创建群聊成功, 会话ID: " << (*result)->conversation_id() << std::endl;
+}
+
+/// 邀请进群测试
+inline boost::asio::awaitable<void> p_invite_group_members() {
+    std::cout << "请输入会话ID (conv_id): ";
+    std::string conv_id;
+    std::cin >> conv_id;
+    std::cout << "请输入邀请的进群人数: ";
+    size_t invite_count = 0;
+    std::cin >> invite_count;
+    std::vector<std::string> member_ids;
+    for (size_t i = 0; i < invite_count; ++i) {
+        std::cout << "请输入第 " << (i + 1) << " 个成员ID: ";
+        std::string id;
+        std::cin >> id;
+        member_ids.push_back(id);
+    }
+
+    roc::imsdk::model::InviteGroupMembersContext ctx;
+    ctx.conv_id = conv_id;
+    ctx.member_user_ids = member_ids;
+
+    auto result = co_await imsdk->InviteGroupMembers(ctx);
+    if (!result.has_value()) {
+        std::cout << "邀请进群失败: " << result.error().to_string() << std::endl;
+        co_return;
+    }
+    std::cout << "邀请进群成功" << std::endl;
+}
 
 inline boost::asio::awaitable<void> entrance() {
     std::string cmd;
@@ -170,6 +246,10 @@ inline boost::asio::awaitable<void> entrance() {
             co_await boost::asio::co_spawn(net_io_context, p_logout(), boost::asio::use_awaitable);
         } else if(cmd == "chats") {
             co_await boost::asio::co_spawn(net_io_context, chat_first_page(), boost::asio::use_awaitable);
+        } else if(cmd == "cg" || cmd == "create_group") {
+            co_await boost::asio::co_spawn(net_io_context, p_create_group(), boost::asio::use_awaitable);
+        } else if(cmd == "invite") {
+            co_await boost::asio::co_spawn(net_io_context, p_invite_group_members(), boost::asio::use_awaitable);
         }
         std::cout << "请输入命令: ";
     }

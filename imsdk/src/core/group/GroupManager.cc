@@ -1,8 +1,8 @@
 #include "imsdk/src/core/group/GroupManager.h"
 #include "imsdk/src/core/common/macro.h"
-#include "imsdk/src/core/group/controller/CreateGroupController.h"
-#include "imsdk/src/core/group/controller/InviteGroupController.h"
-#include "imsdk/src/core/group/handler/GroupInviteHandler.h"
+#include "imsdk/src/core/group/controller/create/CreateGroupController.h"
+#include "imsdk/src/core/group/controller/invite/InviteGroupController.h"
+#include "imsdk/src/core/group/handler/invited/GroupInviteHandler.h"
 #include <memory>
 
 namespace roc::imsdk::core {

@@ -24,8 +24,8 @@ namespace roc::imsdk::model {
 class MessageModel;
 
 enum class ConvType {
-    Single,
-    Group
+    Single = 1,
+    Group = 2,
 };
 
 

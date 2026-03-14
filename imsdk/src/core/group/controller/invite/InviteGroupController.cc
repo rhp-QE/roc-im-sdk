@@ -1,4 +1,4 @@
-#include "imsdk/src/core/group/controller/InviteGroupController.h"
+#include "imsdk/src/core/group/controller/invite/InviteGroupController.h"
 #include "imsdk/src/core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/common/sdkwsEnum.h"
