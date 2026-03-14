@@ -137,6 +137,31 @@ class BatchGetConversationsResponseDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<BatchGetConversationsResponse>
       _instance;
 } _BatchGetConversationsResponse_default_instance_;
+class CreateGroupRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<CreateGroupRequest>
+      _instance;
+} _CreateGroupRequest_default_instance_;
+class CreateGroupResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<CreateGroupResponse>
+      _instance;
+} _CreateGroupResponse_default_instance_;
+class InviteGroupMembersRequestDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<InviteGroupMembersRequest>
+      _instance;
+} _InviteGroupMembersRequest_default_instance_;
+class InviteGroupMembersResponseDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<InviteGroupMembersResponse>
+      _instance;
+} _InviteGroupMembersResponse_default_instance_;
+class InvitedGroupInfoDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<InvitedGroupInfo>
+      _instance;
+} _InvitedGroupInfo_default_instance_;
 }  // namespace network
 }  // namespace imsdk
 }  // namespace roc
@@ -258,8 +283,6 @@ void InitDefaultsCmdMessageImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  protobuf_sdkws_2eproto::InitDefaultsMessageData();
-  protobuf_sdkws_2eproto::InitDefaultsConversationData();
   {
     void* ptr = &::roc::imsdk::network::_CmdMessage_default_instance_;
     new (ptr) ::roc::imsdk::network::CmdMessage();
@@ -641,7 +664,114 @@ void InitDefaultsBatchGetConversationsResponse() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsBatchGetConversationsResponseImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[23];
+void InitDefaultsCreateGroupRequestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::roc::imsdk::network::_CreateGroupRequest_default_instance_;
+    new (ptr) ::roc::imsdk::network::CreateGroupRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::CreateGroupRequest::InitAsDefaultInstance();
+}
+
+void InitDefaultsCreateGroupRequest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsCreateGroupRequestImpl);
+}
+
+void InitDefaultsCreateGroupResponseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsConversationData();
+  {
+    void* ptr = &::roc::imsdk::network::_CreateGroupResponse_default_instance_;
+    new (ptr) ::roc::imsdk::network::CreateGroupResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::CreateGroupResponse::InitAsDefaultInstance();
+}
+
+void InitDefaultsCreateGroupResponse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsCreateGroupResponseImpl);
+}
+
+void InitDefaultsInviteGroupMembersRequestImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::roc::imsdk::network::_InviteGroupMembersRequest_default_instance_;
+    new (ptr) ::roc::imsdk::network::InviteGroupMembersRequest();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::InviteGroupMembersRequest::InitAsDefaultInstance();
+}
+
+void InitDefaultsInviteGroupMembersRequest() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsInviteGroupMembersRequestImpl);
+}
+
+void InitDefaultsInviteGroupMembersResponseImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::roc::imsdk::network::_InviteGroupMembersResponse_default_instance_;
+    new (ptr) ::roc::imsdk::network::InviteGroupMembersResponse();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::InviteGroupMembersResponse::InitAsDefaultInstance();
+}
+
+void InitDefaultsInviteGroupMembersResponse() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsInviteGroupMembersResponseImpl);
+}
+
+void InitDefaultsInvitedGroupInfoImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_sdkws_2eproto::InitDefaultsConversationData();
+  {
+    void* ptr = &::roc::imsdk::network::_InvitedGroupInfo_default_instance_;
+    new (ptr) ::roc::imsdk::network::InvitedGroupInfo();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::roc::imsdk::network::InvitedGroupInfo::InitAsDefaultInstance();
+}
+
+void InitDefaultsInvitedGroupInfo() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsInvitedGroupInfoImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[28];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -714,9 +844,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, cmd_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, id_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, message_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, conversation_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, cursor_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, data_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, version_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessage, uid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CmdMessageOptResult, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -855,6 +985,42 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::BatchGetConversationsResponse, results_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupRequest, ownerid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupRequest, name_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupRequest, memberuids_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupResponse, errorcode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupResponse, errormsg_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::CreateGroupResponse, conversation_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InviteGroupMembersRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InviteGroupMembersRequest, convid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InviteGroupMembersRequest, memberuids_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InviteGroupMembersResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InviteGroupMembersResponse, errorcode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InviteGroupMembersResponse, errormsg_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InvitedGroupInfo, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::roc::imsdk::network::InvitedGroupInfo, conversation_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::roc::imsdk::network::MessageData)},
@@ -880,6 +1046,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 189, -1, sizeof(::roc::imsdk::network::GetConversationResult)},
   { 198, -1, sizeof(::roc::imsdk::network::BatchGetConversationsRequest)},
   { 205, -1, sizeof(::roc::imsdk::network::BatchGetConversationsResponse)},
+  { 211, -1, sizeof(::roc::imsdk::network::CreateGroupRequest)},
+  { 219, -1, sizeof(::roc::imsdk::network::CreateGroupResponse)},
+  { 227, -1, sizeof(::roc::imsdk::network::InviteGroupMembersRequest)},
+  { 234, -1, sizeof(::roc::imsdk::network::InviteGroupMembersResponse)},
+  { 241, -1, sizeof(::roc::imsdk::network::InvitedGroupInfo)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -906,6 +1077,11 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_GetConversationResult_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_BatchGetConversationsRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_BatchGetConversationsResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_CreateGroupRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_CreateGroupResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_InviteGroupMembersRequest_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_InviteGroupMembersResponse_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::roc::imsdk::network::_InvitedGroupInfo_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -924,7 +1100,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 23);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 28);
 }
 
 void AddDescriptorsImpl() {
@@ -954,61 +1130,69 @@ void AddDescriptorsImpl() {
       "equest\022,\n\004msgs\030\001 \003(\0132\036.roc.imsdk.network"
       ".MessageData\"Q\n\030BatchSendMessageResponse"
       "\0225\n\007results\030\001 \003(\0132$.roc.imsdk.network.Se"
-      "ndMessageResult\"\241\001\n\nCmdMessage\022\013\n\003cmd\030\001 "
-      "\001(\005\022\n\n\002id\030\002 \001(\005\022/\n\007message\030\003 \001(\0132\036.roc.i"
-      "msdk.network.MessageData\0229\n\014conversation"
-      "\030\004 \001(\0132#.roc.imsdk.network.ConversationD"
-      "ata\022\016\n\006cursor\030\005 \001(\003\"P\n\023CmdMessageOptResu"
-      "lt\022\013\n\003cmd\030\001 \001(\005\022\n\n\002id\030\002 \001(\005\022\021\n\terrorCode"
-      "\030\003 \001(\005\022\r\n\005error\030\004 \001(\t\"P\n\032BatchChangeMess"
-      "agesRequest\0222\n\013cmdMessages\030\001 \003(\0132\035.roc.i"
-      "msdk.network.CmdMessage\"V\n\033BatchChangeMe"
-      "ssagesResponse\0227\n\007results\030\001 \003(\0132&.roc.im"
-      "sdk.network.CmdMessageOptResult\"U\n\037Batch"
-      "ChangeConversationsRequest\0222\n\013cmdMessage"
-      "s\030\001 \003(\0132\035.roc.imsdk.network.CmdMessage\"["
-      "\n BatchChangeConversationsResponse\0227\n\007re"
-      "sults\030\001 \003(\0132&.roc.imsdk.network.CmdMessa"
-      "geOptResult\"\210\001\n\033FetchConvMessageListRequ"
-      "est\022\014\n\004mode\030\001 \001(\003\022\016\n\006userID\030\002 \001(\t\022\016\n\006con"
-      "vID\030\003 \001(\t\022\017\n\007version\030\004 \001(\003\022\r\n\005limit\030\005 \001("
-      "\003\022\014\n\004left\030\006 \001(\003\022\r\n\005right\030\007 \001(\003\"\216\001\n\034Fetch"
-      "ConvMessageListResponse\0220\n\010messages\030\001 \003("
-      "\0132\036.roc.imsdk.network.MessageData\022\014\n\004lef"
-      "t\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\020\n\010haveMore\030\004 \001(\010"
-      "\022\r\n\005error\030\005 \001(\t\"\210\001\n\036FetchUserRecentConvL"
-      "istRequest\022\014\n\004mode\030\001 \001(\003\022\016\n\006userID\030\002 \001(\t"
-      "\022\017\n\007version\030\003 \001(\003\022\r\n\005limit\030\004 \001(\003\022\022\n\nlowV"
-      "ersion\030\005 \001(\003\022\024\n\014upperVersion\030\006 \001(\003\"\233\001\n\037F"
-      "etchUserRecentConvListResponse\022:\n\rconver"
-      "sations\030\001 \003(\0132#.roc.imsdk.network.Conver"
-      "sationData\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022"
-      "\020\n\010haveMore\030\004 \001(\010\022\r\n\005error\030\005 \001(\t\"`\n User"
-      "MessageIntegrityCheckRequest\022\016\n\006userID\030\001"
-      " \001(\t\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\017\n\007con"
-      "vIDs\030\004 \003(\t\"\221\001\n!UserMessageIntegrityCheck"
-      "Response\022\023\n\013isIntegrity\030\001 \001(\010\022\014\n\004left\030\002 "
-      "\001(\003\022\r\n\005right\030\003 \001(\003\022:\n\rconversations\030\004 \003("
-      "\0132#.roc.imsdk.network.ConversationData\"{"
-      "\n\020GetMessageResult\022\021\n\tmessageID\030\001 \001(\t\022/\n"
-      "\007message\030\002 \001(\0132\036.roc.imsdk.network.Messa"
-      "geData\022\021\n\terrorCode\030\003 \001(\t\022\020\n\010errorMsg\030\004 "
-      "\001(\t\"=\n\027BatchGetMessagesRequest\022\022\n\nmessag"
-      "eIDs\030\001 \003(\t\022\016\n\006convID\030\002 \001(\t\"P\n\030BatchGetMe"
-      "ssagesResponse\0224\n\007results\030\001 \003(\0132#.roc.im"
-      "sdk.network.GetMessageResult\"\207\001\n\025GetConv"
-      "ersationResult\022\016\n\006convID\030\001 \001(\t\0229\n\014conver"
-      "sation\030\002 \001(\0132#.roc.imsdk.network.Convers"
-      "ationData\022\021\n\terrorCode\030\003 \001(\t\022\020\n\010errorMsg"
-      "\030\004 \001(\t\"@\n\034BatchGetConversationsRequest\022\017"
-      "\n\007convIDs\030\001 \003(\t\022\017\n\007ownerID\030\002 \001(\t\"Z\n\035Batc"
-      "hGetConversationsResponse\0229\n\007results\030\001 \003"
-      "(\0132(.roc.imsdk.network.GetConversationRe"
-      "sultB1Z/github.com/rhp-QE/roc-im-server/"
-      "kitex_gen/sdkwsb\006proto3"
+      "ndMessageResult\"Q\n\nCmdMessage\022\013\n\003cmd\030\001 \001"
+      "(\005\022\n\n\002id\030\002 \001(\005\022\014\n\004data\030\004 \001(\014\022\017\n\007version\030"
+      "\005 \001(\003\022\013\n\003uid\030\006 \001(\t\"P\n\023CmdMessageOptResul"
+      "t\022\013\n\003cmd\030\001 \001(\005\022\n\n\002id\030\002 \001(\005\022\021\n\terrorCode\030"
+      "\003 \001(\005\022\r\n\005error\030\004 \001(\t\"P\n\032BatchChangeMessa"
+      "gesRequest\0222\n\013cmdMessages\030\001 \003(\0132\035.roc.im"
+      "sdk.network.CmdMessage\"V\n\033BatchChangeMes"
+      "sagesResponse\0227\n\007results\030\001 \003(\0132&.roc.ims"
+      "dk.network.CmdMessageOptResult\"U\n\037BatchC"
+      "hangeConversationsRequest\0222\n\013cmdMessages"
+      "\030\001 \003(\0132\035.roc.imsdk.network.CmdMessage\"[\n"
+      " BatchChangeConversationsResponse\0227\n\007res"
+      "ults\030\001 \003(\0132&.roc.imsdk.network.CmdMessag"
+      "eOptResult\"\210\001\n\033FetchConvMessageListReque"
+      "st\022\014\n\004mode\030\001 \001(\003\022\016\n\006userID\030\002 \001(\t\022\016\n\006conv"
+      "ID\030\003 \001(\t\022\017\n\007version\030\004 \001(\003\022\r\n\005limit\030\005 \001(\003"
+      "\022\014\n\004left\030\006 \001(\003\022\r\n\005right\030\007 \001(\003\"\216\001\n\034FetchC"
+      "onvMessageListResponse\0220\n\010messages\030\001 \003(\013"
+      "2\036.roc.imsdk.network.MessageData\022\014\n\004left"
+      "\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\020\n\010haveMore\030\004 \001(\010\022"
+      "\r\n\005error\030\005 \001(\t\"\210\001\n\036FetchUserRecentConvLi"
+      "stRequest\022\014\n\004mode\030\001 \001(\003\022\016\n\006userID\030\002 \001(\t\022"
+      "\017\n\007version\030\003 \001(\003\022\r\n\005limit\030\004 \001(\003\022\022\n\nlowVe"
+      "rsion\030\005 \001(\003\022\024\n\014upperVersion\030\006 \001(\003\"\233\001\n\037Fe"
+      "tchUserRecentConvListResponse\022:\n\rconvers"
+      "ations\030\001 \003(\0132#.roc.imsdk.network.Convers"
+      "ationData\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\020"
+      "\n\010haveMore\030\004 \001(\010\022\r\n\005error\030\005 \001(\t\"`\n UserM"
+      "essageIntegrityCheckRequest\022\016\n\006userID\030\001 "
+      "\001(\t\022\014\n\004left\030\002 \001(\003\022\r\n\005right\030\003 \001(\003\022\017\n\007conv"
+      "IDs\030\004 \003(\t\"\221\001\n!UserMessageIntegrityCheckR"
+      "esponse\022\023\n\013isIntegrity\030\001 \001(\010\022\014\n\004left\030\002 \001"
+      "(\003\022\r\n\005right\030\003 \001(\003\022:\n\rconversations\030\004 \003(\013"
+      "2#.roc.imsdk.network.ConversationData\"{\n"
+      "\020GetMessageResult\022\021\n\tmessageID\030\001 \001(\t\022/\n\007"
+      "message\030\002 \001(\0132\036.roc.imsdk.network.Messag"
+      "eData\022\021\n\terrorCode\030\003 \001(\t\022\020\n\010errorMsg\030\004 \001"
+      "(\t\"=\n\027BatchGetMessagesRequest\022\022\n\nmessage"
+      "IDs\030\001 \003(\t\022\016\n\006convID\030\002 \001(\t\"P\n\030BatchGetMes"
+      "sagesResponse\0224\n\007results\030\001 \003(\0132#.roc.ims"
+      "dk.network.GetMessageResult\"\207\001\n\025GetConve"
+      "rsationResult\022\016\n\006convID\030\001 \001(\t\0229\n\014convers"
+      "ation\030\002 \001(\0132#.roc.imsdk.network.Conversa"
+      "tionData\022\021\n\terrorCode\030\003 \001(\t\022\020\n\010errorMsg\030"
+      "\004 \001(\t\"@\n\034BatchGetConversationsRequest\022\017\n"
+      "\007convIDs\030\001 \003(\t\022\017\n\007ownerID\030\002 \001(\t\"Z\n\035Batch"
+      "GetConversationsResponse\0229\n\007results\030\001 \003("
+      "\0132(.roc.imsdk.network.GetConversationRes"
+      "ult\"G\n\022CreateGroupRequest\022\017\n\007ownerID\030\001 \001"
+      "(\t\022\014\n\004name\030\002 \001(\t\022\022\n\nmemberUIDs\030\003 \003(\t\"u\n\023"
+      "CreateGroupResponse\022\021\n\terrorCode\030\001 \001(\005\022\020"
+      "\n\010errorMsg\030\002 \001(\t\0229\n\014conversation\030\003 \001(\0132#"
+      ".roc.imsdk.network.ConversationData\"\?\n\031I"
+      "nviteGroupMembersRequest\022\016\n\006convID\030\001 \001(\t"
+      "\022\022\n\nmemberUIDs\030\002 \003(\t\"A\n\032InviteGroupMembe"
+      "rsResponse\022\021\n\terrorCode\030\001 \001(\005\022\020\n\010errorMs"
+      "g\030\002 \001(\t\"M\n\020InvitedGroupInfo\0229\n\014conversat"
+      "ion\030\001 \001(\0132#.roc.imsdk.network.Conversati"
+      "onDataB1Z/github.com/rhp-QE/roc-im-serve"
+      "r/kitex_gen/sdkwsb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 3023);
+      descriptor, 3345);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "sdkws.proto", &protobuf_RegisterTypes);
 }
@@ -3784,17 +3968,13 @@ void BatchSendMessageResponse::InternalSwap(BatchSendMessageResponse* other) {
 // ===================================================================
 
 void CmdMessage::InitAsDefaultInstance() {
-  ::roc::imsdk::network::_CmdMessage_default_instance_._instance.get_mutable()->message_ = const_cast< ::roc::imsdk::network::MessageData*>(
-      ::roc::imsdk::network::MessageData::internal_default_instance());
-  ::roc::imsdk::network::_CmdMessage_default_instance_._instance.get_mutable()->conversation_ = const_cast< ::roc::imsdk::network::ConversationData*>(
-      ::roc::imsdk::network::ConversationData::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int CmdMessage::kCmdFieldNumber;
 const int CmdMessage::kIdFieldNumber;
-const int CmdMessage::kMessageFieldNumber;
-const int CmdMessage::kConversationFieldNumber;
-const int CmdMessage::kCursorFieldNumber;
+const int CmdMessage::kDataFieldNumber;
+const int CmdMessage::kVersionFieldNumber;
+const int CmdMessage::kUidFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 CmdMessage::CmdMessage()
@@ -3810,26 +3990,26 @@ CmdMessage::CmdMessage(const CmdMessage& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_message()) {
-    message_ = new ::roc::imsdk::network::MessageData(*from.message_);
-  } else {
-    message_ = NULL;
+  data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.data().size() > 0) {
+    data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
-  if (from.has_conversation()) {
-    conversation_ = new ::roc::imsdk::network::ConversationData(*from.conversation_);
-  } else {
-    conversation_ = NULL;
+  uid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.uid().size() > 0) {
+    uid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.uid_);
   }
   ::memcpy(&cmd_, &from.cmd_,
-    static_cast<size_t>(reinterpret_cast<char*>(&cursor_) -
-    reinterpret_cast<char*>(&cmd_)) + sizeof(cursor_));
+    static_cast<size_t>(reinterpret_cast<char*>(&version_) -
+    reinterpret_cast<char*>(&cmd_)) + sizeof(version_));
   // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.CmdMessage)
 }
 
 void CmdMessage::SharedCtor() {
-  ::memset(&message_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&cursor_) -
-      reinterpret_cast<char*>(&message_)) + sizeof(cursor_));
+  data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&cmd_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&version_) -
+      reinterpret_cast<char*>(&cmd_)) + sizeof(version_));
   _cached_size_ = 0;
 }
 
@@ -3839,8 +4019,8 @@ CmdMessage::~CmdMessage() {
 }
 
 void CmdMessage::SharedDtor() {
-  if (this != internal_default_instance()) delete message_;
-  if (this != internal_default_instance()) delete conversation_;
+  data_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void CmdMessage::SetCachedSize(int size) const {
@@ -3872,17 +4052,11 @@ void CmdMessage::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaNoVirtual() == NULL && message_ != NULL) {
-    delete message_;
-  }
-  message_ = NULL;
-  if (GetArenaNoVirtual() == NULL && conversation_ != NULL) {
-    delete conversation_;
-  }
-  conversation_ = NULL;
+  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&cmd_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&cursor_) -
-      reinterpret_cast<char*>(&cmd_)) + sizeof(cursor_));
+      reinterpret_cast<char*>(&version_) -
+      reinterpret_cast<char*>(&cmd_)) + sizeof(version_));
   _internal_metadata_.Clear();
 }
 
@@ -3924,38 +4098,42 @@ bool CmdMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .roc.imsdk.network.MessageData message = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_message()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .roc.imsdk.network.ConversationData conversation = 4;
+      // bytes data = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-               input, mutable_conversation()));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_data()));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int64 cursor = 5;
+      // int64 version = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &cursor_)));
+                 input, &version_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string uid = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_uid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->uid().data(), static_cast<int>(this->uid().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.CmdMessage.uid"));
         } else {
           goto handle_unusual;
         }
@@ -3998,21 +4176,25 @@ void CmdMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->id(), output);
   }
 
-  // .roc.imsdk.network.MessageData message = 3;
-  if (this->has_message()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, *this->message_, output);
+  // bytes data = 4;
+  if (this->data().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      4, this->data(), output);
   }
 
-  // .roc.imsdk.network.ConversationData conversation = 4;
-  if (this->has_conversation()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, *this->conversation_, output);
+  // int64 version = 5;
+  if (this->version() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->version(), output);
   }
 
-  // int64 cursor = 5;
-  if (this->cursor() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->cursor(), output);
+  // string uid = 6;
+  if (this->uid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->uid().data(), static_cast<int>(this->uid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CmdMessage.uid");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->uid(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4039,23 +4221,27 @@ void CmdMessage::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->id(), target);
   }
 
-  // .roc.imsdk.network.MessageData message = 3;
-  if (this->has_message()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        3, *this->message_, deterministic, target);
+  // bytes data = 4;
+  if (this->data().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        4, this->data(), target);
   }
 
-  // .roc.imsdk.network.ConversationData conversation = 4;
-  if (this->has_conversation()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        4, *this->conversation_, deterministic, target);
+  // int64 version = 5;
+  if (this->version() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->version(), target);
   }
 
-  // int64 cursor = 5;
-  if (this->cursor() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->cursor(), target);
+  // string uid = 6;
+  if (this->uid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->uid().data(), static_cast<int>(this->uid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CmdMessage.uid");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->uid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4075,18 +4261,18 @@ size_t CmdMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // .roc.imsdk.network.MessageData message = 3;
-  if (this->has_message()) {
+  // bytes data = 4;
+  if (this->data().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *this->message_);
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->data());
   }
 
-  // .roc.imsdk.network.ConversationData conversation = 4;
-  if (this->has_conversation()) {
+  // string uid = 6;
+  if (this->uid().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
-        *this->conversation_);
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->uid());
   }
 
   // int32 cmd = 1;
@@ -4103,11 +4289,11 @@ size_t CmdMessage::ByteSizeLong() const {
         this->id());
   }
 
-  // int64 cursor = 5;
-  if (this->cursor() != 0) {
+  // int64 version = 5;
+  if (this->version() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->cursor());
+        this->version());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4139,11 +4325,13 @@ void CmdMessage::MergeFrom(const CmdMessage& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.has_message()) {
-    mutable_message()->::roc::imsdk::network::MessageData::MergeFrom(from.message());
+  if (from.data().size() > 0) {
+
+    data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
-  if (from.has_conversation()) {
-    mutable_conversation()->::roc::imsdk::network::ConversationData::MergeFrom(from.conversation());
+  if (from.uid().size() > 0) {
+
+    uid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.uid_);
   }
   if (from.cmd() != 0) {
     set_cmd(from.cmd());
@@ -4151,8 +4339,8 @@ void CmdMessage::MergeFrom(const CmdMessage& from) {
   if (from.id() != 0) {
     set_id(from.id());
   }
-  if (from.cursor() != 0) {
-    set_cursor(from.cursor());
+  if (from.version() != 0) {
+    set_version(from.version());
   }
 }
 
@@ -4180,11 +4368,11 @@ void CmdMessage::Swap(CmdMessage* other) {
 }
 void CmdMessage::InternalSwap(CmdMessage* other) {
   using std::swap;
-  swap(message_, other->message_);
-  swap(conversation_, other->conversation_);
+  data_.Swap(&other->data_);
+  uid_.Swap(&other->uid_);
   swap(cmd_, other->cmd_);
   swap(id_, other->id_);
-  swap(cursor_, other->cursor_);
+  swap(version_, other->version_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -9977,6 +10165,1565 @@ void BatchGetConversationsResponse::InternalSwap(BatchGetConversationsResponse* 
 }
 
 ::google::protobuf::Metadata BatchGetConversationsResponse::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void CreateGroupRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int CreateGroupRequest::kOwnerIDFieldNumber;
+const int CreateGroupRequest::kNameFieldNumber;
+const int CreateGroupRequest::kMemberUIDsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+CreateGroupRequest::CreateGroupRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsCreateGroupRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.CreateGroupRequest)
+}
+CreateGroupRequest::CreateGroupRequest(const CreateGroupRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      memberuids_(from.memberuids_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ownerid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.ownerid().size() > 0) {
+    ownerid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ownerid_);
+  }
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.name().size() > 0) {
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.CreateGroupRequest)
+}
+
+void CreateGroupRequest::SharedCtor() {
+  ownerid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+CreateGroupRequest::~CreateGroupRequest() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.CreateGroupRequest)
+  SharedDtor();
+}
+
+void CreateGroupRequest::SharedDtor() {
+  ownerid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void CreateGroupRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* CreateGroupRequest::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const CreateGroupRequest& CreateGroupRequest::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsCreateGroupRequest();
+  return *internal_default_instance();
+}
+
+CreateGroupRequest* CreateGroupRequest::New(::google::protobuf::Arena* arena) const {
+  CreateGroupRequest* n = new CreateGroupRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void CreateGroupRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.CreateGroupRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  memberuids_.Clear();
+  ownerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool CreateGroupRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.CreateGroupRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string ownerID = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_ownerid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->ownerid().data(), static_cast<int>(this->ownerid().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.CreateGroupRequest.ownerID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string name = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->name().data(), static_cast<int>(this->name().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.CreateGroupRequest.name"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated string memberUIDs = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_memberuids()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->memberuids(this->memberuids_size() - 1).data(),
+            static_cast<int>(this->memberuids(this->memberuids_size() - 1).length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.CreateGroupRequest.memberUIDs"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.CreateGroupRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.CreateGroupRequest)
+  return false;
+#undef DO_
+}
+
+void CreateGroupRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.CreateGroupRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string ownerID = 1;
+  if (this->ownerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->ownerid().data(), static_cast<int>(this->ownerid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupRequest.ownerID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->ownerid(), output);
+  }
+
+  // string name = 2;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupRequest.name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->name(), output);
+  }
+
+  // repeated string memberUIDs = 3;
+  for (int i = 0, n = this->memberuids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->memberuids(i).data(), static_cast<int>(this->memberuids(i).length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupRequest.memberUIDs");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->memberuids(i), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.CreateGroupRequest)
+}
+
+::google::protobuf::uint8* CreateGroupRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.CreateGroupRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string ownerID = 1;
+  if (this->ownerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->ownerid().data(), static_cast<int>(this->ownerid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupRequest.ownerID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->ownerid(), target);
+  }
+
+  // string name = 2;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupRequest.name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->name(), target);
+  }
+
+  // repeated string memberUIDs = 3;
+  for (int i = 0, n = this->memberuids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->memberuids(i).data(), static_cast<int>(this->memberuids(i).length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupRequest.memberUIDs");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(3, this->memberuids(i), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.CreateGroupRequest)
+  return target;
+}
+
+size_t CreateGroupRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.CreateGroupRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated string memberUIDs = 3;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->memberuids_size());
+  for (int i = 0, n = this->memberuids_size(); i < n; i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->memberuids(i));
+  }
+
+  // string ownerID = 1;
+  if (this->ownerid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->ownerid());
+  }
+
+  // string name = 2;
+  if (this->name().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->name());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void CreateGroupRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.CreateGroupRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const CreateGroupRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const CreateGroupRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.CreateGroupRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.CreateGroupRequest)
+    MergeFrom(*source);
+  }
+}
+
+void CreateGroupRequest::MergeFrom(const CreateGroupRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.CreateGroupRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  memberuids_.MergeFrom(from.memberuids_);
+  if (from.ownerid().size() > 0) {
+
+    ownerid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ownerid_);
+  }
+  if (from.name().size() > 0) {
+
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+}
+
+void CreateGroupRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.CreateGroupRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void CreateGroupRequest::CopyFrom(const CreateGroupRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.CreateGroupRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CreateGroupRequest::IsInitialized() const {
+  return true;
+}
+
+void CreateGroupRequest::Swap(CreateGroupRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void CreateGroupRequest::InternalSwap(CreateGroupRequest* other) {
+  using std::swap;
+  memberuids_.InternalSwap(&other->memberuids_);
+  ownerid_.Swap(&other->ownerid_);
+  name_.Swap(&other->name_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata CreateGroupRequest::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void CreateGroupResponse::InitAsDefaultInstance() {
+  ::roc::imsdk::network::_CreateGroupResponse_default_instance_._instance.get_mutable()->conversation_ = const_cast< ::roc::imsdk::network::ConversationData*>(
+      ::roc::imsdk::network::ConversationData::internal_default_instance());
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int CreateGroupResponse::kErrorCodeFieldNumber;
+const int CreateGroupResponse::kErrorMsgFieldNumber;
+const int CreateGroupResponse::kConversationFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+CreateGroupResponse::CreateGroupResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsCreateGroupResponse();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.CreateGroupResponse)
+}
+CreateGroupResponse::CreateGroupResponse(const CreateGroupResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.errormsg().size() > 0) {
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  if (from.has_conversation()) {
+    conversation_ = new ::roc::imsdk::network::ConversationData(*from.conversation_);
+  } else {
+    conversation_ = NULL;
+  }
+  errorcode_ = from.errorcode_;
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.CreateGroupResponse)
+}
+
+void CreateGroupResponse::SharedCtor() {
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&conversation_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&errorcode_) -
+      reinterpret_cast<char*>(&conversation_)) + sizeof(errorcode_));
+  _cached_size_ = 0;
+}
+
+CreateGroupResponse::~CreateGroupResponse() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.CreateGroupResponse)
+  SharedDtor();
+}
+
+void CreateGroupResponse::SharedDtor() {
+  errormsg_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete conversation_;
+}
+
+void CreateGroupResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* CreateGroupResponse::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const CreateGroupResponse& CreateGroupResponse::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsCreateGroupResponse();
+  return *internal_default_instance();
+}
+
+CreateGroupResponse* CreateGroupResponse::New(::google::protobuf::Arena* arena) const {
+  CreateGroupResponse* n = new CreateGroupResponse;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void CreateGroupResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.CreateGroupResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && conversation_ != NULL) {
+    delete conversation_;
+  }
+  conversation_ = NULL;
+  errorcode_ = 0;
+  _internal_metadata_.Clear();
+}
+
+bool CreateGroupResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.CreateGroupResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 errorCode = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &errorcode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string errorMsg = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_errormsg()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.CreateGroupResponse.errorMsg"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .roc.imsdk.network.ConversationData conversation = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_conversation()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.CreateGroupResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.CreateGroupResponse)
+  return false;
+#undef DO_
+}
+
+void CreateGroupResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.CreateGroupResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 errorCode = 1;
+  if (this->errorcode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->errorcode(), output);
+  }
+
+  // string errorMsg = 2;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupResponse.errorMsg");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->errormsg(), output);
+  }
+
+  // .roc.imsdk.network.ConversationData conversation = 3;
+  if (this->has_conversation()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, *this->conversation_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.CreateGroupResponse)
+}
+
+::google::protobuf::uint8* CreateGroupResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.CreateGroupResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 errorCode = 1;
+  if (this->errorcode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->errorcode(), target);
+  }
+
+  // string errorMsg = 2;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.CreateGroupResponse.errorMsg");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->errormsg(), target);
+  }
+
+  // .roc.imsdk.network.ConversationData conversation = 3;
+  if (this->has_conversation()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        3, *this->conversation_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.CreateGroupResponse)
+  return target;
+}
+
+size_t CreateGroupResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.CreateGroupResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string errorMsg = 2;
+  if (this->errormsg().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->errormsg());
+  }
+
+  // .roc.imsdk.network.ConversationData conversation = 3;
+  if (this->has_conversation()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->conversation_);
+  }
+
+  // int32 errorCode = 1;
+  if (this->errorcode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->errorcode());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void CreateGroupResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.CreateGroupResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const CreateGroupResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const CreateGroupResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.CreateGroupResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.CreateGroupResponse)
+    MergeFrom(*source);
+  }
+}
+
+void CreateGroupResponse::MergeFrom(const CreateGroupResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.CreateGroupResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.errormsg().size() > 0) {
+
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  if (from.has_conversation()) {
+    mutable_conversation()->::roc::imsdk::network::ConversationData::MergeFrom(from.conversation());
+  }
+  if (from.errorcode() != 0) {
+    set_errorcode(from.errorcode());
+  }
+}
+
+void CreateGroupResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.CreateGroupResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void CreateGroupResponse::CopyFrom(const CreateGroupResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.CreateGroupResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CreateGroupResponse::IsInitialized() const {
+  return true;
+}
+
+void CreateGroupResponse::Swap(CreateGroupResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void CreateGroupResponse::InternalSwap(CreateGroupResponse* other) {
+  using std::swap;
+  errormsg_.Swap(&other->errormsg_);
+  swap(conversation_, other->conversation_);
+  swap(errorcode_, other->errorcode_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata CreateGroupResponse::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void InviteGroupMembersRequest::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int InviteGroupMembersRequest::kConvIDFieldNumber;
+const int InviteGroupMembersRequest::kMemberUIDsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+InviteGroupMembersRequest::InviteGroupMembersRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsInviteGroupMembersRequest();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.InviteGroupMembersRequest)
+}
+InviteGroupMembersRequest::InviteGroupMembersRequest(const InviteGroupMembersRequest& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      memberuids_(from.memberuids_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  convid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.convid().size() > 0) {
+    convid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.convid_);
+  }
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.InviteGroupMembersRequest)
+}
+
+void InviteGroupMembersRequest::SharedCtor() {
+  convid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+InviteGroupMembersRequest::~InviteGroupMembersRequest() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.InviteGroupMembersRequest)
+  SharedDtor();
+}
+
+void InviteGroupMembersRequest::SharedDtor() {
+  convid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void InviteGroupMembersRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* InviteGroupMembersRequest::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const InviteGroupMembersRequest& InviteGroupMembersRequest::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsInviteGroupMembersRequest();
+  return *internal_default_instance();
+}
+
+InviteGroupMembersRequest* InviteGroupMembersRequest::New(::google::protobuf::Arena* arena) const {
+  InviteGroupMembersRequest* n = new InviteGroupMembersRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void InviteGroupMembersRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.InviteGroupMembersRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  memberuids_.Clear();
+  convid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _internal_metadata_.Clear();
+}
+
+bool InviteGroupMembersRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.InviteGroupMembersRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string convID = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_convid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->convid().data(), static_cast<int>(this->convid().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.InviteGroupMembersRequest.convID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated string memberUIDs = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_memberuids()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->memberuids(this->memberuids_size() - 1).data(),
+            static_cast<int>(this->memberuids(this->memberuids_size() - 1).length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.InviteGroupMembersRequest.memberUIDs"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.InviteGroupMembersRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.InviteGroupMembersRequest)
+  return false;
+#undef DO_
+}
+
+void InviteGroupMembersRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.InviteGroupMembersRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string convID = 1;
+  if (this->convid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->convid().data(), static_cast<int>(this->convid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.InviteGroupMembersRequest.convID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->convid(), output);
+  }
+
+  // repeated string memberUIDs = 2;
+  for (int i = 0, n = this->memberuids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->memberuids(i).data(), static_cast<int>(this->memberuids(i).length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.InviteGroupMembersRequest.memberUIDs");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->memberuids(i), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.InviteGroupMembersRequest)
+}
+
+::google::protobuf::uint8* InviteGroupMembersRequest::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.InviteGroupMembersRequest)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string convID = 1;
+  if (this->convid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->convid().data(), static_cast<int>(this->convid().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.InviteGroupMembersRequest.convID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->convid(), target);
+  }
+
+  // repeated string memberUIDs = 2;
+  for (int i = 0, n = this->memberuids_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->memberuids(i).data(), static_cast<int>(this->memberuids(i).length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.InviteGroupMembersRequest.memberUIDs");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(2, this->memberuids(i), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.InviteGroupMembersRequest)
+  return target;
+}
+
+size_t InviteGroupMembersRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.InviteGroupMembersRequest)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated string memberUIDs = 2;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->memberuids_size());
+  for (int i = 0, n = this->memberuids_size(); i < n; i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->memberuids(i));
+  }
+
+  // string convID = 1;
+  if (this->convid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->convid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void InviteGroupMembersRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.InviteGroupMembersRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  const InviteGroupMembersRequest* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const InviteGroupMembersRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.InviteGroupMembersRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.InviteGroupMembersRequest)
+    MergeFrom(*source);
+  }
+}
+
+void InviteGroupMembersRequest::MergeFrom(const InviteGroupMembersRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.InviteGroupMembersRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  memberuids_.MergeFrom(from.memberuids_);
+  if (from.convid().size() > 0) {
+
+    convid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.convid_);
+  }
+}
+
+void InviteGroupMembersRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.InviteGroupMembersRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void InviteGroupMembersRequest::CopyFrom(const InviteGroupMembersRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.InviteGroupMembersRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool InviteGroupMembersRequest::IsInitialized() const {
+  return true;
+}
+
+void InviteGroupMembersRequest::Swap(InviteGroupMembersRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void InviteGroupMembersRequest::InternalSwap(InviteGroupMembersRequest* other) {
+  using std::swap;
+  memberuids_.InternalSwap(&other->memberuids_);
+  convid_.Swap(&other->convid_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata InviteGroupMembersRequest::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void InviteGroupMembersResponse::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int InviteGroupMembersResponse::kErrorCodeFieldNumber;
+const int InviteGroupMembersResponse::kErrorMsgFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+InviteGroupMembersResponse::InviteGroupMembersResponse()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsInviteGroupMembersResponse();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.InviteGroupMembersResponse)
+}
+InviteGroupMembersResponse::InviteGroupMembersResponse(const InviteGroupMembersResponse& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.errormsg().size() > 0) {
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  errorcode_ = from.errorcode_;
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.InviteGroupMembersResponse)
+}
+
+void InviteGroupMembersResponse::SharedCtor() {
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  errorcode_ = 0;
+  _cached_size_ = 0;
+}
+
+InviteGroupMembersResponse::~InviteGroupMembersResponse() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.InviteGroupMembersResponse)
+  SharedDtor();
+}
+
+void InviteGroupMembersResponse::SharedDtor() {
+  errormsg_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void InviteGroupMembersResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* InviteGroupMembersResponse::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const InviteGroupMembersResponse& InviteGroupMembersResponse::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsInviteGroupMembersResponse();
+  return *internal_default_instance();
+}
+
+InviteGroupMembersResponse* InviteGroupMembersResponse::New(::google::protobuf::Arena* arena) const {
+  InviteGroupMembersResponse* n = new InviteGroupMembersResponse;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void InviteGroupMembersResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.InviteGroupMembersResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  errorcode_ = 0;
+  _internal_metadata_.Clear();
+}
+
+bool InviteGroupMembersResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.InviteGroupMembersResponse)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 errorCode = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &errorcode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string errorMsg = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_errormsg()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "roc.imsdk.network.InviteGroupMembersResponse.errorMsg"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.InviteGroupMembersResponse)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.InviteGroupMembersResponse)
+  return false;
+#undef DO_
+}
+
+void InviteGroupMembersResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.InviteGroupMembersResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 errorCode = 1;
+  if (this->errorcode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->errorcode(), output);
+  }
+
+  // string errorMsg = 2;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.InviteGroupMembersResponse.errorMsg");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->errormsg(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.InviteGroupMembersResponse)
+}
+
+::google::protobuf::uint8* InviteGroupMembersResponse::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.InviteGroupMembersResponse)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 errorCode = 1;
+  if (this->errorcode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->errorcode(), target);
+  }
+
+  // string errorMsg = 2;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->errormsg().data(), static_cast<int>(this->errormsg().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "roc.imsdk.network.InviteGroupMembersResponse.errorMsg");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->errormsg(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.InviteGroupMembersResponse)
+  return target;
+}
+
+size_t InviteGroupMembersResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.InviteGroupMembersResponse)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string errorMsg = 2;
+  if (this->errormsg().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->errormsg());
+  }
+
+  // int32 errorCode = 1;
+  if (this->errorcode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->errorcode());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void InviteGroupMembersResponse::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.InviteGroupMembersResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  const InviteGroupMembersResponse* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const InviteGroupMembersResponse>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.InviteGroupMembersResponse)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.InviteGroupMembersResponse)
+    MergeFrom(*source);
+  }
+}
+
+void InviteGroupMembersResponse::MergeFrom(const InviteGroupMembersResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.InviteGroupMembersResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.errormsg().size() > 0) {
+
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+  if (from.errorcode() != 0) {
+    set_errorcode(from.errorcode());
+  }
+}
+
+void InviteGroupMembersResponse::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.InviteGroupMembersResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void InviteGroupMembersResponse::CopyFrom(const InviteGroupMembersResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.InviteGroupMembersResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool InviteGroupMembersResponse::IsInitialized() const {
+  return true;
+}
+
+void InviteGroupMembersResponse::Swap(InviteGroupMembersResponse* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void InviteGroupMembersResponse::InternalSwap(InviteGroupMembersResponse* other) {
+  using std::swap;
+  errormsg_.Swap(&other->errormsg_);
+  swap(errorcode_, other->errorcode_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata InviteGroupMembersResponse::GetMetadata() const {
+  protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void InvitedGroupInfo::InitAsDefaultInstance() {
+  ::roc::imsdk::network::_InvitedGroupInfo_default_instance_._instance.get_mutable()->conversation_ = const_cast< ::roc::imsdk::network::ConversationData*>(
+      ::roc::imsdk::network::ConversationData::internal_default_instance());
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int InvitedGroupInfo::kConversationFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+InvitedGroupInfo::InvitedGroupInfo()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_sdkws_2eproto::InitDefaultsInvitedGroupInfo();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:roc.imsdk.network.InvitedGroupInfo)
+}
+InvitedGroupInfo::InvitedGroupInfo(const InvitedGroupInfo& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_conversation()) {
+    conversation_ = new ::roc::imsdk::network::ConversationData(*from.conversation_);
+  } else {
+    conversation_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:roc.imsdk.network.InvitedGroupInfo)
+}
+
+void InvitedGroupInfo::SharedCtor() {
+  conversation_ = NULL;
+  _cached_size_ = 0;
+}
+
+InvitedGroupInfo::~InvitedGroupInfo() {
+  // @@protoc_insertion_point(destructor:roc.imsdk.network.InvitedGroupInfo)
+  SharedDtor();
+}
+
+void InvitedGroupInfo::SharedDtor() {
+  if (this != internal_default_instance()) delete conversation_;
+}
+
+void InvitedGroupInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* InvitedGroupInfo::descriptor() {
+  ::protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const InvitedGroupInfo& InvitedGroupInfo::default_instance() {
+  ::protobuf_sdkws_2eproto::InitDefaultsInvitedGroupInfo();
+  return *internal_default_instance();
+}
+
+InvitedGroupInfo* InvitedGroupInfo::New(::google::protobuf::Arena* arena) const {
+  InvitedGroupInfo* n = new InvitedGroupInfo;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void InvitedGroupInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:roc.imsdk.network.InvitedGroupInfo)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaNoVirtual() == NULL && conversation_ != NULL) {
+    delete conversation_;
+  }
+  conversation_ = NULL;
+  _internal_metadata_.Clear();
+}
+
+bool InvitedGroupInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:roc.imsdk.network.InvitedGroupInfo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .roc.imsdk.network.ConversationData conversation = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+               input, mutable_conversation()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:roc.imsdk.network.InvitedGroupInfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:roc.imsdk.network.InvitedGroupInfo)
+  return false;
+#undef DO_
+}
+
+void InvitedGroupInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:roc.imsdk.network.InvitedGroupInfo)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .roc.imsdk.network.ConversationData conversation = 1;
+  if (this->has_conversation()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->conversation_, output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:roc.imsdk.network.InvitedGroupInfo)
+}
+
+::google::protobuf::uint8* InvitedGroupInfo::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:roc.imsdk.network.InvitedGroupInfo)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .roc.imsdk.network.ConversationData conversation = 1;
+  if (this->has_conversation()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, *this->conversation_, deterministic, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:roc.imsdk.network.InvitedGroupInfo)
+  return target;
+}
+
+size_t InvitedGroupInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:roc.imsdk.network.InvitedGroupInfo)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // .roc.imsdk.network.ConversationData conversation = 1;
+  if (this->has_conversation()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
+        *this->conversation_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void InvitedGroupInfo::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:roc.imsdk.network.InvitedGroupInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  const InvitedGroupInfo* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const InvitedGroupInfo>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:roc.imsdk.network.InvitedGroupInfo)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:roc.imsdk.network.InvitedGroupInfo)
+    MergeFrom(*source);
+  }
+}
+
+void InvitedGroupInfo::MergeFrom(const InvitedGroupInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:roc.imsdk.network.InvitedGroupInfo)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_conversation()) {
+    mutable_conversation()->::roc::imsdk::network::ConversationData::MergeFrom(from.conversation());
+  }
+}
+
+void InvitedGroupInfo::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:roc.imsdk.network.InvitedGroupInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void InvitedGroupInfo::CopyFrom(const InvitedGroupInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:roc.imsdk.network.InvitedGroupInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool InvitedGroupInfo::IsInitialized() const {
+  return true;
+}
+
+void InvitedGroupInfo::Swap(InvitedGroupInfo* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void InvitedGroupInfo::InternalSwap(InvitedGroupInfo* other) {
+  using std::swap;
+  swap(conversation_, other->conversation_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata InvitedGroupInfo::GetMetadata() const {
   protobuf_sdkws_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_sdkws_2eproto::file_level_metadata[kIndexInFileMessages];
 }

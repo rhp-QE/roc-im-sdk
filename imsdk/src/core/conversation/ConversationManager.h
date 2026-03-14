@@ -10,7 +10,6 @@
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"
 #include "imsdk/base/include/network/Error.h"
 
-
 // Forward declaration
 namespace roc::imsdk::core::conversation {
     class UserMessageFetcher;
@@ -50,13 +49,9 @@ public:
     boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>>
         ConvsWhenLogin();
 
-    /// 创建群聊
-    boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
-        CreateGroup(const model::CreateGroupContext &context);
-
-    /// 邀请群成员
-    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
-        InviteGroupMembers(const model::InviteGroupMembersContext &context);
+    /// 保存网络下发的会话到本地（供 GroupManager 等领域在创建群聊后落库）
+    boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>>
+        SaveNetConversations(std::vector<std::shared_ptr<network::ConversationData>> convs);
 
     /// 设置会话置顶
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>

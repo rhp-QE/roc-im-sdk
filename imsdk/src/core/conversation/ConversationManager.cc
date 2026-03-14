@@ -110,16 +110,10 @@ boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManag
     co_return co_await conversation_status_handler->Delete(CTX_V, conv_id);
 }
 
-boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>> ConversationManager::CreateGroup(const model::CreateGroupContext &context) {
+boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>>
+ConversationManager::SaveNetConversations(std::vector<std::shared_ptr<network::ConversationData>> convs) {
     START_TRACK;
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
-    co_return co_await conversation_status_handler->CreateGroup(CTX_V, context);
-}
-
-boost::asio::awaitable<std::expected<bool, roc::error::Error>> ConversationManager::InviteGroupMembers(const model::InviteGroupMembersContext &context) {
-    START_TRACK;
-    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
-    co_return co_await conversation_status_handler->InviteGroupMembers(CTX_V, context);
+    co_return co_await conv_datasource->SaveNetConversations(CTX_V, std::move(convs));
 }
 
 /// =======================================================================================

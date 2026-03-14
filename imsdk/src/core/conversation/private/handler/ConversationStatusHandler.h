@@ -42,15 +42,6 @@ public:
     boost::asio::awaitable<std::expected<bool, roc::error::Error>>
         Delete(CTX_T, std::string cid);
 
-    /// 创建群聊
-    boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>>
-        CreateGroup(CTX_T, const model::CreateGroupContext &context);
-
-    /// 邀请群成员
-    boost::asio::awaitable<std::expected<bool, roc::error::Error>>
-        InviteGroupMembers(CTX_T, const model::InviteGroupMembersContext &context);
-
-
 private:
     std::weak_ptr<SDKRoot> w_sdk_root;
 

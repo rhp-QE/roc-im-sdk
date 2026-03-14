@@ -2,6 +2,7 @@
 #include "imsdk/src/core/sdkroot/SDKRoot.h"
 #include "imsdk/src/core/message/MessageManager.h"
 #include "imsdk/src/core/conversation/ConversationManager.h"
+#include "imsdk/src/core/group/GroupManager.h"
 #include <boost/asio/io_context.hpp>
 #include <unordered_map>
 
@@ -107,12 +108,14 @@ boost::asio::awaitable<std::shared_ptr<model::LoadUserConvsResult>> IMSDK::Convs
     return sdk_root_->ConversationManager()->ConvsWhenLogin();
 }
 
+// 创建群聊
 boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, roc::error::Error>> IMSDK::CreateGroup(const model::CreateGroupContext &context) {
-    co_return co_await sdk_root_->ConversationManager()->CreateGroup(context);
+    co_return co_await sdk_root_->GroupManager()->CreateGroup(context);
 }
 
+// 邀请群成员
 boost::asio::awaitable<std::expected<bool, roc::error::Error>> IMSDK::InviteGroupMembers(const model::InviteGroupMembersContext &context) {
-    co_return co_await sdk_root_->ConversationManager()->InviteGroupMembers(context);
+    co_return co_await sdk_root_->GroupManager()->InviteGroupMembers(context);
 }
 
 // 设置会话置顶

@@ -15,6 +15,8 @@ enum class SDKWSMethod : int32_t {
     USER_MESSGAGE_INTEGRITY_CHECK = 106, /// 混链拉取会话完整性校验
     MESSAGE_CHANGE                = 107, /// 消息改变 请求
     CONVERSATION_CHANGE           = 108, /// 会话改变 请求
+    CREATE_GROUP                  = 109, /// 创建群聊
+    INVITE_GROUP_MEMBERS          = 110, /// 邀请群成员
 };
 
 enum class MsgDStatus : int32_t {
