@@ -5,6 +5,7 @@
 #include <boost/asio/strand.hpp>
 #include <memory>
 #include <expected>
+#include "core/common/macro.h"
 #include "imsdk/src/include/IMSDK.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/core/conversation/db_model/ConversationORM.h"

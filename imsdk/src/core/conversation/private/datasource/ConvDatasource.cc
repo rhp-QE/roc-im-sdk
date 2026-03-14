@@ -28,25 +28,25 @@ ConvDatasource::SaveNetConversations(CTX_T, std::vector<std::shared_ptr<network:
     auto conv_manager = sdk_root->ConversationManager();
 
     // 转换为 db 会话
-    auto db_convs = base::util::transform(convs, [conv_manager, call_track_id](const std::shared_ptr<network::ConversationData> &conv) {
+    auto db_convs = base::util::transform(convs, [=](const std::shared_ptr<network::ConversationData> &conv) {
         return conv_manager->convert->ConvertNetConvToDbConv(CTX_V, conv.get());
     });
 
     // 转换为 sdk 会话
-    auto sdk_convs_copy = base::util::transform(db_convs, [conv_manager, call_track_id](const std::shared_ptr<core::conversation::ConversationORM> &conv) {
+    auto sdk_convs_copy = base::util::transform(db_convs, [=](const std::shared_ptr<core::conversation::ConversationORM> &conv) {
         return conv_manager->convert->ConvertDbConvToSdkConv(CTX_V, conv.get());
     });
 
     auto sdk_convs = co_await boost::asio::co_spawn(sdk_root->db_io_context(), [
         =, this, sdk = w_sdk_root,
         sdk_convs_copy = std::move(sdk_convs_copy),
-        db_convs_copy = std::move(db_convs)]
+        db_convs = std::move(db_convs)]
         () -> boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>>
     {
         CHECK_ROOT_OR_CO_RETURN_VALUE(sdk, std::vector<std::shared_ptr<model::ConversationModel>>());
 
         /// 保存到数据库
-        conv_manager->db_opt->InsertConversation(CTX_V, db_convs_copy);
+        conv_manager->db_opt->InsertConversation(CTX_V, db_convs);
 
         /// 更新会话缓存
         co_return co_await this->p_UpdateConvCache(CTX_V, std::move(sdk_convs_copy));
@@ -298,10 +298,10 @@ boost::asio::awaitable<bool> ConvDatasource::UpdateConversationDeletedStatus(CTX
 
 /// 更新会话缓存
 boost::asio::awaitable<std::vector<std::shared_ptr<model::ConversationModel>>> 
-ConvDatasource::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs) {
+ConvDatasource::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk::model::ConversationModel>> sdk_convs_copy) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::vector<std::shared_ptr<model::ConversationModel>>());
     
-    if (sdk_convs.empty()) {
+    if (sdk_convs_copy.empty()) {
         co_return std::vector<std::shared_ptr<model::ConversationModel>>();
     }
 
@@ -310,7 +310,7 @@ ConvDatasource::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk:
 
     std::vector<std::shared_ptr<model::ConversationModel>> cached_sdk_convs;
 
-    for (const auto& conv : sdk_convs) {
+    for (const auto& conv : sdk_convs_copy) {
         std::string last_message_client_id = conv->last_message_client_id();
         auto sdk_msg = co_await msg_manager->MessageForId(last_message_client_id);
         if (sdk_msg) {
@@ -318,9 +318,11 @@ ConvDatasource::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk:
         }
 
         auto cache_sdk_conv = conv_cache_.at(conv->conversation_id(), std::make_shared<model::ConversationModel>());
-        cache_sdk_conv->move_from(std::move(*conv));
+        if (cache_sdk_conv.first) {
+            cache_sdk_conv.second->move_from(std::move(*conv));
+        }
 
-        cached_sdk_convs.push_back(cache_sdk_conv);
+        cached_sdk_convs.push_back(cache_sdk_conv.second);
     }
 
     co_return cached_sdk_convs;

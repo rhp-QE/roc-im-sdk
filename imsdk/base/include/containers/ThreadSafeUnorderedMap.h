@@ -195,14 +195,15 @@ public:
         return std::nullopt;
     }
 
-    // 2. 带默认值的访问, 如果没有找到会创建
-    T at(const Key& key, T&& default_value) {
+    // 2. 带默认值的访问, 如果没有找到会把传入的默认值移动到容器内
+    std::pair<bool, T> at(const Key& key, T&& default_value) {
         std::unique_lock<std::shared_mutex> write_lock(mutex_);
         auto it = data_.find(key);
         if (it == data_.end()) {
             it = data_.emplace(key, std::move(default_value)).first;
+            return {false, it->second};
         }
-        return it->second;
+        return {true, it->second};
     }
 
     // 3. 带回调的安全访问（const，只读）

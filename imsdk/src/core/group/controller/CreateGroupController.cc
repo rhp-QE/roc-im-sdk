@@ -88,10 +88,12 @@ boost::asio::awaitable<std::expected<std::shared_ptr<model::ConversationModel>, 
 CreateGroupController::CreateGroup(CTX_T, const model::CreateGroupContext &context) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(3001, "SDK root is null")))
 
+    /// 验证上下文
     if (auto err = p_validateContext(CTX_V, context)) {
         co_return std::unexpected(err.value());
     }
 
+    /// 构造请求
     auto frontier_msg = p_buildRequest(CTX_V, context);
     auto response = co_await sdk_root->ConnectionManager()->SendRequest(CTX_V, std::move(frontier_msg));
     if (!response.has_value()) {
@@ -99,11 +101,13 @@ CreateGroupController::CreateGroup(CTX_T, const model::CreateGroupContext &conte
         co_return std::unexpected(response.error());
     }
 
+    /// 解析响应
     auto parse_result = p_parseResponse(CTX_V, response.value()->payload);
     if (!parse_result.has_value()) {
         co_return std::unexpected(parse_result.error());
     }
 
+    /// 处理结果
     co_return co_await p_handleResult(CTX_V, *parse_result);
 }
 

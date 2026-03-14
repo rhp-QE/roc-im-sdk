@@ -8,6 +8,8 @@
 #include <boost/asio/awaitable.hpp>
 #include <expected>
 #include <memory>
+#include <optional>
+#include <vector>
 
 namespace roc::imsdk::core::group {
 
@@ -20,6 +22,11 @@ public:
         InviteGroupMembers(CTX_T, const model::InviteGroupMembersContext &context);
 
 private:
+    std::optional<roc::error::Error> p_validateContext(CTX_T, const model::InviteGroupMembersContext &context);
+    std::unique_ptr<network::FrontierMessage> p_buildRequest(CTX_T, const model::InviteGroupMembersContext &context);
+    std::expected<network::InviteGroupMembersResponse, roc::error::Error> p_parseResponse(
+        CTX_T, const std::vector<uint8_t> &payload);
+
     std::weak_ptr<SDKRoot> w_sdk_root;
 };
 

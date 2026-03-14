@@ -353,7 +353,7 @@ std::vector<std::pair<int64_t, int64_t>> MessageDataSource::p_messageRangeForCon
 }
 
 /// 更新消息缓存
-std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> MessageDataSource::UpdateMsgCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> sdk_msgs) {
+std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> MessageDataSource::UpdateMsgCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> sdk_msgs_copy) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, {});
     
     auto msg_manager = sdk_root->MessageManager();
@@ -361,15 +361,16 @@ std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> MessageDataSource:
 
     std::vector<std::shared_ptr<roc::imsdk::model::MessageModel>> updated_msgs;
     
-    for (const auto &sdk_msg : sdk_msgs) {
-        if (sdk_msg == nullptr) {
+    for (auto &sdk_msg_copy : sdk_msgs_copy) {
+        if (sdk_msg_copy == nullptr) {
             continue;
         }
 
-        auto cache_sdk_msg = message_cache_.at(sdk_msg->client_msg_id(), std::make_shared<model::MessageModel>());
-
-        cache_sdk_msg->move_from(std::move(*sdk_msg));
-        updated_msgs.push_back(cache_sdk_msg);
+        auto cache_sdk_msg = message_cache_.at(sdk_msg_copy->client_msg_id(), std::move(sdk_msg_copy));
+        if (cache_sdk_msg.first) {
+            cache_sdk_msg.second->move_from(std::move(*sdk_msg_copy));
+        }
+        updated_msgs.push_back(cache_sdk_msg.second);
     }
 
     return updated_msgs;
