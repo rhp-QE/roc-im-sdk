@@ -310,16 +310,16 @@ ConvDatasource::p_UpdateConvCache(CTX_T, std::vector<std::shared_ptr<roc::imsdk:
 
     std::vector<std::shared_ptr<model::ConversationModel>> cached_sdk_convs;
 
-    for (const auto& conv : sdk_convs_copy) {
-        std::string last_message_client_id = conv->last_message_client_id();
+    for (auto& sdk_conv_copy : sdk_convs_copy) {
+        std::string last_message_client_id = sdk_conv_copy->last_message_client_id();
         auto sdk_msg = co_await msg_manager->MessageForId(last_message_client_id);
         if (sdk_msg) {
-            conv->last_message_ = std::move(sdk_msg);
+            sdk_conv_copy->last_message_ = std::move(sdk_msg);
         }
 
-        auto cache_sdk_conv = conv_cache_.at(conv->conversation_id(), std::make_shared<model::ConversationModel>());
+        auto cache_sdk_conv = conv_cache_.at(sdk_conv_copy->conversation_id(), std::move(sdk_conv_copy));
         if (cache_sdk_conv.first) {
-            cache_sdk_conv.second->move_from(std::move(*conv));
+            cache_sdk_conv.second->move_from(std::move(*sdk_conv_copy));
         }
 
         cached_sdk_convs.push_back(cache_sdk_conv.second);

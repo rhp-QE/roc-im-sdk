@@ -28,6 +28,7 @@ boost::asio::awaitable<void> ReceiveConversation::HandleReceiveConversation(CTX_
     // 上抛
     auto on_conversation_result = std::make_shared<model::OnConversationResult>();
     on_conversation_result->fetched_convs = sdk_convs;
+    on_conversation_result->insert_convs = sdk_convs;
     base::util::safe_invoke_block(conv_manager->OnConversationsCallback(), on_conversation_result);
     co_return;
 }

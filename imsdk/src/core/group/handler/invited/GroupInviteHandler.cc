@@ -35,9 +35,10 @@ void GroupInviteHandler::AllComponentDidLoad(CTX_T) {
     CHECK_ROOT_OR_RETURN_VOID(w_sdk_root)
     sdk_root->cmd_center()->RegistCmdHandler(
         CTX_V,
-        static_cast<int32_t>(common::CmdMessageOp::CONV_GROUP_INVITE),
+        static_cast<int32_t>(common::CmdMessageOp::CONV_GROUP_INVITED),
         [w_sdk_root = w_sdk_root, this](CTX_T, std::shared_ptr<const network::CmdMessage> cmd) -> boost::asio::awaitable<void> {
-            return OnGroupInvitePush(CTX_V, cmd);
+            CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+            co_await this->OnGroupInvitePush(CTX_V, cmd);
         });
 }
 
@@ -57,7 +58,8 @@ boost::asio::awaitable<void> GroupInviteHandler::OnGroupInvitePush(CTX_T, std::s
     // 上抛
     if (!sdk_convs.empty()) {
         auto on_conversation_result = std::make_shared<model::OnConversationResult>();
-        on_conversation_result->new_convs.push_back(sdk_convs[0]);
+        on_conversation_result->insert_convs.push_back(sdk_convs[0]);
+        on_conversation_result->invited_group_convs.push_back(sdk_convs[0]);
         base::util::safe_invoke_block(conv_manager->OnConversationsCallback(), on_conversation_result);
     }
 }

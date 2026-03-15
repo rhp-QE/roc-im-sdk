@@ -67,14 +67,14 @@ MessageDataSource::SaveDbMsgs(CTX_T, std::vector<std::shared_ptr<core::message::
     auto msg_manager = sdk_root->MessageManager();
 
     // 转换为 sdk 消息
-    auto sdk_msgs = base::util::transform(db_msgs, [=](const std::shared_ptr<core::message::MessageORM> &msg) {
+    auto sdk_msgs_copy = base::util::transform(db_msgs, [=](const std::shared_ptr<core::message::MessageORM> &msg) {
         return msg_manager->convert->ConvertDbMsgToSdkMsgTmp(CTX_V, msg.get());
     });
 
     /// 在同一个线程内执行 确保 db 和 缓存的一致性
     auto saved_msgs = co_await boost::asio::co_spawn(sdk_root->db_io_context(), [
         =, this, sdk = w_sdk_root,
-        sdk_msgs = std::move(sdk_msgs),
+        sdk_msgs_copy = std::move(sdk_msgs_copy),
         db_msgs_copy = std::move(db_msgs)]
         () -> boost::asio::awaitable<std::vector<std::shared_ptr<model::MessageModel>>>
     {
@@ -95,7 +95,7 @@ MessageDataSource::SaveDbMsgs(CTX_T, std::vector<std::shared_ptr<core::message::
         }
 
         // 更新缓存
-        co_return UpdateMsgCache(CTX_V, std::move(sdk_msgs));
+        co_return UpdateMsgCache(CTX_V, std::move(sdk_msgs_copy));
     }, boost::asio::use_awaitable);
 
     // 自动更新消息区间

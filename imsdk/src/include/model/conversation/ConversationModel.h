@@ -141,12 +141,15 @@ private:
 
 
 
-struct OnConversationResult {
-    /// 新增的会话
-    std::vector<std::shared_ptr<ConversationModel>> new_convs;
-
+struct OnConversationResult { 
     /// 拉取到的会话
     std::vector<std::shared_ptr<ConversationModel>> fetched_convs;
+
+    /// 被邀请进群的会话
+    std::vector<std::shared_ptr<ConversationModel>> invited_group_convs;
+
+    /// 新增的会话
+    std::vector<std::shared_ptr<ConversationModel>> insert_convs;
 
     /// 删除的会话
     std::vector<std::shared_ptr<ConversationModel>> deleted_convs;

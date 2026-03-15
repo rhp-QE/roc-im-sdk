@@ -5,6 +5,7 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/post.hpp>
 #include <boost/asio/use_awaitable.hpp>
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -25,9 +26,11 @@ std::vector<std::thread> threads;
 
 std::unique_ptr<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> demo_net_io_context_work;
 std::unique_ptr<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> demo_sdk_io_context_work;
+std::unique_ptr<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> demo_db_io_context_work;
 
 std::shared_ptr<boost::asio::io_context> demo_net_io_context;
 std::shared_ptr<boost::asio::io_context> demo_sdk_io_context;
+std::shared_ptr<boost::asio::io_context> demo_db_io_context;
 
 std::shared_ptr<roc::imsdk::SpdlogAdapter> spdlog_adapter;
 // ==================
@@ -50,9 +53,19 @@ inline void print_msg(std::shared_ptr<roc::imsdk::model::MessageModel> msg) {
 
 inline void print_conv(std::shared_ptr<roc::imsdk::model::ConversationModel> conv) {
     std::cout << "      ----------------------------------------" << std::endl;
-    std::cout << "      [conversation_id: ] " << conv->conversation_id() << std::endl;
+    std::cout << "      [conversation_id:   ] " << conv->conversation_id() << std::endl;
     std::cout << "      [conversation_name: ] " << conv->name() << std::endl;
     std::cout << "      [conversation_type: ] " << (conv->type() == roc::imsdk::model::ConvType::Single ? "单聊" : "群聊") << std::endl;
+    auto mems = conv->members();
+    const size_t n = std::min<size_t>(5, mems.size());
+    if (n > 0) {
+        std::cout << "      [members (top5):     ] ";
+        for (size_t i = 0; i < n; ++i) {
+            if (i) std::cout << ", ";
+            std::cout << mems[i];
+        }
+        std::cout << std::endl;
+    }
     std::cout << "      ----------------------------------------" << std::endl;
 }
 
@@ -102,8 +115,8 @@ inline boost::asio::awaitable<bool> p_login() {
     // 监听会话更新
     imsdk->OnConvUpdate([](std::shared_ptr<roc::imsdk::model::OnConversationResult> result) {
         std::cout << "\n ==============会话更新 (begin) =============" << std::endl;
-        std::cout << " 新增会话: " << result->new_convs.size() << std::endl;
-        for (auto conv : result->new_convs) {
+        std::cout << " 新增会话: " << result->insert_convs.size() << std::endl;
+        for (auto conv : result->insert_convs) {
             print_conv(conv);
         }
     });
@@ -168,6 +181,28 @@ inline boost::asio::awaitable<void> p_send_message() {
     });
 }
 
+inline boost::asio::awaitable<void> p_send_group_message() {
+    std::cout << "请输入群聊会话ID: ";
+    std::string conv_id;
+    std::cin >> conv_id;
+    std::cout << "请输入消息内容: ";
+    std::string content;
+    std::cin >> content;
+
+    roc::imsdk::model::SendMsgContext context;
+    context.content = content;
+    context.is_group_msg = true;
+    context.conv_id = conv_id;
+
+    auto response = co_await imsdk->SendMessage(context, [](std::shared_ptr<roc::imsdk::model::SendMessageResponse> response) {
+        if (response->error_code) {
+            std::cout << "\n消息发送失败: " << response->error_msg << "\n" << std::endl;
+            return;
+        }
+        std::cout << "\n[message send success] id = " << response->msg->client_msg_id() << std::endl;
+    });
+}
+
 inline boost::asio::awaitable<void> p_logout() {
     co_await imsdk->LoginOut();
 }
@@ -201,7 +236,8 @@ inline boost::asio::awaitable<void> p_create_group() {
         std::cout << "创建群聊失败: " << result.error().to_string() << std::endl;
         co_return;
     }
-    std::cout << "创建群聊成功, 会话ID: " << (*result)->conversation_id() << std::endl;
+    std::cout << "创建群聊成功 (begin)" << std::endl;
+    print_conv(result.value());
 }
 
 /// 邀请进群测试
@@ -242,6 +278,8 @@ inline boost::asio::awaitable<void> entrance() {
             co_await boost::asio::co_spawn(net_io_context, p_enter_chat(), boost::asio::use_awaitable);
         } else if(cmd == "send") {
             co_await boost::asio::co_spawn(net_io_context, p_send_message(), boost::asio::use_awaitable);
+        } else if(cmd == "gsend") {
+            co_await boost::asio::co_spawn(net_io_context, p_send_group_message(), boost::asio::use_awaitable);
         } else if(cmd == "out") {
             co_await boost::asio::co_spawn(net_io_context, p_logout(), boost::asio::use_awaitable);
         } else if(cmd == "chats") {
@@ -260,12 +298,18 @@ inline void imsdk_demo() {
 
     demo_net_io_context = std::make_shared<boost::asio::io_context>();
     demo_sdk_io_context = std::make_shared<boost::asio::io_context>();
+    demo_db_io_context = std::make_shared<boost::asio::io_context>();
 
     demo_net_io_context_work = std::make_unique<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>>(boost::asio::make_work_guard(*demo_net_io_context));
     demo_sdk_io_context_work = std::make_unique<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>>(boost::asio::make_work_guard(*demo_sdk_io_context));
+    demo_db_io_context_work = std::make_unique<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>>(boost::asio::make_work_guard(*demo_db_io_context));
 
     threads.push_back(std::thread([&]() {
         demo_net_io_context->run();
+    }));
+
+    threads.push_back(std::thread([&]() {
+        demo_db_io_context->run();
     }));
 
     for (int i = 0; i < 3; ++i) {
@@ -290,6 +334,7 @@ inline roc::imsdk::Config generateConfig(std::string user_id) {
 
     config.net_io_context = demo_net_io_context;
     config.sdk_io_context = demo_sdk_io_context;
+    config.db_io_context = demo_db_io_context;
 
     return config;
 }

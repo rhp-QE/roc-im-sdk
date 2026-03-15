@@ -1,5 +1,6 @@
 #include "Convert.h"
 
+#include "core/common/logger_macro.h"
 #include "imsdk/src/core/common/macro.h"
 #include "imsdk/src/core/common/util.h"
 #include "imsdk/src/core/common/json_util.h"
@@ -22,6 +23,10 @@ Convert::Convert(std::weak_ptr<SDKRoot> sdk_root)
 std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, const network::MessageData *msg) {
     CHECK_POINTER_OR_RETURN_VALUE(msg, nullptr)
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr)
+
+    if (msg->cmessaegid().empty() && msg->smessageid().empty()) {
+        LOG_ERROR("Convert", "messageID is empty");
+    }
     
     bool send_from_me = util::MessageSendFromMe(sdk_root->config().user_id, msg->sendid());
 
@@ -45,9 +50,9 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, 
     db_msg->from_user_id = msg->sendid();
     
     // 一条消息只会出自一个客户端， 即使一个客户 多端登录 也不会出现 同一条消息 clent_msg_id 覆盖或者不一致的情况
-    db_msg->client_msg_id = send_from_me ? msg->cmessaegid() : msg->smessageid();
+    db_msg->client_msg_id = !msg->cmessaegid().empty() ? msg->cmessaegid() : msg->smessageid();
     
-    db_msg->server_msg_id = msg->smessageid();
+    db_msg->server_msg_id = !msg->smessageid().empty() ? msg->smessageid() : msg->cmessaegid();
     
     db_msg->conversation_id = msg->convid();
     
@@ -74,8 +79,8 @@ std::shared_ptr<core::message::MessageORM> Convert::ConvertNetMsgToDbMsg(CTX_T, 
 std::shared_ptr<model::MessageModel> Convert::ConvertDbMsgToSdkMsgTmp(CTX_T, const core::message::MessageORM *db_msg) {
     CHECK_ROOT_OR_RETURN_VALUE(w_sdk_root, nullptr);
 
-    if (!db_msg || db_msg->client_msg_id.empty()) {
-        return nullptr;
+    if (!db_msg) {
+        LOG_INFO("Convert", "convert error db_msg is empty")
     }
 
     std::shared_ptr<model::MessageModel> sdk_msg = std::make_shared<model::MessageModel>();

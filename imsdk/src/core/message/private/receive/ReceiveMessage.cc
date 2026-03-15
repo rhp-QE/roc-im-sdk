@@ -90,6 +90,9 @@ boost::asio::awaitable<void> ReceiveMessage::HandleMessage(CTX_T, std::vector<st
     auto sdk_msgs = co_await msg_manager->message_data_source->SaveNetMessages(CTX_V, net_msgs_ptr);
     
     LOG_INFO("MsgManager", "handle_receive_message, size: {}", sdk_msgs.size());
+    if (sdk_msgs.size() != net_msgs.size()) {
+        LOG_INFO("MsgManager", "save net message maby error, net_msg_size: {}, sdk_msg_size:{}", net_msgs.size(), sdk_msgs.size());
+    }
 
     // 对消息进行分类
     auto result = co_await ClassifyMessage(CTX_V, net_msgs, sdk_msgs);
@@ -109,7 +112,11 @@ boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(C
     });
 
     for (const auto &msg : net_msgs) {
-        std::shared_ptr<model::MessageModel> sdk_msg = sdk_msg_map[msg->smessageid()].front();
+        auto it = sdk_msg_map.find(msg->smessageid());
+        if (it == sdk_msg_map.end()) {
+            LOG_ERROR("ReceiveMessage", "ClassifyMessgae Error canot find server_message_id = {}", msg->smessageid());
+        }
+        std::shared_ptr<model::MessageModel> sdk_msg = (*it).second.front();
         // std::shared_ptr<model::ConversationModel> sdk_conv = co_await conv_manager->conv_for_id(sdk_msg->conversation_id());
 
         // if (!sdk_conv || !sdk_msg) {
