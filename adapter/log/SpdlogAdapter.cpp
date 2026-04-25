@@ -3,12 +3,37 @@
 #include <iostream>
 
 namespace roc::imsdk {
+namespace {
+
+std::string normalize_log_dir(const std::string& log_dir) {
+    const std::filesystem::path logs_root("logs");
+    if (log_dir.empty()) {
+        return logs_root.string();
+    }
+
+    const std::filesystem::path input_path(log_dir);
+
+    // 统一将日志目录收敛到项目根目录的 logs/ 下
+    if (input_path.is_absolute()) {
+        return (logs_root / input_path.filename()).string();
+    }
+
+    auto begin = input_path.begin();
+    if (begin != input_path.end() && *begin == logs_root) {
+        return input_path.string();
+    }
+
+    return (logs_root / input_path).string();
+}
+
+} // namespace
 
 SpdlogAdapter::SpdlogAdapter() : logDir_("logs"), stop_flush_(false), flush_running_(false) {
     initialize_default_logger();
 }
 
-SpdlogAdapter::SpdlogAdapter(const std::string& logDir) : logDir_(logDir), stop_flush_(false), flush_running_(false) {
+SpdlogAdapter::SpdlogAdapter(const std::string& logDir)
+    : logDir_(normalize_log_dir(logDir)), stop_flush_(false), flush_running_(false) {
     initialize_default_logger();
 }
 

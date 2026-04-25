@@ -1,19 +1,21 @@
 #!/bin/bash
 # 为 ROCIM 项目准备 vcpkg（与 vcpkg.json builtin-baseline 一致，保证 protobuf 3.5.1 可构建）
-# 本脚本与 build-with-vcpkg.sh 同目录（仓库上一级），vcpkg 放在同目录下与 roc-im-sdk 同级。
-# 使用: 在仓库上一级目录执行 ./setup-vcpkg.sh
+# 依赖相关文件统一放在 dependencies 目录。
+# 使用: 在仓库目录执行 ./dependencies/setup-vcpkg.sh
 
 set -e
 
-# 与 vcpkg.json 中 builtin-baseline 保持一致
+# 与 dependencies/vcpkg.json 中 builtin-baseline 保持一致
 VCPKG_BASELINE="df8bfe519564ae001903e5cdd32af0999531ef71"
-# 本脚本所在目录 = 仓库上一级（与 build-with-vcpkg.sh、vcpkg.json 同目录）
-PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
-VCPKG_DIR="$PROJECT_ROOT/vcpkg"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+DEPENDENCIES_DIR="$PROJECT_ROOT/dependencies"
+VCPKG_DIR="$DEPENDENCIES_DIR/vcpkg"
 
-echo "[INFO] 仓库上一级目录: $PROJECT_ROOT（roc-im-sdk 位于 $PROJECT_ROOT/roc-im-sdk）"
-echo "[INFO] 目标 vcpkg 目录: $VCPKG_DIR（与 roc-im-sdk 同级，不进入仓库）"
-echo "[INFO] 使用 baseline: $VCPKG_BASELINE（与 vcpkg.json 一致，支持 protobuf 3.5.1）"
+echo "[INFO] 仓库目录: $PROJECT_ROOT"
+echo "[INFO] 依赖目录: $DEPENDENCIES_DIR"
+echo "[INFO] 目标 vcpkg 目录: $VCPKG_DIR"
+echo "[INFO] 使用 baseline: $VCPKG_BASELINE（与 dependencies/vcpkg.json 一致）"
 echo ""
 
 if [ -d "$VCPKG_DIR" ]; then
@@ -29,7 +31,8 @@ if [ -d "$VCPKG_DIR" ]; then
     }
 else
     echo "[INFO] 克隆 vcpkg 并切换到 baseline..."
-    cd "$PROJECT_ROOT"
+    mkdir -p "$DEPENDENCIES_DIR"
+    cd "$DEPENDENCIES_DIR"
     git clone https://github.com/microsoft/vcpkg.git vcpkg
     cd vcpkg
     git checkout "$VCPKG_BASELINE"
@@ -42,7 +45,7 @@ fi
 
 echo ""
 echo "[SUCCESS] vcpkg 已就绪（baseline: $VCPKG_BASELINE）"
-echo "[INFO] 安装依赖请执行（脚本会默认使用该路径）:"
-echo "  ./build-with-vcpkg.sh"
-echo "  或显式指定: ./build-with-vcpkg.sh --vcpkg-root $VCPKG_DIR"
+echo "[INFO] 安装依赖请执行:"
+echo "  ./dependencies/install-with-vcpkg.sh"
+echo "  或显式指定: ./dependencies/install-with-vcpkg.sh --vcpkg-root $VCPKG_DIR"
 echo ""

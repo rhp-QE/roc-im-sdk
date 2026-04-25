@@ -5,6 +5,11 @@
 
 set -e  # 遇到错误立即退出
 
+# 基于脚本位置计算项目路径，确保产物统一落到仓库内 build/
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="${SCRIPT_DIR}"
+BUILD_DIR="${PROJECT_ROOT}/build"
+
 # 颜色定义
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -99,12 +104,16 @@ get_reasonable_jobs() {
 # 清理构建文件
 clean_build() {
     print_info "清理构建文件..."
-    if [ -d "../build" ]; then
-        cd ../build
-        ninja clean
-        cd ../roc-im-sdk
+    if [ -d "${BUILD_DIR}" ]; then
+        cd "${BUILD_DIR}"
+        if [ -f "build.ninja" ]; then
+            ninja clean
+        else
+            print_warning "build.ninja 不存在，跳过 ninja clean"
+        fi
+        cd "${PROJECT_ROOT}"
     else
-        print_warning "../build 目录不存在，跳过清理"
+        print_warning "build 目录不存在，跳过清理"
     fi
     print_success "清理完成"
 }
@@ -127,13 +136,13 @@ configure_project() {
     
     print_info "vcpkg 工具链: $vcpkg_toolchain"
     
-    # 在上级目录创建 build 文件夹
-    if [ ! -d "../build" ]; then
-        mkdir -p ../build
-        print_info "创建构建目录: ../build"
+    # 在仓库根目录创建 build 文件夹
+    if [ ! -d "${BUILD_DIR}" ]; then
+        mkdir -p "${BUILD_DIR}"
+        print_info "创建构建目录: ${BUILD_DIR}"
     fi
-    
-    cd ../build
+
+    cd "${BUILD_DIR}"
     
     # 使用 gcc-14/g++-14 直接配置并生成 compile_commands.json
     print_info "使用 gcc-14/g++-14 配置项目..."
@@ -145,7 +154,7 @@ configure_project() {
           -DCMAKE_CXX_COMPILER=g++-14 \
           -DCMAKE_TOOLCHAIN_FILE="$vcpkg_toolchain" \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-          ../roc-im-sdk
+          "${PROJECT_ROOT}"
     
     if [ $? -eq 0 ]; then
         print_success "CMake 配置成功！"
@@ -162,9 +171,9 @@ configure_project() {
         if [ -f "compile_commands.json" ]; then
             print_success "✅ compile_commands.json 文件已生成"
             
-            # 复制到上级目录供 clangd 使用
-            cp compile_commands.json ../
-            print_success "✅ compile_commands.json 已复制到项目根目录"
+            # 固定复制到仓库根目录供 clangd 使用
+            cp compile_commands.json "${PROJECT_ROOT}/compile_commands.json"
+            print_success "✅ compile_commands.json 已复制到仓库根目录: ${PROJECT_ROOT}/compile_commands.json"
         else
             print_warning "⚠️  compile_commands.json 文件未生成"
         fi
@@ -173,7 +182,7 @@ configure_project() {
         exit 1
     fi
     
-    cd ../roc-im-sdk
+    cd "${PROJECT_ROOT}"
 }
 
 # 构建项目
@@ -182,7 +191,7 @@ build_project() {
     print_info "开始构建项目..."
     print_info "并行任务数: $jobs"
     
-    cd ../build
+    cd "${BUILD_DIR}"
     
     # 使用 Ninja 构建（根据标志决定输出级别）
     if [ "$verbose_flag" = true ]; then
@@ -303,13 +312,13 @@ build_project() {
         exit 1
     fi
     
-    cd ../roc-im-sdk
+    cd "${PROJECT_ROOT}"
 }
 
 # 运行程序
 run_program() {
     print_info "运行程序..."
-    cd ../build
+    cd "${BUILD_DIR}"
     if [ -f main ]; then
         ./main
     else
@@ -317,7 +326,7 @@ run_program() {
         exit 1
     fi
     
-    cd ../roc-im-sdk
+    cd "${PROJECT_ROOT}"
 }
 
 # 主函数
@@ -420,7 +429,7 @@ main() {
     fi
     
     # 配置项目（如果 build 目录不存在或需要重新配置）
-    if [ ! -d "../build" ] || [ "$clean_flag" = true ] || [ ! -f "../build/build.ninja" ]; then
+    if [ ! -d "${BUILD_DIR}" ] || [ "$clean_flag" = true ] || [ ! -f "${BUILD_DIR}/build.ninja" ]; then
         configure_project $build_type
     fi
     

@@ -61,4 +61,3 @@ vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE.TXT")
 
 # 复制使用说明
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/usage" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
-

@@ -1,6 +1,13 @@
 # Build artifacts
 compile_commands.json
+build/
+dependencies/vcpkg/
+dependencies/vcpkg_installed/
+dependencies/_build/
+dependencies/_src/
 
 # Cache directories
 .cache/
+db_data/
+logs/
 

@@ -1,0 +1,10 @@
+{
+  "name": "protobuf",
+  "version-string": "3.5.1",
+  "description": "Protocol Buffers - Google's data interchange format",
+  "homepage": "https://github.com/protocolbuffers/protobuf",
+  "license": "BSD-3-Clause",
+  "dependencies": [
+    "zlib"
+  ]
+}

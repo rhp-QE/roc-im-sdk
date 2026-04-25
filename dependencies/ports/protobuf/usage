@@ -1,0 +1,8 @@
+The package protobuf provides CMake targets:
+
+    find_package(Protobuf CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE protobuf::libprotobuf)
+
+If you need the compiler:
+
+    find_program(PROTOC_EXE protoc PATHS "${_VCPKG_INSTALLED_DIR}/tools/protobuf")

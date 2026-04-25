@@ -31,13 +31,18 @@ endif()
 
 # vcpkg 配置
 # 工具链文件应通过命令行传入：-DCMAKE_TOOLCHAIN_FILE=<path-to-vcpkg.cmake>
-# 强制使用项目根目录的 vcpkg_installed（可选）
-set(VCPKG_INSTALLED_DIR "${CMAKE_SOURCE_DIR}/../vcpkg_installed")
+# 强制使用 dependencies 目录下的 vcpkg_installed（可选）
+set(VCPKG_INSTALLED_DIR "${CMAKE_SOURCE_DIR}/dependencies/vcpkg_installed")
 
 # -------------------------------------
 project(rocim-client VERSION 0.1.0 LANGUAGES C CXX)
 
 # -------------------------------------
+
+# 统一产物输出到当前构建目录（例如仓库内 build/）
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 message(STATUS "")
 message(STATUS "════════════════════════════════════════════════════════════")
@@ -115,11 +120,15 @@ message(STATUS "   ✅ MMKV")
 find_package(OpenSSL REQUIRED)
 message(STATUS "   ✅ OpenSSL ${OPENSSL_VERSION}")
 
-# 5. 查找 spdlog
+# 5. 查找 Zlib（WCDB/SQLCipher 依赖 crc32）
+find_package(ZLIB REQUIRED)
+message(STATUS "   ✅ Zlib")
+
+# 6. 查找 spdlog
 find_package(spdlog CONFIG REQUIRED)
 message(STATUS "   ✅ spdlog ${spdlog_VERSION}")
 
-# 6. 查找 WCDB
+# 7. 查找 WCDB
 if(WIN32)
     set(WCDB_ROOT "${VCPKG_INSTALLED_DIR}/x64-windows")
 else()
@@ -161,11 +170,14 @@ target_link_libraries(main PRIVATE
     OpenSSL::SSL
     OpenSSL::Crypto
     
-    # 7. spdlog（日志）
+    # 7. Zlib（crc32）
+    ZLIB::ZLIB
+
+    # 8. spdlog（日志）
     spdlog::spdlog
 )
 
-# 8. 系统库（仅 Linux）
+# 9. 系统库（仅 Linux）
 if(NOT WIN32)
 target_link_libraries(main PRIVATE 
     pthread
@@ -187,8 +199,9 @@ message(STATUS "   3. Protobuf            (3.5.1)")
 message(STATUS "   4. MMKV                (键值存储)")
 message(STATUS "   5. WCDB                (数据库 + sqlcipher + zstd)")
 message(STATUS "   6. OpenSSL             (加密)")
-message(STATUS "   7. spdlog              (日志)")
-message(STATUS "   8. pthread, dl         (系统库)")
+message(STATUS "   7. Zlib                (压缩/crc32)")
+message(STATUS "   8. spdlog              (日志)")
+message(STATUS "   9. pthread, dl         (系统库)")
 message(STATUS "════════════════════════════════════════")
 message(STATUS "")
 
