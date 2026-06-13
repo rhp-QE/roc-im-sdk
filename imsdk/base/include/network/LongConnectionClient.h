@@ -276,6 +276,12 @@ private:
      */
     void p_notify_connection_status(bool connected, const std::string& reason);
 
+    /**
+     * @brief 统一处理读、写、心跳失败
+     * @param reason 失败原因
+     */
+    void p_handle_transport_error(const std::string& reason);
+
     // ==================== 私有成员变量 ====================
     
     LongConnectionConfig config_; ///< 长连接配置
@@ -309,4 +315,3 @@ private:
 } // namespace roc::base::net
 
 #endif // ROC_NET_LONGCONNECTIONCLIENT_H
-

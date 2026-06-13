@@ -9,7 +9,6 @@
 #include <boost/asio/use_awaitable.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <boost/system/detail/error_code.hpp>
-#include <iostream>
 #include <chrono>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
@@ -37,12 +36,6 @@ LongConnectionClient::LongConnectionClient(LongConnectionConfig config, boost::a
     , connected_(false) {
     
     ch = std::make_unique<channel_type>(io_context_.get_executor(), 10);
-    std::cout << "LongConnectionClient created with config:" << std::endl;
-    std::cout << "  Host: " << config_.get_host() << ":" << config_.get_port() << std::endl;
-    std::cout << "  Path: " << config_.get_path() << std::endl;
-    std::cout << "  Heartbeat interval: " << config_.get_heartbeat_interval() << "ms" << std::endl;
-    std::cout << "  Ping payload: " << config_.get_heartbeat_payload() << std::endl;
-    std::cout << "  Auto reconnect: " << (config_.is_auto_reconnect_enabled() ? "enabled" : "disabled") << std::endl;
 }
 
 LongConnectionClient::~LongConnectionClient() {
@@ -178,6 +171,15 @@ boost::asio::awaitable<std::expected<size_t, roc::error::Error>> LongConnectionC
 }
 
 boost::asio::awaitable<std::expected<size_t, roc::error::Error>> LongConnectionClient::send_data(std::vector<char> buf) {
+    if (!running_ || !connected_ || !ws_client_) {
+        co_return std::unexpected(roc::error::make_error(2008, "Not connected"));
+    }
+    if (buf.empty()) {
+        co_return std::unexpected(roc::error::make_error(2009, "Invalid data or size"));
+    }
+
+    // 这里返回“入队成功”；真正写失败由 send loop 统一触发 transport error，
+    // 上层 RequestTracker 会在连接断开回调中 fail all pending request。
     size_t size = buf.size();
     co_await ch->async_send(boost::system::error_code{}, std::make_shared<std::vector<char>>(std::move(buf)), boost::asio::use_awaitable);
     co_return size;
@@ -198,9 +200,11 @@ boost::asio::awaitable<void> LongConnectionClient::p_send_loop() {
             // 使用 IWSClient 接口发送数据
             auto result = co_await ws_client_->send(buf->data(), buf->size());
             if (!result) {
+                p_handle_transport_error("send failed: " + result.error().to_string());
                 break;
             }
         } catch (const std::exception& e) {
+            p_handle_transport_error("send loop exception: " + std::string(e.what()));
             break;
         }
     }
@@ -261,16 +265,13 @@ boost::asio::awaitable<void> LongConnectionClient::p_send_ping() {
         
         // 使用 IWSClient 接口发送 ping 帧
         auto result = co_await ws_client_->ping(config_.get_heartbeat_payload());
-        // std::cout << "LongConnectionClient::p_send_ping: " << result.value() << std::endl;
         if (result) {
             last_heartbeat_time_ = std::chrono::steady_clock::now();
         } else {
-            // 心跳失败，可能需要重连
-            if (config_.is_auto_reconnect_enabled()) {
-                p_start_auto_reconnect();
-            }
+            p_handle_transport_error("heartbeat failed: " + result.error().to_string());
         }
     } catch (const std::exception& e) {
+        p_handle_transport_error("heartbeat exception: " + std::string(e.what()));
     }
 }
 
@@ -294,16 +295,8 @@ boost::asio::awaitable<void> LongConnectionClient::p_receive_loop() {
         }
     }
     
-    // 接收循环结束，可能是连接断开
-    if (connected_) {
-        connected_ = false;
-        p_notify_connection_status(false, err);
-        
-        // 启动自动重连
-        if (config_.is_auto_reconnect_enabled()) {
-            p_start_auto_reconnect();
-        }
-    }
+    // 读失败、写失败和心跳失败都进入同一状态收敛路径。
+    p_handle_transport_error(err.empty() ? "receive loop stopped" : err);
 }
 
 void LongConnectionClient::p_handle_received_data(const boost::beast::flat_buffer& buffer) {
@@ -359,5 +352,19 @@ void LongConnectionClient::p_notify_connection_status(bool connected, const std:
     }
 }
 
-} // namespace roc::base::net
+void LongConnectionClient::p_handle_transport_error(const std::string& reason) {
+    if (!connected_.exchange(false)) {
+        return;
+    }
 
+    // transport error 是连接状态机的唯一失败入口：停止当前循环、通知上层、再按配置重连。
+    running_ = false;
+    p_stop_heartbeat_timer();
+    p_notify_connection_status(false, reason);
+
+    if (config_.is_auto_reconnect_enabled()) {
+        p_start_auto_reconnect();
+    }
+}
+
+} // namespace roc::base::net

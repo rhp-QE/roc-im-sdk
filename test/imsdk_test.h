@@ -57,7 +57,8 @@ inline roc::imsdk::Config generateConfig() {
     config.app_id = "appid_0000";
     config.user_device_id = "did_0000";
     config.user_id = "12345";
-    config.user_token = "token_mock";
+    // 本地 mock 鉴权格式为 uid:<userID>；正式鉴权接入后替换为真实 token。
+    config.user_token = "uid:12345";
 
     return config;
 }

@@ -12,14 +12,14 @@ public:
 
     void Start(CTX_T);
 
-    /// 处理接收到的消息 (混链、单链拉到的消息， 长链下推的消息)
-    boost::asio::awaitable<void> HandleMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs);
+    /// 处理接收到的消息。online_push 来自 WebSocket PUSH_USER_MESSAGE 入口，比 MessageData.dstatus 更能表达本次传输语义。
+    boost::asio::awaitable<void> HandleMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs, bool online_push = false);
 
     /// 处理离线消息
     boost::asio::awaitable<void> HandleOfflineMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs);
 
     /// 对消息进行分类
-    boost::asio::awaitable<model::OnMessageResult> ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs);
+    boost::asio::awaitable<model::OnMessageResult> ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs, bool online_push = false);
 
 private:
 

@@ -330,7 +330,8 @@ inline roc::imsdk::Config generateConfig(std::string user_id) {
     config.app_id = "appid_0000";
     config.user_device_id = "did_0000";
     config.user_id = user_id;
-    config.user_token = "token_mock";
+    // 本地 mock 鉴权必须绑定用户身份，服务端会校验 token 中的 uid 与 user_id 一致。
+    config.user_token = "uid:" + user_id;
 
     config.net_io_context = demo_net_io_context;
     config.sdk_io_context = demo_sdk_io_context;

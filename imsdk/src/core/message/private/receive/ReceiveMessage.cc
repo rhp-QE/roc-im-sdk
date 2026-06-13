@@ -62,17 +62,17 @@ void ReceiveMessage::p_HandleOnlineMessage(CTX_T, std::shared_ptr<const network:
 
     LOG_INFO("MsgManager", "receive_message, from: {}", net_msg->sendid());
 
-    boost::asio::co_spawn(sdk_root->net_io_context(), HandleMessage(CTX_V, {net_msg}), boost::asio::detached);
+    boost::asio::co_spawn(sdk_root->net_io_context(), HandleMessage(CTX_V, {net_msg}, true), boost::asio::detached);
 }
 
 boost::asio::awaitable<void> ReceiveMessage::HandleOfflineMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
     CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
 
-    /// 直接处理消息
-    co_return co_await HandleOfflineMessage(CTX_V, std::move(net_msgs));
+    /// 离线拉取到的消息仍按 dstatus 做补偿分类。
+    co_return co_await HandleMessage(CTX_V, std::move(net_msgs), false);
 }
 
-boost::asio::awaitable<void> ReceiveMessage::HandleMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs) {
+boost::asio::awaitable<void> ReceiveMessage::HandleMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs, bool online_push) {
     if (net_msgs.empty()) {
         co_return;
     }
@@ -95,13 +95,13 @@ boost::asio::awaitable<void> ReceiveMessage::HandleMessage(CTX_T, std::vector<st
     }
 
     // 对消息进行分类
-    auto result = co_await ClassifyMessage(CTX_V, net_msgs, sdk_msgs);
+    auto result = co_await ClassifyMessage(CTX_V, net_msgs, sdk_msgs, online_push);
     
     // 上抛消息
     base::util::safe_invoke_block(msg_manager->OnMessagesCallback(), result);
 }
 
-boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs) {
+boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(CTX_T, std::vector<std::shared_ptr<network::MessageData>> net_msgs, std::vector<std::shared_ptr<model::MessageModel>> sdk_msgs, bool online_push) {
     CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, model::OnMessageResult())
 
     model::OnMessageResult result;
@@ -125,6 +125,12 @@ boost::asio::awaitable<model::OnMessageResult> ReceiveMessage::ClassifyMessage(C
 
         // /// 会话信息
         // result.convs[sdk_conv->conversation_id()] = sdk_conv;
+
+        // WebSocket PUSH_USER_MESSAGE 已经表达了在线推送语义；dstatus 只用于离线拉取后的补偿分类。
+        if (online_push) {
+            result.real_time_msgs.push_back(sdk_msg);
+            continue;
+        }
 
         /// 实时消息
         if (msg->dstatus() == static_cast<int32_t>(common::MsgDStatus::RealTime)) {

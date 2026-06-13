@@ -14,10 +14,10 @@
 #include "imsdk/base/include/network/LongConnectionClient.h"
 #include "imsdk/base/include/uncopyable.h"
 #include "imsdk/src/core/common/macro.h"
+#include "imsdk/src/core/network/connection/request/RequestTracker.h"
 #include "imsdk/src/core/network/proto/sdkws.pb.h"
 #include "imsdk/src/include/model/network.h"
 
-#include <boost/asio/experimental/channel.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <cstdint>
@@ -27,7 +27,6 @@
 #include <mutex>
 #include <expected>
 #include <boost/asio.hpp>
-#include <unordered_map>
 #include <boost/asio/use_awaitable.hpp>
 
 namespace roc::imsdk {
@@ -79,10 +78,7 @@ private:
     std::vector<OnConnectionStatusChangeCallbackType> network_status_change_callback_;
 
     std::unique_ptr<base::net::LongConnectionClient> lc_;
-    
-    std::atomic_uint64_t request_id_ = 0;
-    using channel_type = boost::asio::experimental::channel<void(boost::system::error_code, std::unique_ptr<FrontierMessage>)>;
-    std::unordered_map<std::string, std::shared_ptr<channel_type>> channel_map_;
+    std::unique_ptr<RequestTracker> request_tracker_;
     std::mutex mutex_;
 
     std::vector<OnPushMesageCallbackType> on_push_message_callbacks_;
@@ -91,8 +87,10 @@ private:
 
     boost::asio::awaitable<void> handleDataReceived(boost::beast::flat_buffer data);
 
+    boost::asio::awaitable<void> handleMessageFrame(std::string frame);
+
     base::net::LongConnectionConfig p_GenerateNetConfig(roc::imsdk::SDKRoot* root);
 
 };
 }
-#endif // ROC_IM_SDK_CONNECTION_MANAGER_H 
+#endif // ROC_IM_SDK_CONNECTION_MANAGER_H

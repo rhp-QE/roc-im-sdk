@@ -17,6 +17,7 @@
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/use_awaitable.hpp>
+#include <boost/beast/core/buffers_to_string.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <boost/json.hpp>
 #include <boost/asio/co_spawn.hpp>
@@ -50,6 +51,7 @@ SDKConnectionManager::SDKConnectionManager(std::shared_ptr<SDKRoot> sdk_root)
 boost::asio::awaitable<bool> SDKConnectionManager::InitAndConnect(std::shared_ptr<SDKRoot> sdk_root) {
 
     START_TRACK;
+    request_tracker_ = std::make_unique<RequestTracker>(*(sdk_root->config().net_io_context));
     lc_ = std::make_unique<base::net::LongConnectionClient>(p_GenerateNetConfig(sdk_root.get()), *(sdk_root->config().net_io_context));
 
     // 观察网络状态变更
@@ -60,6 +62,10 @@ boost::asio::awaitable<bool> SDKConnectionManager::InitAndConnect(std::shared_pt
         LOG_INFO("WS", "connected_status: {}, error_info: {}", connected, detail);
 
         const NetworkStatus status = connected ? NetworkStatus::NETWORK_STATUS_CONNECTED : NetworkStatus::NETWORK_STATUS_DISCONNECTED;
+        if (!connected && request_tracker_) {
+            // transport 断开时必须唤醒所有等待中的请求，避免业务协程永久挂起。
+            request_tracker_->FailAll(roc::error::make_error(2102, "connection disconnected", detail));
+        }
 
         std::vector<OnConnectionStatusChangeCallbackType> callback_tmp;
         {
@@ -121,10 +127,7 @@ void SDKConnectionManager::AllComponentDidLoad(CTX_T) {
 
 
 boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::error::Error>> SDKConnectionManager::SendRequest(CTX_T, std::unique_ptr<FrontierMessage> req) {
-    std::shared_ptr<SDKRoot> root = w_sdk_root.lock();
-    if (!root) {
-        co_return std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request"));
-    }
+    CHECK_ROOT_OR_CO_RETURN_VALUE(w_sdk_root, std::unexpected(roc::error::make_error(1000, "root is expired", "SDKConnectionManager:send_request")))
 
     if (!req) {
         co_return std::unexpected(roc::error::make_error(1001, "request is null", "SDKConnectionManager:send_request"));
@@ -132,31 +135,34 @@ boost::asio::awaitable<std::expected<std::unique_ptr<FrontierMessage>, roc::erro
 
     req->type                 = FrontierMessageType::Request;
     req->timestamp            = roc::imsdk::core::util::CurrentTimestampMs();
-    req->request_id           = next_request_id(root.get());
+    req->request_id           = next_request_id(sdk_root.get());
     req->metadata["track_id"] = std::to_string(TRACK_ID);
 
     std::string json_str = FrontierMessageJsonSerializer::ToJsonString(*req);
 
-    auto channel = std::make_shared<channel_type>(*(root->config().net_io_context), 1);
     std::string request_id_str = req->request_id;
-    {
-        std::lock_guard<std::mutex> lock(mutex_);
-        channel_map_[request_id_str] = channel;
-    }
+    auto channel = request_tracker_->Track(request_id_str);
+
+    LOG_INFO("WS", "send_request, request_id: {}, service: {}, method: {}", request_id_str, req->service, req->method);
 
     std::vector<char> buffer(json_str.begin(), json_str.end());
     auto result = co_await lc_->send_data(std::move(buffer));
-
-    std::unique_ptr<FrontierMessage> resp = co_await channel->async_receive(boost::asio::use_awaitable);
-    {
-        std::lock_guard<std::mutex> lock(mutex_);
-        channel_map_.erase(request_id_str);
+    if (!result) {
+        // 发送入队失败要立刻清理 pending；真实写失败会通过连接状态回调 FailAll。
+        request_tracker_->Cancel(request_id_str);
+        co_return std::unexpected(roc::error::make_error(2103, "send request failed", result.error().to_string()));
     }
 
-    // 切换到 sdk_io_context 执行后续代码
-    co_await boost::asio::dispatch(root->sdk_io_context().get_executor(), boost::asio::use_awaitable);
+    auto response = co_await request_tracker_->Wait(channel);
 
-    co_return std::move(resp);
+    // 切换到 sdk_io_context 执行后续代码
+    co_await boost::asio::dispatch(sdk_root->sdk_io_context().get_executor(), boost::asio::use_awaitable);
+
+    if (!response) {
+        LOG_INFO("WS", "request_failed, request_id: {}, service: {}, method: {}, error: {}", request_id_str, req->service, req->method, response.error().to_string());
+        co_return std::unexpected(response.error());
+    }
+    co_return std::move(response.value());
 }
 
 boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::beast::flat_buffer data) {
@@ -164,58 +170,76 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
         CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
         START_TRACK;
 
-        // 从 JSON 缓冲区反序列化为 FrontierMessage（零拷贝）
-        auto msg_result = FrontierMessageJsonSerializer::FromJsonBuffer(data.data().data(), data.size());
-        
+        // 防御性拆分输入中可能出现的多个 JSON envelope，核心协议仍是一帧一个 JSON。
+        std::string raw_frame = boost::beast::buffers_to_string(data.data());
+        size_t start = 0;
+        while (start < raw_frame.size()) {
+            size_t end = raw_frame.find('\n', start);
+            std::string frame = raw_frame.substr(start, end == std::string::npos ? std::string::npos : end - start);
+            if (!frame.empty()) {
+                co_await handleMessageFrame(std::move(frame));
+            }
+            if (end == std::string::npos) {
+                break;
+            }
+            start = end + 1;
+        }
+
+    } catch (const std::exception &e) {
+        auto sdk_root = w_sdk_root.lock();
+        uint32_t call_track_id = roc::base::util::generate_uint32_random();
+        LOG_INFO("WS", "handle_data_received_exception, error: {}", e.what());
+    }
+    co_return;
+}
+
+boost::asio::awaitable<void> SDKConnectionManager::handleMessageFrame(std::string frame) {
+    try {
+        CHECK_ROOT_OR_CO_RETURN_VOID(w_sdk_root)
+        START_TRACK;
+
+        auto msg_result = FrontierMessageJsonSerializer::FromJsonBuffer(frame.data(), frame.size());
         if (!msg_result) {
             LOG_INFO("WS", "Failed to parse JSON message: {}", msg_result.error().to_string());
             co_return;
         }
-
         std::unique_ptr<FrontierMessage> resp = std::make_unique<FrontierMessage>(std::move(msg_result.value()));
         const std::string &request_id = resp->request_id;
 
-        std::shared_ptr<channel_type> channel;
+        if (!request_id.empty() && (resp->type == FrontierMessageType::Response || resp->type == FrontierMessageType::Error)) {
+            // response/error 只能匹配 pending request；超时后的迟到响应直接丢弃。
+            if (request_tracker_ && request_tracker_->Complete(request_id, std::move(resp))) {
+                co_return;
+            }
+            LOG_INFO("WS", "drop_stale_response, request_id: {}", request_id);
+            co_return;
+        }
+
+        LOG_INFO("WS", "handle_long_connection_push_data, request_id: {}", request_id);
+
+        // push 消息只做分发，不与 RequestTracker 共享状态。
+        std::vector<OnPushMesageCallbackType> callbacks_tmp;
         {
             std::lock_guard<std::mutex> lock(mutex_);
-            auto iter = channel_map_.find(request_id);
-            if (iter != channel_map_.end()) {
-                channel = iter->second;
-                channel_map_.erase(iter);
-            }
-        }
+            callbacks_tmp = on_push_message_callbacks_;
+        } // lock
 
-        if (!channel) {
-            LOG_INFO("WS", "handle_long_connection_push_data, request_id: {}", request_id);
+        std::shared_ptr<const network::FrontierMessage> s_resp = std::move(resp);
 
-            /// 直接转发给所有消息者消费， 自己进行数据解析
-            std::vector<OnPushMesageCallbackType> callbacks_tmp;
-            {
-                std::lock_guard<std::mutex> lock(mutex_);
-                callbacks_tmp = on_push_message_callbacks_;
-            } // lock
-
-            std::shared_ptr<const network::FrontierMessage> s_resp = std::move(resp);
-            
-            // 转发到 sdk 线程处理 避免卡死主线程
-            boost::asio::co_spawn(sdk_root->sdk_io_context(), [=, callbacks_tmp = std::move(callbacks_tmp)]->boost::asio::awaitable<void> {
-                for (const auto &callback : callbacks_tmp) {
-                    if (s_resp) {
-                        base::util::safe_invoke_block(callback, s_resp);
-                    }
+        // 转发到 sdk 线程处理，避免在网络线程执行业务回调。
+        boost::asio::co_spawn(sdk_root->sdk_io_context(), [=, callbacks_tmp = std::move(callbacks_tmp)]->boost::asio::awaitable<void> {
+            for (const auto &callback : callbacks_tmp) {
+                if (s_resp) {
+                    base::util::safe_invoke_block(callback, s_resp);
                 }
-                co_return;
-            }, boost::asio::detached);
-        } else {
-            LOG_INFO("WS", "handle_request_response, request_id: {}, type: {}, service: {}, method: {}", 
-                     request_id, resp->type, resp->service, resp->method);
-
-            // 唤醒请求携程
-            co_await channel->async_send(boost::system::error_code{}, std::move(resp), boost::asio::use_awaitable);
-        }
+            }
+            co_return;
+        }, boost::asio::detached);
 
     } catch (const std::exception &e) {
-        std::cout << e.what() << std::endl;
+        auto sdk_root = w_sdk_root.lock();
+        uint32_t call_track_id = roc::base::util::generate_uint32_random();
+        LOG_INFO("WS", "handle_message_frame_exception, error: {}", e.what());
     }
     co_return;
 }
@@ -223,7 +247,12 @@ boost::asio::awaitable<void> SDKConnectionManager::handleDataReceived(boost::bea
 // =================================== private ===========================================================
 
 base::net::LongConnectionConfig SDKConnectionManager::p_GenerateNetConfig(roc::imsdk::SDKRoot* root) {
-    roc::base::net::LongConnectionConfig config("localhost", "6060");
+    const auto& sdk_config = root->config();
+    const std::string host = sdk_config.app_url.empty() ? "localhost" : sdk_config.app_url;
+    const std::string port = sdk_config.app_port.empty() ? "6060" : sdk_config.app_port;
+    const std::string token = sdk_config.user_token.empty() ? "uid:" + sdk_config.user_id : sdk_config.user_token;
+
+    roc::base::net::LongConnectionConfig config(host, port);
 
     config
     .set_heartbeat_interval(5000)
@@ -233,13 +262,17 @@ base::net::LongConnectionConfig SDKConnectionManager::p_GenerateNetConfig(roc::i
     .set_max_reconnect_attempts(5)
     .set_reconnect_backoff(1000)
     .add_header("User-Agent", "LongConnectionClient/1.0")
-    .add_query_param("sendID", root->config().user_id)
-    .add_query_param("sdkType", "RocSDK-c++")
-    .add_query_param("sdk_type", "roc-imsdk-c++")
-    .add_query_param("user_id", root->config().user_id);
+    .add_header("Authorization", "Bearer " + token)
+    // token 是服务端绑定 userID 的唯一身份来源；user_id 只用于一致性校验和日志。
+    .add_query_param("token", token)
+    .add_query_param("user_id", sdk_config.user_id)
+    .add_query_param("deviceID", sdk_config.user_device_id)
+    .add_query_param("platform", std::to_string(sdk_config.platform))
+    .add_query_param("clientVersion", "RocSDK-c++/1.0")
+    .add_query_param("sdk_type", "roc-imsdk-c++");
 
     return config;
 }
 
 
-} // namespace roc::imsdk::network 
+} // namespace roc::imsdk::network
